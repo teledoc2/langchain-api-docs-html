@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Oct 27, 2024" name="docbuild:last-update"/>
+<meta content="Oct 28, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -543,11 +543,9 @@
         <span class="n">perm_texts_batched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_batch</span><span class="p">(</span><span class="n">perm_texts</span><span class="p">)</span>
 
         <span class="c1"># Request</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">aiosession</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">aiosession</span> <span class="o">=</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">(</span>
-                <span class="n">trust_env</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">connector</span><span class="o">=</span><span class="n">aiohttp</span><span class="o">.</span><span class="n">TCPConnector</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
-            <span class="p">)</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">aiosession</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
+        <span class="k">async</span> <span class="k">with</span> <span class="n">aiohttp</span><span class="o">.</span><span class="n">ClientSession</span><span class="p">(</span>
+            <span class="n">trust_env</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">connector</span><span class="o">=</span><span class="n">aiohttp</span><span class="o">.</span><span class="n">TCPConnector</span><span class="p">(</span><span class="n">limit</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+        <span class="p">)</span> <span class="k">as</span> <span class="n">session</span><span class="p">:</span>
             <span class="n">embeddings_batch_perm</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
                 <span class="o">*</span><span class="p">[</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_async_request</span><span class="p">(</span>

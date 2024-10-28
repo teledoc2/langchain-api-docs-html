@@ -42,11 +42,11 @@
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
 <link href="langchain_community.llms.self_hosted.SelfHostedPipeline.html" rel="next" title="SelfHostedPipeline"/>
-<link href="langchain_community.llms.sambanova.SSEndpointHandler.html" rel="prev" title="SSEndpointHandler"/>
+<link href="langchain_community.llms.sagemaker_endpoint.SagemakerEndpoint.html" rel="prev" title="SagemakerEndpoint"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Oct 27, 2024" name="docbuild:last-update"/>
+<meta content="Oct 28, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -320,7 +320,6 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.sagemaker_endpoint.LLMContentHandler.html">LLMContentHandler</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.sagemaker_endpoint.LineIterator.html">LineIterator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.sagemaker_endpoint.SagemakerEndpoint.html">SagemakerEndpoint</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.sambanova.SSEndpointHandler.html">SSEndpointHandler</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">SambaStudio</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.self_hosted.SelfHostedPipeline.html">SelfHostedPipeline</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.self_hosted_hugging_face.SelfHostedHuggingFaceLLM.html">SelfHostedHuggingFaceLLM</a></li>
@@ -495,46 +494,117 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_community.llms.sambanova.</span></span><span class="sig-name descname"><span class="pre">SambaStudio</span></span><a class="reference internal" href="../../_modules/langchain_community/llms/sambanova.html#SambaStudio"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../core/language_models/langchain_core.language_models.llms.LLM.html#langchain_core.language_models.llms.LLM" title="langchain_core.language_models.llms.LLM"><code class="xref py py-class docutils literal notranslate"><span class="pre">LLM</span></code></a></p>
 <p>SambaStudio large language models.</p>
-<p>To use, you should have the environment variables
-<code class="docutils literal notranslate"><span class="pre">SAMBASTUDIO_BASE_URL</span></code> set with your SambaStudio environment URL.
-<code class="docutils literal notranslate"><span class="pre">SAMBASTUDIO_BASE_URI</span></code> set with your SambaStudio api base URI.
-<code class="docutils literal notranslate"><span class="pre">SAMBASTUDIO_PROJECT_ID</span></code> set with your SambaStudio project ID.
-<code class="docutils literal notranslate"><span class="pre">SAMBASTUDIO_ENDPOINT_ID</span></code> set with your SambaStudio endpoint ID.
-<code class="docutils literal notranslate"><span class="pre">SAMBASTUDIO_API_KEY</span></code>  set with your SambaStudio endpoint API key.</p>
-<p><a class="reference external" href="https://sambanova.ai/products/enterprise-ai-platform-sambanova-suite">https://sambanova.ai/products/enterprise-ai-platform-sambanova-suite</a></p>
-<p>read extra documentation in <a class="reference external" href="https://docs.sambanova.ai/sambastudio/latest/index.html">https://docs.sambanova.ai/sambastudio/latest/index.html</a></p>
-<p>Example:
+<dl>
+<dt>Setup:</dt><dd><p>To use, you should have the environment variables
+<code class="docutils literal notranslate"><span class="pre">SAMBASTUDIO_URL</span></code> set with your SambaStudio environment URL.
+<code class="docutils literal notranslate"><span class="pre">SAMBASTUDIO_API_KEY</span></code>  set with your SambaStudio endpoint API key.
+<a class="reference external" href="https://sambanova.ai/products/enterprise-ai-platform-sambanova-suite">https://sambanova.ai/products/enterprise-ai-platform-sambanova-suite</a>
+read extra documentation in <a class="reference external" href="https://docs.sambanova.ai/sambastudio/latest/index.html">https://docs.sambanova.ai/sambastudio/latest/index.html</a>
+Example:
 .. code-block:: python</p>
 <blockquote>
 <div><p>from langchain_community.llms.sambanova  import SambaStudio
 SambaStudio(</p>
 <blockquote>
-<div><p>sambastudio_base_url=”your-SambaStudio-environment-URL”,
-sambastudio_base_uri=”your-SambaStudio-base-URI”,
-sambastudio_project_id=”your-SambaStudio-project-ID”,
-sambastudio_endpoint_id=”your-SambaStudio-endpoint-ID”,
-sambastudio_api_key=”your-SambaStudio-endpoint-API-key,
-streaming=False
+<div><p>sambastudio_url=”your-SambaStudio-environment-URL”,
+sambastudio_api_key=”your-SambaStudio-API-key,
 model_kwargs={</p>
 <blockquote>
-<div><p>“do_sample”: False,
-“max_tokens_to_generate”: 1000,
-“temperature”: 0.7,
-“top_p”: 1.0,
-“repetition_penalty”: 1,
-“top_k”: 50,
-#”process_prompt”: False,
-#”select_expert”: “Meta-Llama-3-8B-Instruct”</p>
+<div><p>“model” : model or expert name (set for CoE endpoints),
+“max_tokens” : max number of tokens to generate,
+“temperature” : model temperature,
+“top_p” : model top p,
+“top_k” : model top k,
+“do_sample” : wether to do sample
+“process_prompt”: wether to process prompt</p>
+<blockquote>
+<div><p>(set for CoE generic v1 and v2 endpoints)</p>
+</div></blockquote>
 </div></blockquote>
 <p>},</p>
 </div></blockquote>
 <p>)</p>
 </div></blockquote>
+</dd>
+<dt>Key init args — completion params:</dt><dd><dl class="simple">
+<dt>model: str</dt><dd><p>The name of the model to use, e.g., Meta-Llama-3-70B-Instruct-4096
+(set for CoE endpoints).</p>
+</dd>
+<dt>streaming: bool</dt><dd><p>Whether to use streaming handler when using non streaming methods</p>
+</dd>
+<dt>model_kwargs: dict</dt><dd><dl class="simple">
+<dt>Extra Key word arguments to pass to the model:</dt><dd><dl class="simple">
+<dt>max_tokens: int</dt><dd><p>max tokens to generate</p>
+</dd>
+<dt>temperature: float</dt><dd><p>model temperature</p>
+</dd>
+<dt>top_p: float</dt><dd><p>model top p</p>
+</dd>
+<dt>top_k: int</dt><dd><p>model top k</p>
+</dd>
+<dt>do_sample: bool</dt><dd><p>wether to do sample</p>
+</dd>
+<dt>process_prompt:</dt><dd><p>wether to process prompt (set for CoE generic v1 and v2 endpoints)</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+<dt>Key init args — client params:</dt><dd><dl class="simple">
+<dt>sambastudio_url: str</dt><dd><p>SambaStudio endpoint Url</p>
+</dd>
+<dt>sambastudio_api_key: str</dt><dd><p>SambaStudio endpoint api key</p>
+</dd>
+</dl>
+</dd>
+<dt>Instantiate:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_community.llms</span> <span class="kn">import</span> <span class="n">SambaStudio</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">SambaStudio</span><span class="o">=</span><span class="p">(</span>
+    <span class="n">sambastudio_url</span> <span class="o">=</span> <span class="nb">set</span> <span class="k">with</span> <span class="n">your</span> <span class="n">SambaStudio</span> <span class="n">deployed</span> <span class="n">endpoint</span> <span class="n">URL</span><span class="p">,</span>
+    <span class="n">sambastudio_api_key</span> <span class="o">=</span> <span class="nb">set</span> <span class="k">with</span> <span class="n">your</span> <span class="n">SambaStudio</span> <span class="n">deployed</span> <span class="n">endpoint</span> <span class="n">Key</span><span class="p">,</span>
+    <span class="n">model_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"model"</span> <span class="p">:</span> <span class="n">model</span> <span class="ow">or</span> <span class="n">expert</span> <span class="n">name</span> <span class="p">(</span><span class="nb">set</span> <span class="k">for</span> <span class="n">CoE</span> <span class="n">endpoints</span><span class="p">),</span>
+        <span class="s2">"max_tokens"</span> <span class="p">:</span> <span class="nb">max</span> <span class="n">number</span> <span class="n">of</span> <span class="n">tokens</span> <span class="n">to</span> <span class="n">generate</span><span class="p">,</span>
+        <span class="s2">"temperature"</span> <span class="p">:</span> <span class="n">model</span> <span class="n">temperature</span><span class="p">,</span>
+        <span class="s2">"top_p"</span> <span class="p">:</span> <span class="n">model</span> <span class="n">top</span> <span class="n">p</span><span class="p">,</span>
+        <span class="s2">"top_k"</span> <span class="p">:</span> <span class="n">model</span> <span class="n">top</span> <span class="n">k</span><span class="p">,</span>
+        <span class="s2">"do_sample"</span> <span class="p">:</span> <span class="n">wether</span> <span class="n">to</span> <span class="n">do</span> <span class="n">sample</span>
+        <span class="s2">"process_prompt"</span> <span class="p">:</span> <span class="n">wether</span> <span class="n">to</span> <span class="n">process</span> <span class="n">prompt</span>
+            <span class="p">(</span><span class="nb">set</span> <span class="k">for</span> <span class="n">CoE</span> <span class="n">generic</span> <span class="n">v1</span> <span class="ow">and</span> <span class="n">v2</span> <span class="n">endpoints</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+<dt>Invoke:</dt><dd></dd>
+<dt>Stream:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>for chunk in llm.stream(prompt):</dt><dd><p>print(chunk, end=””, flush=True)</p>
+</dd>
+</dl>
+</dd>
+<dt>Async:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>response = llm.ainvoke(prompt)
+await response</p>
+</dd>
+</dl>
+<p>init and validate environment variables</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>SambaStudio implements the standard <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Runnable</span> <span class="pre">Interface</span></code></a>. 🏃</p>
 <p>The <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Runnable</span> <span class="pre">Interface</span></code></a> has additional methods that are available on runnables, such as <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.with_types" title="langchain_core.runnables.base.Runnable.with_types"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_types</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.with_retry" title="langchain_core.runnables.base.Runnable.with_retry"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_retry</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.assign" title="langchain_core.runnables.base.Runnable.assign"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assign</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.bind" title="langchain_core.runnables.base.Runnable.bind"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bind</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.get_graph" title="langchain_core.runnables.base.Runnable.get_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_graph</span></code></a>, and more.</p>
 </div>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.base_url">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">base_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.base_url" title="Link to this definition">#</a></dt>
+<dd><p>SambaStudio non streaming URL</p>
+</dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.cache">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cache</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../core/caches/langchain_core.caches.BaseCache.html#langchain_core.caches.BaseCache" title="langchain_core.caches.BaseCache"><span class="pre">BaseCache</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.cache" title="Link to this definition">#</a></dt>
@@ -569,38 +639,28 @@ model_kwargs={</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.model_kwargs">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_kwargs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.model_kwargs" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_kwargs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.model_kwargs" title="Link to this definition">#</a></dt>
 <dd><p>Key word arguments to pass to the model.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.sambastudio_api_key">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sambastudio_api_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.sambastudio_api_key" title="Link to this definition">#</a></dt>
-<dd><p>sambastudio api key</p>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sambastudio_api_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">SecretStr</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.sambastudio_api_key" title="Link to this definition">#</a></dt>
+<dd><p>SambaStudio api key</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.sambastudio_base_uri">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sambastudio_base_uri</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.sambastudio_base_uri" title="Link to this definition">#</a></dt>
-<dd><p>endpoint base uri</p>
-</dd></dl>
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.sambastudio_base_url">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sambastudio_base_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.sambastudio_base_url" title="Link to this definition">#</a></dt>
-<dd><p>Base url to use</p>
-</dd></dl>
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.sambastudio_endpoint_id">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sambastudio_endpoint_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.sambastudio_endpoint_id" title="Link to this definition">#</a></dt>
-<dd><p>endpoint id on sambastudio for model</p>
-</dd></dl>
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.sambastudio_project_id">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sambastudio_project_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.sambastudio_project_id" title="Link to this definition">#</a></dt>
-<dd><p>Project id on sambastudio for model</p>
+<dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.sambastudio_url">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">sambastudio_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.sambastudio_url" title="Link to this definition">#</a></dt>
+<dd><p>SambaStudio Url</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.streaming">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">streaming</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.streaming" title="Link to this definition">#</a></dt>
-<dd><p>Streaming flag to get streamed response.</p>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">streaming</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.streaming" title="Link to this definition">#</a></dt>
+<dd><p>Whether to use streaming handler when using non streaming methods</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.streaming_url">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">streaming_url</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">''</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.streaming_url" title="Link to this definition">#</a></dt>
+<dd><p>SambaStudio streaming URL</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.tags">
@@ -611,6 +671,15 @@ model_kwargs={</p>
 <dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.verbose">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">verbose</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"> <span class="pre">[Optional]</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.verbose" title="Link to this definition">#</a></dt>
 <dd><p>Whether to print out response text.</p>
+</dd></dl>
+<dl class="py class">
+<dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.Config">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Config</span></span><a class="reference internal" href="../../_modules/langchain_community/llms/sambanova.html#SambaStudio.Config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.Config" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.Config.populate_by_name">
+<span class="sig-name descname"><span class="pre">populate_by_name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.Config.populate_by_name" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.__call__">
@@ -1333,19 +1402,6 @@ Subclasses should override this method if they support streaming output.</p>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.validate_environment">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_environment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../../_modules/langchain_community/llms/sambanova.html#SambaStudio.validate_environment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.validate_environment" title="Link to this definition">#</a></dt>
-<dd><p>Validate that api key and python package exists in environment.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>values</strong> (<em>Dict</em>)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>Dict</em></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
 <dt class="sig sig-object py" id="langchain_community.llms.sambanova.SambaStudio.with_alisteners">
 <span class="sig-name descname"><span class="pre">with_alisteners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncListener</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncListener</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncListener</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><span class="pre">Runnable</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Input</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Output</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_community.llms.sambanova.SambaStudio.with_alisteners" title="Link to this definition">#</a></dt>
 <dd><p>Bind asynchronous lifecycle listeners to a Runnable, returning a new Runnable.</p>
@@ -1668,6 +1724,7 @@ between retries</p></li>
 <nav aria-labelledby="pst-page-navigation-heading-2" class="bd-toc-nav page-toc">
 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio"><code class="docutils literal notranslate"><span class="pre">SambaStudio</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.base_url"><code class="docutils literal notranslate"><span class="pre">base_url</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.cache"><code class="docutils literal notranslate"><span class="pre">cache</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.callback_manager"><code class="docutils literal notranslate"><span class="pre">callback_manager</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.callbacks"><code class="docutils literal notranslate"><span class="pre">callbacks</span></code></a></li>
@@ -1675,13 +1732,15 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.metadata"><code class="docutils literal notranslate"><span class="pre">metadata</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.model_kwargs"><code class="docutils literal notranslate"><span class="pre">model_kwargs</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.sambastudio_api_key"><code class="docutils literal notranslate"><span class="pre">sambastudio_api_key</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.sambastudio_base_uri"><code class="docutils literal notranslate"><span class="pre">sambastudio_base_uri</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.sambastudio_base_url"><code class="docutils literal notranslate"><span class="pre">sambastudio_base_url</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.sambastudio_endpoint_id"><code class="docutils literal notranslate"><span class="pre">sambastudio_endpoint_id</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.sambastudio_project_id"><code class="docutils literal notranslate"><span class="pre">sambastudio_project_id</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.sambastudio_url"><code class="docutils literal notranslate"><span class="pre">sambastudio_url</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.streaming"><code class="docutils literal notranslate"><span class="pre">streaming</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.streaming_url"><code class="docutils literal notranslate"><span class="pre">streaming_url</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.tags"><code class="docutils literal notranslate"><span class="pre">tags</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.verbose"><code class="docutils literal notranslate"><span class="pre">verbose</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.Config.populate_by_name"><code class="docutils literal notranslate"><span class="pre">SambaStudio.Config.populate_by_name</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.__call__"><code class="docutils literal notranslate"><span class="pre">__call__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.abatch"><code class="docutils literal notranslate"><span class="pre">abatch()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.abatch_as_completed"><code class="docutils literal notranslate"><span class="pre">abatch_as_completed()</span></code></a></li>
@@ -1699,7 +1758,6 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.invoke"><code class="docutils literal notranslate"><span class="pre">invoke()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.stream"><code class="docutils literal notranslate"><span class="pre">stream()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.validate_environment"><code class="docutils literal notranslate"><span class="pre">validate_environment()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.with_alisteners"><code class="docutils literal notranslate"><span class="pre">with_alisteners()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.with_config"><code class="docutils literal notranslate"><span class="pre">with_config()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.sambanova.SambaStudio.with_fallbacks"><code class="docutils literal notranslate"><span class="pre">with_fallbacks()</span></code></a></li>
