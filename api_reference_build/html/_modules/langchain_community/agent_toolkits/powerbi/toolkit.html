@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 04, 2024" name="docbuild:last-update"/>
+<meta content="Nov 05, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -265,7 +265,7 @@
 <span class="sd">        examples: Optional. The examples for the prompt. Default is None.</span>
 <span class="sd">        max_iterations: Optional. The maximum iterations to run. Default is 5.</span>
 <span class="sd">        callback_manager: Optional. The callback manager. Default is None.</span>
-<span class="sd">        output_token_limit: Optional. The output token limit. Default is None.</span>
+<span class="sd">        output_token_limit: The output token limit. Default is 4000.</span>
 <span class="sd">        tiktoken_model_name: Optional. The TikToken model name. Default is None.</span>
 <span class="sd">    """</span>
 
@@ -274,7 +274,7 @@
     <span class="n">examples</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">max_iterations</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
     <span class="n">callback_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseCallbackManager</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">output_token_limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">output_token_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4000</span>
     <span class="n">tiktoken_model_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>

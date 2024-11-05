@@ -46,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 04, 2024" name="docbuild:last-update"/>
+<meta content="Nov 05, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -489,11 +489,6 @@ These tags will be associated with each call to this retriever,
 and passed as arguments to the handlers defined in <cite>callbacks</cite>.
 You can use these to eg identify a specific instance of a retriever with its
 use case.</p>
-</dd></dl>
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.vector_store">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">vector_store</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="langchain_community.graph_vectorstores.base.GraphVectorStore.html#langchain_community.graph_vectorstores.base.GraphVectorStore" title="langchain_community.graph_vectorstores.base.GraphVectorStore"><span class="pre">GraphVectorStore</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.vector_store" title="Link to this definition">#</a></dt>
-<dd><p>GraphVectorStore to use for retrieval.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.vectorstore">
@@ -1515,6 +1510,10 @@ between retries</p></li>
 <dt class="sig sig-object py" id="langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.allowed_search_types">
 <span class="sig-name descname"><span class="pre">allowed_search_types</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">Collection</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('similarity',</span> <span class="pre">'similarity_score_threshold',</span> <span class="pre">'mmr',</span> <span class="pre">'traversal',</span> <span class="pre">'mmr_traversal')</span></em><a class="headerlink" href="#langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.allowed_search_types" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.graph_vectorstore">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">graph_vectorstore</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="langchain_community.graph_vectorstores.base.GraphVectorStore.html#langchain_community.graph_vectorstores.base.GraphVectorStore" title="langchain_community.graph_vectorstores.base.GraphVectorStore"><span class="pre">GraphVectorStore</span></a></em><a class="headerlink" href="#langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.graph_vectorstore" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 </section>
 </section>
 </section>
@@ -1537,7 +1536,6 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.search_kwargs"><code class="docutils literal notranslate"><span class="pre">search_kwargs</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.search_type"><code class="docutils literal notranslate"><span class="pre">search_type</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.tags"><code class="docutils literal notranslate"><span class="pre">tags</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.vector_store"><code class="docutils literal notranslate"><span class="pre">vector_store</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.vectorstore"><code class="docutils literal notranslate"><span class="pre">vectorstore</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.aadd_documents"><code class="docutils literal notranslate"><span class="pre">aadd_documents()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.abatch"><code class="docutils literal notranslate"><span class="pre">abatch()</span></code></a></li>
@@ -1562,6 +1560,7 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.with_retry"><code class="docutils literal notranslate"><span class="pre">with_retry()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.with_types"><code class="docutils literal notranslate"><span class="pre">with_types()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.allowed_search_types"><code class="docutils literal notranslate"><span class="pre">allowed_search_types</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.graph_vectorstores.base.GraphVectorStoreRetriever.graph_vectorstore"><code class="docutils literal notranslate"><span class="pre">graph_vectorstore</span></code></a></li>
 </ul>
 </li>
 </ul>

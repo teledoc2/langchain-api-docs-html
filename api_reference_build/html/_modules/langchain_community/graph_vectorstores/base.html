@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 04, 2024" name="docbuild:last-update"/>
+<meta content="Nov 05, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -220,6 +220,7 @@
     <span class="n">ClassVar</span><span class="p">,</span>
     <span class="n">Optional</span><span class="p">,</span>
     <span class="n">Sequence</span><span class="p">,</span>
+    <span class="n">cast</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">langchain_core._api</span> <span class="kn">import</span> <span class="n">beta</span>
@@ -968,7 +969,7 @@
 <span class="sd">            docsearch.as_retriever(search_kwargs={'k': 1})</span>
 
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="n">GraphVectorStoreRetriever</span><span class="p">(</span><span class="n">vector_store</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">GraphVectorStoreRetriever</span><span class="p">(</span><span class="n">vectorstore</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </div>
 
 
@@ -1108,8 +1109,8 @@
 <span class="sd">        retriever = graph_vectorstore.as_retriever(search_kwargs={"score_threshold": 0.5})</span>
 <span class="sd">    """</span>  <span class="c1"># noqa: E501</span>
 
-    <span class="n">vector_store</span><span class="p">:</span> <span class="n">GraphVectorStore</span>
-<span class="w">    </span><span class="sd">"""GraphVectorStore to use for retrieval."""</span>
+    <span class="n">vectorstore</span><span class="p">:</span> <span class="n">VectorStore</span>
+<span class="w">    </span><span class="sd">"""VectorStore to use for retrieval."""</span>
     <span class="n">search_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"traversal"</span>
 <span class="w">    </span><span class="sd">"""Type of search to perform. Defaults to "traversal"."""</span>
     <span class="n">allowed_search_types</span><span class="p">:</span> <span class="n">ClassVar</span><span class="p">[</span><span class="n">Collection</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span>
@@ -1120,14 +1121,20 @@
         <span class="s2">"mmr_traversal"</span><span class="p">,</span>
     <span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">graph_vectorstore</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GraphVectorStore</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">GraphVectorStore</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectorstore</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">_get_relevant_documents</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">run_manager</span><span class="p">:</span> <span class="n">CallbackManagerForRetrieverRun</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_type</span> <span class="o">==</span> <span class="s2">"traversal"</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vector_store</span><span class="o">.</span><span class="n">traversal_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">search_kwargs</span><span class="p">))</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">graph_vectorstore</span><span class="o">.</span><span class="n">traversal_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">search_kwargs</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_type</span> <span class="o">==</span> <span class="s2">"mmr_traversal"</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">list</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">vector_store</span><span class="o">.</span><span class="n">mmr_traversal_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">search_kwargs</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">graph_vectorstore</span><span class="o">.</span><span class="n">mmr_traversal_search</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">search_kwargs</span><span class="p">)</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_get_relevant_documents</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="p">)</span>
@@ -1138,14 +1145,14 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_type</span> <span class="o">==</span> <span class="s2">"traversal"</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span>
                 <span class="n">doc</span>
-                <span class="k">async</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_store</span><span class="o">.</span><span class="n">atraversal_search</span><span class="p">(</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_vectorstore</span><span class="o">.</span><span class="n">atraversal_search</span><span class="p">(</span>
                     <span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">search_kwargs</span>
                 <span class="p">)</span>
             <span class="p">]</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">search_type</span> <span class="o">==</span> <span class="s2">"mmr_traversal"</span><span class="p">:</span>
             <span class="k">return</span> <span class="p">[</span>
                 <span class="n">doc</span>
-                <span class="k">async</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">vector_store</span><span class="o">.</span><span class="n">ammr_traversal_search</span><span class="p">(</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph_vectorstore</span><span class="o">.</span><span class="n">ammr_traversal_search</span><span class="p">(</span>
                     <span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">search_kwargs</span>
                 <span class="p">)</span>
             <span class="p">]</span>

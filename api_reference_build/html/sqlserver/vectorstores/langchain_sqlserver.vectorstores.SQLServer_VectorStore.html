@@ -46,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 04, 2024" name="docbuild:last-update"/>
+<meta content="Nov 05, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -299,9 +299,13 @@
 <li><p><strong>connection</strong> (<em>Optional</em><em>[</em><em>Connection</em><em>]</em>) – Optional SQLServer connection.</p></li>
 <li><p><strong>connection_string</strong> (<em>str</em>) – SQLServer connection string.
 If the connection string does not contain a username &amp; password
-or <cite>Trusted_Connection=yes</cite>, Entra ID authentication is used.
+or <cite>TrustedConnection=yes</cite>, Entra ID authentication is used.
+SQL Server ODBC connection string can be retrieved from the
+<cite>Connection strings</cite> pane of the database in Azure portal.
 Sample connection string format:
-“mssql+pyodbc://username:password@servername/dbname?other_params”</p></li>
+- “Driver=&lt;drivername&gt;;Server=&lt;servername&gt;;Database=&lt;dbname&gt;;
+Uid=&lt;username&gt;;Pwd=&lt;password&gt;;TrustServerCertificate=no;”
+- “mssql+pyodbc://username:password@servername/dbname?other_params”</p></li>
 <li><p><strong>db_schema</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The schema in which the vector store will be created.
 This schema must exist and the user must have permissions to the schema.</p></li>
 <li><p><strong>distance_strategy</strong> (<a class="reference internal" href="langchain_sqlserver.vectorstores.DistanceStrategy.html#langchain_sqlserver.vectorstores.DistanceStrategy" title="langchain_sqlserver.vectorstores.DistanceStrategy"><em>DistanceStrategy</em></a>) – The distance strategy to use for comparing embeddings.
@@ -439,9 +443,13 @@ Default value is <cite>sqlserver_vectorstore</cite>.</p></li>
 <li><p><strong>connection</strong> (<em>Connection</em><em> | </em><em>None</em>) – Optional SQLServer connection.</p></li>
 <li><p><strong>connection_string</strong> (<em>str</em>) – SQLServer connection string.
 If the connection string does not contain a username &amp; password
-or <cite>Trusted_Connection=yes</cite>, Entra ID authentication is used.
+or <cite>TrustedConnection=yes</cite>, Entra ID authentication is used.
+SQL Server ODBC connection string can be retrieved from the
+<cite>Connection strings</cite> pane of the database in Azure portal.
 Sample connection string format:
-“mssql+pyodbc://username:password@servername/dbname?other_params”</p></li>
+- “Driver=&lt;drivername&gt;;Server=&lt;servername&gt;;Database=&lt;dbname&gt;;
+Uid=&lt;username&gt;;Pwd=&lt;password&gt;;TrustServerCertificate=no;”
+- “mssql+pyodbc://username:password@servername/dbname?other_params”</p></li>
 <li><p><strong>db_schema</strong> (<em>str</em><em> | </em><em>None</em>) – The schema in which the vector store will be created.
 This schema must exist and the user must have permissions to the schema.</p></li>
 <li><p><strong>distance_strategy</strong> (<a class="reference internal" href="langchain_sqlserver.vectorstores.DistanceStrategy.html#langchain_sqlserver.vectorstores.DistanceStrategy" title="langchain_sqlserver.vectorstores.DistanceStrategy"><em>DistanceStrategy</em></a>) – The distance strategy to use for comparing embeddings.
@@ -937,9 +945,13 @@ No data is deleted if empty list is provided.</p></li>
 <cite>langchain.embeddings.base.Embeddings</cite> interface.</p></li>
 <li><p><strong>connection_string</strong> (<em>str</em>) – SQLServer connection string.
 If the connection string does not contain a username &amp; password
-or <cite>Trusted_Connection=yes</cite>, Entra ID authentication is used.
+or <cite>TrustedConnection=yes</cite>, Entra ID authentication is used.
+SQL Server ODBC connection string can be retrieved from the
+<cite>Connection strings</cite> pane of the database in Azure portal.
 Sample connection string format:
-“mssql+pyodbc://username:password@servername/dbname?other_params”</p></li>
+- “Driver=&lt;drivername&gt;;Server=&lt;servername&gt;;Database=&lt;dbname&gt;;
+Uid=&lt;username&gt;;Pwd=&lt;password&gt;;TrustServerCertificate=no;”
+- “mssql+pyodbc://username:password@servername/dbname?other_params”</p></li>
 <li><p><strong>embedding_length</strong> (<em>int</em>) – The length (dimension) of the vectors to be stored in the
 table.
 Note that only vectors of same size can be added to the vector store.</p></li>
@@ -978,9 +990,13 @@ Default value is COSINE. Available options are:
 with the input texts.</p></li>
 <li><p><strong>connection_string</strong> (<em>str</em>) – SQLServer connection string.
 If the connection string does not contain a username &amp; password
-or <cite>Trusted_Connection=yes</cite>, Entra ID authentication is used.
+or <cite>TrustedConnection=yes</cite>, Entra ID authentication is used.
+SQL Server ODBC connection string can be retrieved from the
+<cite>Connection strings</cite> pane of the database in Azure portal.
 Sample connection string format:
-“mssql+pyodbc://username:password@servername/dbname?other_params”</p></li>
+- “Driver=&lt;drivername&gt;;Server=&lt;servername&gt;;Database=&lt;dbname&gt;;
+Uid=&lt;username&gt;;Pwd=&lt;password&gt;;TrustServerCertificate=no;”
+- “mssql+pyodbc://username:password@servername/dbname?other_params”</p></li>
 <li><p><strong>embedding_length</strong> (<em>int</em>) – The length (dimension) of the vectors to be stored in the
 table.
 Note that only vectors of same size can be added to the vector store.</p></li>

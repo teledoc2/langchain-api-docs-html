@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 04, 2024" name="docbuild:last-update"/>
+<meta content="Nov 05, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -210,7 +210,8 @@
 <div id="searchbox"></div>
 <article class="bd-article">
 <h1>Source code for langchain_community.embeddings.ovhcloud</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span></span><span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span>
 
@@ -255,17 +256,61 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            List[float]: Embeddings for the text.</span>
 <span class="sd">        """</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_request_to_ai_endpoints</span><span class="p">(</span><span class="s2">"text/plain"</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="s2">"text2vec"</span><span class="p">)</span>
+
+<div class="viewcode-block" id="OVHCloudEmbeddings.embed_documents">
+<a class="viewcode-back" href="../../../community/embeddings/langchain_community.embeddings.ovhcloud.OVHCloudEmbeddings.html#langchain_community.embeddings.ovhcloud.OVHCloudEmbeddings.embed_documents">[docs]</a>
+    <span class="k">def</span> <span class="nf">embed_documents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""Embed a list of documents.</span>
+<span class="sd">        Args:</span>
+<span class="sd">           texts (List[str]): The list of texts to embed.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           List[List[float]]: List of embeddings, one for each input text.</span>
+
+<span class="sd">        """</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_request_to_ai_endpoints</span><span class="p">(</span>
+            <span class="s2">"application/json"</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">texts</span><span class="p">),</span> <span class="s2">"batch_text2vec"</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="OVHCloudEmbeddings.embed_query">
+<a class="viewcode-back" href="../../../community/embeddings/langchain_community.embeddings.ovhcloud.OVHCloudEmbeddings.html#langchain_community.embeddings.ovhcloud.OVHCloudEmbeddings.embed_query">[docs]</a>
+    <span class="k">def</span> <span class="nf">embed_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Embed a single query text.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            text (str): The text to embed.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            List[float]: Embeddings for the text.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_embedding</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_send_request_to_ai_endpoints</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">contentType</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">payload</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">route</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Send a HTTPS request to OVHcloud AI Endpoints</span>
+<span class="sd">        Args:</span>
+<span class="sd">            contentType (str): The content type of the request, application/json or text/plain.</span>
+<span class="sd">            payload (str): The payload of the request.</span>
+<span class="sd">            route (str): The route of the request, batch_text2vec or text2vec.</span>
+<span class="sd">        """</span>  <span class="c1"># noqa: E501</span>
         <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">"content-type"</span><span class="p">:</span> <span class="s2">"text/plain"</span><span class="p">,</span>
+            <span class="s2">"content-type"</span><span class="p">:</span> <span class="n">contentType</span><span class="p">,</span>
             <span class="s2">"Authorization"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Bearer </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">access_token</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
         <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"https://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="si">}</span><span class="s2">.endpoints.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="si">}</span><span class="s2">.ai.cloud.ovh.net/api/text2vec"</span><span class="p">,</span>
+                <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"https://</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="si">}</span><span class="s2">.endpoints.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">region</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">".ai.cloud.ovh.net/api/</span><span class="si">{</span><span class="n">route</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">),</span>
                 <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
-                <span class="n">data</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">429</span><span class="p">:</span>
@@ -287,32 +332,7 @@
                         <span class="n">status_code</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">response</span><span class="o">.</span><span class="n">text</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
-            <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-
-<div class="viewcode-block" id="OVHCloudEmbeddings.embed_documents">
-<a class="viewcode-back" href="../../../community/embeddings/langchain_community.embeddings.ovhcloud.OVHCloudEmbeddings.html#langchain_community.embeddings.ovhcloud.OVHCloudEmbeddings.embed_documents">[docs]</a>
-    <span class="k">def</span> <span class="nf">embed_documents</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">texts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
-<span class="w">        </span><span class="sd">"""Create a retry decorator for PremAIEmbeddings.</span>
-<span class="sd">        Args:</span>
-<span class="sd">           texts (List[str]): The list of texts to embed.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">           List[List[float]]: List of embeddings, one for each input text.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_embedding</span><span class="p">(</span><span class="n">text</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span></div>
-
-
-<div class="viewcode-block" id="OVHCloudEmbeddings.embed_query">
-<a class="viewcode-back" href="../../../community/embeddings/langchain_community.embeddings.ovhcloud.OVHCloudEmbeddings.html#langchain_community.embeddings.ovhcloud.OVHCloudEmbeddings.embed_query">[docs]</a>
-    <span class="k">def</span> <span class="nf">embed_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Embed a single query text.</span>
-<span class="sd">        Args:</span>
-<span class="sd">            text (str): The text to embed.</span>
-<span class="sd">        Returns:</span>
-<span class="sd">            List[float]: Embeddings for the text.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_embedding</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
-</div>
+            <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span></div>
 
 </pre></div>
 </article>

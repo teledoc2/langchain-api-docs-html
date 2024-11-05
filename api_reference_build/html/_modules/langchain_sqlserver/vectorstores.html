@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 04, 2024" name="docbuild:last-update"/>
+<meta content="Nov 05, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -220,6 +220,7 @@
 
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">struct</span>
 <span class="kn">import</span> <span class="nn">uuid</span>
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
@@ -267,7 +268,7 @@
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy.dialects.mssql</span> <span class="kn">import</span> <span class="n">JSON</span><span class="p">,</span> <span class="n">NVARCHAR</span><span class="p">,</span> <span class="n">VARCHAR</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy.dialects.mssql.base</span> <span class="kn">import</span> <span class="n">MSTypeCompiler</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy.engine</span> <span class="kn">import</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">Engine</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.engine</span> <span class="kn">import</span> <span class="n">URL</span><span class="p">,</span> <span class="n">Connection</span><span class="p">,</span> <span class="n">Engine</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy.exc</span> <span class="kn">import</span> <span class="n">DBAPIError</span><span class="p">,</span> <span class="n">ProgrammingError</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy.ext.compiler</span> <span class="kn">import</span> <span class="n">compiles</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">Session</span><span class="p">,</span> <span class="n">declarative_base</span>
@@ -425,9 +426,13 @@
 <span class="sd">            connection: Optional SQLServer connection.</span>
 <span class="sd">            connection_string: SQLServer connection string.</span>
 <span class="sd">                If the connection string does not contain a username &amp; password</span>
-<span class="sd">                or `Trusted_Connection=yes`, Entra ID authentication is used.</span>
+<span class="sd">                or `TrustedConnection=yes`, Entra ID authentication is used.</span>
+<span class="sd">                SQL Server ODBC connection string can be retrieved from the</span>
+<span class="sd">                `Connection strings` pane of the database in Azure portal.</span>
 <span class="sd">                Sample connection string format:</span>
-<span class="sd">                "mssql+pyodbc://username:password@servername/dbname?other_params"</span>
+<span class="sd">                - "Driver=&lt;drivername&gt;;Server=&lt;servername&gt;;Database=&lt;dbname&gt;;</span>
+<span class="sd">                Uid=&lt;username&gt;;Pwd=&lt;password&gt;;TrustServerCertificate=no;"</span>
+<span class="sd">                - "mssql+pyodbc://username:password@servername/dbname?other_params"</span>
 <span class="sd">            db_schema: The schema in which the vector store will be created.</span>
 <span class="sd">                This schema must exist and the user must have permissions to the schema.</span>
 <span class="sd">            distance_strategy: The distance strategy to use for comparing embeddings.</span>
@@ -445,7 +450,7 @@
 <span class="sd">            table_name: The name of the table to use for storing embeddings.</span>
 <span class="sd">                Default value is `sqlserver_vectorstore`.</span>
 <span class="sd">        """</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">connection_string</span> <span class="o">=</span> <span class="n">connection_string</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">connection_string</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_connection_url</span><span class="p">(</span><span class="n">connection_string</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_distance_strategy</span> <span class="o">=</span> <span class="n">distance_strategy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">embedding_function</span> <span class="o">=</span> <span class="n">embedding_function</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_embedding_length</span> <span class="o">=</span> <span class="n">embedding_length</span>
@@ -459,6 +464,93 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_embedding_store</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_embedding_store</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_create_table_if_not_exists</span><span class="p">()</span></div>
 
+
+    <span class="k">def</span> <span class="nf">_get_connection_url</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">conn_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">conn_string</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">conn_string</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Connection string value is None or empty."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Connection string value cannot be None."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">conn_string</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"mssql+pyodbc"</span><span class="p">):</span>
+            <span class="c1"># Connection string is in a format that we can parse.</span>
+            <span class="c1">#</span>
+            <span class="k">return</span> <span class="n">conn_string</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">conn_string</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">";"</span><span class="p">)</span>
+            <span class="n">arg_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s2">"="</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">:</span>
+                    <span class="c1"># Split into key value pairs by the first positioned `=` found.</span>
+                    <span class="c1"># Key-Value pairs are inserted into the dictionary.</span>
+                    <span class="c1">#</span>
+                    <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">arg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"="</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                    <span class="n">arg_dict</span><span class="p">[</span><span class="n">key</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+            <span class="c1"># This will throw a key error if server or database keyword</span>
+            <span class="c1"># is not present in arg_dict from the connection string.</span>
+            <span class="c1">#</span>
+            <span class="n">database</span> <span class="o">=</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"database"</span><span class="p">)</span>
+
+            <span class="c1"># If `server` is present in the dictionary, we split by</span>
+            <span class="c1"># `,` to obtain host and port details.</span>
+            <span class="c1">#</span>
+            <span class="n">server</span> <span class="o">=</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"server"</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">server_host</span> <span class="o">=</span> <span class="n">server</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">server_port</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="c1"># Server details in SQLServer connection string from Azure portal</span>
+            <span class="c1"># might be of the form `Server=tcp:servername`. In scenarios like this,</span>
+            <span class="c1"># we remove the first part (tcp:) because `urlparse` function invoked in</span>
+            <span class="c1"># `_can_connect_with_entra_id` expects an IP address when it sees `tcp:`</span>
+            <span class="c1"># We can remove this without fear of a failure because it is omittable in</span>
+            <span class="c1"># the connection string value.</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="s2">":"</span> <span class="ow">in</span> <span class="n">server_host</span><span class="p">:</span>
+                <span class="n">server_host</span> <span class="o">=</span> <span class="n">server_host</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="c1"># Check if port is provided in server details,if true,</span>
+            <span class="c1"># cast value to int if possible.</span>
+            <span class="c1">#</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">server</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">server</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+                <span class="n">server_port</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">server</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="c1"># Args needed to be checked</span>
+            <span class="c1">#</span>
+            <span class="n">username</span> <span class="o">=</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"uid"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">password</span> <span class="o">=</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"pwd"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="s2">"driver"</span> <span class="ow">in</span> <span class="n">arg_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="c1"># Extract driver value from curly braces if present.</span>
+                <span class="n">driver</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">"\{([^}]*)\}"</span><span class="p">,</span> <span class="n">arg_dict</span><span class="p">[</span><span class="s2">"driver"</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">driver</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">arg_dict</span><span class="p">[</span><span class="s2">"driver"</span><span class="p">]</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="c1"># Create connection URL for SQLAlchemy</span>
+            <span class="c1">#</span>
+            <span class="n">url</span> <span class="o">=</span> <span class="n">URL</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+                <span class="s2">"mssql+pyodbc"</span><span class="p">,</span>
+                <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span>
+                <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
+                <span class="n">database</span><span class="o">=</span><span class="n">database</span><span class="p">,</span>
+                <span class="n">host</span><span class="o">=</span><span class="n">server_host</span><span class="p">,</span>
+                <span class="n">port</span><span class="o">=</span><span class="n">server_port</span><span class="p">,</span>
+                <span class="n">query</span><span class="o">=</span><span class="n">arg_dict</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">k</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Server, DB details were not provided in the connection string.</span><span class="se">\n</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="s2">"Server, DB details should be provided in connection string."</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"An error has occurred.</span><span class="se">\n</span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">__cause__</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="k">raise</span>
+
+        <span class="c1"># Return string version of the URL and ensure password</span>
+        <span class="c1"># passed in is not obfuscated.</span>
+        <span class="c1">#</span>
+        <span class="k">return</span> <span class="n">url</span><span class="o">.</span><span class="n">render_as_string</span><span class="p">(</span><span class="n">hide_password</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_can_connect_with_entra_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Determine if Entra ID authentication can be used.</span>
@@ -476,8 +568,16 @@
             <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Unable to parse connection string."</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">False</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="n">parsed_url</span><span class="o">.</span><span class="n">username</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">password</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
-            <span class="s2">"trusted_connection=yes"</span> <span class="ow">in</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="n">invalid_keywords</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">"trusted_connection=yes"</span><span class="p">,</span>
+            <span class="s2">"trustedconnection=yes"</span><span class="p">,</span>
+            <span class="s2">"authentication"</span><span class="p">,</span>
+            <span class="s2">"integrated security"</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">parsed_url</span><span class="o">.</span><span class="n">username</span>
+            <span class="ow">or</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">password</span>
+            <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">keyword</span> <span class="ow">in</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">invalid_keywords</span><span class="p">)</span>
         <span class="p">):</span>
             <span class="k">return</span> <span class="kc">False</span>
 
@@ -608,9 +708,13 @@
 <span class="sd">                with the input texts.</span>
 <span class="sd">            connection_string: SQLServer connection string.</span>
 <span class="sd">                If the connection string does not contain a username &amp; password</span>
-<span class="sd">                or `Trusted_Connection=yes`, Entra ID authentication is used.</span>
+<span class="sd">                or `TrustedConnection=yes`, Entra ID authentication is used.</span>
+<span class="sd">                SQL Server ODBC connection string can be retrieved from the</span>
+<span class="sd">                `Connection strings` pane of the database in Azure portal.</span>
 <span class="sd">                Sample connection string format:</span>
-<span class="sd">                "mssql+pyodbc://username:password@servername/dbname?other_params"</span>
+<span class="sd">                - "Driver=&lt;drivername&gt;;Server=&lt;servername&gt;;Database=&lt;dbname&gt;;</span>
+<span class="sd">                Uid=&lt;username&gt;;Pwd=&lt;password&gt;;TrustServerCertificate=no;"</span>
+<span class="sd">                - "mssql+pyodbc://username:password@servername/dbname?other_params"</span>
 <span class="sd">            embedding_length: The length (dimension) of the vectors to be stored in the</span>
 <span class="sd">                table.</span>
 <span class="sd">                Note that only vectors of same size can be added to the vector store.</span>
@@ -665,9 +769,13 @@
 <span class="sd">                `langchain.embeddings.base.Embeddings` interface.</span>
 <span class="sd">            connection_string: SQLServer connection string.</span>
 <span class="sd">                If the connection string does not contain a username &amp; password</span>
-<span class="sd">                or `Trusted_Connection=yes`, Entra ID authentication is used.</span>
+<span class="sd">                or `TrustedConnection=yes`, Entra ID authentication is used.</span>
+<span class="sd">                SQL Server ODBC connection string can be retrieved from the</span>
+<span class="sd">                `Connection strings` pane of the database in Azure portal.</span>
 <span class="sd">                Sample connection string format:</span>
-<span class="sd">                "mssql+pyodbc://username:password@servername/dbname?other_params"</span>
+<span class="sd">                - "Driver=&lt;drivername&gt;;Server=&lt;servername&gt;;Database=&lt;dbname&gt;;</span>
+<span class="sd">                Uid=&lt;username&gt;;Pwd=&lt;password&gt;;TrustServerCertificate=no;"</span>
+<span class="sd">                - "mssql+pyodbc://username:password@servername/dbname?other_params"</span>
 <span class="sd">            embedding_length: The length (dimension) of the vectors to be stored in the</span>
 <span class="sd">                table.</span>
 <span class="sd">                Note that only vectors of same size can be added to the vector store.</span>
