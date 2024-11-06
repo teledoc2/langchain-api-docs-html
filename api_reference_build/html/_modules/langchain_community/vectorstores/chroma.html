@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 05, 2024" name="docbuild:last-update"/>
+<meta content="Nov 06, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1017,6 +1017,9 @@
         <span class="n">embeddings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embedding_function</span><span class="o">.</span><span class="n">embed_documents</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span>
+            <span class="s2">"get_max_batch_size"</span><span class="p">,</span>  <span class="c1"># for Chroma 0.5.1 and above</span>
+        <span class="p">)</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_collection</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span> <span class="s2">"max_batch_size"</span>
         <span class="p">):</span>  <span class="c1"># for Chroma 0.4.10 and above</span>
             <span class="kn">from</span> <span class="nn">chromadb.utils.batch_utils</span> <span class="kn">import</span> <span class="n">create_batches</span>
@@ -1091,7 +1094,10 @@
             <span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span>
             <span class="n">chroma_collection</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span>  <span class="c1"># type: ignore[has-type]</span>
-            <span class="s2">"max_batch_size"</span><span class="p">,</span>  <span class="c1"># type: ignore[has-type]</span>
+            <span class="s2">"get_max_batch_size"</span><span class="p">,</span>  <span class="c1"># for Chroma 0.5.1 and above</span>
+        <span class="p">)</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span>
+            <span class="n">chroma_collection</span><span class="o">.</span><span class="n">_client</span><span class="p">,</span>  <span class="c1"># type: ignore[has-type]</span>
+            <span class="s2">"max_batch_size"</span><span class="p">,</span>
         <span class="p">):</span>  <span class="c1"># for Chroma 0.4.10 and above</span>
             <span class="kn">from</span> <span class="nn">chromadb.utils.batch_utils</span> <span class="kn">import</span> <span class="n">create_batches</span>
 
