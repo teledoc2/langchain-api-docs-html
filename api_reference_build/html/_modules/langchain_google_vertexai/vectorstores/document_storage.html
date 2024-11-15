@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 14, 2024" name="docbuild:last-update"/>
+<meta content="Nov 15, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -537,8 +537,12 @@
                 <span class="n">entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span>
                     <span class="n">key</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exclude_from_indexes</span>
                 <span class="p">)</span>
+                <span class="n">metadata_entity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">entity</span><span class="p">(</span>
+                    <span class="n">exclude_from_indexes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exclude_from_indexes</span>
+                <span class="p">)</span>
+                <span class="n">metadata_entity</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
                 <span class="n">entity</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_text_property_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">page_content</span>
-                <span class="n">entity</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_metadata_property_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">metadata</span>
+                <span class="n">entity</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_metadata_property_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata_entity</span>
                 <span class="n">entities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">put_multi</span><span class="p">(</span><span class="n">entities</span><span class="p">)</span></div>

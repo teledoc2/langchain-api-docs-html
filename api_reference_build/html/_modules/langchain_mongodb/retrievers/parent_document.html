@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 14, 2024" name="docbuild:last-update"/>
+<meta content="Nov 15, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -213,15 +213,17 @@
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">from</span> <span class="nn">importlib.metadata</span> <span class="kn">import</span> <span class="n">version</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">pymongo</span>
 <span class="kn">from</span> <span class="nn">langchain.retrievers.parent_document_retriever</span> <span class="kn">import</span> <span class="n">ParentDocumentRetriever</span>
 <span class="kn">from</span> <span class="nn">langchain_core.callbacks</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AsyncCallbackManagerForRetrieverRun</span><span class="p">,</span>
     <span class="n">CallbackManagerForRetrieverRun</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">langchain_core.documents</span> <span class="kn">import</span> <span class="n">Document</span>
 <span class="kn">from</span> <span class="nn">langchain_core.embeddings</span> <span class="kn">import</span> <span class="n">Embeddings</span>
+<span class="kn">from</span> <span class="nn">langchain_core.runnables</span> <span class="kn">import</span> <span class="n">run_in_executor</span>
 <span class="kn">from</span> <span class="nn">langchain_text_splitters</span> <span class="kn">import</span> <span class="n">TextSplitter</span>
 <span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span>
 <span class="kn">from</span> <span class="nn">pymongo.driver_info</span> <span class="kn">import</span> <span class="n">DriverInfo</span>
@@ -237,11 +239,24 @@
 <span class="k">class</span> <span class="nc">MongoDBAtlasParentDocumentRetriever</span><span class="p">(</span><span class="n">ParentDocumentRetriever</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""MongoDB Atlas's ParentDocumentRetriever</span>
 
-<span class="sd">    Uses ONE Collection for both Vector and Doc store.</span>
+<span class="sd">    “Parent Document Retrieval” is a common approach to enhance the performance of</span>
+<span class="sd">    retrieval methods in RAG by providing the LLM with a broader context to consider.</span>
+<span class="sd">    In essence, we divide the original documents into relatively small chunks,</span>
+<span class="sd">    embed each one, and store them in a vector database.</span>
+<span class="sd">    Using such small chunks (a sentence or a couple of sentences)</span>
+<span class="sd">    helps the embedding models to better reflect their meaning.</span>
 
-<span class="sd">    For details, see parent classes</span>
+<span class="sd">    In this implementation, we can store both parent and child documents in a single</span>
+<span class="sd">    collection while only having to compute and index embedding vectors for the chunks!</span>
+
+<span class="sd">    This is achieved by backing both the</span>
+<span class="sd">    vectorstore, :class:`~langchain_mongodb.vectorstores.MongoDBAtlasVectorSearch`</span>
+<span class="sd">    and the docstore  :class:`~langchain_mongodb.docstores.MongoDBDocStore`</span>
+<span class="sd">    by the same MongoDB Collection.</span>
+
+<span class="sd">    For more details, see superclasses</span>
 <span class="sd">        :class:`~langchain.retrievers.parent_document_retriever.ParentDocumentRetriever`</span>
-<span class="sd">        and :class:`~langchain.retrievers.MultiVectorRetriever` for further details.</span>
+<span class="sd">        and :class:`~langchain.retrievers.MultiVectorRetriever`.</span>
 
 <span class="sd">    Examples:</span>
 <span class="sd">        &gt;&gt;&gt; from langchain_mongodb.retrievers.parent_document import (</span>
@@ -273,7 +288,10 @@
 <span class="w">    </span><span class="sd">"""Key stored in metadata pointing to parent document"""</span>
 
     <span class="k">def</span> <span class="nf">_get_relevant_documents</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">run_manager</span><span class="p">:</span> <span class="n">CallbackManagerForRetrieverRun</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForRetrieverRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
         <span class="n">query_vector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vectorstore</span><span class="o">.</span><span class="n">_embedding</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 
@@ -316,6 +334,21 @@
             <span class="n">make_serializable</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
             <span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">res</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">docs</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_aget_relevant_documents</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">AsyncCallbackManagerForRetrieverRun</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Asynchronous version of get_relevant_documents"""</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="n">run_in_executor</span><span class="p">(</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_get_relevant_documents</span><span class="p">,</span>
+            <span class="n">query</span><span class="p">,</span>
+            <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="o">.</span><span class="n">get_sync</span><span class="p">(),</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="MongoDBAtlasParentDocumentRetriever.from_connection_string">
 <a class="viewcode-back" href="../../../mongodb/retrievers/langchain_mongodb.retrievers.parent_document.MongoDBAtlasParentDocumentRetriever.html#langchain_mongodb.retrievers.parent_document.MongoDBAtlasParentDocumentRetriever.from_connection_string">[docs]</a>

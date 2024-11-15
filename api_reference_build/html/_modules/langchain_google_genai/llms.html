@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 14, 2024" name="docbuild:last-update"/>
+<meta content="Nov 15, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -527,10 +527,21 @@
                     <span class="n">generation_config</span><span class="o">=</span><span class="n">generation_config</span><span class="p">,</span>
                     <span class="n">safety_settings</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"safety_settings"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
                 <span class="p">)</span>
+                <span class="n">generation_info</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">usage_metadata</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">generation_info</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">"usage_metadata"</span><span class="p">:</span> <span class="n">res</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"usage_metadata"</span><span class="p">)</span>
+                    <span class="p">}</span>
+
                 <span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span>
                     <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">c</span><span class="o">.</span><span class="n">content</span><span class="o">.</span><span class="n">parts</span><span class="p">])</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">res</span><span class="o">.</span><span class="n">candidates</span>
                 <span class="p">]</span>
-                <span class="n">generations</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">Generation</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">])</span>
+                <span class="n">generations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">Generation</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">generation_info</span><span class="o">=</span><span class="n">generation_info</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">candidates</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">res</span> <span class="o">=</span> <span class="n">_completion_with_retry</span><span class="p">(</span>
                     <span class="bp">self</span><span class="p">,</span>

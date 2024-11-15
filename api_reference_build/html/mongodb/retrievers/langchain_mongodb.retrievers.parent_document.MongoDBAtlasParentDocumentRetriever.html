@@ -46,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 14, 2024" name="docbuild:last-update"/>
+<meta content="Nov 15, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -296,10 +296,21 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_mongodb.retrievers.parent_document.</span></span><span class="sig-name descname"><span class="pre">MongoDBAtlasParentDocumentRetriever</span></span><a class="reference internal" href="../../_modules/langchain_mongodb/retrievers/parent_document.html#MongoDBAtlasParentDocumentRetriever"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_mongodb.retrievers.parent_document.MongoDBAtlasParentDocumentRetriever" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../langchain/retrievers/langchain.retrievers.parent_document_retriever.ParentDocumentRetriever.html#langchain.retrievers.parent_document_retriever.ParentDocumentRetriever" title="langchain.retrievers.parent_document_retriever.ParentDocumentRetriever"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParentDocumentRetriever</span></code></a></p>
 <p>MongoDB Atlas’s ParentDocumentRetriever</p>
-<p>Uses ONE Collection for both Vector and Doc store.</p>
+<p>“Parent Document Retrieval” is a common approach to enhance the performance of
+retrieval methods in RAG by providing the LLM with a broader context to consider.
+In essence, we divide the original documents into relatively small chunks,
+embed each one, and store them in a vector database.
+Using such small chunks (a sentence or a couple of sentences)
+helps the embedding models to better reflect their meaning.</p>
+<p>In this implementation, we can store both parent and child documents in a single
+collection while only having to compute and index embedding vectors for the chunks!</p>
+<p>This is achieved by backing both the
+vectorstore, <a class="reference internal" href="../vectorstores/langchain_mongodb.vectorstores.MongoDBAtlasVectorSearch.html#langchain_mongodb.vectorstores.MongoDBAtlasVectorSearch" title="langchain_mongodb.vectorstores.MongoDBAtlasVectorSearch"><code class="xref py py-class docutils literal notranslate"><span class="pre">MongoDBAtlasVectorSearch</span></code></a>
+and the docstore  <a class="reference internal" href="../docstores/langchain_mongodb.docstores.MongoDBDocStore.html#langchain_mongodb.docstores.MongoDBDocStore" title="langchain_mongodb.docstores.MongoDBDocStore"><code class="xref py py-class docutils literal notranslate"><span class="pre">MongoDBDocStore</span></code></a>
+by the same MongoDB Collection.</p>
 <dl class="simple">
-<dt>For details, see parent classes</dt><dd><p><a class="reference internal" href="../../langchain/retrievers/langchain.retrievers.parent_document_retriever.ParentDocumentRetriever.html#langchain.retrievers.parent_document_retriever.ParentDocumentRetriever" title="langchain.retrievers.parent_document_retriever.ParentDocumentRetriever"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParentDocumentRetriever</span></code></a>
-and <code class="xref py py-class docutils literal notranslate"><span class="pre">MultiVectorRetriever</span></code> for further details.</p>
+<dt>For more details, see superclasses</dt><dd><p><a class="reference internal" href="../../langchain/retrievers/langchain.retrievers.parent_document_retriever.ParentDocumentRetriever.html#langchain.retrievers.parent_document_retriever.ParentDocumentRetriever" title="langchain.retrievers.parent_document_retriever.ParentDocumentRetriever"><code class="xref py py-class docutils literal notranslate"><span class="pre">ParentDocumentRetriever</span></code></a>
+and <code class="xref py py-class docutils literal notranslate"><span class="pre">MultiVectorRetriever</span></code>.</p>
 </dd>
 </dl>
 <p class="rubric">Examples</p>

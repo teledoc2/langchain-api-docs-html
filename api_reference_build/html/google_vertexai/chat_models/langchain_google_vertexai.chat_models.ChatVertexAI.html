@@ -46,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 14, 2024" name="docbuild:last-update"/>
+<meta content="Nov 15, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -605,27 +605,22 @@ Default is 5.</p>
 <span class="n">ai_msg</span><span class="o">.</span><span class="n">response_metadata</span><span class="p">[</span><span class="s2">"logprobs_result"</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s1">'chosen_candidates'</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s1">'token'</span><span class="p">:</span> <span class="s1">'J'</span><span class="p">,</span> <span class="s1">'log_probability'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">},</span>
-        <span class="p">{</span><span class="s1">'token'</span><span class="p">:</span> <span class="s2">"'"</span><span class="p">,</span> <span class="s1">'log_probability'</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.0052048e-05</span><span class="p">},</span>
-        <span class="p">{</span><span class="s1">'token'</span><span class="p">:</span> <span class="s1">'adore'</span><span class="p">,</span> <span class="s1">'log_probability'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.003931577</span><span class="p">},</span>
-        <span class="p">{</span><span class="s1">'token'</span><span class="p">:</span> <span class="s1">' programmer'</span><span class="p">,</span> <span class="s1">'log_probability'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.13637993</span><span class="p">},</span>
-        <span class="p">{</span><span class="s1">'token'</span><span class="p">:</span> <span class="s1">'.'</span><span class="p">,</span> <span class="s1">'log_probability'</span><span class="p">:</span> <span class="o">-</span><span class="mf">7.630326e-06</span><span class="p">},</span>
-        <span class="p">{</span><span class="s1">'token'</span><span class="p">:</span> <span class="s1">' '</span><span class="p">,</span> <span class="s1">'log_probability'</span><span class="p">:</span> <span class="o">-</span><span class="mf">3.1950593e-05</span><span class="p">},</span>
-        <span class="p">{</span><span class="s1">'token'</span><span class="p">:</span> <span class="s1">'</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+    <span class="p">{</span><span class="s1">'token'</span><span class="p">:</span> <span class="s1">'J'</span><span class="p">,</span> <span class="s1">'logprob'</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.549651415189146e-06</span><span class="p">,</span> <span class="s1">'top_logprobs'</span><span class="p">:</span> <span class="p">[]},</span>
+    <span class="p">{</span><span class="s1">'token'</span><span class="p">:</span> <span class="s2">"'"</span><span class="p">,</span> <span class="s1">'logprob'</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.549651415189146e-06</span><span class="p">,</span> <span class="s1">'top_logprobs'</span><span class="p">:</span> <span class="p">[]},</span>
+    <span class="p">{</span><span class="s1">'token'</span><span class="p">:</span> <span class="s1">'adore'</span><span class="p">,</span> <span class="s1">'logprob'</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">'top_logprobs'</span><span class="p">:</span> <span class="p">[]},</span>
+    <span class="p">{</span><span class="s1">'token'</span><span class="p">:</span> <span class="s1">' programmer'</span><span class="p">,</span> <span class="s1">'logprob'</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.1922384146600962e-07</span><span class="p">,</span> <span class="s1">'top_logprobs'</span><span class="p">:</span> <span class="p">[]},</span>
+    <span class="p">{</span><span class="s1">'token'</span><span class="p">:</span> <span class="s1">'.'</span><span class="p">,</span> <span class="s1">'logprob'</span><span class="p">:</span> <span class="o">-</span><span class="mf">4.827636439586058e-05</span><span class="p">,</span> <span class="s1">'top_logprobs'</span><span class="p">:</span> <span class="p">[]},</span>
+    <span class="p">{</span><span class="s1">'token'</span><span class="p">:</span> <span class="s1">' '</span><span class="p">,</span> <span class="s1">'logprob'</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.018011733889579773</span><span class="p">,</span> <span class="s1">'top_logprobs'</span><span class="p">:</span> <span class="p">[]},</span>
+    <span class="p">{</span><span class="s1">'token'</span><span class="p">:</span> <span class="s1">'</span>
 </pre></div>
 </div>
 </dd>
 </dl>
 </div></blockquote>
 <dl>
-<dt>‘, ‘log_probability’: 0.0}</dt><dd><blockquote>
-<div><blockquote>
-<div><p>],
-‘top_candidates’: []</p>
-</div></blockquote>
-<p>}</p>
+<dt>‘, ‘logprob’: -0.0008687592926435173, ‘top_logprobs’: []}</dt><dd><blockquote>
+<div><p>]</p>
 </div></blockquote>
 <dl>
 <dt>Response metadata</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ai_msg</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
@@ -793,8 +788,8 @@ with a <code class="docutils literal notranslate"><span class="pre">tools</span>
 <dt class="sig sig-object py" id="langchain_google_vertexai.chat_models.ChatVertexAI.logprobs">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">logprobs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#langchain_google_vertexai.chat_models.ChatVertexAI.logprobs" title="Link to this definition">#</a></dt>
 <dd><p>Whether to return logprobs as part of AIMessage.response_metadata.</p>
-<p>If False, don’t return logprobs. If True, return logprobs for top candidate. If
-int, return logprobs for top <code class="docutils literal notranslate"><span class="pre">logprobs</span></code> candidates.</p>
+<p>If False, don’t return logprobs. If True, return logprobs for top candidate.
+If int, return logprobs for top <code class="docutils literal notranslate"><span class="pre">logprobs</span></code> candidates.</p>
 <p><strong>NOTE</strong>: As of 10.28.24 this is only supported for gemini-1.5-flash models.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
