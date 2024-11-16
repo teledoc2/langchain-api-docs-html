@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 15, 2024" name="docbuild:last-update"/>
+<meta content="Nov 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -754,6 +754,338 @@
         <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_request</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">streaming</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">completion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_response</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">completion</span></div>
+
+
+
+<div class="viewcode-block" id="SambaNovaCloud">
+<a class="viewcode-back" href="../../../community/llms/langchain_community.llms.sambanova.SambaNovaCloud.html#langchain_community.llms.sambanova.SambaNovaCloud">[docs]</a>
+<span class="k">class</span> <span class="nc">SambaNovaCloud</span><span class="p">(</span><span class="n">LLM</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    SambaNova Cloud large language models.</span>
+
+<span class="sd">    Setup:</span>
+<span class="sd">        To use, you should have the environment variables:</span>
+<span class="sd">        ``SAMBANOVA_URL`` set with SambaNova Cloud URL.</span>
+<span class="sd">        defaults to http://cloud.sambanova.ai/</span>
+<span class="sd">        ``SAMBANOVA_API_KEY`` set with your SambaNova Cloud API Key.</span>
+<span class="sd">        Example:</span>
+<span class="sd">        .. code-block:: python</span>
+<span class="sd">            from langchain_community.llms.sambanova  import SambaNovaCloud</span>
+<span class="sd">            SambaNovaCloud(</span>
+<span class="sd">                sambanova_api_key="your-SambaNovaCloud-API-key,</span>
+<span class="sd">                model = model name,</span>
+<span class="sd">                max_tokens = max number of tokens to generate,</span>
+<span class="sd">                temperature = model temperature,</span>
+<span class="sd">                top_p = model top p,</span>
+<span class="sd">                top_k = model top k</span>
+<span class="sd">            )</span>
+<span class="sd">    Key init args — completion params:</span>
+<span class="sd">        model: str</span>
+<span class="sd">            The name of the model to use, e.g., Meta-Llama-3-70B-Instruct-4096</span>
+<span class="sd">            (set for CoE endpoints).</span>
+<span class="sd">        streaming: bool</span>
+<span class="sd">            Whether to use streaming handler when using non streaming methods</span>
+<span class="sd">        max_tokens: int</span>
+<span class="sd">            max tokens to generate</span>
+<span class="sd">        temperature: float</span>
+<span class="sd">            model temperature</span>
+<span class="sd">        top_p: float</span>
+<span class="sd">            model top p</span>
+<span class="sd">        top_k: int</span>
+<span class="sd">            model top k</span>
+
+<span class="sd">    Key init args — client params:</span>
+<span class="sd">        sambanova_url: str</span>
+<span class="sd">            SambaNovaCloud Url defaults to http://cloud.sambanova.ai/</span>
+<span class="sd">        sambanova_api_key: str</span>
+<span class="sd">            SambaNovaCloud api key</span>
+<span class="sd">    Instantiate:</span>
+<span class="sd">        .. code-block:: python</span>
+<span class="sd">            from langchain_community.llms.sambanova  import SambaNovaCloud</span>
+<span class="sd">            SambaNovaCloud(</span>
+<span class="sd">                sambanova_api_key="your-SambaNovaCloud-API-key,</span>
+<span class="sd">                model = model name,</span>
+<span class="sd">                max_tokens = max number of tokens to generate,</span>
+<span class="sd">                temperature = model temperature,</span>
+<span class="sd">                top_p = model top p,</span>
+<span class="sd">                top_k = model top k</span>
+<span class="sd">            )</span>
+<span class="sd">    Invoke:</span>
+<span class="sd">        .. code-block:: python</span>
+<span class="sd">            prompt = "tell me a joke"</span>
+<span class="sd">            response = llm.invoke(prompt)</span>
+<span class="sd">    Stream:</span>
+<span class="sd">        .. code-block:: python</span>
+<span class="sd">        for chunk in llm.stream(prompt):</span>
+<span class="sd">            print(chunk, end="", flush=True)</span>
+<span class="sd">    Async:</span>
+<span class="sd">        .. code-block:: python</span>
+<span class="sd">        response = llm.ainvoke(prompt)</span>
+<span class="sd">        await response</span>
+<span class="sd">    """</span>
+
+    <span class="n">sambanova_url</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""SambaNova Cloud Url"""</span>
+
+    <span class="n">sambanova_api_key</span><span class="p">:</span> <span class="n">SecretStr</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""SambaNova Cloud api key"""</span>
+
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">"Meta-Llama-3.1-8B-Instruct"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""The name of the model"""</span>
+
+    <span class="n">streaming</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Whether to use streaming handler when using non streaming methods"""</span>
+
+    <span class="n">max_tokens</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">1024</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""max tokens to generate"""</span>
+
+    <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""model temperature"""</span>
+
+    <span class="n">top_p</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""model top p"""</span>
+
+    <span class="n">top_k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""model top k"""</span>
+
+    <span class="n">stream_options</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="p">{</span><span class="s2">"include_usage"</span><span class="p">:</span> <span class="kc">True</span><span class="p">})</span>
+<span class="w">    </span><span class="sd">"""stream options, include usage to get generation metrics"""</span>
+
+<div class="viewcode-block" id="SambaNovaCloud.Config">
+<a class="viewcode-back" href="../../../community/llms/langchain_community.llms.sambanova.SambaNovaCloud.html#langchain_community.llms.sambanova.SambaNovaCloud.Config">[docs]</a>
+    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
+        <span class="n">populate_by_name</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">is_lc_serializable</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return whether this model can be serialized by Langchain."""</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lc_secrets</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">"sambanova_api_key"</span><span class="p">:</span> <span class="s2">"sambanova_api_key"</span><span class="p">}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_identifying_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return a dictionary of identifying parameters.</span>
+
+<span class="sd">        This information is used by the LangChain callback system, which</span>
+<span class="sd">        is used for tracing purposes make it possible to monitor LLMs.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">"model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+            <span class="s2">"streaming"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">,</span>
+            <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span><span class="p">,</span>
+            <span class="s2">"temperature"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
+            <span class="s2">"top_p"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_p</span><span class="p">,</span>
+            <span class="s2">"top_k"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_k</span><span class="p">,</span>
+            <span class="s2">"stream_options"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stream_options</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_llm_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Get the type of language model used by this chat model."""</span>
+        <span class="k">return</span> <span class="s2">"sambanovacloud-llm"</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""init and validate environment variables"""</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"sambanova_url"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_from_dict_or_env</span><span class="p">(</span>
+            <span class="n">kwargs</span><span class="p">,</span>
+            <span class="s2">"sambanova_url"</span><span class="p">,</span>
+            <span class="s2">"SAMBANOVA_URL"</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s2">"https://api.sambanova.ai/v1/chat/completions"</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"sambanova_api_key"</span><span class="p">]</span> <span class="o">=</span> <span class="n">convert_to_secret_str</span><span class="p">(</span>
+            <span class="n">get_from_dict_or_env</span><span class="p">(</span><span class="n">kwargs</span><span class="p">,</span> <span class="s2">"sambanova_api_key"</span><span class="p">,</span> <span class="s2">"SAMBANOVA_API_KEY"</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_handle_request</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">streaming</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Response</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Performs a post request to the LLM API.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            prompt: The prompt to pass into the model.</span>
+<span class="sd">            stop: list of stop tokens</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A request Response object</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">prompt</span> <span class="o">=</span> <span class="p">[</span><span class="n">prompt</span><span class="p">]</span>
+
+        <span class="n">messages_dict</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">"role"</span><span class="p">:</span> <span class="s2">"user"</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">:</span> <span class="n">prompt</span><span class="p">[</span><span class="mi">0</span><span class="p">]}]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"messages"</span><span class="p">:</span> <span class="n">messages_dict</span><span class="p">,</span>
+            <span class="s2">"stream"</span><span class="p">:</span> <span class="n">streaming</span><span class="p">,</span>
+            <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span><span class="p">,</span>
+            <span class="s2">"stop"</span><span class="p">:</span> <span class="n">stop</span><span class="p">,</span>
+            <span class="s2">"model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+            <span class="s2">"temperature"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
+            <span class="s2">"top_p"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_p</span><span class="p">,</span>
+            <span class="s2">"top_k"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_k</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">value</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">}</span>
+        <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"Authorization"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Bearer "</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">sambanova_api_key</span><span class="o">.</span><span class="n">get_secret_value</span><span class="p">()</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">http_session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">streaming</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">http_session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sambanova_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">http_session</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sambanova_url</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">False</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Sambanova / complete call failed with status code "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">."</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">response</span>
+
+    <span class="k">def</span> <span class="nf">_process_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Process a non streaming response from the api</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            response: A request Response object</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">            completion: a string with model generation</span>
+<span class="sd">        """</span>
+
+        <span class="c1"># Extract json payload form response</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response_dict</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Sambanova /complete call failed couldn't get JSON response </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"response: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+
+        <span class="n">completion</span> <span class="o">=</span> <span class="n">response_dict</span><span class="p">[</span><span class="s2">"choices"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"message"</span><span class="p">][</span><span class="s2">"content"</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">completion</span>
+
+    <span class="k">def</span> <span class="nf">_process_stream_response</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Response</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">GenerationChunk</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Process a streaming response from the api</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            response: An iterable request Response object</span>
+
+<span class="sd">        Yields:</span>
+<span class="sd">            GenerationChunk: a GenerationChunk with model partial generation</span>
+<span class="sd">        """</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">sseclient</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                <span class="s2">"could not import sseclient library"</span>
+                <span class="s2">"Please install it with `pip install sseclient-py`."</span>
+            <span class="p">)</span>
+
+        <span class="n">client</span> <span class="o">=</span> <span class="n">sseclient</span><span class="o">.</span><span class="n">SSEClient</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">client</span><span class="o">.</span><span class="n">events</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">event</span> <span class="o">==</span> <span class="s2">"error_event"</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Sambanova /complete call failed with status code "</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">."</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="si">}</span><span class="s2">."</span>
+                <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># check if the response is not a final event ("[DONE]")</span>
+                <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">data</span> <span class="o">!=</span> <span class="s2">"[DONE]"</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                        <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">"Sambanova /complete call failed with status code "</span>
+                            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">."</span>
+                            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="si">}</span><span class="s2">."</span>
+                        <span class="p">)</span>
+                    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"error"</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">"Sambanova /complete call failed with status code "</span>
+                            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">."</span>
+                            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="si">}</span><span class="s2">."</span>
+                        <span class="p">)</span>
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">"choices"</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">content</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"choices"</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="s2">"delta"</span><span class="p">][</span><span class="s2">"content"</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">content</span> <span class="o">=</span> <span class="s2">""</span>
+                    <span class="n">generated_chunk</span> <span class="o">=</span> <span class="n">GenerationChunk</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">content</span><span class="p">)</span>
+                    <span class="k">yield</span> <span class="n">generated_chunk</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Error getting content chunk raw streamed response: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="sa">f</span><span class="s2">"data: </span><span class="si">{</span><span class="n">event</span><span class="o">.</span><span class="n">data</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_call</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Call out to SambaNovaCloud complete endpoint.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            prompt: The prompt to pass into the model.</span>
+<span class="sd">            stop: Optional list of stop words to use when generating.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The string generated by the model.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">:</span>
+            <span class="n">completion</span> <span class="o">=</span> <span class="s2">""</span>
+            <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stream</span><span class="p">(</span>
+                <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span> <span class="n">run_manager</span><span class="o">=</span><span class="n">run_manager</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">):</span>
+                <span class="n">completion</span> <span class="o">+=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">text</span>
+
+            <span class="k">return</span> <span class="n">completion</span>
+
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_request</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">streaming</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">completion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_response</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">completion</span>
+
+    <span class="k">def</span> <span class="nf">_stream</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">str</span><span class="p">],</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">GenerationChunk</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Call out to SambaNovaCloud complete endpoint.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            prompt: The prompt to pass into the model.</span>
+<span class="sd">            stop: Optional list of stop words to use when generating.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The string generated by the model.</span>
+<span class="sd">        """</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_request</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">streaming</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_stream_response</span><span class="p">(</span><span class="n">response</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">run_manager</span><span class="p">:</span>
+                <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">chunk</span></div>
 
 </pre></div>
 </article>

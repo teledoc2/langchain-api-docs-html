@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>langchain-core: 0.3.18 — 🦜🔗 LangChain  documentation</title>
+<title>langchain-core: 0.3.19 — 🦜🔗 LangChain  documentation</title>
 <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
@@ -46,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 15, 2024" name="docbuild:last-update"/>
+<meta content="Nov 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -294,7 +294,7 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../reference.html">LangChain Python API Reference</a></li>
-<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">langchain-core: 0.3.18</span></li>
+<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">langchain-core: 0.3.19</span></li>
 </ul>
 </nav>
 </div>
@@ -304,7 +304,7 @@
 <div id="searchbox"></div>
 <article class="bd-article">
 <section id="module-langchain_core">
-<span id="langchain-core-0-3-18"></span><span id="langchain-core"></span><h1>langchain-core: 0.3.18<a class="headerlink" href="#module-langchain_core" title="Link to this heading">#</a></h1>
+<span id="langchain-core-0-3-19"></span><span id="langchain-core"></span><h1>langchain-core: 0.3.19<a class="headerlink" href="#module-langchain_core" title="Link to this heading">#</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">langchain-core</span></code> defines the base abstractions for the LangChain ecosystem.</p>
 <p>The interfaces for core components like chat models, LLMs, vector stores, retrievers,
 and more are defined here. The universal invocation protocol (Runnables) along with
@@ -1608,22 +1608,19 @@ very lightweight.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="runnables/langchain_core.runnables.utils.get_function_first_arg_dict_keys.html#langchain_core.runnables.utils.get_function_first_arg_dict_keys" title="langchain_core.runnables.utils.get_function_first_arg_dict_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runnables.utils.get_function_first_arg_dict_keys</span></code></a>(func)</p></td>
 <td><p>Get the keys of the first argument of a function if it is a dict.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="runnables/langchain_core.runnables.utils.get_function_nonlocals.html#langchain_core.runnables.utils.get_function_nonlocals" title="langchain_core.runnables.utils.get_function_nonlocals"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runnables.utils.get_function_nonlocals</span></code></a>(func)</p></td>
-<td><p>Get the nonlocal variables accessed by a function.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="runnables/langchain_core.runnables.utils.get_lambda_source.html#langchain_core.runnables.utils.get_lambda_source" title="langchain_core.runnables.utils.get_lambda_source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runnables.utils.get_lambda_source</span></code></a>(func)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="runnables/langchain_core.runnables.utils.get_lambda_source.html#langchain_core.runnables.utils.get_lambda_source" title="langchain_core.runnables.utils.get_lambda_source"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runnables.utils.get_lambda_source</span></code></a>(func)</p></td>
 <td><p>Get the source code of a lambda function.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="runnables/langchain_core.runnables.utils.get_unique_config_specs.html#langchain_core.runnables.utils.get_unique_config_specs" title="langchain_core.runnables.utils.get_unique_config_specs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runnables.utils.get_unique_config_specs</span></code></a>(specs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="runnables/langchain_core.runnables.utils.get_unique_config_specs.html#langchain_core.runnables.utils.get_unique_config_specs" title="langchain_core.runnables.utils.get_unique_config_specs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runnables.utils.get_unique_config_specs</span></code></a>(specs)</p></td>
 <td><p>Get the unique config specs from a sequence of config specs.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="runnables/langchain_core.runnables.utils.indent_lines_after_first.html#langchain_core.runnables.utils.indent_lines_after_first" title="langchain_core.runnables.utils.indent_lines_after_first"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runnables.utils.indent_lines_after_first</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="runnables/langchain_core.runnables.utils.indent_lines_after_first.html#langchain_core.runnables.utils.indent_lines_after_first" title="langchain_core.runnables.utils.indent_lines_after_first"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runnables.utils.indent_lines_after_first</span></code></a>(...)</p></td>
 <td><p>Indent all lines of text after the first line.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="runnables/langchain_core.runnables.utils.is_async_callable.html#langchain_core.runnables.utils.is_async_callable" title="langchain_core.runnables.utils.is_async_callable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runnables.utils.is_async_callable</span></code></a>(func)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="runnables/langchain_core.runnables.utils.is_async_callable.html#langchain_core.runnables.utils.is_async_callable" title="langchain_core.runnables.utils.is_async_callable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runnables.utils.is_async_callable</span></code></a>(func)</p></td>
 <td><p>Check if a function is async.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="runnables/langchain_core.runnables.utils.is_async_generator.html#langchain_core.runnables.utils.is_async_generator" title="langchain_core.runnables.utils.is_async_generator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runnables.utils.is_async_generator</span></code></a>(func)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="runnables/langchain_core.runnables.utils.is_async_generator.html#langchain_core.runnables.utils.is_async_generator" title="langchain_core.runnables.utils.is_async_generator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">runnables.utils.is_async_generator</span></code></a>(func)</p></td>
 <td><p>Check if a function is an async generator.</p></td>
 </tr>
 </tbody>

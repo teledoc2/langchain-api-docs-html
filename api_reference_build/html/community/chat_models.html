@@ -46,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 15, 2024" name="docbuild:last-update"/>
+<meta content="Nov 16, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -264,6 +264,7 @@
 <li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.premai.ChatPremAI.html">ChatPremAI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.premai.ChatPremAPIError.html">ChatPremAPIError</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.promptlayer_openai.PromptLayerChatOpenAI.html">PromptLayerChatOpenAI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.reka.ChatReka.html">ChatReka</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.sambanova.ChatSambaNovaCloud.html">ChatSambaNovaCloud</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.sambanova.ChatSambaStudio.html">ChatSambaStudio</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.snowflake.ChatSnowflakeCortex.html">ChatSnowflakeCortex</a></li>
@@ -304,6 +305,9 @@
 <li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.openai.acompletion_with_retry.html">acompletion_with_retry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.premai.chat_with_retry.html">chat_with_retry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.premai.create_prem_retry_decorator.html">create_prem_retry_decorator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.reka.convert_to_reka_messages.html">convert_to_reka_messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.reka.process_content.html">process_content</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.reka.process_content_item.html">process_content_item</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.sparkllm.convert_dict_to_message.html">convert_dict_to_message</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.sparkllm.convert_message_to_dict.html">convert_message_to_dict</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chat_models/langchain_community.chat_models.tongyi.convert_dict_to_message.html">convert_dict_to_message</a></li>
@@ -633,43 +637,46 @@ an interface where “chat messages” are the inputs and outputs.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.promptlayer_openai.PromptLayerChatOpenAI.html#langchain_community.chat_models.promptlayer_openai.PromptLayerChatOpenAI" title="langchain_community.chat_models.promptlayer_openai.PromptLayerChatOpenAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.promptlayer_openai.PromptLayerChatOpenAI</span></code></a></p></td>
 <td><p><cite>PromptLayer</cite> and <cite>OpenAI</cite> Chat large language models API.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.sambanova.ChatSambaNovaCloud.html#langchain_community.chat_models.sambanova.ChatSambaNovaCloud" title="langchain_community.chat_models.sambanova.ChatSambaNovaCloud"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.sambanova.ChatSambaNovaCloud</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.reka.ChatReka.html#langchain_community.chat_models.reka.ChatReka" title="langchain_community.chat_models.reka.ChatReka"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.reka.ChatReka</span></code></a></p></td>
+<td><p>Reka chat large language models.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.sambanova.ChatSambaNovaCloud.html#langchain_community.chat_models.sambanova.ChatSambaNovaCloud" title="langchain_community.chat_models.sambanova.ChatSambaNovaCloud"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.sambanova.ChatSambaNovaCloud</span></code></a></p></td>
 <td><p>SambaNova Cloud chat model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.sambanova.ChatSambaStudio.html#langchain_community.chat_models.sambanova.ChatSambaStudio" title="langchain_community.chat_models.sambanova.ChatSambaStudio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.sambanova.ChatSambaStudio</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.sambanova.ChatSambaStudio.html#langchain_community.chat_models.sambanova.ChatSambaStudio" title="langchain_community.chat_models.sambanova.ChatSambaStudio"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.sambanova.ChatSambaStudio</span></code></a></p></td>
 <td><p>SambaStudio chat model.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.snowflake.ChatSnowflakeCortex.html#langchain_community.chat_models.snowflake.ChatSnowflakeCortex" title="langchain_community.chat_models.snowflake.ChatSnowflakeCortex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.snowflake.ChatSnowflakeCortex</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.snowflake.ChatSnowflakeCortex.html#langchain_community.chat_models.snowflake.ChatSnowflakeCortex" title="langchain_community.chat_models.snowflake.ChatSnowflakeCortex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.snowflake.ChatSnowflakeCortex</span></code></a></p></td>
 <td><p>Snowflake Cortex based Chat model</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.snowflake.ChatSnowflakeCortexError.html#langchain_community.chat_models.snowflake.ChatSnowflakeCortexError" title="langchain_community.chat_models.snowflake.ChatSnowflakeCortexError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.snowflake.ChatSnowflakeCortexError</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.snowflake.ChatSnowflakeCortexError.html#langchain_community.chat_models.snowflake.ChatSnowflakeCortexError" title="langchain_community.chat_models.snowflake.ChatSnowflakeCortexError"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.snowflake.ChatSnowflakeCortexError</span></code></a></p></td>
 <td><p>Error with Snowpark client.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.sparkllm.ChatSparkLLM.html#langchain_community.chat_models.sparkllm.ChatSparkLLM" title="langchain_community.chat_models.sparkllm.ChatSparkLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.sparkllm.ChatSparkLLM</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.sparkllm.ChatSparkLLM.html#langchain_community.chat_models.sparkllm.ChatSparkLLM" title="langchain_community.chat_models.sparkllm.ChatSparkLLM"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.sparkllm.ChatSparkLLM</span></code></a></p></td>
 <td><p>IFlyTek Spark chat model integration.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.symblai_nebula.ChatNebula.html#langchain_community.chat_models.symblai_nebula.ChatNebula" title="langchain_community.chat_models.symblai_nebula.ChatNebula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.symblai_nebula.ChatNebula</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.symblai_nebula.ChatNebula.html#langchain_community.chat_models.symblai_nebula.ChatNebula" title="langchain_community.chat_models.symblai_nebula.ChatNebula"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.symblai_nebula.ChatNebula</span></code></a></p></td>
 <td><p><cite>Nebula</cite> chat large language model - <a class="reference external" href="https://docs.symbl.ai/docs/nebula-llm">https://docs.symbl.ai/docs/nebula-llm</a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.tongyi.ChatTongyi.html#langchain_community.chat_models.tongyi.ChatTongyi" title="langchain_community.chat_models.tongyi.ChatTongyi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.tongyi.ChatTongyi</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.tongyi.ChatTongyi.html#langchain_community.chat_models.tongyi.ChatTongyi" title="langchain_community.chat_models.tongyi.ChatTongyi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.tongyi.ChatTongyi</span></code></a></p></td>
 <td><p>Alibaba Tongyi Qwen chat model integration.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.volcengine_maas.VolcEngineMaasChat.html#langchain_community.chat_models.volcengine_maas.VolcEngineMaasChat" title="langchain_community.chat_models.volcengine_maas.VolcEngineMaasChat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.volcengine_maas.VolcEngineMaasChat</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.volcengine_maas.VolcEngineMaasChat.html#langchain_community.chat_models.volcengine_maas.VolcEngineMaasChat" title="langchain_community.chat_models.volcengine_maas.VolcEngineMaasChat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.volcengine_maas.VolcEngineMaasChat</span></code></a></p></td>
 <td><p>Volc Engine Maas hosts a plethora of models.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.writer.ChatWriter.html#langchain_community.chat_models.writer.ChatWriter" title="langchain_community.chat_models.writer.ChatWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.writer.ChatWriter</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.writer.ChatWriter.html#langchain_community.chat_models.writer.ChatWriter" title="langchain_community.chat_models.writer.ChatWriter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.writer.ChatWriter</span></code></a></p></td>
 <td><p>Writer chat model.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.yandex.ChatYandexGPT.html#langchain_community.chat_models.yandex.ChatYandexGPT" title="langchain_community.chat_models.yandex.ChatYandexGPT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.yandex.ChatYandexGPT</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.yandex.ChatYandexGPT.html#langchain_community.chat_models.yandex.ChatYandexGPT" title="langchain_community.chat_models.yandex.ChatYandexGPT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.yandex.ChatYandexGPT</span></code></a></p></td>
 <td><p>YandexGPT large language models.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.yi.ChatYi.html#langchain_community.chat_models.yi.ChatYi" title="langchain_community.chat_models.yi.ChatYi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.yi.ChatYi</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.yi.ChatYi.html#langchain_community.chat_models.yi.ChatYi" title="langchain_community.chat_models.yi.ChatYi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.yi.ChatYi</span></code></a></p></td>
 <td><p>Yi chat models API.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.yuan2.ChatYuan2.html#langchain_community.chat_models.yuan2.ChatYuan2" title="langchain_community.chat_models.yuan2.ChatYuan2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.yuan2.ChatYuan2</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.yuan2.ChatYuan2.html#langchain_community.chat_models.yuan2.ChatYuan2" title="langchain_community.chat_models.yuan2.ChatYuan2"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.yuan2.ChatYuan2</span></code></a></p></td>
 <td><p><cite>Yuan2.0</cite> Chat models API.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.zhipuai.ChatZhipuAI.html#langchain_community.chat_models.zhipuai.ChatZhipuAI" title="langchain_community.chat_models.zhipuai.ChatZhipuAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.zhipuai.ChatZhipuAI</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.zhipuai.ChatZhipuAI.html#langchain_community.chat_models.zhipuai.ChatZhipuAI" title="langchain_community.chat_models.zhipuai.ChatZhipuAI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.zhipuai.ChatZhipuAI</span></code></a></p></td>
 <td><p>ZhipuAI chat model integration.</p></td>
 </tr>
 </tbody>
@@ -759,40 +766,49 @@ an interface where “chat messages” are the inputs and outputs.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.premai.create_prem_retry_decorator.html#langchain_community.chat_models.premai.create_prem_retry_decorator" title="langchain_community.chat_models.premai.create_prem_retry_decorator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.premai.create_prem_retry_decorator</span></code></a>(llm, *)</p></td>
 <td><p>Create a retry decorator for PremAI API errors.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.sparkllm.convert_dict_to_message.html#langchain_community.chat_models.sparkllm.convert_dict_to_message" title="langchain_community.chat_models.sparkllm.convert_dict_to_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.sparkllm.convert_dict_to_message</span></code></a>(_dict)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.reka.convert_to_reka_messages.html#langchain_community.chat_models.reka.convert_to_reka_messages" title="langchain_community.chat_models.reka.convert_to_reka_messages"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.reka.convert_to_reka_messages</span></code></a>(...)</p></td>
+<td><p>Convert LangChain messages to Reka message format.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.reka.process_content.html#langchain_community.chat_models.reka.process_content" title="langchain_community.chat_models.reka.process_content"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.reka.process_content</span></code></a>(content)</p></td>
+<td><p>Process content to handle both text and media inputs, returning a list of content items.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.reka.process_content_item.html#langchain_community.chat_models.reka.process_content_item" title="langchain_community.chat_models.reka.process_content_item"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.reka.process_content_item</span></code></a>(item)</p></td>
+<td><p>Process a single content item.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.sparkllm.convert_dict_to_message.html#langchain_community.chat_models.sparkllm.convert_dict_to_message" title="langchain_community.chat_models.sparkllm.convert_dict_to_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.sparkllm.convert_dict_to_message</span></code></a>(_dict)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.sparkllm.convert_message_to_dict.html#langchain_community.chat_models.sparkllm.convert_message_to_dict" title="langchain_community.chat_models.sparkllm.convert_message_to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.sparkllm.convert_message_to_dict</span></code></a>(message)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.sparkllm.convert_message_to_dict.html#langchain_community.chat_models.sparkllm.convert_message_to_dict" title="langchain_community.chat_models.sparkllm.convert_message_to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.sparkllm.convert_message_to_dict</span></code></a>(message)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.tongyi.convert_dict_to_message.html#langchain_community.chat_models.tongyi.convert_dict_to_message" title="langchain_community.chat_models.tongyi.convert_dict_to_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.tongyi.convert_dict_to_message</span></code></a>(_dict)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.tongyi.convert_dict_to_message.html#langchain_community.chat_models.tongyi.convert_dict_to_message" title="langchain_community.chat_models.tongyi.convert_dict_to_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.tongyi.convert_dict_to_message</span></code></a>(_dict)</p></td>
 <td><p>Convert a dict to a message.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.tongyi.convert_message_chunk_to_message.html#langchain_community.chat_models.tongyi.convert_message_chunk_to_message" title="langchain_community.chat_models.tongyi.convert_message_chunk_to_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.tongyi.convert_message_chunk_to_message</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.tongyi.convert_message_chunk_to_message.html#langchain_community.chat_models.tongyi.convert_message_chunk_to_message" title="langchain_community.chat_models.tongyi.convert_message_chunk_to_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.tongyi.convert_message_chunk_to_message</span></code></a>(...)</p></td>
 <td><p>Convert a message chunk to a message.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.tongyi.convert_message_to_dict.html#langchain_community.chat_models.tongyi.convert_message_to_dict" title="langchain_community.chat_models.tongyi.convert_message_to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.tongyi.convert_message_to_dict</span></code></a>(message)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.tongyi.convert_message_to_dict.html#langchain_community.chat_models.tongyi.convert_message_to_dict" title="langchain_community.chat_models.tongyi.convert_message_to_dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.tongyi.convert_message_to_dict</span></code></a>(message)</p></td>
 <td><p>Convert a message to a dict.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.volcengine_maas.convert_dict_to_message.html#langchain_community.chat_models.volcengine_maas.convert_dict_to_message" title="langchain_community.chat_models.volcengine_maas.convert_dict_to_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.volcengine_maas.convert_dict_to_message</span></code></a>(_dict)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.volcengine_maas.convert_dict_to_message.html#langchain_community.chat_models.volcengine_maas.convert_dict_to_message" title="langchain_community.chat_models.volcengine_maas.convert_dict_to_message"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.volcengine_maas.convert_dict_to_message</span></code></a>(_dict)</p></td>
 <td><p>Convert a dict to a message.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.yandex.acompletion_with_retry.html#langchain_community.chat_models.yandex.acompletion_with_retry" title="langchain_community.chat_models.yandex.acompletion_with_retry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.yandex.acompletion_with_retry</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.yandex.acompletion_with_retry.html#langchain_community.chat_models.yandex.acompletion_with_retry" title="langchain_community.chat_models.yandex.acompletion_with_retry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.yandex.acompletion_with_retry</span></code></a>(...)</p></td>
 <td><p>Use tenacity to retry the async completion call.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.yandex.completion_with_retry.html#langchain_community.chat_models.yandex.completion_with_retry" title="langchain_community.chat_models.yandex.completion_with_retry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.yandex.completion_with_retry</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.yandex.completion_with_retry.html#langchain_community.chat_models.yandex.completion_with_retry" title="langchain_community.chat_models.yandex.completion_with_retry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.yandex.completion_with_retry</span></code></a>(...)</p></td>
 <td><p>Use tenacity to retry the completion call.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.yi.aconnect_httpx_sse.html#langchain_community.chat_models.yi.aconnect_httpx_sse" title="langchain_community.chat_models.yi.aconnect_httpx_sse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.yi.aconnect_httpx_sse</span></code></a>(client, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.yi.aconnect_httpx_sse.html#langchain_community.chat_models.yi.aconnect_httpx_sse" title="langchain_community.chat_models.yi.aconnect_httpx_sse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.yi.aconnect_httpx_sse</span></code></a>(client, ...)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.yuan2.acompletion_with_retry.html#langchain_community.chat_models.yuan2.acompletion_with_retry" title="langchain_community.chat_models.yuan2.acompletion_with_retry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.yuan2.acompletion_with_retry</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.yuan2.acompletion_with_retry.html#langchain_community.chat_models.yuan2.acompletion_with_retry" title="langchain_community.chat_models.yuan2.acompletion_with_retry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.yuan2.acompletion_with_retry</span></code></a>(...)</p></td>
 <td><p>Use tenacity to retry the async completion call.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.zhipuai.aconnect_sse.html#langchain_community.chat_models.zhipuai.aconnect_sse" title="langchain_community.chat_models.zhipuai.aconnect_sse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.zhipuai.aconnect_sse</span></code></a>(client, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.zhipuai.aconnect_sse.html#langchain_community.chat_models.zhipuai.aconnect_sse" title="langchain_community.chat_models.zhipuai.aconnect_sse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.zhipuai.aconnect_sse</span></code></a>(client, ...)</p></td>
 <td><p>Async context manager for connecting to an SSE stream.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.zhipuai.connect_sse.html#langchain_community.chat_models.zhipuai.connect_sse" title="langchain_community.chat_models.zhipuai.connect_sse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.zhipuai.connect_sse</span></code></a>(client, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_models/langchain_community.chat_models.zhipuai.connect_sse.html#langchain_community.chat_models.zhipuai.connect_sse" title="langchain_community.chat_models.zhipuai.connect_sse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_models.zhipuai.connect_sse</span></code></a>(client, ...)</p></td>
 <td><p>Context manager for connecting to an SSE stream.</p></td>
 </tr>
 </tbody>
