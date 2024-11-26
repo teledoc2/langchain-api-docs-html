@@ -46,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 25, 2024" name="docbuild:last-update"/>
+<meta content="Nov 26, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -447,11 +447,15 @@
 <dd><p>Bases: <a class="reference internal" href="../../core/language_models/langchain_core.language_models.chat_models.BaseChatModel.html#langchain_core.language_models.chat_models.BaseChatModel" title="langchain_core.language_models.chat_models.BaseChatModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseChatModel</span></code></a></p>
 <p>Writer chat model.</p>
 <p>To use, you should have the <code class="docutils literal notranslate"><span class="pre">writer-sdk</span></code> Python package installed, and the
-environment variable <code class="docutils literal notranslate"><span class="pre">WRITER_API_KEY</span></code> set with your API key.</p>
+environment variable <code class="docutils literal notranslate"><span class="pre">WRITER_API_KEY</span></code> set with your API key or pass ‘api_key’
+init param.</p>
 <p class="rubric">Example</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">langchain_community.chat_models</span> <span class="kn">import</span> <span class="n">ChatWriter</span>
 
-<span class="n">chat</span> <span class="o">=</span> <span class="n">ChatWriter</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"palmyra-x-004"</span><span class="p">)</span>
+<span class="n">chat</span> <span class="o">=</span> <span class="n">ChatWriter</span><span class="p">(</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="s2">"your key"</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"palmyra-x-004"</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -459,6 +463,11 @@ environment variable <code class="docutils literal notranslate"><span class="pre
 <p>ChatWriter implements the standard <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Runnable</span> <span class="pre">Interface</span></code></a>. 🏃</p>
 <p>The <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Runnable</span> <span class="pre">Interface</span></code></a> has additional methods that are available on runnables, such as <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.with_types" title="langchain_core.runnables.base.Runnable.with_types"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_types</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.with_retry" title="langchain_core.runnables.base.Runnable.with_retry"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_retry</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.assign" title="langchain_core.runnables.base.Runnable.assign"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assign</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.bind" title="langchain_core.runnables.base.Runnable.bind"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bind</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.get_graph" title="langchain_core.runnables.base.Runnable.get_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_graph</span></code></a>, and more.</p>
 </div>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_community.chat_models.writer.ChatWriter.api_key">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">api_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">SecretStr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.chat_models.writer.ChatWriter.api_key" title="Link to this definition">#</a></dt>
+<dd><p>Writer API key.</p>
+</dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.chat_models.writer.ChatWriter.cache">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cache</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../core/caches/langchain_core.caches.BaseCache.html#langchain_core.caches.BaseCache" title="langchain_core.caches.BaseCache"><span class="pre">BaseCache</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.chat_models.writer.ChatWriter.cache" title="Link to this definition">#</a></dt>
@@ -533,11 +542,6 @@ with a <code class="docutils literal notranslate"><span class="pre">tools</span>
 <dd><p>An optional rate limiter to use for limiting the number of requests.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="langchain_community.chat_models.writer.ChatWriter.streaming">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">streaming</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#langchain_community.chat_models.writer.ChatWriter.streaming" title="Link to this definition">#</a></dt>
-<dd><p>Whether to stream the results or not.</p>
-</dd></dl>
-<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.chat_models.writer.ChatWriter.tags">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tags</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.chat_models.writer.ChatWriter.tags" title="Link to this definition">#</a></dt>
 <dd><p>Tags to add to the run trace.</p>
@@ -551,16 +555,6 @@ with a <code class="docutils literal notranslate"><span class="pre">tools</span>
 <dt class="sig sig-object py" id="langchain_community.chat_models.writer.ChatWriter.verbose">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">verbose</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"> <span class="pre">[Optional]</span></em><a class="headerlink" href="#langchain_community.chat_models.writer.ChatWriter.verbose" title="Link to this definition">#</a></dt>
 <dd><p>Whether to print out response text.</p>
-</dd></dl>
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="langchain_community.chat_models.writer.ChatWriter.writer_api_base">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">writer_api_base</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'base_url')</span></em><a class="headerlink" href="#langchain_community.chat_models.writer.ChatWriter.writer_api_base" title="Link to this definition">#</a></dt>
-<dd><p>Base URL for API requests.</p>
-</dd></dl>
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="langchain_community.chat_models.writer.ChatWriter.writer_api_key">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">writer_api_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">SecretStr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'api_key')</span></em><a class="headerlink" href="#langchain_community.chat_models.writer.ChatWriter.writer_api_key" title="Link to this definition">#</a></dt>
-<dd><p>Writer API key.</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_community.chat_models.writer.ChatWriter.__call__">
@@ -1695,6 +1689,7 @@ an instance of <code class="docutils literal notranslate"><span class="pre">sche
 <nav aria-labelledby="pst-page-navigation-heading-2" class="bd-toc-nav page-toc">
 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter"><code class="docutils literal notranslate"><span class="pre">ChatWriter</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.api_key"><code class="docutils literal notranslate"><span class="pre">api_key</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.cache"><code class="docutils literal notranslate"><span class="pre">cache</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.callback_manager"><code class="docutils literal notranslate"><span class="pre">callback_manager</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.callbacks"><code class="docutils literal notranslate"><span class="pre">callbacks</span></code></a></li>
@@ -1706,12 +1701,9 @@ an instance of <code class="docutils literal notranslate"><span class="pre">sche
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.model_name"><code class="docutils literal notranslate"><span class="pre">model_name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.n"><code class="docutils literal notranslate"><span class="pre">n</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.rate_limiter"><code class="docutils literal notranslate"><span class="pre">rate_limiter</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.streaming"><code class="docutils literal notranslate"><span class="pre">streaming</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.tags"><code class="docutils literal notranslate"><span class="pre">tags</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.temperature"><code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.verbose"><code class="docutils literal notranslate"><span class="pre">verbose</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.writer_api_base"><code class="docutils literal notranslate"><span class="pre">writer_api_base</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.writer_api_key"><code class="docutils literal notranslate"><span class="pre">writer_api_key</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.__call__"><code class="docutils literal notranslate"><span class="pre">__call__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.abatch"><code class="docutils literal notranslate"><span class="pre">abatch()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.writer.ChatWriter.abatch_as_completed"><code class="docutils literal notranslate"><span class="pre">abatch_as_completed()</span></code></a></li>

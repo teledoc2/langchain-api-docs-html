@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 25, 2024" name="docbuild:last-update"/>
+<meta content="Nov 26, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -219,6 +219,7 @@
 
 <span class="kn">from</span> <span class="nn">langchain.chains.base</span> <span class="kn">import</span> <span class="n">Chain</span>
 <span class="kn">from</span> <span class="nn">langchain.chains.llm</span> <span class="kn">import</span> <span class="n">LLMChain</span>
+<span class="kn">from</span> <span class="nn">langchain_core._api.deprecation</span> <span class="kn">import</span> <span class="n">deprecated</span>
 <span class="kn">from</span> <span class="nn">langchain_core.callbacks</span> <span class="kn">import</span> <span class="n">CallbackManagerForChainRun</span>
 <span class="kn">from</span> <span class="nn">langchain_core.language_models</span> <span class="kn">import</span> <span class="n">BaseLanguageModel</span>
 <span class="kn">from</span> <span class="nn">langchain_core.messages</span> <span class="kn">import</span> <span class="p">(</span>
@@ -258,6 +259,11 @@
 
 <div class="viewcode-block" id="extract_cypher">
 <a class="viewcode-back" href="../../../../community/chains/langchain_community.chains.graph_qa.cypher.extract_cypher.html#langchain_community.chains.graph_qa.cypher.extract_cypher">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.chains.graph_qa.cypher.extract_cypher"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">extract_cypher</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Extract Cypher code from a text.</span>
 
@@ -279,6 +285,11 @@
 
 <div class="viewcode-block" id="construct_schema">
 <a class="viewcode-back" href="../../../../community/chains/langchain_community.chains.graph_qa.cypher.construct_schema.html#langchain_community.chains.graph_qa.cypher.construct_schema">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.chains.graph_qa.cypher.construct_schema"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">construct_schema</span><span class="p">(</span>
     <span class="n">structured_schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
     <span class="n">include_types</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
@@ -344,6 +355,11 @@
 
 <div class="viewcode-block" id="get_function_response">
 <a class="viewcode-back" href="../../../../community/chains/langchain_community.chains.graph_qa.cypher.get_function_response.html#langchain_community.chains.graph_qa.cypher.get_function_response">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.chains.graph_qa.cypher.get_function_response"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">get_function_response</span><span class="p">(</span>
     <span class="n">question</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]:</span>
@@ -372,6 +388,11 @@
 
 <div class="viewcode-block" id="GraphCypherQAChain">
 <a class="viewcode-back" href="../../../../community/chains/langchain_community.chains.graph_qa.cypher.GraphCypherQAChain.html#langchain_community.chains.graph_qa.cypher.GraphCypherQAChain">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.GraphCypherQAChain"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">class</span> <span class="nc">GraphCypherQAChain</span><span class="p">(</span><span class="n">Chain</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Chain for question-answering against a graph by generating Cypher statements.</span>
 

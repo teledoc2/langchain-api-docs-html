@@ -42,11 +42,11 @@
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
 <link href="langchain_community.chains.graph_qa.cypher.extract_cypher.html" rel="next" title="extract_cypher"/>
-<link href="langchain_community.chains.ernie_functions.base.get_ernie_output_parser.html" rel="prev" title="get_ernie_output_parser"/>
+<link href="langchain_community.chains.graph_qa.cypher_utils.CypherQueryCorrector.html" rel="prev" title="CypherQueryCorrector"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 25, 2024" name="docbuild:last-update"/>
+<meta content="Nov 26, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -204,8 +204,6 @@
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../chains.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chains</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.arangodb.ArangoGraphQAChain.html">ArangoGraphQAChain</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.base.GraphQAChain.html">GraphQAChain</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.cypher.GraphCypherQAChain.html">GraphCypherQAChain</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.cypher_utils.CypherQueryCorrector.html">CypherQueryCorrector</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.cypher_utils.Schema.html">Schema</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.falkordb.FalkorDBQAChain.html">FalkorDBQAChain</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.gremlin.GremlinQAChain.html">GremlinQAChain</a></li>
@@ -247,9 +245,6 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.ernie_functions.base.create_structured_output_chain.html">create_structured_output_chain</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.ernie_functions.base.create_structured_output_runnable.html">create_structured_output_runnable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.ernie_functions.base.get_ernie_output_parser.html">get_ernie_output_parser</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">construct_schema</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.cypher.extract_cypher.html">extract_cypher</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.cypher.get_function_response.html">get_function_response</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.falkordb.extract_cypher.html">extract_cypher</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.gremlin.extract_gremlin.html">extract_gremlin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.kuzu.extract_cypher.html">extract_cypher</a></li>
@@ -262,6 +257,11 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.pebblo_retrieval.enforcement_filters.set_enforcement_filters.html">set_enforcement_filters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.pebblo_retrieval.utilities.get_ip.html">get_ip</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.pebblo_retrieval.utilities.get_runtime.html">get_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.cypher.GraphCypherQAChain.html">GraphCypherQAChain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.cypher_utils.CypherQueryCorrector.html">CypherQueryCorrector</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">construct_schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.cypher.extract_cypher.html">extract_cypher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.chains.graph_qa.cypher.get_function_response.html">get_function_response</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../chat_loaders.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chat_loaders</span></code></a></li>
@@ -373,7 +373,10 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="langchain_community.chains.graph_qa.cypher.construct_schema">
 <span class="sig-prename descclassname"><span class="pre">langchain_community.chains.graph_qa.cypher.</span></span><span class="sig-name descname"><span class="pre">construct_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structured_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../_modules/langchain_community/chains/graph_qa/cypher.html#construct_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.chains.graph_qa.cypher.construct_schema" title="Link to this definition">#</a></dt>
-<dd><p>Filter the schema based on included or excluded types</p>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.3.8: </span>Use <code class="docutils literal notranslate"><span class="pre">:meth:`~langchain_neo4j.chains.graph_qa.cypher.construct_schema`</span></code> instead.</p>
+</div>
+<p>Filter the schema based on included or excluded types</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

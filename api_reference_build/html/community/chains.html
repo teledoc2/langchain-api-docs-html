@@ -46,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 25, 2024" name="docbuild:last-update"/>
+<meta content="Nov 26, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -201,8 +201,6 @@
 <li class="toctree-l2 current active has-children"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chains</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.arangodb.ArangoGraphQAChain.html">ArangoGraphQAChain</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.base.GraphQAChain.html">GraphQAChain</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.GraphCypherQAChain.html">GraphCypherQAChain</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher_utils.CypherQueryCorrector.html">CypherQueryCorrector</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher_utils.Schema.html">Schema</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.falkordb.FalkorDBQAChain.html">FalkorDBQAChain</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.gremlin.GremlinQAChain.html">GremlinQAChain</a></li>
@@ -244,9 +242,6 @@
 <li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.ernie_functions.base.create_structured_output_chain.html">create_structured_output_chain</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.ernie_functions.base.create_structured_output_runnable.html">create_structured_output_runnable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.ernie_functions.base.get_ernie_output_parser.html">get_ernie_output_parser</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.construct_schema.html">construct_schema</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.extract_cypher.html">extract_cypher</a></li>
-<li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.get_function_response.html">get_function_response</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.falkordb.extract_cypher.html">extract_cypher</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.gremlin.extract_gremlin.html">extract_gremlin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.kuzu.extract_cypher.html">extract_cypher</a></li>
@@ -259,6 +254,11 @@
 <li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.pebblo_retrieval.enforcement_filters.set_enforcement_filters.html">set_enforcement_filters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.pebblo_retrieval.utilities.get_ip.html">get_ip</a></li>
 <li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.pebblo_retrieval.utilities.get_runtime.html">get_runtime</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.GraphCypherQAChain.html">GraphCypherQAChain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher_utils.CypherQueryCorrector.html">CypherQueryCorrector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.construct_schema.html">construct_schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.extract_cypher.html">extract_cypher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.get_function_response.html">get_function_response</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="chat_loaders.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chat_loaders</span></code></a></li>
@@ -376,12 +376,6 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.base.GraphQAChain.html#langchain_community.chains.graph_qa.base.GraphQAChain" title="langchain_community.chains.graph_qa.base.GraphQAChain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.base.GraphQAChain</span></code></a></p></td>
 <td><p>Chain for question-answering against a graph.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.GraphCypherQAChain.html#langchain_community.chains.graph_qa.cypher.GraphCypherQAChain" title="langchain_community.chains.graph_qa.cypher.GraphCypherQAChain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.cypher.GraphCypherQAChain</span></code></a></p></td>
-<td><p>Chain for question-answering against a graph by generating Cypher statements.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher_utils.CypherQueryCorrector.html#langchain_community.chains.graph_qa.cypher_utils.CypherQueryCorrector" title="langchain_community.chains.graph_qa.cypher_utils.CypherQueryCorrector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.cypher_utils.CypherQueryCorrector</span></code></a>(schemas)</p></td>
-<td><p>Used to correct relationship direction in generated Cypher statements.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher_utils.Schema.html#langchain_community.chains.graph_qa.cypher_utils.Schema" title="langchain_community.chains.graph_qa.cypher_utils.Schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.cypher_utils.Schema</span></code></a>(...)</p></td>
 <td><p>Create new instance of Schema(left_node, relation, right_node)</p></td>
@@ -512,50 +506,68 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.ernie_functions.base.get_ernie_output_parser.html#langchain_community.chains.ernie_functions.base.get_ernie_output_parser" title="langchain_community.chains.ernie_functions.base.get_ernie_output_parser"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.ernie_functions.base.get_ernie_output_parser</span></code></a>(...)</p></td>
 <td><p>Get the appropriate function output parser given the user functions.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.construct_schema.html#langchain_community.chains.graph_qa.cypher.construct_schema" title="langchain_community.chains.graph_qa.cypher.construct_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.cypher.construct_schema</span></code></a>(...)</p></td>
-<td><p>Filter the schema based on included or excluded types</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.extract_cypher.html#langchain_community.chains.graph_qa.cypher.extract_cypher" title="langchain_community.chains.graph_qa.cypher.extract_cypher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.cypher.extract_cypher</span></code></a>(text)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.falkordb.extract_cypher.html#langchain_community.chains.graph_qa.falkordb.extract_cypher" title="langchain_community.chains.graph_qa.falkordb.extract_cypher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.falkordb.extract_cypher</span></code></a>(text)</p></td>
 <td><p>Extract Cypher code from a text.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.get_function_response.html#langchain_community.chains.graph_qa.cypher.get_function_response" title="langchain_community.chains.graph_qa.cypher.get_function_response"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.cypher.get_function_response</span></code></a>(...)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.falkordb.extract_cypher.html#langchain_community.chains.graph_qa.falkordb.extract_cypher" title="langchain_community.chains.graph_qa.falkordb.extract_cypher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.falkordb.extract_cypher</span></code></a>(text)</p></td>
-<td><p>Extract Cypher code from a text.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.gremlin.extract_gremlin.html#langchain_community.chains.graph_qa.gremlin.extract_gremlin" title="langchain_community.chains.graph_qa.gremlin.extract_gremlin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.gremlin.extract_gremlin</span></code></a>(text)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.gremlin.extract_gremlin.html#langchain_community.chains.graph_qa.gremlin.extract_gremlin" title="langchain_community.chains.graph_qa.gremlin.extract_gremlin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.gremlin.extract_gremlin</span></code></a>(text)</p></td>
 <td><p>Extract Gremlin code from a text.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.kuzu.extract_cypher.html#langchain_community.chains.graph_qa.kuzu.extract_cypher" title="langchain_community.chains.graph_qa.kuzu.extract_cypher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.kuzu.extract_cypher</span></code></a>(text)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.kuzu.extract_cypher.html#langchain_community.chains.graph_qa.kuzu.extract_cypher" title="langchain_community.chains.graph_qa.kuzu.extract_cypher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.kuzu.extract_cypher</span></code></a>(text)</p></td>
 <td><p>Extract Cypher code from a text.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.kuzu.remove_prefix.html#langchain_community.chains.graph_qa.kuzu.remove_prefix" title="langchain_community.chains.graph_qa.kuzu.remove_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.kuzu.remove_prefix</span></code></a>(text, prefix)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.kuzu.remove_prefix.html#langchain_community.chains.graph_qa.kuzu.remove_prefix" title="langchain_community.chains.graph_qa.kuzu.remove_prefix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.kuzu.remove_prefix</span></code></a>(text, prefix)</p></td>
 <td><p>Remove a prefix from a text.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.neptune_cypher.extract_cypher.html#langchain_community.chains.graph_qa.neptune_cypher.extract_cypher" title="langchain_community.chains.graph_qa.neptune_cypher.extract_cypher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_cypher.extract_cypher</span></code></a>(text)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.neptune_cypher.extract_cypher.html#langchain_community.chains.graph_qa.neptune_cypher.extract_cypher" title="langchain_community.chains.graph_qa.neptune_cypher.extract_cypher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_cypher.extract_cypher</span></code></a>(text)</p></td>
 <td><p>Extract Cypher code from text using Regex.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.neptune_cypher.trim_query.html#langchain_community.chains.graph_qa.neptune_cypher.trim_query" title="langchain_community.chains.graph_qa.neptune_cypher.trim_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_cypher.trim_query</span></code></a>(query)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.neptune_cypher.trim_query.html#langchain_community.chains.graph_qa.neptune_cypher.trim_query" title="langchain_community.chains.graph_qa.neptune_cypher.trim_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_cypher.trim_query</span></code></a>(query)</p></td>
 <td><p>Trim the query to only include Cypher keywords.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.neptune_cypher.use_simple_prompt.html#langchain_community.chains.graph_qa.neptune_cypher.use_simple_prompt" title="langchain_community.chains.graph_qa.neptune_cypher.use_simple_prompt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_cypher.use_simple_prompt</span></code></a>(llm)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.neptune_cypher.use_simple_prompt.html#langchain_community.chains.graph_qa.neptune_cypher.use_simple_prompt" title="langchain_community.chains.graph_qa.neptune_cypher.use_simple_prompt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_cypher.use_simple_prompt</span></code></a>(llm)</p></td>
 <td><p>Decides whether to use the simple prompt</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.neptune_sparql.extract_sparql.html#langchain_community.chains.graph_qa.neptune_sparql.extract_sparql" title="langchain_community.chains.graph_qa.neptune_sparql.extract_sparql"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_sparql.extract_sparql</span></code></a>(query)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.neptune_sparql.extract_sparql.html#langchain_community.chains.graph_qa.neptune_sparql.extract_sparql" title="langchain_community.chains.graph_qa.neptune_sparql.extract_sparql"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_sparql.extract_sparql</span></code></a>(query)</p></td>
 <td><p>Extract SPARQL code from a text.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.pebblo_retrieval.enforcement_filters.clear_enforcement_filters.html#langchain_community.chains.pebblo_retrieval.enforcement_filters.clear_enforcement_filters" title="langchain_community.chains.pebblo_retrieval.enforcement_filters.clear_enforcement_filters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.pebblo_retrieval.enforcement_filters.clear_enforcement_filters</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.pebblo_retrieval.enforcement_filters.clear_enforcement_filters.html#langchain_community.chains.pebblo_retrieval.enforcement_filters.clear_enforcement_filters" title="langchain_community.chains.pebblo_retrieval.enforcement_filters.clear_enforcement_filters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.pebblo_retrieval.enforcement_filters.clear_enforcement_filters</span></code></a>(...)</p></td>
 <td><p>Clear the identity and semantic enforcement filters in the retriever search_kwargs.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.pebblo_retrieval.enforcement_filters.set_enforcement_filters.html#langchain_community.chains.pebblo_retrieval.enforcement_filters.set_enforcement_filters" title="langchain_community.chains.pebblo_retrieval.enforcement_filters.set_enforcement_filters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.pebblo_retrieval.enforcement_filters.set_enforcement_filters</span></code></a>(...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.pebblo_retrieval.enforcement_filters.set_enforcement_filters.html#langchain_community.chains.pebblo_retrieval.enforcement_filters.set_enforcement_filters" title="langchain_community.chains.pebblo_retrieval.enforcement_filters.set_enforcement_filters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.pebblo_retrieval.enforcement_filters.set_enforcement_filters</span></code></a>(...)</p></td>
 <td><p>Set identity and semantic enforcement filters in the retriever.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.pebblo_retrieval.utilities.get_ip.html#langchain_community.chains.pebblo_retrieval.utilities.get_ip" title="langchain_community.chains.pebblo_retrieval.utilities.get_ip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.pebblo_retrieval.utilities.get_ip</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.pebblo_retrieval.utilities.get_ip.html#langchain_community.chains.pebblo_retrieval.utilities.get_ip" title="langchain_community.chains.pebblo_retrieval.utilities.get_ip"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.pebblo_retrieval.utilities.get_ip</span></code></a>()</p></td>
 <td><p>Fetch local runtime ip address.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.pebblo_retrieval.utilities.get_runtime.html#langchain_community.chains.pebblo_retrieval.utilities.get_runtime" title="langchain_community.chains.pebblo_retrieval.utilities.get_runtime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.pebblo_retrieval.utilities.get_runtime</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.pebblo_retrieval.utilities.get_runtime.html#langchain_community.chains.pebblo_retrieval.utilities.get_runtime" title="langchain_community.chains.pebblo_retrieval.utilities.get_runtime"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.pebblo_retrieval.utilities.get_runtime</span></code></a>()</p></td>
 <td><p>Fetch the current Framework and Runtime details.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Deprecated classes</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.GraphCypherQAChain.html#langchain_community.chains.graph_qa.cypher.GraphCypherQAChain" title="langchain_community.chains.graph_qa.cypher.GraphCypherQAChain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.cypher.GraphCypherQAChain</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher_utils.CypherQueryCorrector.html#langchain_community.chains.graph_qa.cypher_utils.CypherQueryCorrector" title="langchain_community.chains.graph_qa.cypher_utils.CypherQueryCorrector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.cypher_utils.CypherQueryCorrector</span></code></a>(schemas)</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Deprecated functions</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.construct_schema.html#langchain_community.chains.graph_qa.cypher.construct_schema" title="langchain_community.chains.graph_qa.cypher.construct_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.cypher.construct_schema</span></code></a>(...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.extract_cypher.html#langchain_community.chains.graph_qa.cypher.extract_cypher" title="langchain_community.chains.graph_qa.cypher.extract_cypher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.cypher.extract_cypher</span></code></a>(text)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_community.chains.graph_qa.cypher.get_function_response.html#langchain_community.chains.graph_qa.cypher.get_function_response" title="langchain_community.chains.graph_qa.cypher.get_function_response"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.cypher.get_function_response</span></code></a>(...)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>

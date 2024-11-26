@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 25, 2024" name="docbuild:last-update"/>
+<meta content="Nov 26, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -213,6 +213,7 @@
 <span></span><span class="kn">from</span> <span class="nn">hashlib</span> <span class="kn">import</span> <span class="n">md5</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
+<span class="kn">from</span> <span class="nn">langchain_core._api.deprecation</span> <span class="kn">import</span> <span class="n">deprecated</span>
 <span class="kn">from</span> <span class="nn">langchain_core.utils</span> <span class="kn">import</span> <span class="n">get_from_dict_or_env</span>
 
 <span class="kn">from</span> <span class="nn">langchain_community.graphs.graph_document</span> <span class="kn">import</span> <span class="n">GraphDocument</span>
@@ -265,6 +266,11 @@
 
 <div class="viewcode-block" id="clean_string_values">
 <a class="viewcode-back" href="../../../community/graphs/langchain_community.graphs.neo4j_graph.clean_string_values.html#langchain_community.graphs.memgraph_graph.clean_string_values">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.graphs.neo4j_graph.clean_string_values"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">clean_string_values</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Clean string values for schema.</span>
 
@@ -282,6 +288,11 @@
 
 <div class="viewcode-block" id="value_sanitize">
 <a class="viewcode-back" href="../../../community/graphs/langchain_community.graphs.neo4j_graph.value_sanitize.html#langchain_community.graphs.memgraph_graph.value_sanitize">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.graphs.neo4j_graph.value_sanitize"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">value_sanitize</span><span class="p">(</span><span class="n">d</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Sanitize the input dictionary or list.</span>
 
@@ -329,6 +340,11 @@
 
 
 
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.graphs.neo4j_graph._get_node_import_query"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">_get_node_import_query</span><span class="p">(</span><span class="n">baseEntityLabel</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">include_source</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">baseEntityLabel</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span>
@@ -352,6 +368,11 @@
         <span class="p">)</span>
 
 
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.graphs.neo4j_graph._get_rel_import_query"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">_get_rel_import_query</span><span class="p">(</span><span class="n">baseEntityLabel</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">if</span> <span class="n">baseEntityLabel</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">(</span>
@@ -376,6 +397,11 @@
         <span class="p">)</span>
 
 
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.graphs.neo4j_graph._format_schema"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">_format_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">is_enhanced</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="n">formatted_node_props</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">formatted_rel_props</span> <span class="o">=</span> <span class="p">[]</span>
@@ -505,12 +531,22 @@
     <span class="p">)</span>
 
 
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.graphs.neo4j_graph._remove_backticks"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">_remove_backticks</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">return</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"`"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Neo4jGraph">
 <a class="viewcode-back" href="../../../community/graphs/langchain_community.graphs.neo4j_graph.Neo4jGraph.html#langchain_community.graphs.memgraph_graph.Neo4jGraph">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.Neo4jGraph"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">class</span> <span class="nc">Neo4jGraph</span><span class="p">(</span><span class="n">GraphStore</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Neo4j database wrapper for various graph operations.</span>
 

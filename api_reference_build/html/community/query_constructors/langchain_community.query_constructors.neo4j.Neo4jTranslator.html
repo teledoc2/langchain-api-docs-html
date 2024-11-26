@@ -41,12 +41,12 @@
 <script>DOCUMENTATION_OPTIONS.pagename = 'community/query_constructors/langchain_community.query_constructors.neo4j.Neo4jTranslator';</script>
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
-<link href="langchain_community.query_constructors.opensearch.OpenSearchTranslator.html" rel="next" title="OpenSearchTranslator"/>
-<link href="langchain_community.query_constructors.myscale.MyScaleTranslator.html" rel="prev" title="MyScaleTranslator"/>
+<link href="../retrievers.html" rel="next" title="retrievers"/>
+<link href="langchain_community.query_constructors.vectara.process_value.html" rel="prev" title="process_value"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 25, 2024" name="docbuild:last-update"/>
+<meta content="Nov 26, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -230,7 +230,6 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.query_constructors.milvus.MilvusTranslator.html">MilvusTranslator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.query_constructors.mongodb_atlas.MongoDBAtlasTranslator.html">MongoDBAtlasTranslator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.query_constructors.myscale.MyScaleTranslator.html">MyScaleTranslator</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Neo4jTranslator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.query_constructors.opensearch.OpenSearchTranslator.html">OpenSearchTranslator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.query_constructors.pgvector.PGVectorTranslator.html">PGVectorTranslator</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.query_constructors.pinecone.PineconeTranslator.html">PineconeTranslator</a></li>
@@ -244,6 +243,7 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.query_constructors.deeplake.can_cast_to_float.html">can_cast_to_float</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.query_constructors.milvus.process_value.html">process_value</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.query_constructors.vectara.process_value.html">process_value</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Neo4jTranslator</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../retrievers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">retrievers</span></code></a></li>
@@ -337,8 +337,11 @@
 <h1>Neo4jTranslator<a class="headerlink" href="#neo4jtranslator" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="langchain_community.query_constructors.neo4j.Neo4jTranslator">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_community.query_constructors.neo4j.</span></span><span class="sig-name descname"><span class="pre">Neo4jTranslator</span></span><a class="reference internal" href="../../_modules/langchain_community/query_constructors/neo4j.html#Neo4jTranslator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.query_constructors.neo4j.Neo4jTranslator" title="Link to this definition">#</a></dt>
-<dd><p>Translate <cite>Neo4j</cite> internal query language elements to valid filters.</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_community.query_constructors.neo4j.</span></span><span class="sig-name descname"><span class="pre">Neo4jTranslator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_community/query_constructors/neo4j.html#Neo4jTranslator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.query_constructors.neo4j.Neo4jTranslator" title="Link to this definition">#</a></dt>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.3.8: </span>Use <code class="docutils literal notranslate"><span class="pre">:class:`~langchain_neo4j.query_constructors.neo4j.Neo4jTranslator`</span></code> instead.</p>
+</div>
+<p>Translate <cite>Neo4j</cite> internal query language elements to valid filters.</p>
 <p class="rubric">Attributes</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
@@ -354,7 +357,7 @@
 <p class="rubric">Methods</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_community.query_constructors.neo4j.Neo4jTranslator.__init__" title="langchain_community.query_constructors.neo4j.Neo4jTranslator.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_community.query_constructors.neo4j.Neo4jTranslator.__init__" title="langchain_community.query_constructors.neo4j.Neo4jTranslator.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args, **kwargs)</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#langchain_community.query_constructors.neo4j.Neo4jTranslator.visit_comparison" title="langchain_community.query_constructors.neo4j.Neo4jTranslator.visit_comparison"><code class="xref py py-obj docutils literal notranslate"><span class="pre">visit_comparison</span></code></a>(comparison)</p></td>
@@ -371,8 +374,20 @@
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_community.query_constructors.neo4j.Neo4jTranslator.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#langchain_community.query_constructors.neo4j.Neo4jTranslator.__init__" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#langchain_community.query_constructors.neo4j.Neo4jTranslator.__init__" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>self</strong> (<em>Any</em>)</p></li>
+<li><p><strong>args</strong> (<em>Any</em>)</p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>Any</em></p>
+</dd>
+</dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_community.query_constructors.neo4j.Neo4jTranslator.visit_comparison">
 <span class="sig-name descname"><span class="pre">visit_comparison</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">comparison</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../core/structured_query/langchain_core.structured_query.Comparison.html#langchain_core.structured_query.Comparison" title="langchain_core.structured_query.Comparison"><span class="pre">Comparison</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../../_modules/langchain_community/query_constructors/neo4j.html#Neo4jTranslator.visit_comparison"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.query_constructors.neo4j.Neo4jTranslator.visit_comparison" title="Link to this definition">#</a></dt>

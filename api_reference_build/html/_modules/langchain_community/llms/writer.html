@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 25, 2024" name="docbuild:last-update"/>
+<meta content="Nov 26, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -210,15 +210,16 @@
 <div id="searchbox"></div>
 <article class="bd-article">
 <h1>Source code for langchain_community.llms.writer</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">AsyncIterator</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">langchain_core.callbacks</span> <span class="kn">import</span> <span class="n">CallbackManagerForLLMRun</span>
+<span class="kn">from</span> <span class="nn">langchain_core.callbacks</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">,</span>
+    <span class="n">CallbackManagerForLLMRun</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">langchain_core.language_models.llms</span> <span class="kn">import</span> <span class="n">LLM</span>
-<span class="kn">from</span> <span class="nn">langchain_core.utils</span> <span class="kn">import</span> <span class="n">get_from_dict_or_env</span><span class="p">,</span> <span class="n">pre_init</span>
-<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">ConfigDict</span>
-
-<span class="kn">from</span> <span class="nn">langchain_community.llms.utils</span> <span class="kn">import</span> <span class="n">enforce_stop_tokens</span>
+<span class="kn">from</span> <span class="nn">langchain_core.outputs</span> <span class="kn">import</span> <span class="n">GenerationChunk</span>
+<span class="kn">from</span> <span class="nn">langchain_core.utils</span> <span class="kn">import</span> <span class="n">get_from_dict_or_env</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">SecretStr</span><span class="p">,</span> <span class="n">model_validator</span>
 
 
 <div class="viewcode-block" id="Writer">
@@ -226,100 +227,77 @@
 <span class="k">class</span> <span class="nc">Writer</span><span class="p">(</span><span class="n">LLM</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Writer large language models.</span>
 
-<span class="sd">    To use, you should have the environment variable ``WRITER_API_KEY`` and</span>
-<span class="sd">    ``WRITER_ORG_ID`` set with your API key and organization ID respectively.</span>
+<span class="sd">    To use, you should have the ``writer-sdk`` Python package installed, and the</span>
+<span class="sd">    environment variable ``WRITER_API_KEY`` set with your API key.</span>
 
 <span class="sd">    Example:</span>
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            from langchain_community.llms import Writer</span>
-<span class="sd">            writer = Writer(model_id="palmyra-base")</span>
+<span class="sd">            from langchain_community.llms import Writer as WriterLLM</span>
+<span class="sd">            from writerai import Writer, AsyncWriter</span>
+
+<span class="sd">            client = Writer()</span>
+<span class="sd">            async_client = AsyncWriter()</span>
+
+<span class="sd">            chat = WriterLLM(</span>
+<span class="sd">                client=client,</span>
+<span class="sd">                async_client=async_client</span>
+<span class="sd">            )</span>
 <span class="sd">    """</span>
 
-    <span class="n">writer_org_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">"""Writer organization ID."""</span>
+    <span class="n">client</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1">#: :meta private:</span>
+    <span class="n">async_client</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1">#: :meta private:</span>
 
-    <span class="n">model_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"palmyra-instruct"</span>
-<span class="w">    </span><span class="sd">"""Model name to use."""</span>
-
-    <span class="n">min_tokens</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">"""Minimum number of tokens to generate."""</span>
-
-    <span class="n">max_tokens</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">"""Maximum number of tokens to generate."""</span>
-
-    <span class="n">temperature</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">"""What sampling temperature to use."""</span>
-
-    <span class="n">top_p</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">"""Total probability mass of tokens to consider at each step."""</span>
-
-    <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">"""Sequences when completion generation will stop."""</span>
-
-    <span class="n">presence_penalty</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">"""Penalizes repeated tokens regardless of frequency."""</span>
-
-    <span class="n">repetition_penalty</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">"""Penalizes repeated tokens according to frequency."""</span>
-
-    <span class="n">best_of</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">"""Generates this many completions server-side and returns the "best"."""</span>
-
-    <span class="n">logprobs</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="w">    </span><span class="sd">"""Whether to return log probabilities."""</span>
-
-    <span class="n">n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">"""How many completions to generate."""</span>
-
-    <span class="n">writer_api_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">api_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SecretStr</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">"""Writer API key."""</span>
 
-    <span class="n">base_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">"""Base url to use, if None decides based on model name."""</span>
+    <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">"palmyra-x-003-instruct"</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s2">"model"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Model name to use."""</span>
 
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>
-        <span class="n">extra</span><span class="o">=</span><span class="s2">"forbid"</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="n">max_tokens</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""The maximum number of tokens that the model can generate in the response."""</span>
 
-<div class="viewcode-block" id="Writer.validate_environment">
-<a class="viewcode-back" href="../../../community/llms/langchain_community.llms.writer.Writer.html#langchain_community.llms.writer.Writer.validate_environment">[docs]</a>
-    <span class="nd">@pre_init</span>
-    <span class="k">def</span> <span class="nf">validate_environment</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Validate that api key and organization id exist in environment."""</span>
+    <span class="n">temperature</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.7</span>
+<span class="w">    </span><span class="sd">"""Controls the randomness of the model's outputs. Higher values lead to more </span>
+<span class="sd">    random outputs, while lower values make the model more deterministic."""</span>
 
-        <span class="n">writer_api_key</span> <span class="o">=</span> <span class="n">get_from_dict_or_env</span><span class="p">(</span>
-            <span class="n">values</span><span class="p">,</span> <span class="s2">"writer_api_key"</span><span class="p">,</span> <span class="s2">"WRITER_API_KEY"</span>
-        <span class="p">)</span>
-        <span class="n">values</span><span class="p">[</span><span class="s2">"writer_api_key"</span><span class="p">]</span> <span class="o">=</span> <span class="n">writer_api_key</span>
+    <span class="n">top_p</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Used to control the nucleus sampling, where only the most probable tokens</span>
+<span class="sd">     with a cumulative probability of top_p are considered for sampling, providing </span>
+<span class="sd">     a way to fine-tune the randomness of predictions."""</span>
 
-        <span class="n">writer_org_id</span> <span class="o">=</span> <span class="n">get_from_dict_or_env</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="s2">"writer_org_id"</span><span class="p">,</span> <span class="s2">"WRITER_ORG_ID"</span><span class="p">)</span>
-        <span class="n">values</span><span class="p">[</span><span class="s2">"writer_org_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">writer_org_id</span>
+    <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Specifies stopping conditions for the model's output generation. This can</span>
+<span class="sd">     be an array of strings or a single string that the model will look for as a </span>
+<span class="sd">     signal to stop generating further tokens."""</span>
 
-        <span class="k">return</span> <span class="n">values</span></div>
+    <span class="n">best_of</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Specifies the number of completions to generate and return the best one.</span>
+<span class="sd">     Useful for generating multiple outputs and choosing the best based on some</span>
+<span class="sd">      criteria."""</span>
 
+    <span class="n">model_kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Holds any model parameters valid for `create` call not explicitly specified."""</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">populate_by_name</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_default_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Get the default parameters for calling Writer API."""</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">"minTokens"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_tokens</span><span class="p">,</span>
-            <span class="s2">"maxTokens"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span><span class="p">,</span>
+            <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span><span class="p">,</span>
             <span class="s2">"temperature"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
-            <span class="s2">"topP"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_p</span><span class="p">,</span>
+            <span class="s2">"top_p"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_p</span><span class="p">,</span>
             <span class="s2">"stop"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span><span class="p">,</span>
-            <span class="s2">"presencePenalty"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">presence_penalty</span><span class="p">,</span>
-            <span class="s2">"repetitionPenalty"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">repetition_penalty</span><span class="p">,</span>
-            <span class="s2">"bestOf"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_of</span><span class="p">,</span>
-            <span class="s2">"logprobs"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">logprobs</span><span class="p">,</span>
-            <span class="s2">"n"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span>
+            <span class="s2">"best_of"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">best_of</span><span class="p">,</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">model_kwargs</span><span class="p">,</span>
         <span class="p">}</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_identifying_params</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Get the identifying parameters."""</span>
         <span class="k">return</span> <span class="p">{</span>
-            <span class="o">**</span><span class="p">{</span><span class="s2">"model_id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">,</span> <span class="s2">"writer_org_id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer_org_id</span><span class="p">},</span>
+            <span class="s2">"model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span>
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_params</span><span class="p">,</span>
         <span class="p">}</span>
 
@@ -328,6 +306,51 @@
 <span class="w">        </span><span class="sd">"""Return type of llm."""</span>
         <span class="k">return</span> <span class="s2">"writer"</span>
 
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">validate_environment</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Validates that api key is passed and creates Writer clients."""</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">writerai</span> <span class="kn">import</span> <span class="n">AsyncClient</span><span class="p">,</span> <span class="n">Client</span>
+        <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                <span class="s2">"Could not import writerai python package. "</span>
+                <span class="s2">"Please install it with `pip install writerai`."</span>
+            <span class="p">)</span> <span class="kn">from</span> <span class="nn">e</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"client"</span><span class="p">):</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">"client"</span><span class="p">:</span> <span class="n">Client</span><span class="p">(</span>
+                        <span class="n">api_key</span><span class="o">=</span><span class="n">get_from_dict_or_env</span><span class="p">(</span>
+                            <span class="n">values</span><span class="p">,</span> <span class="s2">"api_key"</span><span class="p">,</span> <span class="s2">"WRITER_API_KEY"</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"async_client"</span><span class="p">):</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">"async_client"</span><span class="p">:</span> <span class="n">AsyncClient</span><span class="p">(</span>
+                        <span class="n">api_key</span><span class="o">=</span><span class="n">get_from_dict_or_env</span><span class="p">(</span>
+                            <span class="n">values</span><span class="p">,</span> <span class="s2">"api_key"</span><span class="p">,</span> <span class="s2">"WRITER_API_KEY"</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span>
+            <span class="nb">type</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"client"</span><span class="p">))</span> <span class="ow">is</span> <span class="n">Client</span>
+            <span class="ow">and</span> <span class="nb">type</span><span class="p">(</span><span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"async_client"</span><span class="p">))</span> <span class="ow">is</span> <span class="n">AsyncClient</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"'client' attribute must be with type 'Client' and "</span>
+                <span class="s2">"'async_client' must be with type 'AsyncClient' from 'writerai' package"</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">values</span>
+
     <span class="k">def</span> <span class="nf">_call</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -335,44 +358,57 @@
         <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Call out to Writer's completions endpoint.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            prompt: The prompt to pass into the model.</span>
-<span class="sd">            stop: Optional list of stop words to use when generating.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            The string generated by the model.</span>
-
-<span class="sd">        Example:</span>
-<span class="sd">            .. code-block:: python</span>
-
-<span class="sd">                response = Writer("Tell me a joke.")</span>
-<span class="sd">        """</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">base_url</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">"https://enterprise-api.writer.com/llm"</span>
-                <span class="sa">f</span><span class="s2">"/organization/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">writer_org_id</span><span class="si">}</span><span class="s2">"</span>
-                <span class="sa">f</span><span class="s2">"/model/</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="si">}</span><span class="s2">/completions"</span>
-            <span class="p">)</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_default_params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">}</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-            <span class="n">url</span><span class="o">=</span><span class="n">base_url</span><span class="p">,</span>
-            <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
-                <span class="s2">"Authorization"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">writer_api_key</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
-                <span class="s2">"Content-Type"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">,</span>
-                <span class="s2">"Accept"</span><span class="p">:</span> <span class="s2">"application/json"</span><span class="p">,</span>
-            <span class="p">},</span>
-            <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"prompt"</span><span class="p">:</span> <span class="n">prompt</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">},</span>
-        <span class="p">)</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_identifying_params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># I believe this is required since the stop tokens</span>
-            <span class="c1"># are not enforced by the model parameters</span>
-            <span class="n">text</span> <span class="o">=</span> <span class="n">enforce_stop_tokens</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">stop</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">text</span></div>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"stop"</span><span class="p">:</span> <span class="n">stop</span><span class="p">})</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">return</span> <span class="n">text</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_acall</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_identifying_params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"stop"</span><span class="p">:</span> <span class="n">stop</span><span class="p">})</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_client</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span>
+        <span class="k">return</span> <span class="n">text</span>
+
+    <span class="k">def</span> <span class="nf">_stream</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">GenerationChunk</span><span class="p">]:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_identifying_params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="s2">"stream"</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"stop"</span><span class="p">:</span> <span class="n">stop</span><span class="p">})</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">run_manager</span><span class="p">:</span>
+                <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">GenerationChunk</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">chunk</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span> <span class="nf">_astream</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">GenerationChunk</span><span class="p">]:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">_identifying_params</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span> <span class="s2">"stream"</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">stop</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">"stop"</span><span class="p">:</span> <span class="n">stop</span><span class="p">})</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_client</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="o">**</span><span class="n">params</span><span class="p">)</span>
+        <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">run_manager</span><span class="p">:</span>
+                <span class="k">await</span> <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">yield</span> <span class="n">GenerationChunk</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">chunk</span><span class="o">.</span><span class="n">value</span><span class="p">)</span></div>
 
 </pre></div>
 </article>

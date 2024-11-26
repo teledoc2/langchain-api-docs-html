@@ -46,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 25, 2024" name="docbuild:last-update"/>
+<meta content="Nov 26, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -225,7 +225,6 @@
 <li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.kuzu_graph.KuzuGraph.html">KuzuGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.memgraph_graph.MemgraphGraph.html">MemgraphGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.nebula_graph.NebulaGraph.html">NebulaGraph</a></li>
-<li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.neo4j_graph.Neo4jGraph.html">Neo4jGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.neptune_graph.BaseNeptuneGraph.html">BaseNeptuneGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.neptune_graph.NeptuneAnalyticsGraph.html">NeptuneAnalyticsGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.neptune_graph.NeptuneGraph.html">NeptuneGraph</a></li>
@@ -237,10 +236,11 @@
 <li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.rdf_graph.RdfGraph.html">RdfGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.tigergraph_graph.TigerGraph.html">TigerGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.arangodb_graph.get_arangodb_client.html">get_arangodb_client</a></li>
-<li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.neo4j_graph.clean_string_values.html">clean_string_values</a></li>
-<li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.neo4j_graph.value_sanitize.html">value_sanitize</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.networkx_graph.get_entities.html">get_entities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.networkx_graph.parse_triples.html">parse_triples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.neo4j_graph.Neo4jGraph.html">Neo4jGraph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.neo4j_graph.clean_string_values.html">clean_string_values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphs/langchain_community.graphs.neo4j_graph.value_sanitize.html">value_sanitize</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="indexes.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">indexes</span></code></a></li>
@@ -382,37 +382,34 @@
 <tr class="row-even"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.nebula_graph.NebulaGraph.html#langchain_community.graphs.nebula_graph.NebulaGraph" title="langchain_community.graphs.nebula_graph.NebulaGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.nebula_graph.NebulaGraph</span></code></a>(space[, ...])</p></td>
 <td><p>NebulaGraph wrapper for graph operations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neo4j_graph.Neo4jGraph.html#langchain_community.graphs.neo4j_graph.Neo4jGraph" title="langchain_community.graphs.neo4j_graph.Neo4jGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neo4j_graph.Neo4jGraph</span></code></a>([url, ...])</p></td>
-<td><p>Neo4j database wrapper for various graph operations.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neptune_graph.BaseNeptuneGraph.html#langchain_community.graphs.neptune_graph.BaseNeptuneGraph" title="langchain_community.graphs.neptune_graph.BaseNeptuneGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neptune_graph.BaseNeptuneGraph</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neptune_graph.BaseNeptuneGraph.html#langchain_community.graphs.neptune_graph.BaseNeptuneGraph" title="langchain_community.graphs.neptune_graph.BaseNeptuneGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neptune_graph.BaseNeptuneGraph</span></code></a>()</p></td>
 <td><p>Abstract base class for Neptune.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neptune_graph.NeptuneAnalyticsGraph.html#langchain_community.graphs.neptune_graph.NeptuneAnalyticsGraph" title="langchain_community.graphs.neptune_graph.NeptuneAnalyticsGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neptune_graph.NeptuneAnalyticsGraph</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neptune_graph.NeptuneAnalyticsGraph.html#langchain_community.graphs.neptune_graph.NeptuneAnalyticsGraph" title="langchain_community.graphs.neptune_graph.NeptuneAnalyticsGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neptune_graph.NeptuneAnalyticsGraph</span></code></a>(...)</p></td>
 <td><p>Neptune Analytics wrapper for graph operations.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neptune_graph.NeptuneGraph.html#langchain_community.graphs.neptune_graph.NeptuneGraph" title="langchain_community.graphs.neptune_graph.NeptuneGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neptune_graph.NeptuneGraph</span></code></a>(host[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neptune_graph.NeptuneGraph.html#langchain_community.graphs.neptune_graph.NeptuneGraph" title="langchain_community.graphs.neptune_graph.NeptuneGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neptune_graph.NeptuneGraph</span></code></a>(host[, ...])</p></td>
 <td><p>Neptune wrapper for graph operations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neptune_graph.NeptuneQueryException.html#langchain_community.graphs.neptune_graph.NeptuneQueryException" title="langchain_community.graphs.neptune_graph.NeptuneQueryException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neptune_graph.NeptuneQueryException</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neptune_graph.NeptuneQueryException.html#langchain_community.graphs.neptune_graph.NeptuneQueryException" title="langchain_community.graphs.neptune_graph.NeptuneQueryException"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neptune_graph.NeptuneQueryException</span></code></a>(...)</p></td>
 <td><p>Exception for the Neptune queries.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neptune_rdf_graph.NeptuneRdfGraph.html#langchain_community.graphs.neptune_rdf_graph.NeptuneRdfGraph" title="langchain_community.graphs.neptune_rdf_graph.NeptuneRdfGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neptune_rdf_graph.NeptuneRdfGraph</span></code></a>(host)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neptune_rdf_graph.NeptuneRdfGraph.html#langchain_community.graphs.neptune_rdf_graph.NeptuneRdfGraph" title="langchain_community.graphs.neptune_rdf_graph.NeptuneRdfGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neptune_rdf_graph.NeptuneRdfGraph</span></code></a>(host)</p></td>
 <td><p>Neptune wrapper for RDF graph operations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.networkx_graph.KnowledgeTriple.html#langchain_community.graphs.networkx_graph.KnowledgeTriple" title="langchain_community.graphs.networkx_graph.KnowledgeTriple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.networkx_graph.KnowledgeTriple</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.networkx_graph.KnowledgeTriple.html#langchain_community.graphs.networkx_graph.KnowledgeTriple" title="langchain_community.graphs.networkx_graph.KnowledgeTriple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.networkx_graph.KnowledgeTriple</span></code></a>(...)</p></td>
 <td><p>Knowledge triple in the graph.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.networkx_graph.NetworkxEntityGraph.html#langchain_community.graphs.networkx_graph.NetworkxEntityGraph" title="langchain_community.graphs.networkx_graph.NetworkxEntityGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.networkx_graph.NetworkxEntityGraph</span></code></a>([graph])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.networkx_graph.NetworkxEntityGraph.html#langchain_community.graphs.networkx_graph.NetworkxEntityGraph" title="langchain_community.graphs.networkx_graph.NetworkxEntityGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.networkx_graph.NetworkxEntityGraph</span></code></a>([graph])</p></td>
 <td><p>Networkx wrapper for entity graph operations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.ontotext_graphdb_graph.OntotextGraphDBGraph.html#langchain_community.graphs.ontotext_graphdb_graph.OntotextGraphDBGraph" title="langchain_community.graphs.ontotext_graphdb_graph.OntotextGraphDBGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.ontotext_graphdb_graph.OntotextGraphDBGraph</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.ontotext_graphdb_graph.OntotextGraphDBGraph.html#langchain_community.graphs.ontotext_graphdb_graph.OntotextGraphDBGraph" title="langchain_community.graphs.ontotext_graphdb_graph.OntotextGraphDBGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.ontotext_graphdb_graph.OntotextGraphDBGraph</span></code></a>(...)</p></td>
 <td><p>Ontotext GraphDB <a class="reference external" href="https://graphdb.ontotext.com/">https://graphdb.ontotext.com/</a> wrapper for graph operations.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.rdf_graph.RdfGraph.html#langchain_community.graphs.rdf_graph.RdfGraph" title="langchain_community.graphs.rdf_graph.RdfGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.rdf_graph.RdfGraph</span></code></a>([source_file, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.rdf_graph.RdfGraph.html#langchain_community.graphs.rdf_graph.RdfGraph" title="langchain_community.graphs.rdf_graph.RdfGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.rdf_graph.RdfGraph</span></code></a>([source_file, ...])</p></td>
 <td><p>RDFlib wrapper for graph operations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.tigergraph_graph.TigerGraph.html#langchain_community.graphs.tigergraph_graph.TigerGraph" title="langchain_community.graphs.tigergraph_graph.TigerGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.tigergraph_graph.TigerGraph</span></code></a>(conn)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.tigergraph_graph.TigerGraph.html#langchain_community.graphs.tigergraph_graph.TigerGraph" title="langchain_community.graphs.tigergraph_graph.TigerGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.tigergraph_graph.TigerGraph</span></code></a>(conn)</p></td>
 <td><p>TigerGraph wrapper for graph operations.</p></td>
 </tr>
 </tbody>
@@ -424,17 +421,32 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.arangodb_graph.get_arangodb_client.html#langchain_community.graphs.arangodb_graph.get_arangodb_client" title="langchain_community.graphs.arangodb_graph.get_arangodb_client"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.arangodb_graph.get_arangodb_client</span></code></a>([...])</p></td>
 <td><p>Get the Arango DB client from credentials.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neo4j_graph.clean_string_values.html#langchain_community.graphs.neo4j_graph.clean_string_values" title="langchain_community.graphs.neo4j_graph.clean_string_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neo4j_graph.clean_string_values</span></code></a>(text)</p></td>
-<td><p>Clean string values for schema.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neo4j_graph.value_sanitize.html#langchain_community.graphs.neo4j_graph.value_sanitize" title="langchain_community.graphs.neo4j_graph.value_sanitize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neo4j_graph.value_sanitize</span></code></a>(d)</p></td>
-<td><p>Sanitize the input dictionary or list.</p></td>
-</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.networkx_graph.get_entities.html#langchain_community.graphs.networkx_graph.get_entities" title="langchain_community.graphs.networkx_graph.get_entities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.networkx_graph.get_entities</span></code></a>(entity_str)</p></td>
 <td><p>Extract entities from entity string.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.networkx_graph.parse_triples.html#langchain_community.graphs.networkx_graph.parse_triples" title="langchain_community.graphs.networkx_graph.parse_triples"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.networkx_graph.parse_triples</span></code></a>(...)</p></td>
 <td><p>Parse knowledge triples from the knowledge string.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Deprecated classes</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neo4j_graph.Neo4jGraph.html#langchain_community.graphs.neo4j_graph.Neo4jGraph" title="langchain_community.graphs.neo4j_graph.Neo4jGraph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neo4j_graph.Neo4jGraph</span></code></a>([url, ...])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Deprecated functions</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neo4j_graph.clean_string_values.html#langchain_community.graphs.neo4j_graph.clean_string_values" title="langchain_community.graphs.neo4j_graph.clean_string_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neo4j_graph.clean_string_values</span></code></a>(text)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="graphs/langchain_community.graphs.neo4j_graph.value_sanitize.html#langchain_community.graphs.neo4j_graph.value_sanitize" title="langchain_community.graphs.neo4j_graph.value_sanitize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">graphs.neo4j_graph.value_sanitize</span></code></a>(d)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>

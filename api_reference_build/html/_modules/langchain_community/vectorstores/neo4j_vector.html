@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 25, 2024" name="docbuild:last-update"/>
+<meta content="Nov 26, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -228,6 +228,7 @@
 <span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">langchain_core._api.deprecation</span> <span class="kn">import</span> <span class="n">deprecated</span>
 <span class="kn">from</span> <span class="nn">langchain_core.documents</span> <span class="kn">import</span> <span class="n">Document</span>
 <span class="kn">from</span> <span class="nn">langchain_core.embeddings</span> <span class="kn">import</span> <span class="n">Embeddings</span>
 <span class="kn">from</span> <span class="nn">langchain_core.utils</span> <span class="kn">import</span> <span class="n">get_from_dict_or_env</span>
@@ -277,6 +278,11 @@
 
 <div class="viewcode-block" id="SearchType">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.neo4j_vector.SearchType.html#langchain_community.vectorstores.neo4j_vector.SearchType">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.vectorstores.neo4j_vector.SearchType"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">class</span> <span class="nc">SearchType</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Enumerator of the Distance strategies."""</span>
 
@@ -290,6 +296,11 @@
 
 <div class="viewcode-block" id="IndexType">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.neo4j_vector.IndexType.html#langchain_community.vectorstores.neo4j_vector.IndexType">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.vectorstores.neo4j_vector.IndexType"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">class</span> <span class="nc">IndexType</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">enum</span><span class="o">.</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Enumerator of the index types."""</span>
 
@@ -301,6 +312,11 @@
 <span class="n">DEFAULT_INDEX_TYPE</span> <span class="o">=</span> <span class="n">IndexType</span><span class="o">.</span><span class="n">NODE</span>
 
 
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.vectorstores.neo4j_vector._get_search_index_query"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">_get_search_index_query</span><span class="p">(</span>
     <span class="n">search_type</span><span class="p">:</span> <span class="n">SearchType</span><span class="p">,</span> <span class="n">index_type</span><span class="p">:</span> <span class="n">IndexType</span> <span class="o">=</span> <span class="n">DEFAULT_INDEX_TYPE</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -339,6 +355,11 @@
 
 <div class="viewcode-block" id="check_if_not_null">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.neo4j_vector.check_if_not_null.html#langchain_community.vectorstores.neo4j_vector.check_if_not_null">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.vectorstores.neo4j_vector.check_if_not_null"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">check_if_not_null</span><span class="p">(</span><span class="n">props</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">values</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Check if the values are not None or empty string"""</span>
     <span class="k">for</span> <span class="n">prop</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">props</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
@@ -349,6 +370,11 @@
 
 <div class="viewcode-block" id="sort_by_index_name">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.neo4j_vector.sort_by_index_name.html#langchain_community.vectorstores.neo4j_vector.sort_by_index_name">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.vectorstores.neo4j_vector.sort_by_index_name"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">sort_by_index_name</span><span class="p">(</span>
     <span class="n">lst</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">index_name</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
@@ -359,6 +385,11 @@
 
 <div class="viewcode-block" id="remove_lucene_chars">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.neo4j_vector.remove_lucene_chars.html#langchain_community.vectorstores.neo4j_vector.remove_lucene_chars">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.vectorstores.neo4j_vector.remove_lucene_chars"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">remove_lucene_chars</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Remove Lucene special characters"""</span>
     <span class="n">special_chars</span> <span class="o">=</span> <span class="p">[</span>
@@ -390,6 +421,11 @@
 
 <div class="viewcode-block" id="dict_to_yaml_str">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.neo4j_vector.dict_to_yaml_str.html#langchain_community.vectorstores.neo4j_vector.dict_to_yaml_str">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.vectorstores.neo4j_vector.dict_to_yaml_str"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">dict_to_yaml_str</span><span class="p">(</span><span class="n">input_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">indent</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Convert a dictionary to a YAML-like string without using external libraries.</span>
@@ -418,6 +454,11 @@
 
 <div class="viewcode-block" id="combine_queries">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.neo4j_vector.combine_queries.html#langchain_community.vectorstores.neo4j_vector.combine_queries">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.vectorstores.neo4j_vector.combine_queries"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">combine_queries</span><span class="p">(</span>
     <span class="n">input_queries</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]],</span> <span class="n">operator</span><span class="p">:</span> <span class="nb">str</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
@@ -455,6 +496,11 @@
 
 <div class="viewcode-block" id="collect_params">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.neo4j_vector.collect_params.html#langchain_community.vectorstores.neo4j_vector.collect_params">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.vectorstores.neo4j_vector.collect_params"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">collect_params</span><span class="p">(</span>
     <span class="n">input_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
@@ -483,6 +529,11 @@
 
 
 
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.vectorstores.neo4j_vector._handle_field_filter"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">_handle_field_filter</span><span class="p">(</span>
     <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">param_number</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]:</span>
@@ -586,6 +637,11 @@
 
 <div class="viewcode-block" id="construct_metadata_filter">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.neo4j_vector.construct_metadata_filter.html#langchain_community.vectorstores.neo4j_vector.construct_metadata_filter">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.vectorstores.neo4j_vector.construct_metadata_filter"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">def</span> <span class="nf">construct_metadata_filter</span><span class="p">(</span><span class="nb">filter</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">"""Construct a metadata filter.</span>
 
@@ -671,6 +727,11 @@
 
 <div class="viewcode-block" id="Neo4jVector">
 <a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.neo4j_vector.Neo4jVector.html#langchain_community.vectorstores.neo4j_vector.Neo4jVector">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.Neo4jVector"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">class</span> <span class="nc">Neo4jVector</span><span class="p">(</span><span class="n">VectorStore</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""`Neo4j` vector index.</span>
 

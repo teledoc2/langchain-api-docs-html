@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 25, 2024" name="docbuild:last-update"/>
+<meta content="Nov 26, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -214,11 +214,18 @@
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
+<span class="kn">from</span> <span class="nn">langchain_core._api.deprecation</span> <span class="kn">import</span> <span class="n">deprecated</span>
+
 <span class="n">Schema</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">"Schema"</span><span class="p">,</span> <span class="p">[</span><span class="s2">"left_node"</span><span class="p">,</span> <span class="s2">"relation"</span><span class="p">,</span> <span class="s2">"right_node"</span><span class="p">])</span>
 
 
 <div class="viewcode-block" id="CypherQueryCorrector">
 <a class="viewcode-back" href="../../../../community/chains/langchain_community.chains.graph_qa.cypher_utils.CypherQueryCorrector.html#langchain_community.chains.graph_qa.cypher_utils.CypherQueryCorrector">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.chains.graph_qa.cypher_utils.CypherQueryCorrector"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">class</span> <span class="nc">CypherQueryCorrector</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Used to correct relationship direction in generated Cypher statements.</span>

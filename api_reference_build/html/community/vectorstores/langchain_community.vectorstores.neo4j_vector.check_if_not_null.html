@@ -42,11 +42,11 @@
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
 <link href="langchain_community.vectorstores.neo4j_vector.collect_params.html" rel="next" title="collect_params"/>
-<link href="langchain_community.vectorstores.myscale.has_mul_sub_str.html" rel="prev" title="has_mul_sub_str"/>
+<link href="langchain_community.vectorstores.qdrant.Qdrant.html" rel="prev" title="Qdrant"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 25, 2024" name="docbuild:last-update"/>
+<meta content="Nov 26, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -289,9 +289,6 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.myscale.MyScale.html">MyScale</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.myscale.MyScaleSettings.html">MyScaleSettings</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.myscale.MyScaleWithoutJSON.html">MyScaleWithoutJSON</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.IndexType.html">IndexType</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.Neo4jVector.html">Neo4jVector</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.SearchType.html">SearchType</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.nucliadb.NucliaDB.html">NucliaDB</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.opensearch_vector_search.OpenSearchVectorSearch.html">OpenSearchVectorSearch</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.oraclevs.OracleVS.html">OracleVS</a></li>
@@ -384,13 +381,6 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.lancedb.to_lance_filter.html">to_lance_filter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.lantern.get_embedding_store.html">get_embedding_store</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.myscale.has_mul_sub_str.html">has_mul_sub_str</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">check_if_not_null</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.collect_params.html">collect_params</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.combine_queries.html">combine_queries</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.construct_metadata_filter.html">construct_metadata_filter</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.dict_to_yaml_str.html">dict_to_yaml_str</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.remove_lucene_chars.html">remove_lucene_chars</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.sort_by_index_name.html">sort_by_index_name</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.oraclevs.create_index.html">create_index</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.oraclevs.drop_index_if_exists.html">drop_index_if_exists</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.oraclevs.drop_table_purge.html">drop_table_purge</a></li>
@@ -429,9 +419,19 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.matching_engine.MatchingEngine.html">MatchingEngine</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.milvus.Milvus.html">Milvus</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.mongodb_atlas.MongoDBAtlasVectorSearch.html">MongoDBAtlasVectorSearch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.IndexType.html">IndexType</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.Neo4jVector.html">Neo4jVector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.SearchType.html">SearchType</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.pgvector.PGVector.html">PGVector</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.pinecone.Pinecone.html">Pinecone</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.qdrant.Qdrant.html">Qdrant</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">check_if_not_null</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.collect_params.html">collect_params</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.combine_queries.html">combine_queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.construct_metadata_filter.html">construct_metadata_filter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.dict_to_yaml_str.html">dict_to_yaml_str</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.remove_lucene_chars.html">remove_lucene_chars</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.vectorstores.neo4j_vector.sort_by_index_name.html">sort_by_index_name</a></li>
 </ul>
 </details></li>
 </ul>
@@ -520,7 +520,10 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="langchain_community.vectorstores.neo4j_vector.check_if_not_null">
 <span class="sig-prename descclassname"><span class="pre">langchain_community.vectorstores.neo4j_vector.</span></span><span class="sig-name descname"><span class="pre">check_if_not_null</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">props</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/langchain_community/vectorstores/neo4j_vector.html#check_if_not_null"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.vectorstores.neo4j_vector.check_if_not_null" title="Link to this definition">#</a></dt>
-<dd><p>Check if the values are not None or empty string</p>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.3.8: </span>Use <code class="docutils literal notranslate"><span class="pre">:meth:`~langchain_neo4j.vectorstores.neo4j_vector.check_if_not_null`</span></code> instead.</p>
+</div>
+<p>Check if the values are not None or empty string</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

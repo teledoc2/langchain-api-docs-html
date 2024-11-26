@@ -41,12 +41,12 @@
 <script>DOCUMENTATION_OPTIONS.pagename = 'community/graphs/langchain_community.graphs.neo4j_graph.Neo4jGraph';</script>
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
-<link href="langchain_community.graphs.neptune_graph.BaseNeptuneGraph.html" rel="next" title="BaseNeptuneGraph"/>
-<link href="langchain_community.graphs.nebula_graph.NebulaGraph.html" rel="prev" title="NebulaGraph"/>
+<link href="langchain_community.graphs.neo4j_graph.clean_string_values.html" rel="next" title="clean_string_values"/>
+<link href="langchain_community.graphs.networkx_graph.parse_triples.html" rel="prev" title="parse_triples"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 25, 2024" name="docbuild:last-update"/>
+<meta content="Nov 26, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -228,7 +228,6 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.kuzu_graph.KuzuGraph.html">KuzuGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.memgraph_graph.MemgraphGraph.html">MemgraphGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.nebula_graph.NebulaGraph.html">NebulaGraph</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Neo4jGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.neptune_graph.BaseNeptuneGraph.html">BaseNeptuneGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.neptune_graph.NeptuneAnalyticsGraph.html">NeptuneAnalyticsGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.neptune_graph.NeptuneGraph.html">NeptuneGraph</a></li>
@@ -240,10 +239,11 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.rdf_graph.RdfGraph.html">RdfGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.tigergraph_graph.TigerGraph.html">TigerGraph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.arangodb_graph.get_arangodb_client.html">get_arangodb_client</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.neo4j_graph.clean_string_values.html">clean_string_values</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.neo4j_graph.value_sanitize.html">value_sanitize</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.networkx_graph.get_entities.html">get_entities</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.networkx_graph.parse_triples.html">parse_triples</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Neo4jGraph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.neo4j_graph.clean_string_values.html">clean_string_values</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.graphs.neo4j_graph.value_sanitize.html">value_sanitize</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../indexes.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">indexes</span></code></a></li>
@@ -343,7 +343,10 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="langchain_community.graphs.neo4j_graph.Neo4jGraph">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_community.graphs.neo4j_graph.</span></span><span class="sig-name descname"><span class="pre">Neo4jGraph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sanitize</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refresh_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">driver_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enhanced_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_community/graphs/neo4j_graph.html#Neo4jGraph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.graphs.neo4j_graph.Neo4jGraph" title="Link to this definition">#</a></dt>
-<dd><p>Neo4j database wrapper for various graph operations.</p>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.3.8: </span>Use <code class="docutils literal notranslate"><span class="pre">:class:`~langchain_neo4j.Neo4jGraph`</span></code> instead.</p>
+</div>
+<p>Neo4j database wrapper for various graph operations.</p>
 <p>Parameters:
 url (Optional[str]): The URL of the Neo4j database server.
 username (Optional[str]): The username for database authentication.

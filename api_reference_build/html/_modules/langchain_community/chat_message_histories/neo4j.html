@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 25, 2024" name="docbuild:last-update"/>
+<meta content="Nov 26, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -212,6 +212,7 @@
 <h1>Source code for langchain_community.chat_message_histories.neo4j</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
+<span class="kn">from</span> <span class="nn">langchain_core._api.deprecation</span> <span class="kn">import</span> <span class="n">deprecated</span>
 <span class="kn">from</span> <span class="nn">langchain_core.chat_history</span> <span class="kn">import</span> <span class="n">BaseChatMessageHistory</span>
 <span class="kn">from</span> <span class="nn">langchain_core.messages</span> <span class="kn">import</span> <span class="n">BaseMessage</span><span class="p">,</span> <span class="n">messages_from_dict</span>
 <span class="kn">from</span> <span class="nn">langchain_core.utils</span> <span class="kn">import</span> <span class="n">get_from_dict_or_env</span>
@@ -221,6 +222,11 @@
 
 <div class="viewcode-block" id="Neo4jChatMessageHistory">
 <a class="viewcode-back" href="../../../community/chat_message_histories/langchain_community.chat_message_histories.neo4j.Neo4jChatMessageHistory.html#langchain_community.chat_message_histories.neo4j.Neo4jChatMessageHistory">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.8"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_neo4j.Neo4jChatMessageHistory"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">class</span> <span class="nc">Neo4jChatMessageHistory</span><span class="p">(</span><span class="n">BaseChatMessageHistory</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Chat message history stored in a Neo4j database."""</span>
 
