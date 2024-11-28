@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>ElasticsearchEmbeddings — 🦜🔗 LangChain  documentation</title>
+<title>AsyncElasticsearchEmbeddings — 🦜🔗 LangChain  documentation</title>
 <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
@@ -38,15 +38,15 @@
 <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../_static/copybutton.js?v=f281be69"></script>
 <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-<script>DOCUMENTATION_OPTIONS.pagename = 'elasticsearch/embeddings/langchain_elasticsearch.embeddings.ElasticsearchEmbeddings';</script>
+<script>DOCUMENTATION_OPTIONS.pagename = 'elasticsearch/embeddings/langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings';</script>
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
-<link href="langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.html" rel="next" title="EmbeddingServiceAdapter"/>
+<link href="../retrievers.html" rel="next" title="retrievers"/>
 <link href="../embeddings.html" rel="prev" title="embeddings"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 27, 2024" name="docbuild:last-update"/>
+<meta content="Nov 28, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -216,8 +216,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../chat_history.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chat_history</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../client.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">client</span></code></a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../embeddings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">embeddings</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">ElasticsearchEmbeddings</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.html">EmbeddingServiceAdapter</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">AsyncElasticsearchEmbeddings</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../retrievers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">retrievers</span></code></a></li>
@@ -234,6 +233,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../milvus/index.html">Milvus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mistralai/index.html">MistralAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mongodb/index.html">MongoDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../neo4j/index.html">Neo4J</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../nomic/index.html">Nomic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../nvidia_ai_endpoints/index.html">Nvidia Ai Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../ollama/index.html">Ollama</a></li>
@@ -278,7 +278,7 @@
 <li class="breadcrumb-item"><a class="nav-link" href="../../reference.html">LangChain Python API Reference</a></li>
 <li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-elasticsearch: 0.3.0</a></li>
 <li class="breadcrumb-item"><a class="nav-link" href="../embeddings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">embeddings</span></code></a></li>
-<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">ElasticsearchEmbeddings</span></li>
+<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">AsyncElasticsearchEmbeddings</span></li>
 </ul>
 </nav>
 </div>
@@ -287,19 +287,12 @@
 </div>
 <div id="searchbox"></div>
 <article class="bd-article">
-<section id="elasticsearchembeddings">
-<h1>ElasticsearchEmbeddings<a class="headerlink" href="#elasticsearchembeddings" title="Link to this heading">#</a></h1>
+<section id="asyncelasticsearchembeddings">
+<h1>AsyncElasticsearchEmbeddings<a class="headerlink" href="#asyncelasticsearchembeddings" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_elasticsearch.embeddings.</span></span><span class="sig-name descname"><span class="pre">ElasticsearchEmbeddings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MlClient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'text_field'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_elasticsearch/embeddings.html#ElasticsearchEmbeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings" title="Link to this definition">#</a></dt>
-<dd><p>Elasticsearch embedding models.</p>
-<p>This class provides an interface to generate embeddings using a model deployed
-in an Elasticsearch cluster. It requires an Elasticsearch connection object
-and the model_id of the model deployed in the cluster.</p>
-<p>In Elasticsearch you need to have an embedding model loaded and deployed.
-- <a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/infer-trained-model.html">https://www.elastic.co/guide/en/elasticsearch/reference/current/infer-trained-model.html</a>
-- <a class="reference external" href="https://www.elastic.co/guide/en/machine-learning/current/ml-nlp-deploy-models.html">https://www.elastic.co/guide/en/machine-learning/current/ml-nlp-deploy-models.html</a></p>
-<p>Initialize the ElasticsearchEmbeddings instance.</p>
+<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_elasticsearch.embeddings.</span></span><span class="sig-name descname"><span class="pre">AsyncElasticsearchEmbeddings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MlClient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'text_field'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_elasticsearch/embeddings.html#AsyncElasticsearchEmbeddings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings" title="Link to this definition">#</a></dt>
+<dd><p>Initialize the ElasticsearchEmbeddings instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -314,33 +307,33 @@ document. Defaults to ‘text_field’.</p></li>
 <p class="rubric">Methods</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.__init__" title="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(client, model_id, *[, input_field])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.__init__" title="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(client, model_id, *[, input_field])</p></td>
 <td><p>Initialize the ElasticsearchEmbeddings instance.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.aembed_documents" title="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.aembed_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aembed_documents</span></code></a>(texts)</p></td>
-<td><p>Asynchronous Embed search docs.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.aembed_query" title="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.aembed_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aembed_query</span></code></a>(text)</p></td>
-<td><p>Asynchronous Embed query text.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.embed_documents" title="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.embed_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed_documents</span></code></a>(texts)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.aembed_documents" title="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.aembed_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aembed_documents</span></code></a>(texts)</p></td>
 <td><p>Generate embeddings for a list of documents.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.embed_query" title="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.embed_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed_query</span></code></a>(text)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.aembed_query" title="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.aembed_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aembed_query</span></code></a>(text)</p></td>
 <td><p>Generate an embedding for a single query text.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.from_credentials" title="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.from_credentials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_credentials</span></code></a>(model_id, *[, es_cloud_id, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.embed_documents" title="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.embed_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed_documents</span></code></a>(texts)</p></td>
+<td><p>Embed search docs.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.embed_query" title="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.embed_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed_query</span></code></a>(text)</p></td>
+<td><p>Embed query text.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.from_credentials" title="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.from_credentials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_credentials</span></code></a>(model_id, *[, es_cloud_id, ...])</p></td>
 <td><p>Instantiate embeddings from Elasticsearch credentials.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.from_es_connection" title="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.from_es_connection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_es_connection</span></code></a>(model_id, es_connection)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.from_es_connection" title="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.from_es_connection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_es_connection</span></code></a>(model_id, es_connection)</p></td>
 <td><p>Instantiate embeddings from an existing Elasticsearch connection.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <dl class="py method">
-<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MlClient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'text_field'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_elasticsearch/embeddings.html#ElasticsearchEmbeddings.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.__init__" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">client</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">MlClient</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'text_field'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_elasticsearch/_async/embeddings.html#AsyncElasticsearchEmbeddings.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.__init__" title="Link to this definition">#</a></dt>
 <dd><p>Initialize the ElasticsearchEmbeddings instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -355,40 +348,8 @@ document. Defaults to ‘text_field’.</p></li>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.aembed_documents">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aembed_documents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.aembed_documents" title="Link to this definition">#</a></dt>
-<dd><p>Asynchronous Embed search docs.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>texts</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of text to embed.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of embeddings.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[list[float]]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.aembed_query">
-<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aembed_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.aembed_query" title="Link to this definition">#</a></dt>
-<dd><p>Asynchronous Embed query text.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – Text to embed.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Embedding.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[float]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.embed_documents">
-<span class="sig-name descname"><span class="pre">embed_documents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/langchain_elasticsearch/embeddings.html#ElasticsearchEmbeddings.embed_documents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.embed_documents" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.aembed_documents">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aembed_documents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/langchain_elasticsearch/_async/embeddings.html#AsyncElasticsearchEmbeddings.aembed_documents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.aembed_documents" title="Link to this definition">#</a></dt>
 <dd><p>Generate embeddings for a list of documents.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -408,8 +369,8 @@ for.</p>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.embed_query">
-<span class="sig-name descname"><span class="pre">embed_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/langchain_elasticsearch/embeddings.html#ElasticsearchEmbeddings.embed_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.embed_query" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.aembed_query">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aembed_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/langchain_elasticsearch/_async/embeddings.html#AsyncElasticsearchEmbeddings.aembed_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.aembed_query" title="Link to this definition">#</a></dt>
 <dd><p>Generate an embedding for a single query text.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -424,8 +385,40 @@ for.</p>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.from_credentials">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">es_cloud_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">es_api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'text_field'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings" title="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings"><span class="pre">ElasticsearchEmbeddings</span></a></span></span><a class="reference internal" href="../../_modules/langchain_elasticsearch/embeddings.html#ElasticsearchEmbeddings.from_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.from_credentials" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.embed_documents">
+<span class="sig-name descname"><span class="pre">embed_documents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/langchain_elasticsearch/embeddings.html#AsyncElasticsearchEmbeddings.embed_documents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.embed_documents" title="Link to this definition">#</a></dt>
+<dd><p>Embed search docs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>texts</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of text to embed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of embeddings.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>List</em>[<em>List</em>[float]]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.embed_query">
+<span class="sig-name descname"><span class="pre">embed_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/langchain_elasticsearch/embeddings.html#AsyncElasticsearchEmbeddings.embed_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.embed_query" title="Link to this definition">#</a></dt>
+<dd><p>Embed query text.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – Text to embed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Embedding.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>List</em>[float]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.from_credentials">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">es_cloud_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">es_api_key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'text_field'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">AsyncElasticsearchEmbeddings</span></span></span><a class="reference internal" href="../../_modules/langchain_elasticsearch/_async/embeddings.html#AsyncElasticsearchEmbeddings.from_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.from_credentials" title="Link to this definition">#</a></dt>
 <dd><p>Instantiate embeddings from Elasticsearch credentials.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -441,7 +434,7 @@ document. Defaults to ‘text_field’.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings" title="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings"><em>ElasticsearchEmbeddings</em></a></p>
+<dd class="field-even"><p><em>AsyncElasticsearchEmbeddings</em></p>
 </dd>
 </dl>
 <p class="rubric">Example</p>
@@ -472,8 +465,8 @@ document. Defaults to ‘text_field’.</p></li>
 </div>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.from_es_connection">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_es_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">es_connection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Elasticsearch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'text_field'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings" title="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings"><span class="pre">ElasticsearchEmbeddings</span></a></span></span><a class="reference internal" href="../../_modules/langchain_elasticsearch/embeddings.html#ElasticsearchEmbeddings.from_es_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.from_es_connection" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.from_es_connection">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_es_connection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">es_connection</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncElasticsearch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'text_field'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">AsyncElasticsearchEmbeddings</span></span></span><a class="reference internal" href="../../_modules/langchain_elasticsearch/_async/embeddings.html#AsyncElasticsearchEmbeddings.from_es_connection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.from_es_connection" title="Link to this definition">#</a></dt>
 <dd><p>Instantiate embeddings from an existing Elasticsearch connection.</p>
 <p>This method provides a way to create an instance of the ElasticsearchEmbeddings
 class using an existing Elasticsearch connection. The connection object is used
@@ -519,12 +512,12 @@ ElasticsearchEmbeddings: An instance of the ElasticsearchEmbeddings class.</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>model_id</strong> (<em>str</em>)</p></li>
-<li><p><strong>es_connection</strong> (<em>Elasticsearch</em>)</p></li>
+<li><p><strong>es_connection</strong> (<em>AsyncElasticsearch</em>)</p></li>
 <li><p><strong>input_field</strong> (<em>str</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings" title="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings"><em>ElasticsearchEmbeddings</em></a></p>
+<dd class="field-even"><p><em>AsyncElasticsearchEmbeddings</em></p>
 </dd>
 </dl>
 </dd></dl>
@@ -542,14 +535,14 @@ ElasticsearchEmbeddings: An instance of the ElasticsearchEmbeddings class.</p>
   </div>
 <nav aria-labelledby="pst-page-navigation-heading-2" class="bd-toc-nav page-toc">
 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings"><code class="docutils literal notranslate"><span class="pre">ElasticsearchEmbeddings</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.aembed_documents"><code class="docutils literal notranslate"><span class="pre">aembed_documents()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.aembed_query"><code class="docutils literal notranslate"><span class="pre">aembed_query()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.embed_documents"><code class="docutils literal notranslate"><span class="pre">embed_documents()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.embed_query"><code class="docutils literal notranslate"><span class="pre">embed_query()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.from_credentials"><code class="docutils literal notranslate"><span class="pre">from_credentials()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.from_es_connection"><code class="docutils literal notranslate"><span class="pre">from_es_connection()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings"><code class="docutils literal notranslate"><span class="pre">AsyncElasticsearchEmbeddings</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.aembed_documents"><code class="docutils literal notranslate"><span class="pre">aembed_documents()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.aembed_query"><code class="docutils literal notranslate"><span class="pre">aembed_query()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.embed_documents"><code class="docutils literal notranslate"><span class="pre">embed_documents()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.embed_query"><code class="docutils literal notranslate"><span class="pre">embed_query()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.from_credentials"><code class="docutils literal notranslate"><span class="pre">from_credentials()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.from_es_connection"><code class="docutils literal notranslate"><span class="pre">from_es_connection()</span></code></a></li>
 </ul>
 </li>
 </ul>

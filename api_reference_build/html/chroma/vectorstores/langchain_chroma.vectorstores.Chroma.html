@@ -46,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 27, 2024" name="docbuild:last-update"/>
+<meta content="Nov 28, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -230,6 +230,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../milvus/index.html">Milvus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mistralai/index.html">MistralAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mongodb/index.html">MongoDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../neo4j/index.html">Neo4J</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../nomic/index.html">Nomic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../nvidia_ai_endpoints/index.html">Nvidia Ai Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../ollama/index.html">Ollama</a></li>
@@ -543,10 +544,13 @@ if it doesn’t exist. Defaults to True.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="#langchain_chroma.vectorstores.Chroma.similarity_search_with_score" title="langchain_chroma.vectorstores.Chroma.similarity_search_with_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_with_score</span></code></a>(query[, k, ...])</p></td>
 <td><p>Run similarity search with Chroma with distance.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_chroma.vectorstores.Chroma.update_document" title="langchain_chroma.vectorstores.Chroma.update_document"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_document</span></code></a>(document_id, document)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_chroma.vectorstores.Chroma.similarity_search_with_vectors" title="langchain_chroma.vectorstores.Chroma.similarity_search_with_vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_with_vectors</span></code></a>(query[, k, ...])</p></td>
+<td><p>Run similarity search with Chroma with vectors.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_chroma.vectorstores.Chroma.update_document" title="langchain_chroma.vectorstores.Chroma.update_document"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_document</span></code></a>(document_id, document)</p></td>
 <td><p>Update a document in the collection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_chroma.vectorstores.Chroma.update_documents" title="langchain_chroma.vectorstores.Chroma.update_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_documents</span></code></a>(ids, documents)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_chroma.vectorstores.Chroma.update_documents" title="langchain_chroma.vectorstores.Chroma.update_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_documents</span></code></a>(ids, documents)</p></td>
 <td><p>Update a document in the collection.</p></td>
 </tr>
 </tbody>
@@ -1463,6 +1467,30 @@ distance in float for each. Lower score represents more similarity.</p>
 </dl>
 </dd></dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="langchain_chroma.vectorstores.Chroma.similarity_search_with_vectors">
+<span class="sig-name descname"><span class="pre">similarity_search_with_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">where_document</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><span class="pre">Document</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/langchain_chroma/vectorstores.html#Chroma.similarity_search_with_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_chroma.vectorstores.Chroma.similarity_search_with_vectors" title="Link to this definition">#</a></dt>
+<dd><p>Run similarity search with Chroma with vectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>query</strong> (<em>str</em>) – Query text to search for.</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – Number of results to return. Defaults to 4.</p></li>
+<li><p><strong>filter</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Filter by metadata. Defaults to None.</p></li>
+<li><p><strong>where_document</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – dict used to filter by the documents.
+E.g. {$contains: {“text”: “hello”}}.</p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to Chroma collection query.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of documents most similar to the query text and
+embedding vectors for each.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>List</em>[<em>Tuple</em>[<a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><em>Document</em></a>, <em>ndarray</em>]]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
 <dt class="sig sig-object py" id="langchain_chroma.vectorstores.Chroma.update_document">
 <span class="sig-name descname"><span class="pre">update_document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">document</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><span class="pre">Document</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/langchain_chroma/vectorstores.html#Chroma.update_document"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_chroma.vectorstores.Chroma.update_document" title="Link to this definition">#</a></dt>
 <dd><p>Update a document in the collection.</p>
@@ -1580,6 +1608,7 @@ distance in float for each. Lower score represents more similarity.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_chroma.vectorstores.Chroma.similarity_search_by_vector_with_relevance_scores"><code class="docutils literal notranslate"><span class="pre">similarity_search_by_vector_with_relevance_scores()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_chroma.vectorstores.Chroma.similarity_search_with_relevance_scores"><code class="docutils literal notranslate"><span class="pre">similarity_search_with_relevance_scores()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_chroma.vectorstores.Chroma.similarity_search_with_score"><code class="docutils literal notranslate"><span class="pre">similarity_search_with_score()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_chroma.vectorstores.Chroma.similarity_search_with_vectors"><code class="docutils literal notranslate"><span class="pre">similarity_search_with_vectors()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_chroma.vectorstores.Chroma.update_document"><code class="docutils literal notranslate"><span class="pre">update_document()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_chroma.vectorstores.Chroma.update_documents"><code class="docutils literal notranslate"><span class="pre">update_documents()</span></code></a></li>
 </ul>

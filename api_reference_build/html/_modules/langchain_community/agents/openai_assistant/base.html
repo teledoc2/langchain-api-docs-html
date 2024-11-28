@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 27, 2024" name="docbuild:last-update"/>
+<meta content="Nov 28, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -769,11 +769,16 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Any: The created run object.</span>
 <span class="sd">        """</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
-            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">input</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"instructions"</span><span class="p">,</span> <span class="s2">"model"</span><span class="p">,</span> <span class="s2">"tools"</span><span class="p">,</span> <span class="s2">"tool_resources"</span><span class="p">,</span> <span class="s2">"run_metadata"</span><span class="p">)</span>
-        <span class="p">}</span>
+        <span class="n">allowed_assistant_params</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">"instructions"</span><span class="p">,</span>
+            <span class="s2">"model"</span><span class="p">,</span>
+            <span class="s2">"tools"</span><span class="p">,</span>
+            <span class="s2">"tool_resources"</span><span class="p">,</span>
+            <span class="s2">"run_metadata"</span><span class="p">,</span>
+            <span class="s2">"truncation_strategy"</span><span class="p">,</span>
+            <span class="s2">"max_prompt_tokens"</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">input</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">allowed_assistant_params</span><span class="p">}</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">threads</span><span class="o">.</span><span class="n">runs</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
             <span class="nb">input</span><span class="p">[</span><span class="s2">"thread_id"</span><span class="p">],</span>
             <span class="n">assistant_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">assistant_id</span><span class="p">,</span>

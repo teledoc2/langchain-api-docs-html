@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 27, 2024" name="docbuild:last-update"/>
+<meta content="Nov 28, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -227,6 +227,7 @@
 <span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">cohere.types</span> <span class="kn">import</span> <span class="n">NonStreamedChatResponse</span><span class="p">,</span> <span class="n">ToolCall</span>
+<span class="kn">from</span> <span class="nn">langchain_core._api.deprecation</span> <span class="kn">import</span> <span class="n">warn_deprecated</span>
 <span class="kn">from</span> <span class="nn">langchain_core.callbacks</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">,</span>
     <span class="n">CallbackManagerForLLMRun</span><span class="p">,</span>
@@ -446,6 +447,15 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        The request for the Cohere chat API.</span>
 <span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">connectors</span> <span class="ow">or</span> <span class="s2">"connectors"</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">warn_deprecated</span><span class="p">(</span>
+            <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.3"</span><span class="p">,</span>
+            <span class="n">message</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">"The 'connectors' parameter is deprecated as of version 0.3.3.</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="s2">"Please use the 'tools' parameter instead."</span>
+            <span class="p">),</span>
+            <span class="n">removal</span><span class="o">=</span><span class="s2">"0.4.0"</span><span class="p">,</span>
+        <span class="p">)</span>
     <span class="n">additional_kwargs</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">additional_kwargs</span>
 
     <span class="c1"># cohere SDK will fail loudly if both connectors and documents are provided</span>

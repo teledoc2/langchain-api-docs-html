@@ -46,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 27, 2024" name="docbuild:last-update"/>
+<meta content="Nov 28, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -405,6 +405,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../milvus/index.html">Milvus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mistralai/index.html">MistralAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mongodb/index.html">MongoDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../neo4j/index.html">Neo4J</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../nomic/index.html">Nomic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../nvidia_ai_endpoints/index.html">Nvidia Ai Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../ollama/index.html">Ollama</a></li>
@@ -653,14 +654,14 @@
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_community.utilities.openapi.OpenAPISpec.get_referenced_schema">
-<span class="sig-name descname"><span class="pre">get_referenced_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Reference</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../chains/langchain_community.chains.graph_qa.cypher_utils.Schema.html#langchain_community.chains.graph_qa.cypher_utils.Schema" title="langchain_community.chains.graph_qa.cypher_utils.Schema"><span class="pre">Schema</span></a></span></span><a class="reference internal" href="../../_modules/langchain_community/utilities/openapi.html#OpenAPISpec.get_referenced_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.utilities.openapi.OpenAPISpec.get_referenced_schema" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_referenced_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Reference</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../neo4j/chains/langchain_neo4j.chains.graph_qa.cypher_utils.Schema.html#langchain_neo4j.chains.graph_qa.cypher_utils.Schema" title="langchain_neo4j.chains.graph_qa.cypher_utils.Schema"><span class="pre">Schema</span></a></span></span><a class="reference internal" href="../../_modules/langchain_community/utilities/openapi.html#OpenAPISpec.get_referenced_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.utilities.openapi.OpenAPISpec.get_referenced_schema" title="Link to this definition">#</a></dt>
 <dd><p>Get a schema (or nested reference) or err.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ref</strong> (<em>Reference</em>)</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="../chains/langchain_community.chains.graph_qa.cypher_utils.Schema.html#langchain_community.chains.graph_qa.cypher_utils.Schema" title="langchain_community.chains.graph_qa.cypher_utils.Schema">Schema</a></p>
+<dd class="field-even"><p><a class="reference internal" href="../../neo4j/chains/langchain_neo4j.chains.graph_qa.cypher_utils.Schema.html#langchain_neo4j.chains.graph_qa.cypher_utils.Schema" title="langchain_neo4j.chains.graph_qa.cypher_utils.Schema">Schema</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -679,17 +680,17 @@
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_community.utilities.openapi.OpenAPISpec.get_schema">
-<span class="sig-name descname"><span class="pre">get_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Reference</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../chains/langchain_community.chains.graph_qa.cypher_utils.Schema.html#langchain_community.chains.graph_qa.cypher_utils.Schema" title="langchain_community.chains.graph_qa.cypher_utils.Schema"><span class="pre">Schema</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../chains/langchain_community.chains.graph_qa.cypher_utils.Schema.html#langchain_community.chains.graph_qa.cypher_utils.Schema" title="langchain_community.chains.graph_qa.cypher_utils.Schema"><span class="pre">Schema</span></a></span></span><a class="reference internal" href="../../_modules/langchain_community/utilities/openapi.html#OpenAPISpec.get_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.utilities.openapi.OpenAPISpec.get_schema" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Reference</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../neo4j/chains/langchain_neo4j.chains.graph_qa.cypher_utils.Schema.html#langchain_neo4j.chains.graph_qa.cypher_utils.Schema" title="langchain_neo4j.chains.graph_qa.cypher_utils.Schema"><span class="pre">Schema</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_depth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../neo4j/chains/langchain_neo4j.chains.graph_qa.cypher_utils.Schema.html#langchain_neo4j.chains.graph_qa.cypher_utils.Schema" title="langchain_neo4j.chains.graph_qa.cypher_utils.Schema"><span class="pre">Schema</span></a></span></span><a class="reference internal" href="../../_modules/langchain_community/utilities/openapi.html#OpenAPISpec.get_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.utilities.openapi.OpenAPISpec.get_schema" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>schema</strong> (<em>Union</em><em>[</em><em>Reference</em><em>, </em><a class="reference internal" href="../chains/langchain_community.chains.graph_qa.cypher_utils.Schema.html#langchain_community.chains.graph_qa.cypher_utils.Schema" title="langchain_community.chains.graph_qa.cypher_utils.Schema"><em>Schema</em></a><em>]</em>)</p></li>
+<li><p><strong>schema</strong> (<em>Union</em><em>[</em><em>Reference</em><em>, </em><a class="reference internal" href="../../neo4j/chains/langchain_neo4j.chains.graph_qa.cypher_utils.Schema.html#langchain_neo4j.chains.graph_qa.cypher_utils.Schema" title="langchain_neo4j.chains.graph_qa.cypher_utils.Schema"><em>Schema</em></a><em>]</em>)</p></li>
 <li><p><strong>depth</strong> (<em>int</em>)</p></li>
 <li><p><strong>max_depth</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="../chains/langchain_community.chains.graph_qa.cypher_utils.Schema.html#langchain_community.chains.graph_qa.cypher_utils.Schema" title="langchain_community.chains.graph_qa.cypher_utils.Schema">Schema</a></p>
+<dd class="field-even"><p><a class="reference internal" href="../../neo4j/chains/langchain_neo4j.chains.graph_qa.cypher_utils.Schema.html#langchain_neo4j.chains.graph_qa.cypher_utils.Schema" title="langchain_neo4j.chains.graph_qa.cypher_utils.Schema">Schema</a></p>
 </dd>
 </dl>
 </dd></dl>

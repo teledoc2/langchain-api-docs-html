@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 27, 2024" name="docbuild:last-update"/>
+<meta content="Nov 28, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -261,6 +261,17 @@
             <span class="n">results</span><span class="p">[</span><span class="s2">"documents"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
             <span class="n">results</span><span class="p">[</span><span class="s2">"metadatas"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
             <span class="n">results</span><span class="p">[</span><span class="s2">"distances"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+        <span class="p">)</span>
+    <span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_results_to_docs_and_vectors</span><span class="p">(</span><span class="n">results</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">(</span><span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">metadata</span><span class="o">=</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="p">{}),</span> <span class="n">result</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">"documents"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">"metadatas"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">results</span><span class="p">[</span><span class="s2">"embeddings"</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
         <span class="p">)</span>
     <span class="p">]</span>
 
@@ -929,6 +940,54 @@
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">_results_to_docs_and_scores</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Chroma.similarity_search_with_vectors">
+<a class="viewcode-back" href="../../chroma/vectorstores/langchain_chroma.vectorstores.Chroma.html#langchain_chroma.vectorstores.Chroma.similarity_search_with_vectors">[docs]</a>
+    <span class="k">def</span> <span class="nf">similarity_search_with_vectors</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">DEFAULT_K</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">where_document</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""Run similarity search with Chroma with vectors.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query: Query text to search for.</span>
+<span class="sd">            k: Number of results to return. Defaults to 4.</span>
+<span class="sd">            filter: Filter by metadata. Defaults to None.</span>
+<span class="sd">            where_document: dict used to filter by the documents.</span>
+<span class="sd">                    E.g. {$contains: {"text": "hello"}}.</span>
+<span class="sd">            kwargs: Additional keyword arguments to pass to Chroma collection query.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List of documents most similar to the query text and</span>
+<span class="sd">            embedding vectors for each.</span>
+<span class="sd">        """</span>
+        <span class="n">include</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"documents"</span><span class="p">,</span> <span class="s2">"metadatas"</span><span class="p">,</span> <span class="s2">"embeddings"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embedding_function</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_collection</span><span class="p">(</span>
+                <span class="n">query_texts</span><span class="o">=</span><span class="p">[</span><span class="n">query</span><span class="p">],</span>
+                <span class="n">n_results</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+                <span class="n">where</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span>
+                <span class="n">where_document</span><span class="o">=</span><span class="n">where_document</span><span class="p">,</span>
+                <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">query_embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embedding_function</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__query_collection</span><span class="p">(</span>
+                <span class="n">query_embeddings</span><span class="o">=</span><span class="p">[</span><span class="n">query_embedding</span><span class="p">],</span>
+                <span class="n">n_results</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+                <span class="n">where</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span>
+                <span class="n">where_document</span><span class="o">=</span><span class="n">where_document</span><span class="p">,</span>
+                <span class="n">include</span><span class="o">=</span><span class="n">include</span><span class="p">,</span>
+                <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">_results_to_docs_and_vectors</span><span class="p">(</span><span class="n">results</span><span class="p">)</span></div>
 
 
     <span class="k">def</span> <span class="nf">_select_relevance_score_fn</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">float</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>

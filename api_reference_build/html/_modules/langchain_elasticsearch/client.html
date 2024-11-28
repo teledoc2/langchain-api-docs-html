@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 27, 2024" name="docbuild:last-update"/>
+<meta content="Nov 28, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -212,7 +212,7 @@
 <h1>Source code for langchain_elasticsearch.client</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
 
-<span class="kn">from</span> <span class="nn">elasticsearch</span> <span class="kn">import</span> <span class="n">Elasticsearch</span>
+<span class="kn">from</span> <span class="nn">elasticsearch</span> <span class="kn">import</span> <span class="n">AsyncElasticsearch</span><span class="p">,</span> <span class="n">Elasticsearch</span>
 
 
 <div class="viewcode-block" id="create_elasticsearch_client">
@@ -251,6 +251,43 @@
 
     <span class="n">es_client</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>  <span class="c1"># test connection</span>
 
+    <span class="k">return</span> <span class="n">es_client</span></div>
+
+
+
+<div class="viewcode-block" id="create_async_elasticsearch_client">
+<a class="viewcode-back" href="../../elasticsearch/client/langchain_elasticsearch.client.create_async_elasticsearch_client.html#langchain_elasticsearch.client.create_async_elasticsearch_client">[docs]</a>
+<span class="k">def</span> <span class="nf">create_async_elasticsearch_client</span><span class="p">(</span>
+    <span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">cloud_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncElasticsearch</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">url</span> <span class="ow">and</span> <span class="n">cloud_id</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">"Both es_url and cloud_id are defined. Please provide only one."</span>
+        <span class="p">)</span>
+
+    <span class="n">connection_params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
+        <span class="n">connection_params</span><span class="p">[</span><span class="s2">"hosts"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">url</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">cloud_id</span><span class="p">:</span>
+        <span class="n">connection_params</span><span class="p">[</span><span class="s2">"cloud_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cloud_id</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Please provide either elasticsearch_url or cloud_id."</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">api_key</span><span class="p">:</span>
+        <span class="n">connection_params</span><span class="p">[</span><span class="s2">"api_key"</span><span class="p">]</span> <span class="o">=</span> <span class="n">api_key</span>
+    <span class="k">elif</span> <span class="n">username</span> <span class="ow">and</span> <span class="n">password</span><span class="p">:</span>
+        <span class="n">connection_params</span><span class="p">[</span><span class="s2">"basic_auth"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">params</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">connection_params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+
+    <span class="n">es_client</span> <span class="o">=</span> <span class="n">AsyncElasticsearch</span><span class="p">(</span><span class="o">**</span><span class="n">connection_params</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">es_client</span></div>
 
 </pre></div>

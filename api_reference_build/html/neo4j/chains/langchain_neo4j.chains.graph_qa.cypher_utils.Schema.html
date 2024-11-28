@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>EmbeddingServiceAdapter — 🦜🔗 LangChain  documentation</title>
+<title>Schema — 🦜🔗 LangChain  documentation</title>
 <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
@@ -38,15 +38,15 @@
 <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../_static/copybutton.js?v=f281be69"></script>
 <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-<script>DOCUMENTATION_OPTIONS.pagename = 'elasticsearch/embeddings/langchain_elasticsearch.embeddings.EmbeddingServiceAdapter';</script>
+<script>DOCUMENTATION_OPTIONS.pagename = 'neo4j/chains/langchain_neo4j.chains.graph_qa.cypher_utils.Schema';</script>
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
-<link href="../retrievers.html" rel="next" title="retrievers"/>
-<link href="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.html" rel="prev" title="ElasticsearchEmbeddings"/>
+<link href="langchain_neo4j.chains.graph_qa.cypher.construct_schema.html" rel="next" title="construct_schema"/>
+<link href="langchain_neo4j.chains.graph_qa.cypher_utils.CypherQueryCorrector.html" rel="prev" title="CypherQueryCorrector"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 27, 2024" name="docbuild:last-update"/>
+<meta content="Nov 28, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -211,19 +211,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cohere/index.html">Cohere</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../couchbase/index.html">Couchbase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../databricks/index.html">Databricks</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">Elasticsearch</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../cache.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cache</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../chat_history.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chat_history</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../client.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">client</span></code></a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="../embeddings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">embeddings</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.html">ElasticsearchEmbeddings</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">EmbeddingServiceAdapter</a></li>
-</ul>
-</details></li>
-<li class="toctree-l2"><a class="reference internal" href="../retrievers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">retrievers</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="../vectorstores.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vectorstores</span></code></a></li>
-</ul>
-</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../elasticsearch/index.html">Elasticsearch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../exa/index.html">Exa</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../fireworks/index.html">Fireworks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../google_community/index.html">Google Community</a></li>
@@ -234,6 +222,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../../milvus/index.html">Milvus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mistralai/index.html">MistralAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../mongodb/index.html">MongoDB</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">Neo4J</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../chains.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chains</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="langchain_neo4j.chains.graph_qa.cypher.GraphCypherQAChain.html">GraphCypherQAChain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_neo4j.chains.graph_qa.cypher_utils.CypherQueryCorrector.html">CypherQueryCorrector</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_neo4j.chains.graph_qa.cypher.construct_schema.html">construct_schema</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_neo4j.chains.graph_qa.cypher.extract_cypher.html">extract_cypher</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_neo4j.chains.graph_qa.cypher.get_function_response.html">get_function_response</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../chat_message_histories.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chat_message_histories</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../graphs.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">graphs</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../query_constructors.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">query_constructors</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vectorstores.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vectorstores</span></code></a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../nomic/index.html">Nomic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../nvidia_ai_endpoints/index.html">Nvidia Ai Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../ollama/index.html">Ollama</a></li>
@@ -276,9 +280,9 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-elasticsearch: 0.3.0</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="../embeddings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">embeddings</span></code></a></li>
-<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">EmbeddingServiceAdapter</span></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-neo4j: 0.1.1</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../chains.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chains</span></code></a></li>
+<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">Schema</span></li>
 </ul>
 </nav>
 </div>
@@ -287,81 +291,61 @@
 </div>
 <div id="searchbox"></div>
 <article class="bd-article">
-<section id="embeddingserviceadapter">
-<h1>EmbeddingServiceAdapter<a class="headerlink" href="#embeddingserviceadapter" title="Link to this heading">#</a></h1>
+<section id="schema">
+<h1>Schema<a class="headerlink" href="#schema" title="Link to this heading">#</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.EmbeddingServiceAdapter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_elasticsearch.embeddings.</span></span><span class="sig-name descname"><span class="pre">EmbeddingServiceAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">langchain_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><span class="pre">Embeddings</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_elasticsearch/embeddings.html#EmbeddingServiceAdapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.EmbeddingServiceAdapter" title="Link to this definition">#</a></dt>
-<dd><p>Adapter for LangChain Embeddings to support the EmbeddingService interface from
-elasticsearch.helpers.vectorstore.</p>
-<p class="rubric">Methods</p>
+<dt class="sig sig-object py" id="langchain_neo4j.chains.graph_qa.cypher_utils.Schema">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_neo4j.chains.graph_qa.cypher_utils.</span></span><span class="sig-name descname"><span class="pre">Schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">left_node</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">relation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right_node</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#langchain_neo4j.chains.graph_qa.cypher_utils.Schema" title="Link to this definition">#</a></dt>
+<dd><p>Create new instance of Schema(left_node, relation, right_node)</p>
+<p class="rubric">Attributes</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.__init__" title="langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(langchain_embeddings)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">left_node</span></code></p></td>
+<td><p>Alias for field number 0</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.embed_documents" title="langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.embed_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed_documents</span></code></a>(texts)</p></td>
-<td><p>Generate embeddings for a list of documents.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">relation</span></code></p></td>
+<td><p>Alias for field number 1</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.embed_query" title="langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.embed_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed_query</span></code></a>(text)</p></td>
-<td><p>Generate an embedding for a single query text.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">right_node</span></code></p></td>
+<td><p>Alias for field number 2</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>langchain_embeddings</strong> (<a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><em>Embeddings</em></a>)</p>
-</dd>
-</dl>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_neo4j.chains.graph_qa.cypher_utils.Schema.__init__" title="langchain_neo4j.chains.graph_qa.cypher_utils.Schema.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_neo4j.chains.graph_qa.cypher_utils.Schema.count" title="langchain_neo4j.chains.graph_qa.cypher_utils.Schema.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a>(value, /)</p></td>
+<td><p>Return number of occurrences of value.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_neo4j.chains.graph_qa.cypher_utils.Schema.index" title="langchain_neo4j.chains.graph_qa.cypher_utils.Schema.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a>(value[, start, stop])</p></td>
+<td><p>Return first index of value.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <dl class="py method">
-<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">langchain_embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><span class="pre">Embeddings</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_elasticsearch/embeddings.html#EmbeddingServiceAdapter.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.__init__" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>langchain_embeddings</strong> (<a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><em>Embeddings</em></a>)</p>
-</dd>
-</dl>
-</dd></dl>
+<dt class="sig sig-object py" id="langchain_neo4j.chains.graph_qa.cypher_utils.Schema.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#langchain_neo4j.chains.graph_qa.cypher_utils.Schema.__init__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.embed_documents">
-<span class="sig-name descname"><span class="pre">embed_documents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">texts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/langchain_elasticsearch/embeddings.html#EmbeddingServiceAdapter.embed_documents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.embed_documents" title="Link to this definition">#</a></dt>
-<dd><p>Generate embeddings for a list of documents.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>texts</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list of document text strings to generate embeddings
-for.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>A list of embeddings, one for each document in the input</dt><dd><p>list.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List[List[float]]</p>
-</dd>
-</dl>
+<dt class="sig sig-object py" id="langchain_neo4j.chains.graph_qa.cypher_utils.Schema.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#langchain_neo4j.chains.graph_qa.cypher_utils.Schema.count" title="Link to this definition">#</a></dt>
+<dd><p>Return number of occurrences of value.</p>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.embed_query">
-<span class="sig-name descname"><span class="pre">embed_query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/langchain_elasticsearch/embeddings.html#EmbeddingServiceAdapter.embed_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.embed_query" title="Link to this definition">#</a></dt>
-<dd><p>Generate an embedding for a single query text.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>text</strong> (<em>str</em>) – The query text to generate an embedding for.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The embedding for the input query text.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List[float]</p>
-</dd>
-</dl>
+<dt class="sig sig-object py" id="langchain_neo4j.chains.graph_qa.cypher_utils.Schema.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">9223372036854775807</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#langchain_neo4j.chains.graph_qa.cypher_utils.Schema.index" title="Link to this definition">#</a></dt>
+<dd><p>Return first index of value.</p>
+<p>Raises ValueError if the value is not present.</p>
 </dd></dl>
 </dd></dl>
+<p class="rubric">Examples using Schema</p>
 <ul class="simple">
+<li><p><a class="reference external" href="https://python.langchain.com/docs/how_to/graph_mapping/">How to map values to a graph database</a></p></li>
 </ul>
 </section>
 </article>
@@ -374,10 +358,10 @@ for.</p>
   </div>
 <nav aria-labelledby="pst-page-navigation-heading-2" class="bd-toc-nav page-toc">
 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.EmbeddingServiceAdapter"><code class="docutils literal notranslate"><span class="pre">EmbeddingServiceAdapter</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.embed_documents"><code class="docutils literal notranslate"><span class="pre">embed_documents()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.embed_query"><code class="docutils literal notranslate"><span class="pre">embed_query()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_neo4j.chains.graph_qa.cypher_utils.Schema"><code class="docutils literal notranslate"><span class="pre">Schema</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_neo4j.chains.graph_qa.cypher_utils.Schema.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_neo4j.chains.graph_qa.cypher_utils.Schema.count"><code class="docutils literal notranslate"><span class="pre">count()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_neo4j.chains.graph_qa.cypher_utils.Schema.index"><code class="docutils literal notranslate"><span class="pre">index()</span></code></a></li>
 </ul>
 </li>
 </ul>

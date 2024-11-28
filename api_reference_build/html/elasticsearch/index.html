@@ -46,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 27, 2024" name="docbuild:last-update"/>
+<meta content="Nov 28, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -227,6 +227,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../milvus/index.html">Milvus</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mistralai/index.html">MistralAI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../mongodb/index.html">MongoDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../neo4j/index.html">Neo4J</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../nomic/index.html">Nomic</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../nvidia_ai_endpoints/index.html">Nvidia Ai Endpoints</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../ollama/index.html">Ollama</a></li>
@@ -287,11 +288,11 @@
 <p><strong>Classes</strong></p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="cache/langchain_elasticsearch.cache.ElasticsearchCache.html#langchain_elasticsearch.cache.ElasticsearchCache" title="langchain_elasticsearch.cache.ElasticsearchCache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache.ElasticsearchCache</span></code></a>(index_name[, ...])</p></td>
-<td><p>An Elasticsearch cache integration for LLMs.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="cache/langchain_elasticsearch.cache.AsyncElasticsearchCache.html#langchain_elasticsearch.cache.AsyncElasticsearchCache" title="langchain_elasticsearch.cache.AsyncElasticsearchCache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache.AsyncElasticsearchCache</span></code></a>(index_name[, ...])</p></td>
+<td><p>Initialize the Elasticsearch cache store by specifying the index/alias to use and determining which additional information (like input, input parameters, and any other metadata) should be stored in the cache.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="cache/langchain_elasticsearch.cache.ElasticsearchEmbeddingsCache.html#langchain_elasticsearch.cache.ElasticsearchEmbeddingsCache" title="langchain_elasticsearch.cache.ElasticsearchEmbeddingsCache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache.ElasticsearchEmbeddingsCache</span></code></a>(index_name)</p></td>
-<td><p>An Elasticsearch store for caching embeddings.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="cache/langchain_elasticsearch.cache.AsyncElasticsearchEmbeddingsCache.html#langchain_elasticsearch.cache.AsyncElasticsearchEmbeddingsCache" title="langchain_elasticsearch.cache.AsyncElasticsearchEmbeddingsCache"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cache.AsyncElasticsearchEmbeddingsCache</span></code></a>(...)</p></td>
+<td><p>Initialize the Elasticsearch cache store by specifying the index/alias to use and determining which additional information (like input, input parameters, and any other metadata) should be stored in the cache.</p></td>
 </tr>
 </tbody>
 </table>
@@ -302,8 +303,11 @@
 <p><strong>Classes</strong></p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="chat_history/langchain_elasticsearch.chat_history.ElasticsearchChatMessageHistory.html#langchain_elasticsearch.chat_history.ElasticsearchChatMessageHistory" title="langchain_elasticsearch.chat_history.ElasticsearchChatMessageHistory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_history.ElasticsearchChatMessageHistory</span></code></a>(...)</p></td>
-<td><p>Chat message history that stores history in Elasticsearch.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="chat_history/langchain_elasticsearch.chat_history.AsyncElasticsearchChatMessageHistory.html#langchain_elasticsearch.chat_history.AsyncElasticsearchChatMessageHistory" title="langchain_elasticsearch.chat_history.AsyncElasticsearchChatMessageHistory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_history.AsyncElasticsearchChatMessageHistory</span></code></a>(...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="chat_history/langchain_elasticsearch.chat_history.ElasticsearchChatMessageHistory.html#langchain_elasticsearch.chat_history.ElasticsearchChatMessageHistory" title="langchain_elasticsearch.chat_history.ElasticsearchChatMessageHistory"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_history.ElasticsearchChatMessageHistory</span></code></a>(...)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -314,7 +318,10 @@
 <p><strong>Functions</strong></p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="client/langchain_elasticsearch.client.create_elasticsearch_client.html#langchain_elasticsearch.client.create_elasticsearch_client" title="langchain_elasticsearch.client.create_elasticsearch_client"><code class="xref py py-obj docutils literal notranslate"><span class="pre">client.create_elasticsearch_client</span></code></a>([url, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="client/langchain_elasticsearch.client.create_async_elasticsearch_client.html#langchain_elasticsearch.client.create_async_elasticsearch_client" title="langchain_elasticsearch.client.create_async_elasticsearch_client"><code class="xref py py-obj docutils literal notranslate"><span class="pre">client.create_async_elasticsearch_client</span></code></a>([...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="client/langchain_elasticsearch.client.create_elasticsearch_client.html#langchain_elasticsearch.client.create_elasticsearch_client" title="langchain_elasticsearch.client.create_elasticsearch_client"><code class="xref py py-obj docutils literal notranslate"><span class="pre">client.create_elasticsearch_client</span></code></a>([url, ...])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -326,11 +333,8 @@
 <p><strong>Classes</strong></p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="embeddings/langchain_elasticsearch.embeddings.ElasticsearchEmbeddings.html#langchain_elasticsearch.embeddings.ElasticsearchEmbeddings" title="langchain_elasticsearch.embeddings.ElasticsearchEmbeddings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embeddings.ElasticsearchEmbeddings</span></code></a>(client, ...)</p></td>
-<td><p>Elasticsearch embedding models.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="embeddings/langchain_elasticsearch.embeddings.EmbeddingServiceAdapter.html#langchain_elasticsearch.embeddings.EmbeddingServiceAdapter" title="langchain_elasticsearch.embeddings.EmbeddingServiceAdapter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embeddings.EmbeddingServiceAdapter</span></code></a>(...)</p></td>
-<td><p>Adapter for LangChain Embeddings to support the EmbeddingService interface from elasticsearch.helpers.vectorstore.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="embeddings/langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings.html#langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings" title="langchain_elasticsearch.embeddings.AsyncElasticsearchEmbeddings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embeddings.AsyncElasticsearchEmbeddings</span></code></a>(...)</p></td>
+<td><p>Initialize the ElasticsearchEmbeddings instance.</p></td>
 </tr>
 </tbody>
 </table>
@@ -341,8 +345,8 @@
 <p><strong>Classes</strong></p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="retrievers/langchain_elasticsearch.retrievers.ElasticsearchRetriever.html#langchain_elasticsearch.retrievers.ElasticsearchRetriever" title="langchain_elasticsearch.retrievers.ElasticsearchRetriever"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrievers.ElasticsearchRetriever</span></code></a></p></td>
-<td><p>Elasticsearch retriever</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="retrievers/langchain_elasticsearch.retrievers.AsyncElasticsearchRetriever.html#langchain_elasticsearch.retrievers.AsyncElasticsearchRetriever" title="langchain_elasticsearch.retrievers.AsyncElasticsearchRetriever"><code class="xref py py-obj docutils literal notranslate"><span class="pre">retrievers.AsyncElasticsearchRetriever</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -353,28 +357,7 @@
 <p><strong>Classes</strong></p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="vectorstores/langchain_elasticsearch.vectorstores.ElasticsearchStore.html#langchain_elasticsearch.vectorstores.ElasticsearchStore" title="langchain_elasticsearch.vectorstores.ElasticsearchStore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vectorstores.ElasticsearchStore</span></code></a>(index_name, ...)</p></td>
-<td><p><cite>Elasticsearch</cite> vector store.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><strong>Deprecated classes</strong></p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="vectorstores/langchain_elasticsearch.vectorstores.ApproxRetrievalStrategy.html#langchain_elasticsearch.vectorstores.ApproxRetrievalStrategy" title="langchain_elasticsearch.vectorstores.ApproxRetrievalStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vectorstores.ApproxRetrievalStrategy</span></code></a>([...])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="vectorstores/langchain_elasticsearch.vectorstores.BM25RetrievalStrategy.html#langchain_elasticsearch.vectorstores.BM25RetrievalStrategy" title="langchain_elasticsearch.vectorstores.BM25RetrievalStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vectorstores.BM25RetrievalStrategy</span></code></a>([k1, b])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="vectorstores/langchain_elasticsearch.vectorstores.BaseRetrievalStrategy.html#langchain_elasticsearch.vectorstores.BaseRetrievalStrategy" title="langchain_elasticsearch.vectorstores.BaseRetrievalStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vectorstores.BaseRetrievalStrategy</span></code></a>(*args, ...)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="vectorstores/langchain_elasticsearch.vectorstores.ExactRetrievalStrategy.html#langchain_elasticsearch.vectorstores.ExactRetrievalStrategy" title="langchain_elasticsearch.vectorstores.ExactRetrievalStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vectorstores.ExactRetrievalStrategy</span></code></a>(*args, ...)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="vectorstores/langchain_elasticsearch.vectorstores.SparseRetrievalStrategy.html#langchain_elasticsearch.vectorstores.SparseRetrievalStrategy" title="langchain_elasticsearch.vectorstores.SparseRetrievalStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vectorstores.SparseRetrievalStrategy</span></code></a>([model_id])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="vectorstores/langchain_elasticsearch.vectorstores.AsyncElasticsearchStore.html#langchain_elasticsearch.vectorstores.AsyncElasticsearchStore" title="langchain_elasticsearch.vectorstores.AsyncElasticsearchStore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vectorstores.AsyncElasticsearchStore</span></code></a>(...)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>

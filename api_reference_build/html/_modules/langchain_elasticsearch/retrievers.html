@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 27, 2024" name="docbuild:last-update"/>
+<meta content="Nov 28, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -210,139 +210,30 @@
 <div id="searchbox"></div>
 <article class="bd-article">
 <h1>Source code for langchain_elasticsearch.retrievers</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Any</span><span class="p">,</span>
-    <span class="n">Callable</span><span class="p">,</span>
-    <span class="n">Dict</span><span class="p">,</span>
-    <span class="n">List</span><span class="p">,</span>
-    <span class="n">Mapping</span><span class="p">,</span>
-    <span class="n">Optional</span><span class="p">,</span>
-    <span class="n">Sequence</span><span class="p">,</span>
-    <span class="n">Union</span><span class="p">,</span>
-    <span class="n">cast</span><span class="p">,</span>
-<span class="p">)</span>
+<span></span><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span>
 
-<span class="kn">from</span> <span class="nn">elasticsearch</span> <span class="kn">import</span> <span class="n">Elasticsearch</span>
-<span class="kn">from</span> <span class="nn">langchain_core.callbacks</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">CallbackManagerForRetrieverRun</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">langchain_core.callbacks</span> <span class="kn">import</span> <span class="n">CallbackManagerForRetrieverRun</span>
 <span class="kn">from</span> <span class="nn">langchain_core.documents</span> <span class="kn">import</span> <span class="n">Document</span>
-<span class="kn">from</span> <span class="nn">langchain_core.retrievers</span> <span class="kn">import</span> <span class="n">BaseRetriever</span>
 
-<span class="kn">from</span> <span class="nn">langchain_elasticsearch._utilities</span> <span class="kn">import</span> <span class="n">with_user_agent_header</span>
-<span class="kn">from</span> <span class="nn">langchain_elasticsearch.client</span> <span class="kn">import</span> <span class="n">create_elasticsearch_client</span>
-
-<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-
-
-<div class="viewcode-block" id="ElasticsearchRetriever">
-<a class="viewcode-back" href="../../elasticsearch/retrievers/langchain_elasticsearch.retrievers.ElasticsearchRetriever.html#langchain_elasticsearch.retrievers.ElasticsearchRetriever">[docs]</a>
-<span class="k">class</span> <span class="nc">ElasticsearchRetriever</span><span class="p">(</span><span class="n">BaseRetriever</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Elasticsearch retriever</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        es_client: Elasticsearch client connection. Alternatively you can use the</span>
-<span class="sd">            `from_es_params` method with parameters to initialize the client.</span>
-<span class="sd">        index_name: The name of the index to query. Can also be a list of names.</span>
-<span class="sd">        body_func: Function to create an Elasticsearch DSL query body from a search</span>
-<span class="sd">            string. The returned query body must fit what you would normally send in a</span>
-<span class="sd">            POST request the the _search endpoint. If applicable, it also includes</span>
-<span class="sd">            parameters the `size` parameter etc.</span>
-<span class="sd">        content_field: The document field name that contains the page content. If</span>
-<span class="sd">            multiple indices are queried, specify a dict {index_name: field_name} here.</span>
-<span class="sd">        document_mapper: Function to map Elasticsearch hits to LangChain Documents.</span>
-<span class="sd">    """</span>
-
-    <span class="n">_expects_other_args</span> <span class="o">=</span> <span class="kc">True</span>
-
-    <span class="n">es_client</span><span class="p">:</span> <span class="n">Elasticsearch</span>
-    <span class="n">index_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span>
-    <span class="n">body_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Dict</span><span class="p">]</span>
-    <span class="n">content_field</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">document_mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Mapping</span><span class="p">],</span> <span class="n">Document</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_field</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">document_mapper</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"One of content_field or document_mapper must be defined."</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">document_mapper</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">"Both content_field and document_mapper are defined. "</span>
-                <span class="s2">"Please provide only one."</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">document_mapper</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content_field</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">document_mapper</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_single_field_mapper</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content_field</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">document_mapper</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_multi_field_mapper</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="s2">"unknown type for content_field, expected string or dict."</span>
-                <span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">es_client</span> <span class="o">=</span> <span class="n">with_user_agent_header</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">es_client</span><span class="p">,</span> <span class="s2">"langchain-py-r"</span><span class="p">)</span>
-
-<div class="viewcode-block" id="ElasticsearchRetriever.from_es_params">
-<a class="viewcode-back" href="../../elasticsearch/retrievers/langchain_elasticsearch.retrievers.ElasticsearchRetriever.html#langchain_elasticsearch.retrievers.ElasticsearchRetriever.from_es_params">[docs]</a>
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">from_es_params</span><span class="p">(</span>
-        <span class="n">index_name</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
-        <span class="n">body_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Dict</span><span class="p">],</span>
-        <span class="n">content_field</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">document_mapper</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Mapping</span><span class="p">],</span> <span class="n">Document</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">cloud_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">api_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">username</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"ElasticsearchRetriever"</span><span class="p">:</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">client</span> <span class="o">=</span> <span class="n">create_elasticsearch_client</span><span class="p">(</span>
-                <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span>
-                <span class="n">cloud_id</span><span class="o">=</span><span class="n">cloud_id</span><span class="p">,</span>
-                <span class="n">api_key</span><span class="o">=</span><span class="n">api_key</span><span class="p">,</span>
-                <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span>
-                <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span>
-                <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
-            <span class="p">)</span>
-        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error connecting to Elasticsearch: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-            <span class="k">raise</span> <span class="n">err</span>
-
-        <span class="k">return</span> <span class="n">ElasticsearchRetriever</span><span class="p">(</span>
-            <span class="n">es_client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>
-            <span class="n">index_name</span><span class="o">=</span><span class="n">index_name</span><span class="p">,</span>
-            <span class="n">body_func</span><span class="o">=</span><span class="n">body_func</span><span class="p">,</span>
-            <span class="n">content_field</span><span class="o">=</span><span class="n">content_field</span><span class="p">,</span>
-            <span class="n">document_mapper</span><span class="o">=</span><span class="n">document_mapper</span><span class="p">,</span>
-        <span class="p">)</span></div>
+<span class="kn">from</span> <span class="nn">langchain_elasticsearch._async.retrievers</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">AsyncElasticsearchRetriever</span> <span class="k">as</span> <span class="n">_AsyncElasticsearchRetriever</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">langchain_elasticsearch._sync.retrievers</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">ElasticsearchRetriever</span><span class="p">,</span>  <span class="c1"># noqa: F401</span>
+<span class="p">)</span>
 
 
+<span class="c1"># langchain defines some sync methods as abstract in its base class</span>
+<span class="c1"># so we have to add dummy methods for them, even though we only use the async versions</span>
+<div class="viewcode-block" id="AsyncElasticsearchRetriever">
+<a class="viewcode-back" href="../../elasticsearch/retrievers/langchain_elasticsearch.retrievers.AsyncElasticsearchRetriever.html#langchain_elasticsearch.retrievers.AsyncElasticsearchRetriever">[docs]</a>
+<span class="k">class</span> <span class="nc">AsyncElasticsearchRetriever</span><span class="p">(</span><span class="n">_AsyncElasticsearchRetriever</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">_get_relevant_documents</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">run_manager</span><span class="p">:</span> <span class="n">CallbackManagerForRetrieverRun</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">es_client</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">document_mapper</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"faulty configuration"</span><span class="p">)</span>  <span class="c1"># should not happen</span>
-
-        <span class="n">body</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">body_func</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">es_client</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">index_name</span><span class="p">,</span> <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">document_mapper</span><span class="p">(</span><span class="n">hit</span><span class="p">)</span> <span class="k">for</span> <span class="n">hit</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s2">"hits"</span><span class="p">][</span><span class="s2">"hits"</span><span class="p">]]</span>
-
-    <span class="k">def</span> <span class="nf">_single_field_mapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hit</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Document</span><span class="p">:</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="n">hit</span><span class="p">[</span><span class="s2">"_source"</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">content_field</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">hit</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_multi_field_mapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">hit</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Document</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">content_field</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Mapping</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_field</span><span class="p">)</span>
-        <span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">content_field</span><span class="p">[</span><span class="n">hit</span><span class="p">[</span><span class="s2">"_index"</span><span class="p">]]</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="n">hit</span><span class="p">[</span><span class="s2">"_source"</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">hit</span><span class="p">)</span></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="s2">"This class is asynchronous, use _aget_relevant_documents()"</span>
+        <span class="p">)</span></div>
 
 </pre></div>
 </article>
