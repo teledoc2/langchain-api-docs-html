@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 29, 2024" name="docbuild:last-update"/>
+<meta content="Nov 30, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -568,7 +568,9 @@
             <span class="s2">"role"</span><span class="p">:</span> <span class="s2">"tool"</span><span class="p">,</span>
             <span class="s2">"content"</span><span class="p">:</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">,</span>
             <span class="s2">"name"</span><span class="p">:</span> <span class="n">message</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s2">"tool_call_id"</span><span class="p">:</span> <span class="n">message</span><span class="o">.</span><span class="n">tool_call_id</span><span class="p">,</span>
+            <span class="s2">"tool_call_id"</span><span class="p">:</span> <span class="n">_convert_tool_call_id_to_mistral_compatible</span><span class="p">(</span>
+                <span class="n">message</span><span class="o">.</span><span class="n">tool_call_id</span>
+            <span class="p">),</span>
         <span class="p">}</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Got unknown type </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>

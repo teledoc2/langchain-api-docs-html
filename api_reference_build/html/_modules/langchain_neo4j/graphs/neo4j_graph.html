@@ -44,7 +44,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 29, 2024" name="docbuild:last-update"/>
+<meta content="Nov 30, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -211,7 +211,7 @@
 <article class="bd-article">
 <h1>Source code for langchain_neo4j.graphs.neo4j_graph</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">hashlib</span> <span class="kn">import</span> <span class="n">md5</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span>
 
 <span class="kn">from</span> <span class="nn">langchain_core.utils</span> <span class="kn">import</span> <span class="n">get_from_dict_or_env</span>
 
@@ -623,6 +623,18 @@
                 <span class="k">raise</span> <span class="n">e</span></div>
 
 
+    <span class="k">def</span> <span class="nf">_check_driver_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Check if the driver is available and ready for operations.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            RuntimeError: If the driver has been closed or is not initialized.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_driver"</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                <span class="s2">"Cannot perform operations - Neo4j connection has been closed"</span>
+            <span class="p">)</span>
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">get_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Returns the schema of the Graph"""</span>
@@ -648,7 +660,11 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            List[Dict[str, Any]]: The list of dictionaries containing the query results.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            RuntimeError: If the connection has been closed.</span>
 <span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_driver_state</span><span class="p">()</span>
         <span class="kn">from</span> <span class="nn">neo4j</span> <span class="kn">import</span> <span class="n">Query</span>
         <span class="kn">from</span> <span class="nn">neo4j.exceptions</span> <span class="kn">import</span> <span class="n">Neo4jError</span>
 
@@ -695,7 +711,11 @@
     <span class="k">def</span> <span class="nf">refresh_schema</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Refreshes the Neo4j graph schema information.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            RuntimeError: If the connection has been closed.</span>
 <span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_driver_state</span><span class="p">()</span>
         <span class="kn">from</span> <span class="nn">neo4j.exceptions</span> <span class="kn">import</span> <span class="n">ClientError</span><span class="p">,</span> <span class="n">CypherTypeError</span>
 
         <span class="n">node_properties</span> <span class="o">=</span> <span class="p">[</span>
@@ -819,7 +839,11 @@
 <span class="sd">        - baseEntityLabel (bool, optional): If True, each newly created node</span>
 <span class="sd">        gets a secondary __Entity__ label, which is indexed and improves import</span>
 <span class="sd">        speed and performance. Defaults to False.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            RuntimeError: If the connection has been closed.</span>
 <span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_driver_state</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">baseEntityLabel</span><span class="p">:</span>  <span class="c1"># Check if constraint already exists</span>
             <span class="n">constraint_exists</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
                 <span class="p">[</span>
@@ -1041,7 +1065,91 @@
 
         <span class="c1"># Combine all parts of the Cypher query</span>
         <span class="n">cypher_query</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">match_clause</span><span class="p">,</span> <span class="n">with_clause</span><span class="p">,</span> <span class="n">return_clause</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">cypher_query</span></div>
+        <span class="k">return</span> <span class="n">cypher_query</span>
+
+<div class="viewcode-block" id="Neo4jGraph.close">
+<a class="viewcode-back" href="../../../neo4j/graphs/langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.html#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.close">[docs]</a>
+    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Explicitly close the Neo4j driver connection.</span>
+
+<span class="sd">        Delegates connection management to the Neo4j driver.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_driver"</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_driver</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="c1"># Remove the driver attribute to indicate closure</span>
+            <span class="nb">delattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_driver"</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Neo4jGraph"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Enter the runtime context for the Neo4j graph connection.</span>
+
+<span class="sd">        Enables use of the graph connection with the 'with' statement.</span>
+<span class="sd">        This method allows for automatic resource management and ensures</span>
+<span class="sd">        that the connection is properly handled.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Neo4jGraph: The current graph connection instance</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            with Neo4jGraph(...) as graph:</span>
+<span class="sd">                graph.query(...)  # Connection automatically managed</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">exc_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Type</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">]],</span>
+        <span class="n">exc_val</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">BaseException</span><span class="p">],</span>
+        <span class="n">exc_tb</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Exit the runtime context for the Neo4j graph connection.</span>
+
+<span class="sd">        This method is automatically called when exiting a 'with' statement.</span>
+<span class="sd">        It ensures that the database connection is closed, regardless of</span>
+<span class="sd">        whether an exception occurred during the context's execution.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            exc_type: The type of exception that caused the context to exit</span>
+<span class="sd">                      (None if no exception occurred)</span>
+<span class="sd">            exc_val: The exception instance that caused the context to exit</span>
+<span class="sd">                     (None if no exception occurred)</span>
+<span class="sd">            exc_tb: The traceback for the exception (None if no exception occurred)</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            Any exception is re-raised after the connection is closed.</span>
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Destructor for the Neo4j graph connection.</span>
+
+<span class="sd">        This method is called during garbage collection to ensure that</span>
+<span class="sd">        database resources are released if not explicitly closed.</span>
+
+<span class="sd">        Caution:</span>
+<span class="sd">            - Do not rely on this method for deterministic resource cleanup</span>
+<span class="sd">            - Always prefer explicit .close() or context manager</span>
+
+<span class="sd">        Best practices:</span>
+<span class="sd">            1. Use context manager:</span>
+<span class="sd">               with Neo4jGraph(...) as graph:</span>
+<span class="sd">                   ...</span>
+<span class="sd">            2. Explicitly close:</span>
+<span class="sd">               graph = Neo4jGraph(...)</span>
+<span class="sd">               try:</span>
+<span class="sd">                   ...</span>
+<span class="sd">               finally:</span>
+<span class="sd">                   graph.close()</span>
+<span class="sd">        """</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c1"># Suppress any exceptions during garbage collection</span>
+            <span class="k">pass</span></div>
 
 </pre></div>
 </article>

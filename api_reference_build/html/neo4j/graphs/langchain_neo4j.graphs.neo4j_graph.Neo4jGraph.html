@@ -46,7 +46,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Nov 29, 2024" name="docbuild:last-update"/>
+<meta content="Nov 30, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -351,10 +351,13 @@ limit the permissions granted to the credentials used with this tool.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.add_graph_documents" title="langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.add_graph_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_graph_documents</span></code></a>(graph_documents[, ...])</p></td>
 <td><p>This method constructs nodes and relationships in the graph based on the provided GraphDocument objects.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.query" title="langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query</span></code></a>(query[, params])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.close" title="langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
+<td><p>Explicitly close the Neo4j driver connection.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.query" title="langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">query</span></code></a>(query[, params])</p></td>
 <td><p>Query Neo4j database.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.refresh_schema" title="langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.refresh_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refresh_schema</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.refresh_schema" title="langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.refresh_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">refresh_schema</span></code></a>()</p></td>
 <td><p>Refreshes the Neo4j graph schema information.</p></td>
 </tr>
 </tbody>
@@ -418,15 +421,29 @@ for merging process. Defaults to False.
 gets a secondary __Entity__ label, which is indexed and improves import
 speed and performance. Defaults to False.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – If the connection has been closed.</p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
 <li><p><strong>graph_documents</strong> (<em>List</em><em>[</em><a class="reference internal" href="langchain_neo4j.graphs.graph_document.GraphDocument.html#langchain_neo4j.graphs.graph_document.GraphDocument" title="langchain_neo4j.graphs.graph_document.GraphDocument"><em>GraphDocument</em></a><em>]</em>)</p></li>
 <li><p><strong>include_source</strong> (<em>bool</em>)</p></li>
 <li><p><strong>baseEntityLabel</strong> (<em>bool</em>)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/langchain_neo4j/graphs/neo4j_graph.html#Neo4jGraph.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.close" title="Link to this definition">#</a></dt>
+<dd><p>Explicitly close the Neo4j driver connection.</p>
+<p>Delegates connection management to the Neo4j driver.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -447,6 +464,9 @@ speed and performance. Defaults to False.</p>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List[Dict[str, Any]]</p>
 </dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>RuntimeError</strong> – If the connection has been closed.</p>
+</dd>
 </dl>
 </dd></dl>
 <dl class="py method">
@@ -454,8 +474,11 @@ speed and performance. Defaults to False.</p>
 <span class="sig-name descname"><span class="pre">refresh_schema</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/langchain_neo4j/graphs/neo4j_graph.html#Neo4jGraph.refresh_schema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.refresh_schema" title="Link to this definition">#</a></dt>
 <dd><p>Refreshes the Neo4j graph schema information.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – If the connection has been closed.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -484,6 +507,7 @@ speed and performance. Defaults to False.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph"><code class="docutils literal notranslate"><span class="pre">Neo4jGraph</span></code></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.add_graph_documents"><code class="docutils literal notranslate"><span class="pre">add_graph_documents()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.close"><code class="docutils literal notranslate"><span class="pre">close()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.query"><code class="docutils literal notranslate"><span class="pre">query()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_neo4j.graphs.neo4j_graph.Neo4jGraph.refresh_schema"><code class="docutils literal notranslate"><span class="pre">refresh_schema()</span></code></a></li>
 </ul>
