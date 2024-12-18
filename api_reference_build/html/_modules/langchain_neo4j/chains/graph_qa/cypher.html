@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Dec 17, 2024" name="docbuild:last-update"/>
+<meta content="Dec 18, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -581,7 +581,7 @@
         <span class="k">if</span> <span class="n">validate_cypher</span><span class="p">:</span>
             <span class="n">corrector_schema</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="n">Schema</span><span class="p">(</span><span class="n">el</span><span class="p">[</span><span class="s2">"start"</span><span class="p">],</span> <span class="n">el</span><span class="p">[</span><span class="s2">"type"</span><span class="p">],</span> <span class="n">el</span><span class="p">[</span><span class="s2">"end"</span><span class="p">])</span>
-                <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"graph"</span><span class="p">]</span><span class="o">.</span><span class="n">structured_schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"relationships"</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"graph"</span><span class="p">]</span><span class="o">.</span><span class="n">get_structured_schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"relationships"</span><span class="p">,</span> <span class="p">[])</span>
             <span class="p">]</span>
             <span class="n">cypher_query_corrector</span> <span class="o">=</span> <span class="n">CypherQueryCorrector</span><span class="p">(</span><span class="n">corrector_schema</span><span class="p">)</span>
 
