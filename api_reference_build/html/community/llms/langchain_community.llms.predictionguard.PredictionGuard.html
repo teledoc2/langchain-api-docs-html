@@ -49,12 +49,12 @@
 <script>DOCUMENTATION_OPTIONS.pagename = 'community/llms/langchain_community.llms.predictionguard.PredictionGuard';</script>
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
-<link href="langchain_community.llms.promptlayer_openai.PromptLayerOpenAI.html" rel="next" title="PromptLayerOpenAI"/>
-<link href="langchain_community.llms.predibase.Predibase.html" rel="prev" title="Predibase"/>
+<link href="langchain_community.llms.together.Together.html" rel="next" title="Together"/>
+<link href="langchain_community.llms.openai.OpenAIChat.html" rel="prev" title="OpenAIChat"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Dec 20, 2024" name="docbuild:last-update"/>
+<meta content="Dec 21, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -319,7 +319,6 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.petals.Petals.html">Petals</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.pipelineai.PipelineAI.html">PipelineAI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.predibase.Predibase.html">Predibase</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">PredictionGuard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.promptlayer_openai.PromptLayerOpenAI.html">PromptLayerOpenAI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.promptlayer_openai.PromptLayerOpenAIChat.html">PromptLayerOpenAIChat</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.replicate.Replicate.html">Replicate</a></li>
@@ -406,6 +405,7 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.openai.AzureOpenAI.html">AzureOpenAI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.openai.OpenAI.html">OpenAI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.openai.OpenAIChat.html">OpenAIChat</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">PredictionGuard</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.together.Together.html">Together</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.vertexai.VertexAI.html">VertexAI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.llms.vertexai.VertexAIModelGarden.html">VertexAIModelGarden</a></li>
@@ -511,18 +511,18 @@
 <dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_community.llms.predictionguard.</span></span><span class="sig-name descname"><span class="pre">PredictionGuard</span></span><a class="reference internal" href="../../_modules/langchain_community/llms/predictionguard.html#PredictionGuard"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../core/language_models/langchain_core.language_models.llms.LLM.html#langchain_core.language_models.llms.LLM" title="langchain_core.language_models.llms.LLM"><code class="xref py py-class docutils literal notranslate"><span class="pre">LLM</span></code></a></p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.3.28: </span>Use <code class="docutils literal notranslate"><span class="pre">:class:`~langchain_predictionguard.PredictionGuard`</span></code> instead. It will be removed in None==1.0.</p>
+</div>
 <p>Prediction Guard large language models.</p>
 <p>To use, you should have the <code class="docutils literal notranslate"><span class="pre">predictionguard</span></code> python package installed, and the
-environment variable <code class="docutils literal notranslate"><span class="pre">PREDICTIONGUARD_TOKEN</span></code> set with your access token, or pass
-it as a named parameter to the constructor. To use Prediction Guard’s API along
-with OpenAI models, set the environment variable <code class="docutils literal notranslate"><span class="pre">OPENAI_API_KEY</span></code> with your
-OpenAI API key as well.</p>
+environment variable <code class="docutils literal notranslate"><span class="pre">PREDICTIONGUARD_API_KEY</span></code> set with your API key, or pass
+it as a named parameter to the constructor.</p>
 <p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pgllm</span> <span class="o">=</span> <span class="n">PredictionGuard</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"MPT-7B-Instruct"</span><span class="p">,</span>
-                        <span class="n">token</span><span class="o">=</span><span class="s2">"my-access-token"</span><span class="p">,</span>
-                        <span class="n">output</span><span class="o">=</span><span class="p">{</span>
-                            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"boolean"</span>
-                        <span class="p">})</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">llm</span> <span class="o">=</span> <span class="n">PredictionGuard</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"Hermes-3-Llama-3.1-8B"</span><span class="p">,</span>
+    <span class="n">predictionguard_api_key</span><span class="o">=</span><span class="s2">"your Prediction Guard API key"</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -559,7 +559,7 @@ OpenAI API key as well.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard.max_tokens">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">256</span></em><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.max_tokens" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">256</span></em><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.max_tokens" title="Link to this definition">#</a></dt>
 <dd><p>Denotes the number of tokens to predict per generation.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
@@ -569,13 +569,23 @@ OpenAI API key as well.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard.model">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'MPT-7B-Instruct'</span></em><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.model" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Hermes-3-Llama-3.1-8B'</span></em><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.model" title="Link to this definition">#</a></dt>
 <dd><p>Model name to use.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard.output">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">output</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.output" title="Link to this definition">#</a></dt>
-<dd><p>The output type or structure for controlling the LLM output.</p>
+<dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard.predictionguard_api_key">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predictionguard_api_key</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.predictionguard_api_key" title="Link to this definition">#</a></dt>
+<dd><p>Prediction Guard API key.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard.predictionguard_input">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predictionguard_input</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.predictionguard_input" title="Link to this definition">#</a></dt>
+<dd><p>The input check to run over the prompt before sending to the LLM.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard.predictionguard_output">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">predictionguard_output</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.predictionguard_output" title="Link to this definition">#</a></dt>
+<dd><p>The output check to run the LLM output against.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard.stop">
@@ -588,13 +598,18 @@ OpenAI API key as well.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard.temperature">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">temperature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.75</span></em><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.temperature" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">temperature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.75</span></em><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.temperature" title="Link to this definition">#</a></dt>
 <dd><p>A non-negative float that tunes the degree of randomness in generation.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard.token">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">token</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.token" title="Link to this definition">#</a></dt>
-<dd><p>Your Prediction Guard access token.</p>
+<dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard.top_k">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">top_k</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.top_k" title="Link to this definition">#</a></dt>
+<dd><p>The diversity of the generated text based on top-k sampling.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard.top_p">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">top_p</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.1</span></em><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.top_p" title="Link to this definition">#</a></dt>
+<dd><p>A non-negative float that controls the diversity of the generated tokens.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard.verbose">
@@ -1328,19 +1343,6 @@ Subclasses should override this method if they support streaming output.</p>
 </dl>
 </dd></dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard.validate_environment">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_environment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="reference internal" href="../../_modules/langchain_community/llms/predictionguard.html#PredictionGuard.validate_environment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.validate_environment" title="Link to this definition">#</a></dt>
-<dd><p>Validate that the access token and python package exists in environment.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>values</strong> (<em>Dict</em>)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>Dict</em></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
 <dt class="sig sig-object py" id="langchain_community.llms.predictionguard.PredictionGuard.with_alisteners">
 <span class="sig-name descname"><span class="pre">with_alisteners</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncListener</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncListener</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AsyncListener</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><span class="pre">Runnable</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Input</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Output</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_community.llms.predictionguard.PredictionGuard.with_alisteners" title="Link to this definition">#</a></dt>
 <dd><p>Bind asynchronous lifecycle listeners to a Runnable, returning a new Runnable.</p>
@@ -1670,11 +1672,14 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.max_tokens"><code class="docutils literal notranslate"><span class="pre">max_tokens</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.metadata"><code class="docutils literal notranslate"><span class="pre">metadata</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.output"><code class="docutils literal notranslate"><span class="pre">output</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.predictionguard_api_key"><code class="docutils literal notranslate"><span class="pre">predictionguard_api_key</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.predictionguard_input"><code class="docutils literal notranslate"><span class="pre">predictionguard_input</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.predictionguard_output"><code class="docutils literal notranslate"><span class="pre">predictionguard_output</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.tags"><code class="docutils literal notranslate"><span class="pre">tags</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.temperature"><code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.token"><code class="docutils literal notranslate"><span class="pre">token</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.top_k"><code class="docutils literal notranslate"><span class="pre">top_k</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.top_p"><code class="docutils literal notranslate"><span class="pre">top_p</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.verbose"><code class="docutils literal notranslate"><span class="pre">verbose</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.__call__"><code class="docutils literal notranslate"><span class="pre">__call__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.abatch"><code class="docutils literal notranslate"><span class="pre">abatch()</span></code></a></li>
@@ -1693,7 +1698,6 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.invoke"><code class="docutils literal notranslate"><span class="pre">invoke()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.save"><code class="docutils literal notranslate"><span class="pre">save()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.stream"><code class="docutils literal notranslate"><span class="pre">stream()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.validate_environment"><code class="docutils literal notranslate"><span class="pre">validate_environment()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.with_alisteners"><code class="docutils literal notranslate"><span class="pre">with_alisteners()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.with_config"><code class="docutils literal notranslate"><span class="pre">with_config()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.predictionguard.PredictionGuard.with_fallbacks"><code class="docutils literal notranslate"><span class="pre">with_fallbacks()</span></code></a></li>

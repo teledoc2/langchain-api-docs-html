@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Dec 20, 2024" name="docbuild:last-update"/>
+<meta content="Dec 21, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -652,33 +652,36 @@ using http(s)_proxy environment variables. Defaults to False.</p></li>
 <td><p>Initialize loader.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.alazy_load" title="langchain_community.document_loaders.hn.HNLoader.alazy_load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alazy_load</span></code></a>()</p></td>
-<td><p>A lazy loader for Documents.</p></td>
+<td><p>Async lazy load text from the url(s) in web_path.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.aload" title="langchain_community.document_loaders.hn.HNLoader.aload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aload</span></code></a>()</p></td>
-<td><p>Load text from the urls in web_path async into Documents.</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.fetch_all" title="langchain_community.document_loaders.hn.HNLoader.fetch_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_all</span></code></a>(urls)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.ascrape_all" title="langchain_community.document_loaders.hn.HNLoader.ascrape_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ascrape_all</span></code></a>(urls[, parser])</p></td>
+<td><p>Async fetch all urls, then return soups for all results.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.fetch_all" title="langchain_community.document_loaders.hn.HNLoader.fetch_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fetch_all</span></code></a>(urls)</p></td>
 <td><p>Fetch all urls concurrently with rate limiting.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.lazy_load" title="langchain_community.document_loaders.hn.HNLoader.lazy_load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lazy_load</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.lazy_load" title="langchain_community.document_loaders.hn.HNLoader.lazy_load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lazy_load</span></code></a>()</p></td>
 <td><p>Lazy load text from the url(s) in web_path.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.load" title="langchain_community.document_loaders.hn.HNLoader.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.load" title="langchain_community.document_loaders.hn.HNLoader.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>()</p></td>
 <td><p>Get important HN webpage information.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.load_and_split" title="langchain_community.document_loaders.hn.HNLoader.load_and_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_and_split</span></code></a>([text_splitter])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.load_and_split" title="langchain_community.document_loaders.hn.HNLoader.load_and_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_and_split</span></code></a>([text_splitter])</p></td>
 <td><p>Load Documents and split into chunks.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.load_comments" title="langchain_community.document_loaders.hn.HNLoader.load_comments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_comments</span></code></a>(soup_info)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.load_comments" title="langchain_community.document_loaders.hn.HNLoader.load_comments"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_comments</span></code></a>(soup_info)</p></td>
 <td><p>Load comments from a HN post.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.load_results" title="langchain_community.document_loaders.hn.HNLoader.load_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_results</span></code></a>(soup)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.load_results" title="langchain_community.document_loaders.hn.HNLoader.load_results"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_results</span></code></a>(soup)</p></td>
 <td><p>Load items from an HN page.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.scrape" title="langchain_community.document_loaders.hn.HNLoader.scrape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scrape</span></code></a>([parser])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.scrape" title="langchain_community.document_loaders.hn.HNLoader.scrape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scrape</span></code></a>([parser])</p></td>
 <td><p>Scrape data from webpage and return it in BeautifulSoup format.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.scrape_all" title="langchain_community.document_loaders.hn.HNLoader.scrape_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scrape_all</span></code></a>(urls[, parser])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_community.document_loaders.hn.HNLoader.scrape_all" title="langchain_community.document_loaders.hn.HNLoader.scrape_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scrape_all</span></code></a>(urls[, parser])</p></td>
 <td><p>Fetch all urls, then return soups for all results.</p></td>
 </tr>
 </tbody>
@@ -719,7 +722,7 @@ using http(s)_proxy environment variables. Defaults to False.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_community.document_loaders.hn.HNLoader.alazy_load">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">alazy_load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">AsyncIterator</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><span class="pre">Document</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_community.document_loaders.hn.HNLoader.alazy_load" title="Link to this definition">#</a></dt>
-<dd><p>A lazy loader for Documents.</p>
+<dd><p>Async lazy load text from the url(s) in web_path.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>AsyncIterator</em>[<a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><em>Document</em></a>]</p>
@@ -729,10 +732,29 @@ using http(s)_proxy environment variables. Defaults to False.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_community.document_loaders.hn.HNLoader.aload">
 <span class="sig-name descname"><span class="pre">aload</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><span class="pre">Document</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_community.document_loaders.hn.HNLoader.aload" title="Link to this definition">#</a></dt>
-<dd><p>Load text from the urls in web_path async into Documents.</p>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version langchain-community==0.3.14: </span>See API reference for updated usage: <a class="reference external" href="https://python.langchain.com/api_reference/community/document_loaders/langchain_community.document_loaders.web_base.WebBaseLoader.html">https://python.langchain.com/api_reference/community/document_loaders/langchain_community.document_loaders.web_base.WebBaseLoader.html</a> It will not be removed until langchain-community==1.0.</p>
+</div>
+<p>Load text from the urls in web_path async into Documents.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>List</em>[<a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><em>Document</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="langchain_community.document_loaders.hn.HNLoader.ascrape_all">
+<em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ascrape_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">urls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parser</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_community.document_loaders.hn.HNLoader.ascrape_all" title="Link to this definition">#</a></dt>
+<dd><p>Async fetch all urls, then return soups for all results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>urls</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>parser</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>List</em>[<em>Any</em>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -875,6 +897,7 @@ Defaults to RecursiveCharacterTextSplitter.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.document_loaders.hn.HNLoader.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.document_loaders.hn.HNLoader.alazy_load"><code class="docutils literal notranslate"><span class="pre">alazy_load()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.document_loaders.hn.HNLoader.aload"><code class="docutils literal notranslate"><span class="pre">aload()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.document_loaders.hn.HNLoader.ascrape_all"><code class="docutils literal notranslate"><span class="pre">ascrape_all()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.document_loaders.hn.HNLoader.fetch_all"><code class="docutils literal notranslate"><span class="pre">fetch_all()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.document_loaders.hn.HNLoader.lazy_load"><code class="docutils literal notranslate"><span class="pre">lazy_load()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.document_loaders.hn.HNLoader.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>

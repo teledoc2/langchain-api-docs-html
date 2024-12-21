@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Dec 20, 2024" name="docbuild:last-update"/>
+<meta content="Dec 21, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -261,7 +261,7 @@
 <span class="p">)</span>
 
 <span class="n">AMAZON_BEDROCK_TRACE_KEY</span> <span class="o">=</span> <span class="s2">"amazon-bedrock-trace"</span>
-<span class="n">GUARDRAILS_BODY_KEY</span> <span class="o">=</span> <span class="s2">"amazon-bedrock-guardrailAssessment"</span>
+<span class="n">GUARDRAILS_BODY_KEY</span> <span class="o">=</span> <span class="s2">"amazon-bedrock-guardrailAction"</span>
 <span class="n">HUMAN_PROMPT</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2">Human:"</span>
 <span class="n">ASSISTANT_PROMPT</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n\n</span><span class="s2">Assistant:"</span>
 <span class="n">ALTERNATION_ERROR</span> <span class="o">=</span> <span class="p">(</span>
@@ -1131,7 +1131,7 @@
         <span class="p">}</span>
 
     <span class="k">def</span> <span class="nf">_is_guardrails_intervention</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">body</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">body</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">GUARDRAILS_BODY_KEY</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"GUARDRAIL_INTERVENED"</span>
+        <span class="k">return</span> <span class="n">body</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">GUARDRAILS_BODY_KEY</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"INTERVENED"</span>
 
     <span class="k">def</span> <span class="nf">_prepare_input_and_invoke_stream</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
