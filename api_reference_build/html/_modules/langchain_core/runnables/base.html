@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Dec 23, 2024" name="docbuild:last-update"/>
+<meta content="Dec 24, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -781,8 +781,6 @@
 <a class="viewcode-back" href="../../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_cohere.react_multi_hop.parsing.Runnable.get_graph">[docs]</a>
     <span class="k">def</span> <span class="nf">get_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RunnableConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Graph</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Return a graph representation of this Runnable."""</span>
-        <span class="kn">from</span> <span class="nn">langchain_core.runnables.graph</span> <span class="kn">import</span> <span class="n">Graph</span>
-
         <span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">input_node</span> <span class="o">=</span> <span class="n">graph</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_input_schema</span><span class="p">(</span><span class="n">config</span><span class="p">))</span>
