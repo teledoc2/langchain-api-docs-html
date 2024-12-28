@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Dec 27, 2024" name="docbuild:last-update"/>
+<meta content="Dec 28, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -214,6 +214,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../aws/index.html">AWS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../azure_dynamic_sessions/index.html">Azure Dynamic Sessions</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">Box</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../blob_loaders.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">blob_loaders</span></code></a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../document_loaders.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">document_loaders</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">BoxLoader</a></li>
 </ul>
@@ -283,7 +284,7 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-box: 0.2.3</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-box: 0.3.0</a></li>
 <li class="breadcrumb-item"><a class="nav-link" href="../document_loaders.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">document_loaders</span></code></a></li>
 <li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">BoxLoader</span></li>
 </ul>
@@ -335,8 +336,8 @@ root folder.</p>
 </div>
 <p><strong>Instantiate</strong>:</p>
 <blockquote>
-<div><div class="pst-scrollable-table-container"><table class="table" id="id1">
-<caption><span class="caption-text">Initialization variables</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
+<div><div class="pst-scrollable-table-container"><table class="table" id="id3">
+<caption><span class="caption-text">Initialization variables</span><a class="headerlink" href="#id3" title="Link to this table">#</a></caption>
 <colgroup>
 <col style="width: 25.0%"/>
 <col style="width: 50.0%"/>
@@ -380,6 +381,11 @@ root folder.</p>
 <td><p>client id for you app. Used for CCG</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">int</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">-1</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>extra_fields</p></td>
+<td><p>Specify Box file API fields to return as LangChain metadata.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">List[str]</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -446,6 +452,27 @@ parameter. This is a <code class="docutils literal notranslate"><span class="pre
 </div>
 </dd>
 </dl>
+<p><strong>Extra Fields</strong> - If you want to specify additional LangChain metadata
+fields based on fields available in the Box File Information API, you can
+add them as <code class="docutils literal notranslate"><span class="pre">extra_fields</span></code> when instantiating the object. As an example,
+if you want to add the <code class="docutils literal notranslate"><span class="pre">shared_link</span></code> object, you would pass a
+<code class="docutils literal notranslate"><span class="pre">List[str]</span></code> object like:</p>
+<p>. code_block:: python</p>
+<blockquote>
+<div><dl class="simple">
+<dt>loader = BoxBlobLoader(</dt><dd><p>box_file_ids=[“1234”],
+extra_fields=[“shared_link”]</p>
+</dd>
+</dl>
+<p>)</p>
+</div></blockquote>
+<p>This will return in the metadata in the form
+<a href="#id1"><span class="problematic" id="id2">``</span></a>”metadata” : {</p>
+<blockquote>
+<div><p>…,
+“shared_link” : value</p>
+</div></blockquote>
+<p>}</p>
 <p>Create a new model by parsing and validating input data from keyword arguments.</p>
 <p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
 validated to form a valid model.</p>
@@ -477,6 +504,13 @@ object</p>
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">character_limit</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-1</span></em><a class="headerlink" href="#langchain_box.document_loaders.box.BoxLoader.character_limit" title="Link to this definition">#</a></dt>
 <dd><p>character_limit is an int that caps the number of characters to
 return per document.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_box.document_loaders.box.BoxLoader.extra_fields">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">extra_fields</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_box.document_loaders.box.BoxLoader.extra_fields" title="Link to this definition">#</a></dt>
+<dd><p>Used to add extra fields to LangChain metadata. Should be a
+<code class="docutils literal notranslate"><span class="pre">List[str]</span></code> containing Box file field names. Will be added
+to metadata as <code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">"field_name"</span> <span class="pre">:</span> <span class="pre">field_value</span> <span class="pre">}</span></code>.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_box.document_loaders.box.BoxLoader.recursive">
@@ -562,6 +596,7 @@ Defaults to RecursiveCharacterTextSplitter.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.document_loaders.box.BoxLoader.box_file_ids"><code class="docutils literal notranslate"><span class="pre">box_file_ids</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.document_loaders.box.BoxLoader.box_folder_id"><code class="docutils literal notranslate"><span class="pre">box_folder_id</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.document_loaders.box.BoxLoader.character_limit"><code class="docutils literal notranslate"><span class="pre">character_limit</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.document_loaders.box.BoxLoader.extra_fields"><code class="docutils literal notranslate"><span class="pre">extra_fields</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.document_loaders.box.BoxLoader.recursive"><code class="docutils literal notranslate"><span class="pre">recursive</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.document_loaders.box.BoxLoader.alazy_load"><code class="docutils literal notranslate"><span class="pre">alazy_load()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_box.document_loaders.box.BoxLoader.aload"><code class="docutils literal notranslate"><span class="pre">aload()</span></code></a></li>

@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Dec 27, 2024" name="docbuild:last-update"/>
+<meta content="Dec 28, 2024" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -222,11 +222,14 @@
 <h1>Source code for langchain_box.utilities.box</h1><div class="highlight"><pre>
 <span></span><span class="sd">"""Util that calls Box APIs."""</span>
 
+<span class="kn">import</span> <span class="nn">fnmatch</span>
+<span class="kn">import</span> <span class="nn">mimetypes</span>
 <span class="kn">from</span> <span class="nn">enum</span> <span class="kn">import</span> <span class="n">Enum</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">box_sdk_gen</span>  <span class="c1"># type: ignore</span>
 <span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">from</span> <span class="nn">langchain_community.document_loaders.blob_loaders.schema</span> <span class="kn">import</span> <span class="n">Blob</span>
 <span class="kn">from</span> <span class="nn">langchain_core.documents</span> <span class="kn">import</span> <span class="n">Document</span>
 <span class="kn">from</span> <span class="nn">langchain_core.utils</span> <span class="kn">import</span> <span class="n">from_env</span>
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
@@ -786,13 +789,11 @@
 <span class="sd">        If the end date is omitted (2014-05-15T13:35:01-07:00,) the current </span>
 <span class="sd">        date will be used as the end date instead."""</span>
 
-<div class="viewcode-block" id="BoxSearchOptions.Config">
-<a class="viewcode-back" href="../../../box/utilities/langchain_box.utilities.box.BoxSearchOptions.html#langchain_box.utilities.box.BoxSearchOptions.Config">[docs]</a>
-    <span class="k">class</span> <span class="nc">Config</span><span class="p">:</span>
-        <span class="n">arbitrary_types_allowed</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">use_enum_values</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="n">extra</span> <span class="o">=</span> <span class="s2">"allow"</span></div>
-
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>
+        <span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">use_enum_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">extra</span><span class="o">=</span><span class="s2">"allow"</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">validate_search_options</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
@@ -838,6 +839,43 @@
 
 
 
+<div class="viewcode-block" id="BoxMetadataQuery">
+<a class="viewcode-back" href="../../../box/utilities/langchain_box.utilities.box.BoxMetadataQuery.html#langchain_box.utilities.box.BoxMetadataQuery">[docs]</a>
+<span class="k">class</span> <span class="nc">BoxMetadataQuery</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+    <span class="n">template_key</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">       Specifies the template used in the query. Must be in the form </span>
+<span class="sd">       scope.templateKey. Not all templates can be used in this field, </span>
+<span class="sd">       most notably the built-in, Box-provided classification templates</span>
+<span class="sd">       can not be used in a query. Example: enterprise_123456.someTemplate</span>
+<span class="sd">    """</span>
+
+    <span class="n">query</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">       The query to perform. A query is a logical expression that is very</span>
+<span class="sd">       similar to a SQL SELECT statement. Values in the search query can </span>
+<span class="sd">       be turned into parameters specified in the query_param arguments </span>
+<span class="sd">       list to prevent having to manually insert search values into the </span>
+<span class="sd">       query string.</span>
+<span class="sd">       </span>
+<span class="sd">       example: "value &gt;= :amount"</span>
+<span class="sd">       </span>
+<span class="sd">       For example, a value of :amount would represent the amount value </span>
+<span class="sd">       in query_params object.</span>
+<span class="sd">    """</span>
+
+    <span class="n">query_params</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">       Set of arguments corresponding to the parameters specified in the </span>
+<span class="sd">       query. The type of each parameter used in the query_params must </span>
+<span class="sd">       match the type of the corresponding metadata template field.</span>
+<span class="sd">    """</span>
+
+    <span class="n">ancestor_folder_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"0"</span>
+<span class="w">    </span><span class="sd">"""Limits the search results to items within the given folder id"""</span></div>
+
+
+
 <span class="k">class</span> <span class="nc">_BoxAPIWrapper</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Wrapper for Box API."""</span>
 
@@ -855,6 +893,26 @@
 
     <span class="n">box_search_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BoxSearchOptions</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""Search options to configure BoxRetriever to narrow search results."""</span>
+
+    <span class="n">glob</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"**/[!.]*"</span>
+<span class="w">    </span><span class="sd">"""Glob to specify the file names to return, i.e. \"**/*.txt\"""</span><span class="s2">"</span>
+
+    <span class="n">exclude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""File name patterns to exclude, in glob notation,  i.e. \"**/*.txt\"""</span><span class="s2">"</span>
+
+    <span class="n">suffixes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""File extensions to include in results"""</span>
+
+    <span class="n">images</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">"""Return image blobs."""</span>
+
+    <span class="n">docs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="w">    </span><span class="sd">"""Return document blobs."""</span>
+
+    <span class="n">extra_fields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Used to add extra fields to LangChain metadata. Should be a </span>
+<span class="sd">       ``List[str]`` containing Box file field names. Will be added</span>
+<span class="sd">       to metadata as ``{ \"field_name\" : field_value }``."""</span>
 
     <span class="n">_box</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">box_sdk_gen</span><span class="o">.</span><span class="n">BoxClient</span><span class="p">]</span>
 
@@ -950,6 +1008,55 @@
 
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>  <span class="c1">#   type: ignore[return-value]</span>
 
+    <span class="k">def</span> <span class="nf">_is_returnable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_info</span><span class="p">:</span> <span class="n">box_sdk_gen</span><span class="o">.</span><span class="n">FileFull</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="n">extension</span> <span class="o">=</span> <span class="n">file_info</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">suffixes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">extension</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">suffixes</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">glob</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">glob</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">exclude</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">fnmatch</span><span class="o">.</span><span class="n">fnmatch</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">exclude</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">docs</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">DocumentFiles</span><span class="p">,</span> <span class="n">extension</span><span class="o">.</span><span class="n">upper</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">images</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">ImageFiles</span><span class="p">,</span> <span class="n">extension</span><span class="o">.</span><span class="n">upper</span><span class="p">()):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span> <span class="nf">_generate_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_info</span><span class="p">:</span> <span class="n">box_sdk_gen</span><span class="o">.</span><span class="n">FileFull</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="s2">"https://app.box.com"</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">path_token</span> <span class="ow">in</span> <span class="n">file_info</span><span class="o">.</span><span class="n">path_collection</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
+                <span class="n">path</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"/</span><span class="si">{</span><span class="n">path_token</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+
+        <span class="n">path</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">"/</span><span class="si">{</span><span class="n">file_info</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span>
+
+        <span class="k">return</span> <span class="n">path</span>
+
+    <span class="k">def</span> <span class="nf">_get_extra_fields</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">file</span><span class="p">:</span> <span class="n">box_sdk_gen</span><span class="o">.</span><span class="n">FileFull</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+        <span class="n">extra_fields</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">extra_fields</span><span class="p">:</span>
+            <span class="n">file_dict</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">metadata</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">file_dict</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">metadata</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="s2">""</span>
+
+        <span class="k">return</span> <span class="n">metadata</span>
+
     <span class="k">def</span> <span class="nf">get_document_by_file_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Load a file from a Box id. Accepts file_id as str.</span>
 <span class="sd">        Returns `Document`"""</span>
@@ -957,8 +1064,13 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_box_client</span><span class="p">()</span>
 
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">,</span> <span class="s2">"extension"</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fields</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_fields</span>
+
         <span class="n">file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get_file_by_id</span><span class="p">(</span>  <span class="c1">#  type: ignore[union-attr]</span>
-            <span class="n">file_id</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">,</span> <span class="s2">"extension"</span><span class="p">]</span>
+            <span class="n">file_id</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"file"</span><span class="p">:</span>
@@ -972,6 +1084,11 @@
                     <span class="s2">"source"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
                     <span class="s2">"title"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">file_name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
                 <span class="p">}</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_extra_fields</span><span class="p">(</span>
+                        <span class="n">file</span><span class="o">=</span><span class="n">file</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="n">extra_fields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_fields</span>
+                    <span class="p">)</span>
 
                 <span class="k">return</span> <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
 
@@ -1000,23 +1117,27 @@
 
         <span class="k">return</span> <span class="n">folder_contents</span><span class="o">.</span><span class="n">entries</span>
 
-    <span class="k">def</span> <span class="nf">search_box</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+    <span class="k">def</span> <span class="nf">search_box</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">return_ids</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_box_client</span><span class="p">()</span>
 
         <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">,</span> <span class="s2">"extension"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">,</span> <span class="s2">"path_collection"</span><span class="p">]</span>
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">results</span> <span class="o">=</span> <span class="kc">None</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_search_options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">search_for_content</span><span class="p">(</span>  <span class="c1">#  type: ignore[union-attr]</span>
-                    <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">,</span> <span class="s2">"extension"</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"file"</span>
+                    <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">"file"</span>
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">search_for_content</span><span class="p">(</span>  <span class="c1">#  type: ignore[union-attr]</span>
                     <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
-                    <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">,</span> <span class="s2">"extension"</span><span class="p">],</span>
+                    <span class="n">fields</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span>
                     <span class="nb">type</span><span class="o">=</span><span class="s2">"file"</span><span class="p">,</span>
                     <span class="n">ancestor_folder_ids</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">box_search_options</span><span class="o">.</span><span class="n">ancestor_folder_ids</span><span class="p">,</span>  <span class="c1">#  type: ignore[union-attr]</span>
                     <span class="n">content_types</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">box_search_options</span><span class="o">.</span><span class="n">search_type_filter</span><span class="p">,</span>  <span class="c1">#  type: ignore[union-attr]</span>
@@ -1034,12 +1155,15 @@
                 <span class="k">if</span> <span class="p">(</span>
                     <span class="n">file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                     <span class="ow">and</span> <span class="n">file</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"file"</span>
-                    <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">DocumentFiles</span><span class="p">,</span> <span class="n">file</span><span class="o">.</span><span class="n">extension</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+                    <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_returnable</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_path</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
                 <span class="p">):</span>
                     <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_document_by_file_id</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="n">doc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                        <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">return_ids</span><span class="p">:</span>
+                            <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
 
             <span class="k">return</span> <span class="n">files</span>
         <span class="k">except</span> <span class="n">box_sdk_gen</span><span class="o">.</span><span class="n">BoxAPIError</span> <span class="k">as</span> <span class="n">bae</span><span class="p">:</span>
@@ -1119,6 +1243,83 @@
                 <span class="n">docs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">docs</span>
+
+    <span class="k">def</span> <span class="nf">metadata_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="n">BoxMetadataQuery</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_box_client</span><span class="p">()</span>
+
+        <span class="n">file_ids</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">search</span><span class="o">.</span><span class="n">search_by_metadata_query</span><span class="p">(</span>  <span class="c1">#  type: ignore[union-attr]</span>
+            <span class="n">from_</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">template_key</span><span class="p">,</span>
+            <span class="n">ancestor_folder_id</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">ancestor_folder_id</span><span class="p">,</span>
+            <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">query</span><span class="p">,</span>
+            <span class="n">query_params</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">query_params</span><span class="p">,</span>
+            <span class="n">fields</span><span class="o">=</span><span class="p">[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">,</span> <span class="s2">"extension"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">,</span> <span class="s2">"path_collection"</span><span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">entries</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">entries</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>  <span class="c1">#  type: ignore[return-value]</span>
+
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">entries</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="ow">and</span> <span class="n">file</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"file"</span>
+                <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_returnable</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_path</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+            <span class="p">):</span>
+                <span class="n">file_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">file_ids</span>
+
+    <span class="k">def</span> <span class="nf">get_blob_from_file_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">Blob</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_box_client</span><span class="p">()</span>
+
+        <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"id"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">,</span> <span class="s2">"path_collection"</span><span class="p">,</span> <span class="s2">"size"</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fields</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_fields</span>
+
+        <span class="n">file_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get_file_by_id</span><span class="p">(</span>  <span class="c1">#  type: ignore[union-attr]</span>
+            <span class="n">file_id</span><span class="p">,</span> <span class="n">fields</span><span class="o">=</span><span class="n">fields</span>
+        <span class="p">)</span>
+
+        <span class="n">mime_type</span><span class="p">,</span> <span class="n">encoding</span> <span class="o">=</span> <span class="n">mimetypes</span><span class="o">.</span><span class="n">guess_type</span><span class="p">(</span><span class="n">file_info</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">encoding</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">encoding</span> <span class="o">=</span> <span class="s2">"utf-8"</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_path</span><span class="p">(</span><span class="n">file_info</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_returnable</span><span class="p">(</span><span class="n">file_info</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+            <span class="n">downloaded_file_content</span><span class="p">:</span> <span class="n">box_sdk_gen</span><span class="o">.</span><span class="n">ByteStream</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">downloads</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="n">file_id</span><span class="o">=</span><span class="n">file_id</span><span class="p">)</span>  <span class="c1">#  type: ignore[union-attr]</span>
+            <span class="p">)</span>
+
+            <span class="n">file_content</span> <span class="o">=</span> <span class="n">box_sdk_gen</span><span class="o">.</span><span class="n">read_byte_stream</span><span class="p">(</span><span class="n">downloaded_file_content</span><span class="p">)</span>
+
+            <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"source"</span><span class="p">:</span> <span class="n">path</span><span class="p">,</span>
+                <span class="s2">"name"</span><span class="p">:</span> <span class="n">file_info</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s2">"file_size"</span><span class="p">:</span> <span class="n">file_info</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_fields</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_extra_fields</span><span class="p">(</span>
+                    <span class="n">file</span><span class="o">=</span><span class="n">file_info</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="n">extra_fields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_fields</span>
+                <span class="p">)</span>
+
+            <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="p">(</span>
+                <span class="nb">id</span><span class="o">=</span><span class="n">file_info</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+                <span class="n">data</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">file_content</span><span class="p">),</span>
+                <span class="n">mimetype</span><span class="o">=</span><span class="n">mime_type</span><span class="p">,</span>
+                <span class="n">encoding</span><span class="o">=</span><span class="n">encoding</span><span class="p">,</span>
+                <span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">blob</span>
+        <span class="k">return</span> <span class="kc">None</span>
 </pre></div>
 </article>
 </div>

@@ -1,0 +1,688 @@
+
+<!DOCTYPE html>
+
+<html data-content_root="../../../" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<!-- Google tag (gtag.js) -->
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-9B66JQQH2F"></script>
+<script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-9B66JQQH2F');
+    </script>
+<title>langchain_box.blob_loaders.box — 🦜🔗 LangChain  documentation</title>
+<script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+<!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+<noscript>
+<style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+</noscript>
+<!-- Loaded before other Sphinx assets -->
+<link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet"/>
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet"/>
+<link href="../../../_static/pygments.css?v=a746c00c" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/autodoc_pydantic.css" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/copybutton.css?v=76b2166b" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
+<link href="../../../_static/css/custom.css?v=488f4e83" rel="stylesheet" type="text/css"/>
+<!-- So that users can add custom icons -->
+<script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+<!-- Pre-loaded scripts that we'll load fully later -->
+<link as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" rel="preload"/>
+<link as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" rel="preload"/>
+<script src="../../../_static/documentation_options.js?v=3b5cce75"></script>
+<script src="../../../_static/doctools.js?v=9bcbadda"></script>
+<script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+<script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+<script src="../../../_static/copybutton.js?v=f281be69"></script>
+<script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+<script>DOCUMENTATION_OPTIONS.pagename = '_modules/langchain_box/blob_loaders/box';</script>
+<link href="../../../_static/favicon.png" rel="icon"/>
+<link href="../../../search.html" rel="search" title="Search"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="en" name="docsearch:language"/>
+<meta content="" name="docsearch:version"/>
+<meta content="Dec 28, 2024" name="docbuild:last-update"/>
+</head>
+<body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
+<div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
+<div id="pst-scroll-pixel-helper"></div>
+<button class="btn rounded-pill" id="pst-back-to-top" type="button">
+<i class="fa-solid fa-arrow-up"></i>Back to top</button>
+<dialog id="pst-search-dialog">
+<form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</dialog>
+<div class="pst-async-banner-revealer d-none">
+<aside aria-label="Version warning" class="d-none d-print-none" id="bd-header-version-warning"></aside>
+</div>
+<header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+<button aria-label="Site navigation" class="pst-navbar-icon sidebar-toggle primary-toggle">
+<span class="fa-solid fa-bars"></span>
+</button>
+<div class="navbar-header-items__start">
+<div class="navbar-item">
+<a class="navbar-brand logo" href="../../../index.html">
+<img alt="🦜🔗 LangChain  documentation - Home" class="logo__image only-light" src="../../../_static/wordmark-api.svg"/>
+<img alt="🦜🔗 LangChain  documentation - Home" class="logo__image only-dark pst-js-only" src="../../../_static/wordmark-api-dark.svg"/>
+</a></div>
+</div>
+<div class="navbar-header-items">
+<div class="me-auto navbar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../../../reference.html">
+    Reference
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="navbar-header-items__end">
+<div class="navbar-item navbar-persistent--container">
+<form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</div>
+<div class="navbar-item"><!-- This will display a link to LangChain docs -->
+<head>
+<style>
+        .text-link {
+            text-decoration: none; /* Remove underline */
+            color: inherit;        /* Inherit color from parent element */
+        }
+    </style>
+</head>
+<body>
+<a class="text-link" href="https://python.langchain.com/">Docs</a>
+</body></div>
+<div class="navbar-item">
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" data-bs-placement="bottom" data-bs-title="Color mode" data-bs-toggle="tooltip">
+<i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+</button></div>
+<div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://twitter.com/langchainai" rel="noopener" target="_blank" title="X / Twitter"><i aria-hidden="true" class="fab fa-twitter-square fa-lg"></i>
+<span class="sr-only">X / Twitter</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="navbar-persistent--mobile">
+<form action="../../../search.html" class="bd-search d-flex align-items-center" method="get">
+<i class="fa-solid fa-magnifying-glass"></i>
+<input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" class="form-control" name="q" placeholder="Search" spellcheck="false" type="search"/>
+<span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+</div>
+</div>
+</header>
+<div class="bd-container">
+<div class="bd-container__inner bd-page-width">
+<dialog id="pst-primary-sidebar-modal"></dialog>
+<div class="bd-sidebar-primary bd-sidebar hide-on-wide" id="pst-primary-sidebar">
+<div class="sidebar-header-items sidebar-primary__section">
+<div class="sidebar-header-items__center">
+<div class="navbar-item">
+<nav>
+<ul class="bd-navbar-elements navbar-nav">
+<li class="nav-item">
+<a class="nav-link nav-internal" href="../../../reference.html">
+    Reference
+  </a>
+</li>
+</ul>
+</nav></div>
+</div>
+<div class="sidebar-header-items__end">
+<div class="navbar-item"><!-- This will display a link to LangChain docs -->
+<head>
+<style>
+        .text-link {
+            text-decoration: none; /* Remove underline */
+            color: inherit;        /* Inherit color from parent element */
+        }
+    </style>
+</head>
+<body>
+<a class="text-link" href="https://python.langchain.com/">Docs</a>
+</body></div>
+<div class="navbar-item">
+<button aria-label="Color mode" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" data-bs-placement="bottom" data-bs-title="Color mode" data-bs-toggle="tooltip">
+<i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+<i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+<i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+</button></div>
+<div class="navbar-item"><ul aria-label="Quick Links" class="navbar-icon-links">
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://github.com/langchain-ai/langchain" rel="noopener" target="_blank" title="GitHub"><i aria-hidden="true" class="fa-brands fa-square-github fa-lg"></i>
+<span class="sr-only">GitHub</span></a>
+</li>
+<li class="nav-item">
+<a class="nav-link pst-navbar-icon" data-bs-placement="bottom" data-bs-toggle="tooltip" href="https://twitter.com/langchainai" rel="noopener" target="_blank" title="X / Twitter"><i aria-hidden="true" class="fab fa-twitter-square fa-lg"></i>
+<span class="sr-only">X / Twitter</span></a>
+</li>
+</ul></div>
+</div>
+</div>
+<div class="sidebar-primary-items__end sidebar-primary__section">
+<div class="sidebar-primary-item">
+<div class="flat" data-ea-manual="true" data-ea-publisher="readthedocs" data-ea-type="readthedocs-sidebar" id="ethical-ad-placement">
+</div></div>
+</div>
+</div>
+<main class="bd-main" id="main-content" role="main">
+<div class="bd-content">
+<div class="bd-article-container">
+<div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+<div class="header-article-items__start">
+<div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+<ul class="bd-breadcrumbs">
+<li class="breadcrumb-item breadcrumb-home">
+<a aria-label="Home" class="nav-link" href="../../../index.html">
+<i class="fa-solid fa-home"></i>
+</a>
+</li>
+<li class="breadcrumb-item"><a class="nav-link" href="../../index.html">Module code</a></li>
+<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">langchain_box.blob_loaders.box</span></li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+</div>
+<div id="searchbox"></div>
+<article class="bd-article">
+<h1>Source code for langchain_box.blob_loaders.box</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">Iterator</span><span class="p">,</span>
+    <span class="n">List</span><span class="p">,</span>
+    <span class="n">Optional</span><span class="p">,</span>
+    <span class="n">TypeVar</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">box_sdk_gen</span> <span class="kn">import</span> <span class="n">FileBaseTypeField</span>  <span class="c1">#  type: ignore[import-untyped]</span>
+<span class="kn">from</span> <span class="nn">langchain_community.document_loaders.blob_loaders.schema</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Blob</span><span class="p">,</span>
+    <span class="n">BlobLoader</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">langchain_core.utils</span> <span class="kn">import</span> <span class="n">from_env</span>
+<span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">model_validator</span>
+<span class="kn">from</span> <span class="nn">typing_extensions</span> <span class="kn">import</span> <span class="n">Self</span>
+
+<span class="kn">from</span> <span class="nn">langchain_box.utilities</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BoxAuth</span><span class="p">,</span>
+    <span class="n">BoxMetadataQuery</span><span class="p">,</span>
+    <span class="n">BoxSearchOptions</span><span class="p">,</span>
+    <span class="n">_BoxAPIWrapper</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"T"</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_make_iterator</span><span class="p">(</span>
+    <span class="n">length_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="nb">int</span><span class="p">],</span> <span class="n">show_progress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Iterable</span><span class="p">[</span><span class="n">T</span><span class="p">]],</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">T</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Create a function that optionally wraps an iterable in tqdm."""</span>
+    <span class="k">if</span> <span class="n">show_progress</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">tqdm.auto</span> <span class="kn">import</span> <span class="n">tqdm</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                <span class="s2">"You must install tqdm to use show_progress=True."</span>
+                <span class="s2">"You can install tqdm with `pip install tqdm`."</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Make sure to provide `total` here so that tqdm can show</span>
+        <span class="c1"># a progress bar that takes into account the total number of files.</span>
+        <span class="k">def</span> <span class="nf">_with_tqdm</span><span class="p">(</span><span class="n">iterable</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span>
+<span class="w">            </span><span class="sd">"""Wrap an iterable in a tqdm progress bar."""</span>
+            <span class="k">return</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">iterable</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="n">length_func</span><span class="p">())</span>  <span class="c1">#  type: ignore[return-value]</span>
+
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">_with_tqdm</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">iterator</span> <span class="o">=</span> <span class="nb">iter</span>  <span class="c1"># type: ignore</span>
+
+    <span class="k">return</span> <span class="n">iterator</span>
+
+
+<span class="c1"># PUBLIC API</span>
+
+
+<div class="viewcode-block" id="BoxBlobLoader">
+<a class="viewcode-back" href="../../../box/blob_loaders/langchain_box.blob_loaders.box.BoxBlobLoader.html#langchain_box.blob_loaders.box.BoxBlobLoader">[docs]</a>
+<span class="k">class</span> <span class="nc">BoxBlobLoader</span><span class="p">(</span><span class="n">BlobLoader</span><span class="p">,</span> <span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""BoxBlobLoader.</span>
+
+<span class="sd">    This class will help you load files from your Box instance. You must have a</span>
+<span class="sd">    Box account. If you need one, you can sign up for a free developer account.</span>
+<span class="sd">    You will also need a Box application created in the developer portal, where</span>
+<span class="sd">    you can select your authorization type.</span>
+
+<span class="sd">    **Setup**:</span>
+<span class="sd">        Install ``langchain-box`` and set environment variable ``BOX_DEVELOPER_TOKEN``.</span>
+
+<span class="sd">        .. code-block:: bash</span>
+
+<span class="sd">            pip install -U langchain-box</span>
+<span class="sd">            export BOX_DEVELOPER_TOKEN="your-api-key"</span>
+
+
+<span class="sd">    This loader returns ``Blob`` objects built from files in Box. You can</span>
+<span class="sd">    provide either a ``List[str]`` containing Box file IDS, a ``str``</span>
+<span class="sd">    contining a Box folder ID, a ``str`` with a query to find the right</span>
+<span class="sd">    files, or a ``BoxMetadataQuery`` to find files based on its Box Metadata.</span>
+
+<span class="sd">    If providing a folder ID, you can also enable recursive mode to get</span>
+<span class="sd">    the full tree under that folder. If using a search query, you can</span>
+<span class="sd">    use the ``BoxSearchOptions`` object to narrow the scope of your search.</span>
+
+
+<span class="sd">    .. note::</span>
+<span class="sd">        A Box instance can contain Petabytes of files, and folders can contain millions</span>
+<span class="sd">        of files. Be intentional when choosing what folders you choose to index. And we</span>
+<span class="sd">        recommend never getting all files from folder 0 recursively. Folder ID 0 is your</span>
+<span class="sd">        root folder.</span>
+
+<span class="sd">    **Instantiate**:</span>
+
+<span class="sd">        .. list-table:: Initialization variables</span>
+<span class="sd">            :widths: 25 50 15 10</span>
+<span class="sd">            :header-rows: 1</span>
+
+<span class="sd">            * - Variable</span>
+<span class="sd">              - Description</span>
+<span class="sd">              - Type</span>
+<span class="sd">              - Default</span>
+<span class="sd">            * - box_developer_token</span>
+<span class="sd">              - Token to use for auth.</span>
+<span class="sd">              - ``str``</span>
+<span class="sd">              - ``None``</span>
+<span class="sd">            * - box_auth</span>
+<span class="sd">              - authentication object</span>
+<span class="sd">              - ``langchain_box.utilities.BoxAuth``</span>
+<span class="sd">              - ``None``</span>
+<span class="sd">            * - box_file_ids</span>
+<span class="sd">              - array of Box file IDs to index</span>
+<span class="sd">              - ``List[str]``</span>
+<span class="sd">              - ``None``</span>
+<span class="sd">            * - box_folder_id</span>
+<span class="sd">              - Box folder ID to index files from</span>
+<span class="sd">              - ``str``</span>
+<span class="sd">              - ``None``</span>
+<span class="sd">            * - query</span>
+<span class="sd">              - Query to search for files in Box</span>
+<span class="sd">              - ``str``</span>
+<span class="sd">              - ``None``</span>
+<span class="sd">            * - recursive</span>
+<span class="sd">              - Boolean to specify whether to include subfolders</span>
+<span class="sd">              - ``Bool``</span>
+<span class="sd">              - ``False``</span>
+<span class="sd">            * - glob</span>
+<span class="sd">              - Glob specifying which filenames to return</span>
+<span class="sd">              - ``str``</span>
+<span class="sd">              - ``**/[!.]*``</span>
+<span class="sd">            * - exclude</span>
+<span class="sd">              - Glob string specifying which filename patterns to exlude</span>
+<span class="sd">              - ``str``</span>
+<span class="sd">              - ``None``</span>
+<span class="sd">            * - suffixes</span>
+<span class="sd">              - Array of extensions to return</span>
+<span class="sd">              - ``List[str]``</span>
+<span class="sd">              - ``None``</span>
+<span class="sd">            * - show_progress</span>
+<span class="sd">              - Specifies whether to show a progress bar</span>
+<span class="sd">              - ``Bool``</span>
+<span class="sd">              - ``False``</span>
+<span class="sd">            * - search_options</span>
+<span class="sd">              - Search options to narrow the search scope in Box</span>
+<span class="sd">              - ``BoxSearchOptions``</span>
+<span class="sd">              - ``None``</span>
+<span class="sd">            * - metadata_query</span>
+<span class="sd">              - Box Metadata Query to find files based on their Metadata</span>
+<span class="sd">              - ``BoxMetadataQuery``</span>
+<span class="sd">              - ``None``</span>
+<span class="sd">            * - images</span>
+<span class="sd">              - Specify whether to return images or not</span>
+<span class="sd">              - ``Bool``</span>
+<span class="sd">              - ``True``</span>
+<span class="sd">            * - docs</span>
+<span class="sd">              - Specify whether to return document types of not.</span>
+<span class="sd">              - ``Bool``</span>
+<span class="sd">              - ``True``</span>
+<span class="sd">            * - extra_fields</span>
+<span class="sd">              - Specify Box file API fields to return as LangChain metadata.</span>
+<span class="sd">              - ``List[str]``</span>
+<span class="sd">              - ``None``</span>
+
+
+<span class="sd">    **Get files** — this method requires you pass the ``box_file_ids`` parameter.</span>
+<span class="sd">    This is a ``List[str]`` containing the file IDs you wish to index.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_box.blob_loaders import BoxBlobLoader</span>
+
+<span class="sd">            box_file_ids = ["1514555423624", "1514553902288"]</span>
+
+<span class="sd">            loader = BoxBlobLoader(</span>
+<span class="sd">                box_file_ids=box_file_ids</span>
+<span class="sd">            )</span>
+
+<span class="sd">    **Get files in a folder** — this method requires you pass the ``box_folder_id``</span>
+<span class="sd">    parameter. This is a ``str`` containing the folder ID you wish to index.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_box.blob_loaders import BoxBlobLoader</span>
+
+<span class="sd">            box_folder_id = "260932470532"</span>
+
+<span class="sd">            loader = BoxBlobLoader(</span>
+<span class="sd">                box_folder_id=box_folder_id</span>
+<span class="sd">            )</span>
+
+<span class="sd">    **Search for files** — this method requires you pass the ``query``</span>
+<span class="sd">    parameter and optionally ``search_options``. This is a ``str`` containing</span>
+<span class="sd">    the value to search for.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_box.blob_loaders import BoxBlobLoader</span>
+
+<span class="sd">            loader = BoxBlobLoader(</span>
+<span class="sd">                query="Higgs Boson Bubble Bath"</span>
+<span class="sd">            )</span>
+
+<span class="sd">    **Box Metadata query** — this method requires you pass the</span>
+<span class="sd">    ``BoxMetadataQuery`` object to the ``box_metadata_query`` parameter.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_box.blob_loaders import BoxBlobLoader</span>
+<span class="sd">            from langchain_box.utilities import BoxMetadataQuery</span>
+
+<span class="sd">            query = BoxMetadataQuery(</span>
+<span class="sd">                template_key="enterprise_1234.myTemplate",</span>
+<span class="sd">                query="total &gt;= :value",</span>
+<span class="sd">                query_params={ "value" : 100 },</span>
+<span class="sd">                ancestor_folder_id="260932470532"</span>
+<span class="sd">            )</span>
+
+<span class="sd">            loader = BoxBlobLoader(</span>
+<span class="sd">                box_metadata_query=query</span>
+<span class="sd">            )</span>
+
+<span class="sd">    **Yield Blobs**:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            for blob in loader.yield_blobs():</span>
+<span class="sd">                print(f"blob {blob}")</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            Blob(id='1514535131595' metadata={'source':</span>
+<span class="sd">            'https://app.box.com/0/260935730128/260932470532/PO-005.txt',</span>
+<span class="sd">            'name': 'PO-005.txt', 'file_size': 211} data="b'Purchase Order</span>
+<span class="sd">            Number: 005\\nDate: February 13, 2024\\nVendor: Quantum Quirks</span>
+<span class="sd">            Co.\\nAddress: 9 Wormhole Way, Singularity Station\\nLine</span>
+<span class="sd">            Items:\\n    - Higgs Boson Bubble Bath: $30\\n    - Cosmic</span>
+<span class="sd">            String Yo-Yo: $15\\nTotal: $45'" mimetype='text/plain'</span>
+<span class="sd">            path='https://app.box.com/0/260935730128/260932470532/PO-005.txt')</span>
+
+<span class="sd">    **Extra Fields** - If you want to specify additional LangChain metadata</span>
+<span class="sd">    fields based on fields available in the Box File Information API, you can</span>
+<span class="sd">    add them as ``extra_fields`` when instantiating the object. As an example,</span>
+<span class="sd">    if you want to add the ``shared_link`` object, you would pass a</span>
+<span class="sd">    ``List[str]`` object like:</span>
+
+<span class="sd">    . code_block:: python</span>
+
+<span class="sd">        loader = BoxBlobLoader(</span>
+<span class="sd">            box_file_ids=["1234"],</span>
+<span class="sd">            extra_fields=["shared_link"]</span>
+<span class="sd">        )</span>
+
+<span class="sd">    This will return in the metadata in the form</span>
+<span class="sd">    ``"metadata" : {</span>
+<span class="sd">        ...,</span>
+<span class="sd">        "shared_link" : value</span>
+<span class="sd">    }</span>
+
+<span class="sd">    """</span>
+
+    <span class="n">box_developer_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="n">from_env</span><span class="p">(</span><span class="s2">"BOX_DEVELOPER_TOKEN"</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="w">    </span><span class="sd">"""String containing the Box Developer Token generated in the developer console"""</span>
+
+    <span class="n">box_auth</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BoxAuth</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Configured </span>
+<span class="sd">       `BoxAuth &lt;https://python.langchain.com/v0.2/api_reference/box/utilities/langchain_box.utilities.box.BoxAuth.html&gt;`_ </span>
+<span class="sd">       object"""</span>
+
+    <span class="n">box_file_ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="w">    </span><span class="sd">"""List[str] containing Box file ids"""</span>
+
+    <span class="n">box_folder_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""String containing box folder id to load files from"""</span>
+
+    <span class="n">query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""String used to search Box for matching files"""</span>
+
+    <span class="n">recursive</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">"""If getting files by folder id, recursive is a bool to determine if you wish </span>
+<span class="sd">       to traverse subfolders to return child documents. Default is False"""</span>
+
+    <span class="n">glob</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"**/[!.]*"</span>
+<span class="w">    </span><span class="sd">"""Glob to specify the file names to return, i.e. \"**/*.txt\"""</span><span class="s2">"</span>
+
+    <span class="n">exclude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""File name patterns to exclude, in glob notation,  i.e. \"**/*.txt\"""</span><span class="s2">"</span>
+
+    <span class="n">suffixes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""File extensions to include in results"""</span>
+
+    <span class="n">show_progress</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">"""Determines whether to show a progress bar during operation."""</span>
+
+    <span class="n">box_search_options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BoxSearchOptions</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Options to narrow the scope of a Box search when using ``query``"""</span>
+
+    <span class="n">box_metadata_query</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BoxMetadataQuery</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Settings to find files by Box Metadata values"""</span>
+
+    <span class="n">images</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="w">    </span><span class="sd">"""Return image blobs."""</span>
+
+    <span class="n">docs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="w">    </span><span class="sd">"""Return document blobs."""</span>
+
+    <span class="n">extra_fields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Used to add extra fields to LangChain metadata. Should be a </span>
+<span class="sd">       ``List[str]`` containing Box file field names. Will be added</span>
+<span class="sd">       to metadata as ``{ \"field_name\" : field_value }``."""</span>
+
+    <span class="n">_box</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_BoxAPIWrapper</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>
+        <span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">use_enum_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">extra</span><span class="o">=</span><span class="s2">"allow"</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">validate_box_loader_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="n">_box</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="w">        </span><span class="sd">"""Validate that has either box_file_ids or box_folder_id."""</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">box_file_ids</span> <span class="o">==</span> <span class="p">[]</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_folder_id</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_metadata_query</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"You must provide box_file_ids, box_folder_id, query, "</span>
+                <span class="s2">"or box_metadata_query."</span>
+            <span class="p">)</span>
+
+<span class="w">        </span><span class="sd">"""Validate that we have either a box_developer_token or box_auth."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_auth</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_developer_token</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"you must provide box_developer_token or a box_auth "</span>
+                    <span class="s2">"generated with langchain_box.utilities.BoxAuth"</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">_box</span> <span class="o">=</span> <span class="n">_BoxAPIWrapper</span><span class="p">(</span>  <span class="c1"># type: ignore[call-arg]</span>
+                    <span class="n">box_developer_token</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">box_developer_token</span><span class="p">,</span>
+                    <span class="n">glob</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">glob</span><span class="p">,</span>
+                    <span class="n">exclude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exclude</span><span class="p">,</span>
+                    <span class="n">suffixes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">suffixes</span><span class="p">,</span>
+                    <span class="n">images</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">,</span>
+                    <span class="n">docs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">docs</span><span class="p">,</span>
+                    <span class="n">box_search_options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">box_search_options</span><span class="p">,</span>
+                    <span class="n">extra_fields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_fields</span><span class="p">,</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">_box</span> <span class="o">=</span> <span class="n">_BoxAPIWrapper</span><span class="p">(</span>  <span class="c1"># type: ignore[call-arg]</span>
+                <span class="n">box_auth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">box_auth</span><span class="p">,</span>
+                <span class="n">glob</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">glob</span><span class="p">,</span>
+                <span class="n">exclude</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exclude</span><span class="p">,</span>
+                <span class="n">suffixes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">suffixes</span><span class="p">,</span>
+                <span class="n">images</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">images</span><span class="p">,</span>
+                <span class="n">docs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">docs</span><span class="p">,</span>
+                <span class="n">box_search_options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">box_search_options</span><span class="p">,</span>
+                <span class="n">extra_fields</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_fields</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_box</span> <span class="o">=</span> <span class="n">_box</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">_get_files_from_folder</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_id</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># type: ignore[no-untyped-def]</span>
+        <span class="n">folder_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">get_folder_items</span><span class="p">(</span><span class="n">folder_id</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
+
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">folder_content</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">FileBaseTypeField</span><span class="o">.</span><span class="n">FILE</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">box_file_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
+
+                <span class="k">elif</span> <span class="n">file</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"folder"</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">recursive</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_get_files_from_folder</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                        <span class="k">pass</span>
+            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+<div class="viewcode-block" id="BoxBlobLoader.yield_blobs">
+<a class="viewcode-back" href="../../../box/blob_loaders/langchain_box.blob_loaders.box.BoxBlobLoader.html#langchain_box.blob_loaders.box.BoxBlobLoader.yield_blobs">[docs]</a>
+    <span class="k">def</span> <span class="nf">yield_blobs</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Blob</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Yield blobs that match the requested pattern."""</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_file_ids</span> <span class="o">==</span> <span class="p">[]:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_folder_id</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_get_files_from_folder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_folder_id</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">box_file_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">search_box</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr, assignment]</span>
+
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_metadata_query</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">box_file_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">metadata_query</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_metadata_query</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"You must provide box_file_ids, box_folder_id, query, "</span>
+                    <span class="s2">"or box_metadata_query."</span>
+                <span class="p">)</span>
+
+        <span class="n">iterator</span> <span class="o">=</span> <span class="n">_make_iterator</span><span class="p">(</span>
+            <span class="n">length_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">count_matching_files</span><span class="p">,</span>
+            <span class="n">show_progress</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">show_progress</span><span class="p">,</span>  <span class="c1"># type: ignore[arg-type]</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">box_file_id</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">box_file_ids</span><span class="p">):</span>  <span class="c1"># type: ignore[arg-type]</span>
+            <span class="k">yield</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_data</span><span class="p">(</span><span class="n">box_file_id</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="BoxBlobLoader.count_matching_files">
+<a class="viewcode-back" href="../../../box/blob_loaders/langchain_box.blob_loaders.box.BoxBlobLoader.html#langchain_box.blob_loaders.box.BoxBlobLoader.count_matching_files">[docs]</a>
+    <span class="k">def</span> <span class="nf">count_matching_files</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Count files that match the pattern without loading them."""</span>
+        <span class="c1"># Carry out a full iteration to count the files without</span>
+        <span class="c1"># materializing anything expensive in memory.</span>
+        <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">box_file_ids</span><span class="p">:</span>  <span class="c1"># type: ignore[union-attr]</span>
+            <span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">num</span></div>
+
+
+<div class="viewcode-block" id="BoxBlobLoader.from_data">
+<a class="viewcode-back" href="../../../box/blob_loaders/langchain_box.blob_loaders.box.BoxBlobLoader.html#langchain_box.blob_loaders.box.BoxBlobLoader.from_data">[docs]</a>
+    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">box_file_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Blob</span><span class="p">:</span>
+        <span class="n">blob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_box</span><span class="o">.</span><span class="n">get_blob_from_file_id</span><span class="p">(</span><span class="n">box_file_id</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr,return-value]</span>
+
+        <span class="k">return</span> <span class="n">blob</span>  <span class="c1"># type: ignore[return-value]</span></div>
+</div>
+
+</pre></div>
+</article>
+</div>
+</div>
+<footer class="bd-footer-content">
+</footer>
+</main>
+</div>
+</div>
+<!-- Scripts loaded after <body> so the DOM is not blocked -->
+<script defer="" src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer="" src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+<footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+<div class="footer-items__start">
+<div class="footer-item">
+<p class="copyright">
+    
+      © Copyright 2023, LangChain Inc.
+      <br/>
+</p>
+</div>
+</div>
+</div>
+</footer>
+</body>
+</html>
