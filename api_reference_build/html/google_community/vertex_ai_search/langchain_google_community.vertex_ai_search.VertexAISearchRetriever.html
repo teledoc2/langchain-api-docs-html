@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Dec 30, 2024" name="docbuild:last-update"/>
+<meta content="Jan 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -213,7 +213,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../astradb/index.html">AstraDB</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../aws/index.html">AWS</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../azure_dynamic_sessions/index.html">Azure Dynamic Sessions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../box/index.html">Box</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cerebras/index.html">Cerebras</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chroma/index.html">Chroma</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cohere/index.html">Cohere</a></li>
@@ -317,10 +316,12 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_google_community.vertex_ai_search.</span></span><span class="sig-name descname"><span class="pre">VertexAISearchRetriever</span></span><a class="reference internal" href="../../_modules/langchain_google_community/vertex_ai_search.html#VertexAISearchRetriever"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../core/retrievers/langchain_core.retrievers.BaseRetriever.html#langchain_core.retrievers.BaseRetriever" title="langchain_core.retrievers.BaseRetriever"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRetriever</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">_BaseVertexAISearchRetriever</span></code></p>
 <p><cite>Google Vertex AI Search</cite> retriever.</p>
+<p>This retriever supports both stable (v1) and beta versions of the Discovery Engine.
+Beta features are only available when beta=True.</p>
 <p>For a detailed explanation of the Vertex AI Search concepts
 and configuration parameters, refer to the product documentation.
 <a class="reference external" href="https://cloud.google.com/generative-ai-app-builder/docs/enterprise-search-introduction">https://cloud.google.com/generative-ai-app-builder/docs/enterprise-search-introduction</a></p>
-<p>Initializes private fields.</p>
+<p>Initialize the retriever with the appropriate version of the client.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>VertexAISearchRetriever implements the standard <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Runnable</span> <span class="pre">Interface</span></code></a>. 🏃</p>
@@ -347,12 +348,12 @@ the environment.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.custom_embedding">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">custom_embedding</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><span class="pre">Embeddings</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.custom_embedding" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">custom_embedding</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.custom_embedding" title="Link to this definition">#</a></dt>
 <dd><p>Custom embedding model for the retriever. (Bring your own embedding)
 It needs to match the embedding model that was used to embed docs in the datastore.
 It needs to be a langchain embedding VertexAIEmbeddings(project=”{PROJECT}”)
-If you provide an embedding model, you also need to provide a ranking_expression and
-a custom_embedding_field_path.
+If you provide an embedding model, you also need to provide a ranking_expression
+and a custom_embedding_field_path.
 <a class="reference external" href="https://cloud.google.com/generative-ai-app-builder/docs/bring-embeddings">https://cloud.google.com/generative-ai-app-builder/docs/bring-embeddings</a></p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
@@ -367,6 +368,14 @@ a custom_embedding_field_path.
 It will generate the ranking_expression in the following manner:
 “{custom_embedding_ratio} * dotProduct({custom_embedding_field_path}) +
 {1 - custom_embedding_ratio} * relevance_score”</p>
+<dl class="field-list simple">
+<dt class="field-odd">Constraints<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ge</strong> = 0.0</p></li>
+<li><p><strong>le</strong> = 1.0</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.data_store_id">
@@ -496,7 +505,7 @@ This provides context before the relevant text. Value must be between 1 and 3.</
 <dd><p>Specification to determine under which conditions query expansion should occur.
 0 - Unspecified query expansion condition. In this case, server behavior defaults</p>
 <blockquote>
-<div><p>to disabled</p>
+<div><p>to disabled.</p>
 </div></blockquote>
 <dl class="simple">
 <dt>1 - Disabled query expansion. Only the exact search query is used, even if</dt><dd><p>SearchResponse.total_size is zero.</p>
@@ -532,7 +541,7 @@ in the search results. This can be useful for ranking or filtering segments.</p>
 <div><p>to auto.</p>
 </div></blockquote>
 <dl class="simple">
-<dt>1 - Suggestion only. Search API will try to find a spell suggestion if there is any</dt><dd><p>and put in the <cite>SearchResponse.corrected_query</cite>.
+<dt>1 - Suggestion only. Search API will try to find a spell suggestion if there is</dt><dd><p>any and put in the <cite>SearchResponse.corrected_query</cite>.
 The spell suggestion will not be used as the search query.</p>
 </dd>
 <dt>2 - Automatic spell correction built by the Search API.</dt><dd><p>Search will be based on the corrected query if found.</p>
@@ -616,7 +625,7 @@ Defaults to False.</p></li>
 <dt class="sig sig-object py" id="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.aget_relevant_documents">
 <em class="property"><span class="pre">async</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aget_relevant_documents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callbacks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callbacks</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><span class="pre">Document</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.aget_relevant_documents" title="Link to this definition">#</a></dt>
 <dd><div class="deprecated">
-<p><span class="versionmodified deprecated">Deprecated since version langchain-core==0.1.46: </span>Use <a class="reference internal" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.ainvoke" title="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.ainvoke"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ainvoke()</span></code></a> instead. It will not be removed until langchain-core==1.0.</p>
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.46: </span>Use <a class="reference internal" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.ainvoke" title="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.ainvoke"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ainvoke()</span></code></a> instead. It will not be removed until langchain-core==1.0.</p>
 </div>
 <p>Asynchronously get documents relevant to a query.</p>
 <p>Users should favor using <cite>.ainvoke</cite> or <cite>.abatch</cite> rather than
@@ -1163,7 +1172,7 @@ return Runnable instances.</p></li>
 <dt class="sig sig-object py" id="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.get_relevant_documents">
 <span class="sig-name descname"><span class="pre">get_relevant_documents</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callbacks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callbacks</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><span class="pre">Document</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.get_relevant_documents" title="Link to this definition">#</a></dt>
 <dd><div class="deprecated">
-<p><span class="versionmodified deprecated">Deprecated since version langchain-core==0.1.46: </span>Use <a class="reference internal" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.invoke" title="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.invoke"><code class="xref py py-meth docutils literal notranslate"><span class="pre">invoke()</span></code></a> instead. It will not be removed until langchain-core==1.0.</p>
+<p><span class="versionmodified deprecated">Deprecated since version 0.1.46: </span>Use <a class="reference internal" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.invoke" title="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.invoke"><code class="xref py py-meth docutils literal notranslate"><span class="pre">invoke()</span></code></a> instead. It will not be removed until langchain-core==1.0.</p>
 </div>
 <p>Retrieve documents relevant to a query.</p>
 <p>Users should favor using <cite>.invoke</cite> or <cite>.batch</cite> rather than
@@ -1530,6 +1539,11 @@ between retries</p></li>
 </dl>
 </dd></dl>
 <dl class="py property">
+<dt class="sig sig-object py" id="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.beta">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">beta</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.beta" title="Link to this definition">#</a></dt>
+<dd><p>Get whether beta version is enabled.</p>
+</dd></dl>
+<dl class="py property">
 <dt class="sig sig-object py" id="langchain_google_community.vertex_ai_search.VertexAISearchRetriever.client_options">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">client_options</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClientOptions</span></em><a class="headerlink" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.client_options" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -1592,6 +1606,7 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.with_listeners"><code class="docutils literal notranslate"><span class="pre">with_listeners()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.with_retry"><code class="docutils literal notranslate"><span class="pre">with_retry()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.with_types"><code class="docutils literal notranslate"><span class="pre">with_types()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.beta"><code class="docutils literal notranslate"><span class="pre">beta</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_community.vertex_ai_search.VertexAISearchRetriever.client_options"><code class="docutils literal notranslate"><span class="pre">client_options</span></code></a></li>
 </ul>
 </li>

@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Dec 30, 2024" name="docbuild:last-update"/>
+<meta content="Jan 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -431,8 +431,10 @@
         <span class="ow">or</span> <span class="p">(</span><span class="s2">"finetuned"</span> <span class="ow">in</span> <span class="n">model_name</span> <span class="ow">and</span> <span class="s2">"legacy"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">model_name</span><span class="p">)</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s2">"-completion"</span>
-    <span class="k">if</span> <span class="n">token_type</span> <span class="o">==</span> <span class="n">TokenType</span><span class="o">.</span><span class="n">PROMPT_CACHED</span> <span class="ow">and</span> <span class="p">(</span>
-        <span class="n">model_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"gpt-4o"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">model_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"o1"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">token_type</span> <span class="o">==</span> <span class="n">TokenType</span><span class="o">.</span><span class="n">PROMPT_CACHED</span>
+        <span class="ow">and</span> <span class="p">(</span><span class="n">model_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"gpt-4o"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">model_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"o1"</span><span class="p">))</span>
+        <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span><span class="n">model_name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"gpt-4o-2024-05-13"</span><span class="p">))</span>
     <span class="p">):</span>
         <span class="k">return</span> <span class="n">model_name</span> <span class="o">+</span> <span class="s2">"-cached"</span>
     <span class="k">else</span><span class="p">:</span>

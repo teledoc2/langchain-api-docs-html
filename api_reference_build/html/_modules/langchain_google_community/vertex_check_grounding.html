@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Dec 30, 2024" name="docbuild:last-update"/>
+<meta content="Jan 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -265,7 +265,7 @@
 <span class="sd">        account credentials file.</span>
 <span class="sd">    """</span>
 
-    <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">project_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
     <span class="n">location_id</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">"global"</span><span class="p">)</span>
     <span class="n">grounding_config</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">"default_grounding_config"</span><span class="p">)</span>
     <span class="n">citation_threshold</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
@@ -323,7 +323,7 @@
 
 <div class="viewcode-block" id="VertexAICheckGroundingWrapper.invoke">
 <a class="viewcode-back" href="../../google_community/vertex_check_grounding/langchain_google_community.vertex_check_grounding.VertexAICheckGroundingWrapper.html#langchain_google_community.vertex_check_grounding.VertexAICheckGroundingWrapper.invoke">[docs]</a>
-    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">invoke</span><span class="p">(</span>  <span class="c1"># type: ignore[override]</span>
         <span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RunnableConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CheckGroundingResponse</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""</span>

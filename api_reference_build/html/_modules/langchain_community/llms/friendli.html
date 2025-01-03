@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Dec 30, 2024" name="docbuild:last-update"/>
+<meta content="Jan 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -238,14 +238,19 @@
 <span class="kn">from</span> <span class="nn">pydantic</span> <span class="kn">import</span> <span class="n">Field</span><span class="p">,</span> <span class="n">SecretStr</span>
 
 
-<span class="k">def</span> <span class="nf">_stream_response_to_generation_chunk</span><span class="p">(</span><span class="n">stream_response</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GenerationChunk</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">_stream_response_to_generation_chunk</span><span class="p">(</span>
+    <span class="n">stream_response</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">GenerationChunk</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Convert a stream response to a generation chunk."""</span>
-    <span class="k">if</span> <span class="n">stream_response</span><span class="o">.</span><span class="n">event</span> <span class="o">==</span> <span class="s2">"token_sampled"</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">GenerationChunk</span><span class="p">(</span>
-            <span class="n">text</span><span class="o">=</span><span class="n">stream_response</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
-            <span class="n">generation_info</span><span class="o">=</span><span class="p">{</span><span class="s2">"token"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">stream_response</span><span class="o">.</span><span class="n">token</span><span class="p">)},</span>
-        <span class="p">)</span>
-    <span class="k">return</span> <span class="n">GenerationChunk</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">stream_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"choices"</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">GenerationChunk</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">""</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">GenerationChunk</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="n">stream_response</span><span class="o">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+        <span class="c1"># generation_info=dict(</span>
+        <span class="c1">#     finish_reason=stream_response.choices[0].get("finish_reason", None),</span>
+        <span class="c1">#     logprobs=stream_response.choices[0].get("logprobs", None),</span>
+        <span class="c1"># ),</span>
+    <span class="p">)</span>
 
 
 <div class="viewcode-block" id="BaseFriendli">
@@ -258,7 +263,7 @@
     <span class="c1"># Friendli Async client.</span>
     <span class="n">async_client</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="c1"># Model name to use.</span>
-    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mixtral-8x7b-instruct-v0-1"</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"meta-llama-3.1-8b-instruct"</span>
     <span class="c1"># Friendli personal access token to run as.</span>
     <span class="n">friendli_token</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">SecretStr</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="c1"># Friendli team ID to run as.</span>
@@ -337,7 +342,7 @@
 <span class="sd">            from langchain_community.llms import Friendli</span>
 
 <span class="sd">            friendli = Friendli(</span>
-<span class="sd">                model="mixtral-8x7b-instruct-v0-1", friendli_token="YOUR FRIENDLI TOKEN"</span>
+<span class="sd">                model="meta-llama-3.1-8b-instruct", friendli_token="YOUR FRIENDLI TOKEN"</span>
 <span class="sd">            )</span>
 <span class="sd">    """</span>
 
