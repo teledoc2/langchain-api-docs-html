@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 06, 2025" name="docbuild:last-update"/>
+<meta content="Jan 07, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -317,7 +317,7 @@ timeout (Optional[float]): The timeout for transactions in seconds.</p>
 <div><p>Useful for terminating long-running queries.
 By default, there is no timeout set.</p>
 </div></blockquote>
-<dl class="simple">
+<dl>
 <dt>sanitize (bool): A flag to indicate whether to remove lists with</dt><dd><p>more than 128 elements from results. Useful for removing
 embedding-like properties from database responses. Default is False.</p>
 </dd>
@@ -325,9 +325,8 @@ embedding-like properties from database responses. Default is False.</p>
 </dd>
 <dt>enhanced_schema (bool): A flag whether to scan the database for</dt><dd><p>example values and use them in the graph schema. Default is False.</p>
 </dd>
-</dl>
-<p>driver_config (Dict): Configuration passed to Neo4j Driver.</p>
-<dl>
+<dt>driver_config (Dict): Configuration passed to Neo4j Driver.</dt><dd><p>Defaults to {“notifications_min_severity”, “OFF”} if not set.</p>
+</dd>
 <dt><em>Security note</em>: Make sure that the database connection uses credentials</dt><dd><p>that are narrowly-scoped to only include necessary permissions.
 Failure to do so may result in data corruption or loss, since the calling
 code may attempt commands that would result in deletion, mutation

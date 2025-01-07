@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 06, 2025" name="docbuild:last-update"/>
+<meta content="Jan 07, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -526,6 +526,49 @@
     <span class="k">return</span> <span class="n">parts</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_convert_tool_message_to_part</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">ToolMessage</span> <span class="o">|</span> <span class="n">FunctionMessage</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Part</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Converts a tool or function message to a google part."""</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">response</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span>  <span class="c1"># leave as str representation</span>
+    <span class="n">part</span> <span class="o">=</span> <span class="n">Part</span><span class="p">(</span>
+        <span class="n">function_response</span><span class="o">=</span><span class="n">FunctionResponse</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">response</span><span class="o">=</span><span class="p">(</span>
+                <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="n">response</span><span class="p">}</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="n">response</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">part</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_ai_message_tool_messages_parts</span><span class="p">(</span>
+    <span class="n">tool_messages</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">ToolMessage</span><span class="p">],</span> <span class="n">ai_message</span><span class="p">:</span> <span class="n">AIMessage</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Part</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""</span>
+<span class="sd">    Finds relevant tool messages for the AI message and converts them to a single</span>
+<span class="sd">    list of Parts.</span>
+<span class="sd">    """</span>
+    <span class="c1"># We are interested only in the tool messages that are part of the AI message</span>
+    <span class="n">tool_calls_ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">tool_call</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="k">for</span> <span class="n">tool_call</span> <span class="ow">in</span> <span class="n">ai_message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">]</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">tool_messages</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">tool_calls_ids</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">tool_call_id</span> <span class="ow">in</span> <span class="n">tool_calls_ids</span><span class="p">:</span>
+            <span class="c1"># remove the id from the list, so that we do not iterate over it again</span>
+            <span class="n">tool_calls_ids</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">tool_call_id</span><span class="p">)</span>
+            <span class="n">part</span> <span class="o">=</span> <span class="n">_convert_tool_message_to_part</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parts</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_parse_chat_history</span><span class="p">(</span>
     <span class="n">input_messages</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span> <span class="n">convert_system_message_to_human</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">Content</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">Content</span><span class="p">]]:</span>
@@ -535,14 +578,20 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s2">"Convert_system_message_to_human will be deprecated!"</span><span class="p">)</span>
 
     <span class="n">system_instruction</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Content</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">input_messages</span><span class="p">):</span>
+    <span class="n">messages_without_tool_messages</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">message</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">input_messages</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">ToolMessage</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="n">tool_messages</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">message</span> <span class="k">for</span> <span class="n">message</span> <span class="ow">in</span> <span class="n">input_messages</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">ToolMessage</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">messages_without_tool_messages</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">SystemMessage</span><span class="p">):</span>
             <span class="n">system_instruction</span> <span class="o">=</span> <span class="n">Content</span><span class="p">(</span><span class="n">parts</span><span class="o">=</span><span class="n">_convert_to_parts</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">))</span>
             <span class="k">continue</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">):</span>
             <span class="n">role</span> <span class="o">=</span> <span class="s2">"model"</span>
             <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">:</span>
-                <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">ai_message_parts</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">tool_call</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">:</span>
                     <span class="n">function_call</span> <span class="o">=</span> <span class="n">FunctionCall</span><span class="p">(</span>
                         <span class="p">{</span>
@@ -550,7 +599,13 @@
                             <span class="s2">"args"</span><span class="p">:</span> <span class="n">tool_call</span><span class="p">[</span><span class="s2">"args"</span><span class="p">],</span>
                         <span class="p">}</span>
                     <span class="p">)</span>
-                    <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Part</span><span class="p">(</span><span class="n">function_call</span><span class="o">=</span><span class="n">function_call</span><span class="p">))</span>
+                    <span class="n">ai_message_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Part</span><span class="p">(</span><span class="n">function_call</span><span class="o">=</span><span class="n">function_call</span><span class="p">))</span>
+                <span class="n">tool_messages_parts</span> <span class="o">=</span> <span class="n">_get_ai_message_tool_messages_parts</span><span class="p">(</span>
+                    <span class="n">tool_messages</span><span class="o">=</span><span class="n">tool_messages</span><span class="p">,</span> <span class="n">ai_message</span><span class="o">=</span><span class="n">message</span>
+                <span class="p">)</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Content</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="n">role</span><span class="p">,</span> <span class="n">parts</span><span class="o">=</span><span class="n">ai_message_parts</span><span class="p">))</span>
+                <span class="n">messages</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Content</span><span class="p">(</span><span class="n">role</span><span class="o">=</span><span class="s2">"user"</span><span class="p">,</span> <span class="n">parts</span><span class="o">=</span><span class="n">tool_messages_parts</span><span class="p">))</span>
+                <span class="k">continue</span>
             <span class="k">elif</span> <span class="n">raw_function_call</span> <span class="o">:=</span> <span class="n">message</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"function_call"</span><span class="p">):</span>
                 <span class="n">function_call</span> <span class="o">=</span> <span class="n">FunctionCall</span><span class="p">(</span>
                     <span class="p">{</span>
@@ -569,60 +624,7 @@
                 <span class="n">system_instruction</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">FunctionMessage</span><span class="p">):</span>
             <span class="n">role</span> <span class="o">=</span> <span class="s2">"user"</span>
-            <span class="n">response</span><span class="p">:</span> <span class="n">Any</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="n">response</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">response</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-                <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
-                    <span class="n">response</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span>  <span class="c1"># leave as str representation</span>
-            <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">Part</span><span class="p">(</span>
-                    <span class="n">function_response</span><span class="o">=</span><span class="n">FunctionResponse</span><span class="p">(</span>
-                        <span class="n">name</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                        <span class="n">response</span><span class="o">=</span><span class="p">(</span>
-                            <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="n">response</span><span class="p">}</span>
-                            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
-                            <span class="k">else</span> <span class="n">response</span>
-                        <span class="p">),</span>
-                    <span class="p">)</span>
-                <span class="p">)</span>
-            <span class="p">]</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">ToolMessage</span><span class="p">):</span>
-            <span class="n">role</span> <span class="o">=</span> <span class="s2">"user"</span>
-            <span class="n">prev_message</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">input_messages</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="p">(</span>
-                <span class="n">prev_message</span>
-                <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prev_message</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">)</span>
-                <span class="ow">and</span> <span class="n">prev_message</span><span class="o">.</span><span class="n">tool_calls</span>
-            <span class="p">):</span>
-                <span class="c1"># message.name can be null for ToolMessage</span>
-                <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">prev_message</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"name"</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">name</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># type: ignore</span>
-            <span class="n">tool_response</span><span class="p">:</span> <span class="n">Any</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="n">tool_response</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="n">tool_response</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-                <span class="k">except</span> <span class="n">json</span><span class="o">.</span><span class="n">JSONDecodeError</span><span class="p">:</span>
-                    <span class="n">tool_response</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">content</span>  <span class="c1"># leave as str representation</span>
-            <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">Part</span><span class="p">(</span>
-                    <span class="n">function_response</span><span class="o">=</span><span class="n">FunctionResponse</span><span class="p">(</span>
-                        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
-                        <span class="n">response</span><span class="o">=</span><span class="p">(</span>
-                            <span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="n">tool_response</span><span class="p">}</span>
-                            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tool_response</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
-                            <span class="k">else</span> <span class="n">tool_response</span>
-                        <span class="p">),</span>
-                    <span class="p">)</span>
-                <span class="p">)</span>
-            <span class="p">]</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">_convert_tool_message_to_part</span><span class="p">(</span><span class="n">message</span><span class="p">)]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Unexpected message with type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="si">}</span><span class="s2"> at the position </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">."</span>

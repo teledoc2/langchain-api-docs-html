@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 06, 2025" name="docbuild:last-update"/>
+<meta content="Jan 07, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -735,7 +735,7 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">"`endpoint_url` should contain the full invocation URL including "</span>
                 <span class="s2">"`/score` for `endpoint_api_type='dedicated'` or `/completions` "</span>
-                <span class="s2">"or `/chat/completions` or `/models/chat/completions` "</span>
+                <span class="s2">"or `/models/chat/completions` "</span>
                 <span class="s2">"for `endpoint_api_type='serverless'`"</span>
             <span class="p">)</span>
         <span class="k">return</span> <span class="n">field_value</span></div>
@@ -760,18 +760,16 @@
                 <span class="s2">"Endpoints of type `dedicated` should follow the format "</span>
                 <span class="s2">"`https://&lt;your-endpoint&gt;.&lt;your_region&gt;.inference.ml.azure.com/score`."</span>
                 <span class="s2">" If your endpoint URL ends with `/completions` or"</span>
-                <span class="s2">"`/chat/completions` or `/models/chat/completions`,"</span>
+                <span class="s2">"`/models/chat/completions`,"</span>
                 <span class="s2">"use `endpoint_api_type='serverless'` instead."</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">field_value</span> <span class="o">==</span> <span class="n">AzureMLEndpointApiType</span><span class="o">.</span><span class="n">serverless</span> <span class="ow">and</span> <span class="ow">not</span> <span class="p">(</span>
             <span class="n">endpoint_url</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"/completions"</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
-            <span class="ow">or</span> <span class="n">endpoint_url</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"/chat/completions"</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
             <span class="ow">or</span> <span class="n">endpoint_url</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"/models/chat/completions"</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
         <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">"Endpoints of type `serverless` should follow the format "</span>
                 <span class="s2">"`https://&lt;your-endpoint&gt;.&lt;your_region&gt;.inference.ml.azure.com/completions`"</span>
-                <span class="s2">" or `https://&lt;your-endpoint&gt;.&lt;your_region&gt;.inference.ml.azure.com/chat/completions`"</span>
                 <span class="s2">" or `https://&lt;your-endpoint&gt;.&lt;your_region&gt;.inference.ml.azure.com/models/chat/completions`"</span>
             <span class="p">)</span>
 
