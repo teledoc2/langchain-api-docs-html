@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 10, 2025" name="docbuild:last-update"/>
+<meta content="Jan 11, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -285,7 +285,7 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-openai: 0.2.14</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-openai: 0.3.0</a></li>
 <li class="breadcrumb-item"><a class="nav-link" href="../chat_models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chat_models</span></code></a></li>
 <li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">ChatOpenAI</span></li>
 </ul>
@@ -336,7 +336,7 @@ streaming (<code class="docutils literal notranslate"><span class="pre">{"includ
 <dl class="simple">
 <dt>timeout: Union[float, Tuple[float, float], Any, None]</dt><dd><p class="sd-card-text">Timeout for requests.</p>
 </dd>
-<dt>max_retries: int</dt><dd><p class="sd-card-text">Max number of retries.</p>
+<dt>max_retries: Optional[int]</dt><dd><p class="sd-card-text">Max number of retries.</p>
 </dd>
 <dt>api_key: Optional[str]</dt><dd><p class="sd-card-text">OpenAI API key. If not passed in will be read from env var OPENAI_API_KEY.</p>
 </dd>
@@ -856,7 +856,7 @@ http_async_client as well if you’d like a custom client for async invocations.
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_openai.chat_models.base.ChatOpenAI.max_retries">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_retries</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#langchain_openai.chat_models.base.ChatOpenAI.max_retries" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_retries</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_openai.chat_models.base.ChatOpenAI.max_retries" title="Link to this definition">#</a></dt>
 <dd><p>Maximum number of retries to make when generating.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
@@ -881,7 +881,7 @@ http_async_client as well if you’d like a custom client for async invocations.
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_openai.chat_models.base.ChatOpenAI.n">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#langchain_openai.chat_models.base.ChatOpenAI.n" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_openai.chat_models.base.ChatOpenAI.n" title="Link to this definition">#</a></dt>
 <dd><p>Number of chat completions to generate for each prompt.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
@@ -958,7 +958,7 @@ message chunks will be generated during the stream including usage metadata.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_openai.chat_models.base.ChatOpenAI.temperature">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">temperature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.7</span></em><a class="headerlink" href="#langchain_openai.chat_models.base.ChatOpenAI.temperature" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">temperature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_openai.chat_models.base.ChatOpenAI.temperature" title="Link to this definition">#</a></dt>
 <dd><p>What sampling temperature to use.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
@@ -2024,17 +2024,17 @@ between retries</p></li>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_openai.chat_models.base.ChatOpenAI.with_structured_output">
-<span class="sig-name descname"><span class="pre">with_structured_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">_BM</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Type</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'function_calling'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'json_mode'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'json_schema'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'function_calling'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><span class="pre">Runnable</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/prompt_values/langchain_core.prompt_values.PromptValue.html#langchain_core.prompt_values.PromptValue" title="langchain_core.prompt_values.PromptValue"><span class="pre">PromptValue</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/messages/langchain_core.messages.base.BaseMessage.html#langchain_core.messages.base.BaseMessage" title="langchain_core.messages.base.BaseMessage"><span class="pre">BaseMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_BM</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_openai.chat_models.base.ChatOpenAI.with_structured_output" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">with_structured_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">_BM</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Type</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'function_calling'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'json_mode'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'json_schema'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'json_schema'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><span class="pre">Runnable</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/prompt_values/langchain_core.prompt_values.PromptValue.html#langchain_core.prompt_values.PromptValue" title="langchain_core.prompt_values.PromptValue"><span class="pre">PromptValue</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/messages/langchain_core.messages.base.BaseMessage.html#langchain_core.messages.base.BaseMessage" title="langchain_core.messages.base.BaseMessage"><span class="pre">BaseMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_BM</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/langchain_openai/chat_models/base.html#ChatOpenAI.with_structured_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_openai.chat_models.base.ChatOpenAI.with_structured_output" title="Link to this definition">#</a></dt>
 <dd><p>Model wrapper that returns outputs formatted to match the given schema.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>schema</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>Type</em><em>[</em><em>_BM</em><em>] </em><em>| </em><em>Type</em><em> | </em><em>None</em>) – <p>The output schema. Can be passed in as:</p>
 <ul>
-<li><p>an OpenAI function/tool schema,</p></li>
 <li><p>a JSON Schema,</p></li>
-<li><p>a TypedDict class (support added in 0.1.20),</p></li>
-<li><p>or a Pydantic class.</p></li>
+<li><p>a TypedDict class,</p></li>
+<li><p>or a Pydantic class,</p></li>
+<li><p>an OpenAI function/tool schema.</p></li>
 </ul>
 <p>If <code class="docutils literal notranslate"><span class="pre">schema</span></code> is a Pydantic class then the model output will be a
 Pydantic instance of that class, and the model-generated fields will be
@@ -2046,15 +2046,16 @@ schema fields when specifying a Pydantic or TypedDict class.</p>
 <li><p><strong>method</strong> (<em>Literal</em><em>[</em><em>'function_calling'</em><em>, </em><em>'json_mode'</em><em>, </em><em>'json_schema'</em><em>]</em>) – <p>The method for steering model generation, one of:</p>
 <ul>
 <li><dl class="simple">
-<dt>”function_calling”:</dt><dd><p>Uses OpenAI’s tool-calling (formerly called function calling)
-API: <a class="reference external" href="https://platform.openai.com/docs/guides/function-calling">https://platform.openai.com/docs/guides/function-calling</a></p>
+<dt>”json_schema”:</dt><dd><p>Uses OpenAI’s Structured Output API:
+<a class="reference external" href="https://platform.openai.com/docs/guides/structured-outputs">https://platform.openai.com/docs/guides/structured-outputs</a>
+Supported for “gpt-4o-mini”, “gpt-4o-2024-08-06”, “o1”, and later
+models.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>”json_schema”:</dt><dd><p>Uses OpenAI’s Structured Output API: <a class="reference external" href="https://platform.openai.com/docs/guides/structured-outputs">https://platform.openai.com/docs/guides/structured-outputs</a>
-Supported for “gpt-4o-mini”, “gpt-4o-2024-08-06”, and later
-models.</p>
+<dt>”function_calling”:</dt><dd><p>Uses OpenAI’s tool-calling (formerly called function calling)
+API: <a class="reference external" href="https://platform.openai.com/docs/guides/function-calling">https://platform.openai.com/docs/guides/function-calling</a></p>
 </dd>
 </dl>
 </li>
@@ -2100,9 +2101,10 @@ validated.</p>
 </dl>
 </li>
 </ul>
-<p>If <code class="docutils literal notranslate"><span class="pre">method</span></code> is “json_schema” defaults to True. If <code class="docutils literal notranslate"><span class="pre">method</span></code> is
-“function_calling” or “json_mode” defaults to None. Can only be
-non-null if <code class="docutils literal notranslate"><span class="pre">method</span></code> is “function_calling” or “json_schema”.</p>
+<p>If schema is specified via TypedDict or JSON schema, <code class="docutils literal notranslate"><span class="pre">strict</span></code> is not
+enabled by default. Pass <code class="docutils literal notranslate"><span class="pre">strict=True</span></code> to enable it.</p>
+<p>Note: <code class="docutils literal notranslate"><span class="pre">strict</span></code> can only be non-null if <code class="docutils literal notranslate"><span class="pre">method</span></code> is
+<code class="docutils literal notranslate"><span class="pre">"json_schema"</span></code> or <code class="docutils literal notranslate"><span class="pre">"function_calling"</span></code>.</p>
 </p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword args aren’t supported.</p></li>
 </ul>
@@ -2131,27 +2133,14 @@ non-null if <code class="docutils literal notranslate"><span class="pre">method<
 </div>
 <div class="versionchanged">
 <p><span class="versionmodified changed">Changed in version 0.1.21: </span>Support for <code class="docutils literal notranslate"><span class="pre">strict</span></code> argument added.
-Support for <code class="docutils literal notranslate"><span class="pre">method</span></code> = “json_schema” added.</p>
+Support for <code class="docutils literal notranslate"><span class="pre">method="json_schema"</span></code> added.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Planned breaking changes in version <cite>0.3.0</cite></p>
-<ul class="simple">
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">method</span></code> default will be changed to “json_schema” from</dt><dd><p>“function_calling”.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">strict</span></code> will default to True when <code class="docutils literal notranslate"><span class="pre">method</span></code> is</dt><dd><p>“function_calling” as of version <cite>0.3.0</cite>.</p>
-</dd>
-</dl>
-</li>
-</ul>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 0.3.0: </span><code class="docutils literal notranslate"><span class="pre">method</span></code> default changed from “function_calling” to “json_schema”.</p>
 </div>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
 <summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">Example: schema=Pydantic class, method=”function_calling”, include_raw=False, strict=True</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<span class="sd-summary-text">Example: schema=Pydantic class, method=”json_schema”, include_raw=False, strict=True</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <p class="sd-card-text">Note, OpenAI has a number of restrictions on what types of schemas can be
 provided if <code class="docutils literal notranslate"><span class="pre">strict</span></code> = True. When using Pydantic, our model cannot
 specify any Field metadata (like min/max constraints) and fields cannot
@@ -2173,8 +2162,40 @@ have default values.</p>
 
 
 <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">AnswerWithJustification</span><span class="p">)</span>
+
+<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="s2">"What weighs more a pound of bricks or a pound of feathers"</span>
+<span class="p">)</span>
+
+<span class="c1"># -&gt; AnswerWithJustification(</span>
+<span class="c1">#     answer='They weigh the same',</span>
+<span class="c1">#     justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'</span>
+<span class="c1"># )</span>
+</pre></div>
+</div>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-text">Example: schema=Pydantic class, method=”function_calling”, include_raw=False, strict=False</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">AnswerWithJustification</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">'''An answer to the user question along with justification for the answer.'''</span>
+
+    <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">justification</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default</span><span class="o">=...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"A justification for the answer."</span>
+    <span class="p">)</span>
+
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span>
-    <span class="n">AnswerWithJustification</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">AnswerWithJustification</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">"function_calling"</span>
 <span class="p">)</span>
 
 <span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
@@ -2190,7 +2211,7 @@ have default values.</p>
 </div>
 </details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
 <summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">Example: schema=Pydantic class, method=”function_calling”, include_raw=True</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<span class="sd-summary-text">Example: schema=Pydantic class, method=”json_schema”, include_raw=True</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
 
@@ -2220,7 +2241,7 @@ have default values.</p>
 </div>
 </details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
 <summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">Example: schema=TypedDict class, method=”function_calling”, include_raw=False</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<span class="sd-summary-text">Example: schema=TypedDict class, method=”json_schema”, include_raw=False, strict=False</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># IMPORTANT: If you are using Python &lt;=3.8, you need to import Annotated</span>
 <span class="c1"># from typing_extensions, not from typing.</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">TypedDict</span>
@@ -2252,7 +2273,7 @@ have default values.</p>
 </div>
 </details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
 <summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">Example: schema=OpenAI function schema, method=”function_calling”, include_raw=False</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<span class="sd-summary-text">Example: schema=OpenAI function schema, method=”json_schema”, include_raw=False</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
 
  <span class="n">oai_schema</span> <span class="o">=</span> <span class="p">{</span>

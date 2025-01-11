@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 10, 2025" name="docbuild:last-update"/>
+<meta content="Jan 11, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -314,6 +314,7 @@
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.utils.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">_build_model_kwargs</span><span class="p">,</span> <span class="n">from_env</span><span class="p">,</span> <span class="n">secret_from_env</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">SecretStr</span><span class="p">,</span> <span class="n">model_validator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span> <span class="k">as</span> <span class="n">BaseModelV1</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -615,6 +616,32 @@
         <span class="k">return</span> <span class="n">new_usage</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_handle_openai_bad_request</span><span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="n">openai</span><span class="o">.</span><span class="n">BadRequestError</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="s2">"'response_format' of type 'json_schema' is not supported with this model"</span>
+    <span class="p">)</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">"This model does not support OpenAI's structured output feature, which "</span>
+            <span class="s2">"is the default method for `with_structured_output` as of "</span>
+            <span class="s2">"langchain-openai==0.3. To use `with_structured_output` with this model, "</span>
+            <span class="s1">'specify `method="function_calling"`.'</span>
+        <span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">e</span>
+    <span class="k">elif</span> <span class="s2">"Invalid schema for response_format"</span> <span class="ow">in</span> <span class="n">e</span><span class="o">.</span><span class="n">message</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">"Invalid schema for OpenAI's structured output feature, which is the "</span>
+            <span class="s2">"default method for `with_structured_output` as of langchain-openai==0.3. "</span>
+            <span class="s1">'Specify `method="function_calling"` instead or update your schema. '</span>
+            <span class="s2">"See supported schemas: "</span>
+            <span class="s2">"https://platform.openai.com/docs/guides/structured-outputs#supported-schemas"</span>  <span class="c1"># noqa: E501</span>
+        <span class="p">)</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">e</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span>
+
+
 <span class="k">class</span><span class="w"> </span><span class="nc">_FunctionCall</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
 
@@ -639,7 +666,7 @@
     <span class="n">root_async_client</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1">#: :meta private:</span>
     <span class="n">model_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">"gpt-3.5-turbo"</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s2">"model"</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">"""Model name to use."""</span>
-    <span class="n">temperature</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.7</span>
+    <span class="n">temperature</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""What sampling temperature to use."""</span>
     <span class="n">model_kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
 <span class="w">    </span><span class="sd">"""Holds any model parameters valid for `create` call not explicitly specified."""</span>
@@ -660,7 +687,7 @@
     <span class="p">)</span>
 <span class="w">    </span><span class="sd">"""Timeout for requests to OpenAI completion API. Can be float, httpx.Timeout or </span>
 <span class="sd">        None."""</span>
-    <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">max_retries</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""Maximum number of retries to make when generating."""</span>
     <span class="n">presence_penalty</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""Penalizes repeated tokens."""</span>
@@ -678,7 +705,7 @@
 <span class="w">    </span><span class="sd">"""Modify the likelihood of specified tokens appearing in the completion."""</span>
     <span class="n">streaming</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="w">    </span><span class="sd">"""Whether to stream the results or not."""</span>
-    <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""Number of chat completions to generate for each prompt."""</span>
     <span class="n">top_p</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""Total probability mass of tokens to consider at each step."""</span>
@@ -759,12 +786,21 @@
             <span class="n">values</span><span class="p">[</span><span class="s2">"temperature"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">values</span>
 
+    <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_disable_streaming</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Disable streaming if n &gt; 1."""</span>
+        <span class="n">model</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model_name"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+        <span class="k">if</span> <span class="n">model</span> <span class="o">==</span> <span class="s2">"o1"</span> <span class="ow">and</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"disable_streaming"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">values</span><span class="p">[</span><span class="s2">"disable_streaming"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">values</span>
+
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_environment</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Validate that api key and python package exists in environment."""</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"n must be at least 1."</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"n must be 1 when streaming."</span><span class="p">)</span>
 
         <span class="c1"># Check OPENAI_ORGANIZATION for backwards compatibility.</span>
@@ -781,10 +817,12 @@
             <span class="s2">"organization"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">openai_organization</span><span class="p">,</span>
             <span class="s2">"base_url"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">openai_api_base</span><span class="p">,</span>
             <span class="s2">"timeout"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_timeout</span><span class="p">,</span>
-            <span class="s2">"max_retries"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span><span class="p">,</span>
             <span class="s2">"default_headers"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_headers</span><span class="p">,</span>
             <span class="s2">"default_query"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">default_query</span><span class="p">,</span>
         <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">client_params</span><span class="p">[</span><span class="s2">"max_retries"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_retries</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">openai_proxy</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">http_client</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">http_async_client</span><span class="p">):</span>
             <span class="n">openai_proxy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">openai_proxy</span>
             <span class="n">http_client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">http_client</span>
@@ -839,14 +877,14 @@
             <span class="s2">"stop"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stop</span> <span class="ow">or</span> <span class="kc">None</span><span class="p">,</span>  <span class="c1"># also exclude empty list for this</span>
             <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_tokens</span><span class="p">,</span>
             <span class="s2">"extra_body"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_body</span><span class="p">,</span>
+            <span class="s2">"n"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span>
+            <span class="s2">"temperature"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
             <span class="s2">"reasoning_effort"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">reasoning_effort</span><span class="p">,</span>
         <span class="p">}</span>
 
         <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">"model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span>
             <span class="s2">"stream"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">,</span>
-            <span class="s2">"n"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span>
-            <span class="s2">"temperature"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
             <span class="o">**</span><span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">exclude_if_none</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">},</span>
             <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">model_kwargs</span><span class="p">,</span>
         <span class="p">}</span>
@@ -907,26 +945,31 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">payload</span><span class="p">)</span>
             <span class="n">context_manager</span> <span class="o">=</span> <span class="n">response</span>
-        <span class="k">with</span> <span class="n">context_manager</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
-            <span class="n">is_first_chunk</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                    <span class="n">chunk</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
-                <span class="n">generation_chunk</span> <span class="o">=</span> <span class="n">_convert_chunk_to_generation_chunk</span><span class="p">(</span>
-                    <span class="n">chunk</span><span class="p">,</span>
-                    <span class="n">default_chunk_class</span><span class="p">,</span>
-                    <span class="n">base_generation_info</span> <span class="k">if</span> <span class="n">is_first_chunk</span> <span class="k">else</span> <span class="p">{},</span>
-                <span class="p">)</span>
-                <span class="k">if</span> <span class="n">generation_chunk</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="n">default_chunk_class</span> <span class="o">=</span> <span class="n">generation_chunk</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="vm">__class__</span>
-                <span class="n">logprobs</span> <span class="o">=</span> <span class="p">(</span><span class="n">generation_chunk</span><span class="o">.</span><span class="n">generation_info</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"logprobs"</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">run_manager</span><span class="p">:</span>
-                    <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span>
-                        <span class="n">generation_chunk</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">chunk</span><span class="o">=</span><span class="n">generation_chunk</span><span class="p">,</span> <span class="n">logprobs</span><span class="o">=</span><span class="n">logprobs</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="n">context_manager</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+                <span class="n">is_first_chunk</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="n">chunk</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+                    <span class="n">generation_chunk</span> <span class="o">=</span> <span class="n">_convert_chunk_to_generation_chunk</span><span class="p">(</span>
+                        <span class="n">chunk</span><span class="p">,</span>
+                        <span class="n">default_chunk_class</span><span class="p">,</span>
+                        <span class="n">base_generation_info</span> <span class="k">if</span> <span class="n">is_first_chunk</span> <span class="k">else</span> <span class="p">{},</span>
                     <span class="p">)</span>
-                <span class="n">is_first_chunk</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="k">yield</span> <span class="n">generation_chunk</span>
+                    <span class="k">if</span> <span class="n">generation_chunk</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">default_chunk_class</span> <span class="o">=</span> <span class="n">generation_chunk</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="vm">__class__</span>
+                    <span class="n">logprobs</span> <span class="o">=</span> <span class="p">(</span><span class="n">generation_chunk</span><span class="o">.</span><span class="n">generation_info</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"logprobs"</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">run_manager</span><span class="p">:</span>
+                        <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span>
+                            <span class="n">generation_chunk</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+                            <span class="n">chunk</span><span class="o">=</span><span class="n">generation_chunk</span><span class="p">,</span>
+                            <span class="n">logprobs</span><span class="o">=</span><span class="n">logprobs</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="n">is_first_chunk</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">yield</span> <span class="n">generation_chunk</span>
+        <span class="k">except</span> <span class="n">openai</span><span class="o">.</span><span class="n">BadRequestError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">_handle_openai_bad_request</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s2">"get_final_completion"</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"response_format"</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">:</span>
             <span class="n">final_completion</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get_final_completion</span><span class="p">()</span>
             <span class="n">generation_chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_generation_chunk_from_completion</span><span class="p">(</span>
@@ -959,7 +1002,10 @@
                     <span class="s2">"specified."</span>
                 <span class="p">)</span>
             <span class="n">payload</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"stream"</span><span class="p">)</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_client</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="o">**</span><span class="n">payload</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_client</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="o">**</span><span class="n">payload</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">openai</span><span class="o">.</span><span class="n">BadRequestError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">_handle_openai_bad_request</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_response_headers</span><span class="p">:</span>
             <span class="n">raw_response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">with_raw_response</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">payload</span><span class="p">)</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">raw_response</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
@@ -1067,26 +1113,31 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_client</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">payload</span><span class="p">)</span>
             <span class="n">context_manager</span> <span class="o">=</span> <span class="n">response</span>
-        <span class="k">async</span> <span class="k">with</span> <span class="n">context_manager</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
-            <span class="n">is_first_chunk</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                    <span class="n">chunk</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
-                <span class="n">generation_chunk</span> <span class="o">=</span> <span class="n">_convert_chunk_to_generation_chunk</span><span class="p">(</span>
-                    <span class="n">chunk</span><span class="p">,</span>
-                    <span class="n">default_chunk_class</span><span class="p">,</span>
-                    <span class="n">base_generation_info</span> <span class="k">if</span> <span class="n">is_first_chunk</span> <span class="k">else</span> <span class="p">{},</span>
-                <span class="p">)</span>
-                <span class="k">if</span> <span class="n">generation_chunk</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="k">continue</span>
-                <span class="n">default_chunk_class</span> <span class="o">=</span> <span class="n">generation_chunk</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="vm">__class__</span>
-                <span class="n">logprobs</span> <span class="o">=</span> <span class="p">(</span><span class="n">generation_chunk</span><span class="o">.</span><span class="n">generation_info</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"logprobs"</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">run_manager</span><span class="p">:</span>
-                    <span class="k">await</span> <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span>
-                        <span class="n">generation_chunk</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">chunk</span><span class="o">=</span><span class="n">generation_chunk</span><span class="p">,</span> <span class="n">logprobs</span><span class="o">=</span><span class="n">logprobs</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">async</span> <span class="k">with</span> <span class="n">context_manager</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+                <span class="n">is_first_chunk</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">response</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="n">chunk</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+                    <span class="n">generation_chunk</span> <span class="o">=</span> <span class="n">_convert_chunk_to_generation_chunk</span><span class="p">(</span>
+                        <span class="n">chunk</span><span class="p">,</span>
+                        <span class="n">default_chunk_class</span><span class="p">,</span>
+                        <span class="n">base_generation_info</span> <span class="k">if</span> <span class="n">is_first_chunk</span> <span class="k">else</span> <span class="p">{},</span>
                     <span class="p">)</span>
-                <span class="n">is_first_chunk</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="k">yield</span> <span class="n">generation_chunk</span>
+                    <span class="k">if</span> <span class="n">generation_chunk</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">default_chunk_class</span> <span class="o">=</span> <span class="n">generation_chunk</span><span class="o">.</span><span class="n">message</span><span class="o">.</span><span class="vm">__class__</span>
+                    <span class="n">logprobs</span> <span class="o">=</span> <span class="p">(</span><span class="n">generation_chunk</span><span class="o">.</span><span class="n">generation_info</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"logprobs"</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">run_manager</span><span class="p">:</span>
+                        <span class="k">await</span> <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span>
+                            <span class="n">generation_chunk</span><span class="o">.</span><span class="n">text</span><span class="p">,</span>
+                            <span class="n">chunk</span><span class="o">=</span><span class="n">generation_chunk</span><span class="p">,</span>
+                            <span class="n">logprobs</span><span class="o">=</span><span class="n">logprobs</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="n">is_first_chunk</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">yield</span> <span class="n">generation_chunk</span>
+        <span class="k">except</span> <span class="n">openai</span><span class="o">.</span><span class="n">BadRequestError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">_handle_openai_bad_request</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="s2">"get_final_completion"</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"response_format"</span> <span class="ow">in</span> <span class="n">payload</span><span class="p">:</span>
             <span class="n">final_completion</span> <span class="o">=</span> <span class="k">await</span> <span class="n">response</span><span class="o">.</span><span class="n">get_final_completion</span><span class="p">()</span>
             <span class="n">generation_chunk</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_generation_chunk_from_completion</span><span class="p">(</span>
@@ -1119,9 +1170,12 @@
                     <span class="s2">"specified."</span>
                 <span class="p">)</span>
             <span class="n">payload</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"stream"</span><span class="p">)</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_async_client</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
-                <span class="o">**</span><span class="n">payload</span>
-            <span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">root_async_client</span><span class="o">.</span><span class="n">beta</span><span class="o">.</span><span class="n">chat</span><span class="o">.</span><span class="n">completions</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span>
+                    <span class="o">**</span><span class="n">payload</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="n">openai</span><span class="o">.</span><span class="n">BadRequestError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">_handle_openai_bad_request</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_response_headers</span><span class="p">:</span>
             <span class="n">raw_response</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_client</span><span class="o">.</span><span class="n">with_raw_response</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">payload</span><span class="p">)</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">raw_response</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
@@ -1475,7 +1529,7 @@
 <span class="sd">                    API: https://platform.openai.com/docs/guides/function-calling</span>
 <span class="sd">                - "json_schema":</span>
 <span class="sd">                    Uses OpenAI's Structured Output API: https://platform.openai.com/docs/guides/structured-outputs</span>
-<span class="sd">                    Supported for "gpt-4o-mini", "gpt-4o-2024-08-06", and later</span>
+<span class="sd">                    Supported for "gpt-4o-mini", "gpt-4o-2024-08-06", "o1", and later</span>
 <span class="sd">                    models.</span>
 <span class="sd">                - "json_mode":</span>
 <span class="sd">                    Uses OpenAI's JSON mode. Note that if using JSON mode then you</span>
@@ -1508,10 +1562,6 @@
 <span class="sd">                - None:</span>
 <span class="sd">                    ``strict`` argument will not be passed to the model.</span>
 
-<span class="sd">                If ``method`` is "json_schema" defaults to True. If ``method`` is</span>
-<span class="sd">                "function_calling" or "json_mode" defaults to None. Can only be</span>
-<span class="sd">                non-null if ``method`` is "function_calling" or "json_schema".</span>
-
 <span class="sd">            kwargs: Additional keyword args aren't supported.</span>
 
 <span class="sd">        Returns:</span>
@@ -1533,193 +1583,6 @@
 
 <span class="sd">            Support for ``strict`` argument added.</span>
 <span class="sd">            Support for ``method`` = "json_schema" added.</span>
-
-<span class="sd">        .. note:: Planned breaking changes in version `0.3.0`</span>
-
-<span class="sd">            - ``method`` default will be changed to "json_schema" from</span>
-<span class="sd">                "function_calling".</span>
-<span class="sd">            - ``strict`` will default to True when ``method`` is</span>
-<span class="sd">                "function_calling" as of version `0.3.0`.</span>
-
-
-<span class="sd">        .. dropdown:: Example: schema=Pydantic class, method="function_calling", include_raw=False, strict=True</span>
-
-<span class="sd">            Note, OpenAI has a number of restrictions on what types of schemas can be</span>
-<span class="sd">            provided if ``strict`` = True. When using Pydantic, our model cannot</span>
-<span class="sd">            specify any Field metadata (like min/max constraints) and fields cannot</span>
-<span class="sd">            have default values.</span>
-
-<span class="sd">            See all constraints here: https://platform.openai.com/docs/guides/structured-outputs/supported-schemas</span>
-
-<span class="sd">            .. code-block:: python</span>
-
-<span class="sd">                from typing import Optional</span>
-
-<span class="sd">                from langchain_openai import ChatOpenAI</span>
-<span class="sd">                from pydantic import BaseModel, Field</span>
-
-
-<span class="sd">                class AnswerWithJustification(BaseModel):</span>
-<span class="sd">                    '''An answer to the user question along with justification for the answer.'''</span>
-
-<span class="sd">                    answer: str</span>
-<span class="sd">                    justification: Optional[str] = Field(</span>
-<span class="sd">                        default=..., description="A justification for the answer."</span>
-<span class="sd">                    )</span>
-
-
-<span class="sd">                llm = ChatOpenAI(model="gpt-4o", temperature=0)</span>
-<span class="sd">                structured_llm = llm.with_structured_output(</span>
-<span class="sd">                    AnswerWithJustification, strict=True</span>
-<span class="sd">                )</span>
-
-<span class="sd">                structured_llm.invoke(</span>
-<span class="sd">                    "What weighs more a pound of bricks or a pound of feathers"</span>
-<span class="sd">                )</span>
-
-<span class="sd">                # -&gt; AnswerWithJustification(</span>
-<span class="sd">                #     answer='They weigh the same',</span>
-<span class="sd">                #     justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'</span>
-<span class="sd">                # )</span>
-
-<span class="sd">        .. dropdown:: Example: schema=Pydantic class, method="function_calling", include_raw=True</span>
-
-<span class="sd">            .. code-block:: python</span>
-
-<span class="sd">                from langchain_openai import ChatOpenAI</span>
-<span class="sd">                from pydantic import BaseModel</span>
-
-
-<span class="sd">                class AnswerWithJustification(BaseModel):</span>
-<span class="sd">                    '''An answer to the user question along with justification for the answer.'''</span>
-
-<span class="sd">                    answer: str</span>
-<span class="sd">                    justification: str</span>
-
-
-<span class="sd">                llm = ChatOpenAI(model="gpt-4o", temperature=0)</span>
-<span class="sd">                structured_llm = llm.with_structured_output(</span>
-<span class="sd">                    AnswerWithJustification, include_raw=True</span>
-<span class="sd">                )</span>
-
-<span class="sd">                structured_llm.invoke(</span>
-<span class="sd">                    "What weighs more a pound of bricks or a pound of feathers"</span>
-<span class="sd">                )</span>
-<span class="sd">                # -&gt; {</span>
-<span class="sd">                #     'raw': AIMessage(content='', additional_kwargs={'tool_calls': [{'id': 'call_Ao02pnFYXD6GN1yzc0uXPsvF', 'function': {'arguments': '{"answer":"They weigh the same.","justification":"Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ."}', 'name': 'AnswerWithJustification'}, 'type': 'function'}]}),</span>
-<span class="sd">                #     'parsed': AnswerWithJustification(answer='They weigh the same.', justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'),</span>
-<span class="sd">                #     'parsing_error': None</span>
-<span class="sd">                # }</span>
-
-<span class="sd">        .. dropdown:: Example: schema=TypedDict class, method="function_calling", include_raw=False</span>
-
-<span class="sd">            .. code-block:: python</span>
-
-<span class="sd">                # IMPORTANT: If you are using Python &lt;=3.8, you need to import Annotated</span>
-<span class="sd">                # from typing_extensions, not from typing.</span>
-<span class="sd">                from typing_extensions import Annotated, TypedDict</span>
-
-<span class="sd">                from langchain_openai import ChatOpenAI</span>
-
-
-<span class="sd">                class AnswerWithJustification(TypedDict):</span>
-<span class="sd">                    '''An answer to the user question along with justification for the answer.'''</span>
-
-<span class="sd">                    answer: str</span>
-<span class="sd">                    justification: Annotated[</span>
-<span class="sd">                        Optional[str], None, "A justification for the answer."</span>
-<span class="sd">                    ]</span>
-
-
-<span class="sd">                llm = ChatOpenAI(model="gpt-4o", temperature=0)</span>
-<span class="sd">                structured_llm = llm.with_structured_output(AnswerWithJustification)</span>
-
-<span class="sd">                structured_llm.invoke(</span>
-<span class="sd">                    "What weighs more a pound of bricks or a pound of feathers"</span>
-<span class="sd">                )</span>
-<span class="sd">                # -&gt; {</span>
-<span class="sd">                #     'answer': 'They weigh the same',</span>
-<span class="sd">                #     'justification': 'Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume and density of the two substances differ.'</span>
-<span class="sd">                # }</span>
-
-<span class="sd">        .. dropdown:: Example: schema=OpenAI function schema, method="function_calling", include_raw=False</span>
-
-<span class="sd">            .. code-block:: python</span>
-
-<span class="sd">                from langchain_openai import ChatOpenAI</span>
-
-<span class="sd">                oai_schema = {</span>
-<span class="sd">                    'name': 'AnswerWithJustification',</span>
-<span class="sd">                    'description': 'An answer to the user question along with justification for the answer.',</span>
-<span class="sd">                    'parameters': {</span>
-<span class="sd">                        'type': 'object',</span>
-<span class="sd">                        'properties': {</span>
-<span class="sd">                            'answer': {'type': 'string'},</span>
-<span class="sd">                            'justification': {'description': 'A justification for the answer.', 'type': 'string'}</span>
-<span class="sd">                        },</span>
-<span class="sd">                       'required': ['answer']</span>
-<span class="sd">                   }</span>
-<span class="sd">               }</span>
-
-<span class="sd">                llm = ChatOpenAI(model="gpt-4o", temperature=0)</span>
-<span class="sd">                structured_llm = llm.with_structured_output(oai_schema)</span>
-
-<span class="sd">                structured_llm.invoke(</span>
-<span class="sd">                    "What weighs more a pound of bricks or a pound of feathers"</span>
-<span class="sd">                )</span>
-<span class="sd">                # -&gt; {</span>
-<span class="sd">                #     'answer': 'They weigh the same',</span>
-<span class="sd">                #     'justification': 'Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume and density of the two substances differ.'</span>
-<span class="sd">                # }</span>
-
-<span class="sd">        .. dropdown:: Example: schema=Pydantic class, method="json_mode", include_raw=True</span>
-
-<span class="sd">            .. code-block::</span>
-
-<span class="sd">                from langchain_openai import ChatOpenAI</span>
-<span class="sd">                from pydantic import BaseModel</span>
-
-<span class="sd">                class AnswerWithJustification(BaseModel):</span>
-<span class="sd">                    answer: str</span>
-<span class="sd">                    justification: str</span>
-
-<span class="sd">                llm = ChatOpenAI(model="gpt-4o", temperature=0)</span>
-<span class="sd">                structured_llm = llm.with_structured_output(</span>
-<span class="sd">                    AnswerWithJustification,</span>
-<span class="sd">                    method="json_mode",</span>
-<span class="sd">                    include_raw=True</span>
-<span class="sd">                )</span>
-
-<span class="sd">                structured_llm.invoke(</span>
-<span class="sd">                    "Answer the following question. "</span>
-<span class="sd">                    "Make sure to return a JSON blob with keys 'answer' and 'justification'.\\n\\n"</span>
-<span class="sd">                    "What's heavier a pound of bricks or a pound of feathers?"</span>
-<span class="sd">                )</span>
-<span class="sd">                # -&gt; {</span>
-<span class="sd">                #     'raw': AIMessage(content='{\\n    "answer": "They are both the same weight.",\\n    "justification": "Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight." \\n}'),</span>
-<span class="sd">                #     'parsed': AnswerWithJustification(answer='They are both the same weight.', justification='Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight.'),</span>
-<span class="sd">                #     'parsing_error': None</span>
-<span class="sd">                # }</span>
-
-<span class="sd">        .. dropdown:: Example: schema=None, method="json_mode", include_raw=True</span>
-
-<span class="sd">            .. code-block::</span>
-
-<span class="sd">                structured_llm = llm.with_structured_output(method="json_mode", include_raw=True)</span>
-
-<span class="sd">                structured_llm.invoke(</span>
-<span class="sd">                    "Answer the following question. "</span>
-<span class="sd">                    "Make sure to return a JSON blob with keys 'answer' and 'justification'.\\n\\n"</span>
-<span class="sd">                    "What's heavier a pound of bricks or a pound of feathers?"</span>
-<span class="sd">                )</span>
-<span class="sd">                # -&gt; {</span>
-<span class="sd">                #     'raw': AIMessage(content='{\\n    "answer": "They are both the same weight.",\\n    "justification": "Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight." \\n}'),</span>
-<span class="sd">                #     'parsed': {</span>
-<span class="sd">                #         'answer': 'They are both the same weight.',</span>
-<span class="sd">                #         'justification': 'Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight.'</span>
-<span class="sd">                #     },</span>
-<span class="sd">                #     'parsing_error': None</span>
-<span class="sd">                # }</span>
 <span class="sd">        """</span>  <span class="c1"># noqa: E501</span>
         <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Received unsupported arguments </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -1728,6 +1591,21 @@
                 <span class="s2">"Argument `strict` is not supported with `method`='json_mode'"</span>
             <span class="p">)</span>
         <span class="n">is_pydantic_schema</span> <span class="o">=</span> <span class="n">_is_pydantic_class</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+
+        <span class="c1"># Check for Pydantic BaseModel V1</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">method</span> <span class="o">==</span> <span class="s2">"json_schema"</span>
+            <span class="ow">and</span> <span class="n">is_pydantic_schema</span>
+            <span class="ow">and</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">BaseModelV1</span><span class="p">)</span>  <span class="c1"># type: ignore[arg-type]</span>
+        <span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">"Received a Pydantic BaseModel V1 schema. This is not supported by "</span>
+                <span class="s1">'method="json_schema". Please use method="function_calling" '</span>
+                <span class="s2">"or specify schema via JSON Schema or Pydantic V2 BaseModel. "</span>
+                <span class="s1">'Overriding to method="function_calling".'</span>
+            <span class="p">)</span>
+            <span class="n">method</span> <span class="o">=</span> <span class="s2">"function_calling"</span>
+
         <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"function_calling"</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">schema</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -1860,7 +1738,7 @@
 
 <span class="sd">        timeout: Union[float, Tuple[float, float], Any, None]</span>
 <span class="sd">            Timeout for requests.</span>
-<span class="sd">        max_retries: int</span>
+<span class="sd">        max_retries: Optional[int]</span>
 <span class="sd">            Max number of retries.</span>
 <span class="sd">        api_key: Optional[str]</span>
 <span class="sd">            OpenAI API key. If not passed in will be read from env var OPENAI_API_KEY.</span>
@@ -2387,7 +2265,324 @@
             <span class="n">kwargs</span><span class="p">[</span><span class="s2">"stream_options"</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"include_usage"</span><span class="p">:</span> <span class="n">stream_usage</span><span class="p">}</span>
 
         <span class="k">async</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_astream</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-            <span class="k">yield</span> <span class="n">chunk</span></div>
+            <span class="k">yield</span> <span class="n">chunk</span>
+
+<div class="viewcode-block" id="ChatOpenAI.with_structured_output">
+<a class="viewcode-back" href="../../../openai/chat_models/langchain_openai.chat_models.base.ChatOpenAI.html#langchain_cerebras.chat_models.ChatOpenAI.with_structured_output">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">with_structured_output</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">_DictOrPydanticClass</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">method</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"function_calling"</span><span class="p">,</span> <span class="s2">"json_mode"</span><span class="p">,</span> <span class="s2">"json_schema"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"json_schema"</span><span class="p">,</span>
+        <span class="n">include_raw</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">strict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Runnable</span><span class="p">[</span><span class="n">LanguageModelInput</span><span class="p">,</span> <span class="n">_DictOrPydantic</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Model wrapper that returns outputs formatted to match the given schema.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            schema:</span>
+<span class="sd">                The output schema. Can be passed in as:</span>
+
+<span class="sd">                - a JSON Schema,</span>
+<span class="sd">                - a TypedDict class,</span>
+<span class="sd">                - or a Pydantic class,</span>
+<span class="sd">                - an OpenAI function/tool schema.</span>
+
+<span class="sd">                If ``schema`` is a Pydantic class then the model output will be a</span>
+<span class="sd">                Pydantic instance of that class, and the model-generated fields will be</span>
+<span class="sd">                validated by the Pydantic class. Otherwise the model output will be a</span>
+<span class="sd">                dict and will not be validated. See :meth:`langchain_core.utils.function_calling.convert_to_openai_tool`</span>
+<span class="sd">                for more on how to properly specify types and descriptions of</span>
+<span class="sd">                schema fields when specifying a Pydantic or TypedDict class.</span>
+
+<span class="sd">            method: The method for steering model generation, one of:</span>
+
+<span class="sd">                - "json_schema":</span>
+<span class="sd">                    Uses OpenAI's Structured Output API:</span>
+<span class="sd">                    https://platform.openai.com/docs/guides/structured-outputs</span>
+<span class="sd">                    Supported for "gpt-4o-mini", "gpt-4o-2024-08-06", "o1", and later</span>
+<span class="sd">                    models.</span>
+<span class="sd">                - "function_calling":</span>
+<span class="sd">                    Uses OpenAI's tool-calling (formerly called function calling)</span>
+<span class="sd">                    API: https://platform.openai.com/docs/guides/function-calling</span>
+<span class="sd">                - "json_mode":</span>
+<span class="sd">                    Uses OpenAI's JSON mode. Note that if using JSON mode then you</span>
+<span class="sd">                    must include instructions for formatting the output into the</span>
+<span class="sd">                    desired schema into the model call:</span>
+<span class="sd">                    https://platform.openai.com/docs/guides/structured-outputs/json-mode</span>
+
+<span class="sd">                Learn more about the differences between the methods and which models</span>
+<span class="sd">                support which methods here:</span>
+
+<span class="sd">                - https://platform.openai.com/docs/guides/structured-outputs/structured-outputs-vs-json-mode</span>
+<span class="sd">                - https://platform.openai.com/docs/guides/structured-outputs/function-calling-vs-response-format</span>
+
+<span class="sd">            include_raw:</span>
+<span class="sd">                If False then only the parsed structured output is returned. If</span>
+<span class="sd">                an error occurs during model output parsing it will be raised. If True</span>
+<span class="sd">                then both the raw model response (a BaseMessage) and the parsed model</span>
+<span class="sd">                response will be returned. If an error occurs during output parsing it</span>
+<span class="sd">                will be caught and returned as well. The final output is always a dict</span>
+<span class="sd">                with keys "raw", "parsed", and "parsing_error".</span>
+<span class="sd">            strict:</span>
+
+<span class="sd">                - True:</span>
+<span class="sd">                    Model output is guaranteed to exactly match the schema.</span>
+<span class="sd">                    The input schema will also be validated according to</span>
+<span class="sd">                    https://platform.openai.com/docs/guides/structured-outputs/supported-schemas</span>
+<span class="sd">                - False:</span>
+<span class="sd">                    Input schema will not be validated and model output will not be</span>
+<span class="sd">                    validated.</span>
+<span class="sd">                - None:</span>
+<span class="sd">                    ``strict`` argument will not be passed to the model.</span>
+
+<span class="sd">                If schema is specified via TypedDict or JSON schema, ``strict`` is not</span>
+<span class="sd">                enabled by default. Pass ``strict=True`` to enable it.</span>
+
+<span class="sd">                Note: ``strict`` can only be non-null if ``method`` is</span>
+<span class="sd">                ``"json_schema"`` or ``"function_calling"``.</span>
+
+<span class="sd">            kwargs: Additional keyword args aren't supported.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A Runnable that takes same inputs as a :class:`langchain_core.language_models.chat.BaseChatModel`.</span>
+
+<span class="sd">            | If ``include_raw`` is False and ``schema`` is a Pydantic class, Runnable outputs an instance of ``schema`` (i.e., a Pydantic object). Otherwise, if ``include_raw`` is False then Runnable outputs a dict.</span>
+
+<span class="sd">            | If ``include_raw`` is True, then Runnable outputs a dict with keys:</span>
+
+<span class="sd">            - "raw": BaseMessage</span>
+<span class="sd">            - "parsed": None if there was a parsing error, otherwise the type depends on the ``schema`` as described above.</span>
+<span class="sd">            - "parsing_error": Optional[BaseException]</span>
+
+<span class="sd">        .. versionchanged:: 0.1.20</span>
+
+<span class="sd">            Added support for TypedDict class ``schema``.</span>
+
+<span class="sd">        .. versionchanged:: 0.1.21</span>
+
+<span class="sd">            Support for ``strict`` argument added.</span>
+<span class="sd">            Support for ``method="json_schema"`` added.</span>
+
+<span class="sd">        .. versionchanged:: 0.3.0</span>
+
+<span class="sd">            ``method`` default changed from "function_calling" to "json_schema".</span>
+
+<span class="sd">        .. dropdown:: Example: schema=Pydantic class, method="json_schema", include_raw=False, strict=True</span>
+
+<span class="sd">            Note, OpenAI has a number of restrictions on what types of schemas can be</span>
+<span class="sd">            provided if ``strict`` = True. When using Pydantic, our model cannot</span>
+<span class="sd">            specify any Field metadata (like min/max constraints) and fields cannot</span>
+<span class="sd">            have default values.</span>
+
+<span class="sd">            See all constraints here: https://platform.openai.com/docs/guides/structured-outputs/supported-schemas</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from typing import Optional</span>
+
+<span class="sd">                from langchain_openai import ChatOpenAI</span>
+<span class="sd">                from pydantic import BaseModel, Field</span>
+
+
+<span class="sd">                class AnswerWithJustification(BaseModel):</span>
+<span class="sd">                    '''An answer to the user question along with justification for the answer.'''</span>
+
+<span class="sd">                    answer: str</span>
+<span class="sd">                    justification: Optional[str] = Field(</span>
+<span class="sd">                        default=..., description="A justification for the answer."</span>
+<span class="sd">                    )</span>
+
+
+<span class="sd">                llm = ChatOpenAI(model="gpt-4o", temperature=0)</span>
+<span class="sd">                structured_llm = llm.with_structured_output(AnswerWithJustification)</span>
+
+<span class="sd">                structured_llm.invoke(</span>
+<span class="sd">                    "What weighs more a pound of bricks or a pound of feathers"</span>
+<span class="sd">                )</span>
+
+<span class="sd">                # -&gt; AnswerWithJustification(</span>
+<span class="sd">                #     answer='They weigh the same',</span>
+<span class="sd">                #     justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'</span>
+<span class="sd">                # )</span>
+
+<span class="sd">        .. dropdown:: Example: schema=Pydantic class, method="function_calling", include_raw=False, strict=False</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from typing import Optional</span>
+
+<span class="sd">                from langchain_openai import ChatOpenAI</span>
+<span class="sd">                from pydantic import BaseModel, Field</span>
+
+
+<span class="sd">                class AnswerWithJustification(BaseModel):</span>
+<span class="sd">                    '''An answer to the user question along with justification for the answer.'''</span>
+
+<span class="sd">                    answer: str</span>
+<span class="sd">                    justification: Optional[str] = Field(</span>
+<span class="sd">                        default=..., description="A justification for the answer."</span>
+<span class="sd">                    )</span>
+
+
+<span class="sd">                llm = ChatOpenAI(model="gpt-4o", temperature=0)</span>
+<span class="sd">                structured_llm = llm.with_structured_output(</span>
+<span class="sd">                    AnswerWithJustification, method="function_calling"</span>
+<span class="sd">                )</span>
+
+<span class="sd">                structured_llm.invoke(</span>
+<span class="sd">                    "What weighs more a pound of bricks or a pound of feathers"</span>
+<span class="sd">                )</span>
+
+<span class="sd">                # -&gt; AnswerWithJustification(</span>
+<span class="sd">                #     answer='They weigh the same',</span>
+<span class="sd">                #     justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'</span>
+<span class="sd">                # )</span>
+
+<span class="sd">        .. dropdown:: Example: schema=Pydantic class, method="json_schema", include_raw=True</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from langchain_openai import ChatOpenAI</span>
+<span class="sd">                from pydantic import BaseModel</span>
+
+
+<span class="sd">                class AnswerWithJustification(BaseModel):</span>
+<span class="sd">                    '''An answer to the user question along with justification for the answer.'''</span>
+
+<span class="sd">                    answer: str</span>
+<span class="sd">                    justification: str</span>
+
+
+<span class="sd">                llm = ChatOpenAI(model="gpt-4o", temperature=0)</span>
+<span class="sd">                structured_llm = llm.with_structured_output(</span>
+<span class="sd">                    AnswerWithJustification, include_raw=True</span>
+<span class="sd">                )</span>
+
+<span class="sd">                structured_llm.invoke(</span>
+<span class="sd">                    "What weighs more a pound of bricks or a pound of feathers"</span>
+<span class="sd">                )</span>
+<span class="sd">                # -&gt; {</span>
+<span class="sd">                #     'raw': AIMessage(content='', additional_kwargs={'tool_calls': [{'id': 'call_Ao02pnFYXD6GN1yzc0uXPsvF', 'function': {'arguments': '{"answer":"They weigh the same.","justification":"Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ."}', 'name': 'AnswerWithJustification'}, 'type': 'function'}]}),</span>
+<span class="sd">                #     'parsed': AnswerWithJustification(answer='They weigh the same.', justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'),</span>
+<span class="sd">                #     'parsing_error': None</span>
+<span class="sd">                # }</span>
+
+<span class="sd">        .. dropdown:: Example: schema=TypedDict class, method="json_schema", include_raw=False, strict=False</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                # IMPORTANT: If you are using Python &lt;=3.8, you need to import Annotated</span>
+<span class="sd">                # from typing_extensions, not from typing.</span>
+<span class="sd">                from typing_extensions import Annotated, TypedDict</span>
+
+<span class="sd">                from langchain_openai import ChatOpenAI</span>
+
+
+<span class="sd">                class AnswerWithJustification(TypedDict):</span>
+<span class="sd">                    '''An answer to the user question along with justification for the answer.'''</span>
+
+<span class="sd">                    answer: str</span>
+<span class="sd">                    justification: Annotated[</span>
+<span class="sd">                        Optional[str], None, "A justification for the answer."</span>
+<span class="sd">                    ]</span>
+
+
+<span class="sd">                llm = ChatOpenAI(model="gpt-4o", temperature=0)</span>
+<span class="sd">                structured_llm = llm.with_structured_output(AnswerWithJustification)</span>
+
+<span class="sd">                structured_llm.invoke(</span>
+<span class="sd">                    "What weighs more a pound of bricks or a pound of feathers"</span>
+<span class="sd">                )</span>
+<span class="sd">                # -&gt; {</span>
+<span class="sd">                #     'answer': 'They weigh the same',</span>
+<span class="sd">                #     'justification': 'Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume and density of the two substances differ.'</span>
+<span class="sd">                # }</span>
+
+<span class="sd">        .. dropdown:: Example: schema=OpenAI function schema, method="json_schema", include_raw=False</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from langchain_openai import ChatOpenAI</span>
+
+<span class="sd">                oai_schema = {</span>
+<span class="sd">                    'name': 'AnswerWithJustification',</span>
+<span class="sd">                    'description': 'An answer to the user question along with justification for the answer.',</span>
+<span class="sd">                    'parameters': {</span>
+<span class="sd">                        'type': 'object',</span>
+<span class="sd">                        'properties': {</span>
+<span class="sd">                            'answer': {'type': 'string'},</span>
+<span class="sd">                            'justification': {'description': 'A justification for the answer.', 'type': 'string'}</span>
+<span class="sd">                        },</span>
+<span class="sd">                       'required': ['answer']</span>
+<span class="sd">                   }</span>
+<span class="sd">               }</span>
+
+<span class="sd">                llm = ChatOpenAI(model="gpt-4o", temperature=0)</span>
+<span class="sd">                structured_llm = llm.with_structured_output(oai_schema)</span>
+
+<span class="sd">                structured_llm.invoke(</span>
+<span class="sd">                    "What weighs more a pound of bricks or a pound of feathers"</span>
+<span class="sd">                )</span>
+<span class="sd">                # -&gt; {</span>
+<span class="sd">                #     'answer': 'They weigh the same',</span>
+<span class="sd">                #     'justification': 'Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume and density of the two substances differ.'</span>
+<span class="sd">                # }</span>
+
+<span class="sd">        .. dropdown:: Example: schema=Pydantic class, method="json_mode", include_raw=True</span>
+
+<span class="sd">            .. code-block::</span>
+
+<span class="sd">                from langchain_openai import ChatOpenAI</span>
+<span class="sd">                from pydantic import BaseModel</span>
+
+<span class="sd">                class AnswerWithJustification(BaseModel):</span>
+<span class="sd">                    answer: str</span>
+<span class="sd">                    justification: str</span>
+
+<span class="sd">                llm = ChatOpenAI(model="gpt-4o", temperature=0)</span>
+<span class="sd">                structured_llm = llm.with_structured_output(</span>
+<span class="sd">                    AnswerWithJustification,</span>
+<span class="sd">                    method="json_mode",</span>
+<span class="sd">                    include_raw=True</span>
+<span class="sd">                )</span>
+
+<span class="sd">                structured_llm.invoke(</span>
+<span class="sd">                    "Answer the following question. "</span>
+<span class="sd">                    "Make sure to return a JSON blob with keys 'answer' and 'justification'.\\n\\n"</span>
+<span class="sd">                    "What's heavier a pound of bricks or a pound of feathers?"</span>
+<span class="sd">                )</span>
+<span class="sd">                # -&gt; {</span>
+<span class="sd">                #     'raw': AIMessage(content='{\\n    "answer": "They are both the same weight.",\\n    "justification": "Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight." \\n}'),</span>
+<span class="sd">                #     'parsed': AnswerWithJustification(answer='They are both the same weight.', justification='Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight.'),</span>
+<span class="sd">                #     'parsing_error': None</span>
+<span class="sd">                # }</span>
+
+<span class="sd">        .. dropdown:: Example: schema=None, method="json_mode", include_raw=True</span>
+
+<span class="sd">            .. code-block::</span>
+
+<span class="sd">                structured_llm = llm.with_structured_output(method="json_mode", include_raw=True)</span>
+
+<span class="sd">                structured_llm.invoke(</span>
+<span class="sd">                    "Answer the following question. "</span>
+<span class="sd">                    "Make sure to return a JSON blob with keys 'answer' and 'justification'.\\n\\n"</span>
+<span class="sd">                    "What's heavier a pound of bricks or a pound of feathers?"</span>
+<span class="sd">                )</span>
+<span class="sd">                # -&gt; {</span>
+<span class="sd">                #     'raw': AIMessage(content='{\\n    "answer": "They are both the same weight.",\\n    "justification": "Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight." \\n}'),</span>
+<span class="sd">                #     'parsed': {</span>
+<span class="sd">                #         'answer': 'They are both the same weight.',</span>
+<span class="sd">                #         'justification': 'Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight.'</span>
+<span class="sd">                #     },</span>
+<span class="sd">                #     'parsing_error': None</span>
+<span class="sd">                # }</span>
+<span class="sd">        """</span>  <span class="c1"># noqa: E501</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span>
+            <span class="n">schema</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">include_raw</span><span class="o">=</span><span class="n">include_raw</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span></div>
+</div>
 
 
 
@@ -2506,7 +2701,11 @@
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"name"</span> <span class="ow">in</span> <span class="n">schema</span> <span class="ow">and</span> <span class="s2">"schema"</span> <span class="ow">in</span> <span class="n">schema</span><span class="p">:</span>
         <span class="n">response_format</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"json_schema"</span><span class="p">,</span> <span class="s2">"json_schema"</span><span class="p">:</span> <span class="n">schema</span><span class="p">}</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">strict</span> <span class="o">=</span> <span class="n">strict</span> <span class="k">if</span> <span class="n">strict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">strict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"strict"</span><span class="p">),</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="n">strict</span> <span class="o">=</span> <span class="n">schema</span><span class="p">[</span><span class="s2">"strict"</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">strict</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">function</span> <span class="o">=</span> <span class="n">convert_to_openai_function</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">)</span>
         <span class="n">function</span><span class="p">[</span><span class="s2">"schema"</span><span class="p">]</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"parameters"</span><span class="p">)</span>
         <span class="n">response_format</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"json_schema"</span><span class="p">,</span> <span class="s2">"json_schema"</span><span class="p">:</span> <span class="n">function</span><span class="p">}</span>

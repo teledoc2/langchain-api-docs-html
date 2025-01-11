@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 10, 2025" name="docbuild:last-update"/>
+<meta content="Jan 11, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -330,49 +330,52 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.check_dims" title="langchain_redis.cache.EmbeddingsVectorizer.check_dims"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_dims</span></code></a>(value)</p></td>
 <td><p>Ensures the dims are a positive integer.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.construct" title="langchain_redis.cache.EmbeddingsVectorizer.construct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct</span></code></a>([_fields_set])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.check_dtype" title="langchain_redis.cache.EmbeddingsVectorizer.check_dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_dtype</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.construct" title="langchain_redis.cache.EmbeddingsVectorizer.construct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct</span></code></a>([_fields_set])</p></td>
 <td><p>Creates a new model setting __dict__ and __fields_set__ from trusted or pre-validated data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.copy" title="langchain_redis.cache.EmbeddingsVectorizer.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(*[, include, exclude, update, deep])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.copy" title="langchain_redis.cache.EmbeddingsVectorizer.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(*[, include, exclude, update, deep])</p></td>
 <td><p>Duplicate a model, optionally choose which fields to include, exclude and change.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.dict" title="langchain_redis.cache.EmbeddingsVectorizer.dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>(*[, include, exclude, by_alias, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.dict" title="langchain_redis.cache.EmbeddingsVectorizer.dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>(*[, include, exclude, by_alias, ...])</p></td>
 <td><p>Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.embed" title="langchain_redis.cache.EmbeddingsVectorizer.embed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed</span></code></a>(text[, dtype])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.embed" title="langchain_redis.cache.EmbeddingsVectorizer.embed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed</span></code></a>(text[, dtype])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.embed_many" title="langchain_redis.cache.EmbeddingsVectorizer.embed_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed_many</span></code></a>(texts[, dtype])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.embed_many" title="langchain_redis.cache.EmbeddingsVectorizer.embed_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed_many</span></code></a>(texts[, dtype])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.encode" title="langchain_redis.cache.EmbeddingsVectorizer.encode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode</span></code></a>(texts, dtype, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.encode" title="langchain_redis.cache.EmbeddingsVectorizer.encode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode</span></code></a>(texts, dtype, **kwargs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.from_orm" title="langchain_redis.cache.EmbeddingsVectorizer.from_orm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_orm</span></code></a>(obj)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.from_orm" title="langchain_redis.cache.EmbeddingsVectorizer.from_orm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_orm</span></code></a>(obj)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.json" title="langchain_redis.cache.EmbeddingsVectorizer.json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">json</span></code></a>(*[, include, exclude, by_alias, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.json" title="langchain_redis.cache.EmbeddingsVectorizer.json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">json</span></code></a>(*[, include, exclude, by_alias, ...])</p></td>
 <td><p>Generate a JSON representation of the model, <cite>include</cite> and <cite>exclude</cite> arguments as per <cite>dict()</cite>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_file" title="langchain_redis.cache.EmbeddingsVectorizer.parse_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_file</span></code></a>(path, *[, content_type, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_file" title="langchain_redis.cache.EmbeddingsVectorizer.parse_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_file</span></code></a>(path, *[, content_type, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_obj" title="langchain_redis.cache.EmbeddingsVectorizer.parse_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_obj</span></code></a>(obj)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_obj" title="langchain_redis.cache.EmbeddingsVectorizer.parse_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_obj</span></code></a>(obj)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_raw" title="langchain_redis.cache.EmbeddingsVectorizer.parse_raw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_raw</span></code></a>(b, *[, content_type, encoding, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_raw" title="langchain_redis.cache.EmbeddingsVectorizer.parse_raw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_raw</span></code></a>(b, *[, content_type, encoding, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.schema" title="langchain_redis.cache.EmbeddingsVectorizer.schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema</span></code></a>([by_alias, ref_template])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.schema" title="langchain_redis.cache.EmbeddingsVectorizer.schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema</span></code></a>([by_alias, ref_template])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.schema_json" title="langchain_redis.cache.EmbeddingsVectorizer.schema_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_json</span></code></a>(*[, by_alias, ref_template])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.schema_json" title="langchain_redis.cache.EmbeddingsVectorizer.schema_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_json</span></code></a>(*[, by_alias, ref_template])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.update_forward_refs" title="langchain_redis.cache.EmbeddingsVectorizer.update_forward_refs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_forward_refs</span></code></a>(**localns)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.update_forward_refs" title="langchain_redis.cache.EmbeddingsVectorizer.update_forward_refs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_forward_refs</span></code></a>(**localns)</p></td>
 <td><p>Try to update ForwardRefs on fields based on this Model, globalns and localns.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.validate" title="langchain_redis.cache.EmbeddingsVectorizer.validate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code></a>(value)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.validate" title="langchain_redis.cache.EmbeddingsVectorizer.validate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code></a>(value)</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -444,6 +447,10 @@
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_dims</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.check_dims" title="Link to this definition">#</a></dt>
 <dd><p>Ensures the dims are a positive integer.</p>
 </dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.check_dtype">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_dtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.check_dtype" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.construct">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">construct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_fields_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SetStr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model"><span class="pre">Model</span></a></span></span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.construct" title="Link to this definition">#</a></dt>
@@ -715,6 +722,7 @@ the new model: you should trust this data</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.aembed_many"><code class="docutils literal notranslate"><span class="pre">aembed_many()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.batchify"><code class="docutils literal notranslate"><span class="pre">batchify()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.check_dims"><code class="docutils literal notranslate"><span class="pre">check_dims()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.check_dtype"><code class="docutils literal notranslate"><span class="pre">check_dtype()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.construct"><code class="docutils literal notranslate"><span class="pre">construct()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.copy"><code class="docutils literal notranslate"><span class="pre">copy()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.dict"><code class="docutils literal notranslate"><span class="pre">dict()</span></code></a></li>

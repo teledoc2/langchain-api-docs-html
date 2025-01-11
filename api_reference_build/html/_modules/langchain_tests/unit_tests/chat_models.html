@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 10, 2025" name="docbuild:last-update"/>
+<meta content="Jan 11, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -355,6 +355,11 @@
         <span class="p">)</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">structured_output_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""If specified, additional kwargs for with_structured_output."""</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">supports_json_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""(bool) whether the chat model supports JSON mode."""</span>
         <span class="k">return</span> <span class="kc">False</span>
@@ -522,6 +527,19 @@
 <span class="sd">            @property</span>
 <span class="sd">            def has_structured_output(self) -&gt; bool:</span>
 <span class="sd">                return True</span>
+
+<span class="sd">    .. dropdown:: structured_output_kwargs</span>
+
+<span class="sd">        Dict property that can be used to specify additional kwargs for</span>
+<span class="sd">        ``with_structured_output``. Useful for testing different models.</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            @property</span>
+<span class="sd">            def structured_output_kwargs(self) -&gt; dict:</span>
+<span class="sd">                return {"method": "function_calling"}</span>
 
 <span class="sd">    .. dropdown:: supports_json_mode</span>
 

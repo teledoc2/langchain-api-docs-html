@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 10, 2025" name="docbuild:last-update"/>
+<meta content="Jan 11, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -282,7 +282,7 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-together: 0.2.1</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-together: 0.3.0</a></li>
 <li class="breadcrumb-item"><a class="nav-link" href="../chat_models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chat_models</span></code></a></li>
 <li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">ChatTogether</span></li>
 </ul>
@@ -637,7 +637,7 @@ http_async_client as well if you’d like a custom client for async invocations.
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_together.chat_models.ChatTogether.max_retries">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_retries</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#langchain_together.chat_models.ChatTogether.max_retries" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_retries</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_together.chat_models.ChatTogether.max_retries" title="Link to this definition">#</a></dt>
 <dd><p>Maximum number of retries to make when generating.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
@@ -662,7 +662,7 @@ http_async_client as well if you’d like a custom client for async invocations.
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_together.chat_models.ChatTogether.n">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#langchain_together.chat_models.ChatTogether.n" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_together.chat_models.ChatTogether.n" title="Link to this definition">#</a></dt>
 <dd><p>Number of chat completions to generate for each prompt.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
@@ -733,7 +733,7 @@ None.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_together.chat_models.ChatTogether.temperature">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">temperature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.7</span></em><a class="headerlink" href="#langchain_together.chat_models.ChatTogether.temperature" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">temperature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_together.chat_models.ChatTogether.temperature" title="Link to this definition">#</a></dt>
 <dd><p>What sampling temperature to use.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
@@ -1838,7 +1838,7 @@ API: <a class="reference external" href="https://platform.openai.com/docs/guides
 </li>
 <li><dl class="simple">
 <dt>”json_schema”:</dt><dd><p>Uses OpenAI’s Structured Output API: <a class="reference external" href="https://platform.openai.com/docs/guides/structured-outputs">https://platform.openai.com/docs/guides/structured-outputs</a>
-Supported for “gpt-4o-mini”, “gpt-4o-2024-08-06”, and later
+Supported for “gpt-4o-mini”, “gpt-4o-2024-08-06”, “o1”, and later
 models.</p>
 </dd>
 </dl>
@@ -1885,9 +1885,6 @@ validated.</p>
 </dl>
 </li>
 </ul>
-<p>If <code class="docutils literal notranslate"><span class="pre">method</span></code> is “json_schema” defaults to True. If <code class="docutils literal notranslate"><span class="pre">method</span></code> is
-“function_calling” or “json_mode” defaults to None. Can only be
-non-null if <code class="docutils literal notranslate"><span class="pre">method</span></code> is “function_calling” or “json_schema”.</p>
 </p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword args aren’t supported.</p></li>
 </ul>
@@ -1918,206 +1915,7 @@ non-null if <code class="docutils literal notranslate"><span class="pre">method<
 <p><span class="versionmodified changed">Changed in version 0.1.21: </span>Support for <code class="docutils literal notranslate"><span class="pre">strict</span></code> argument added.
 Support for <code class="docutils literal notranslate"><span class="pre">method</span></code> = “json_schema” added.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Planned breaking changes in version <cite>0.3.0</cite></p>
-<ul class="simple">
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">method</span></code> default will be changed to “json_schema” from</dt><dd><p>“function_calling”.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">strict</span></code> will default to True when <code class="docutils literal notranslate"><span class="pre">method</span></code> is</dt><dd><p>“function_calling” as of version <cite>0.3.0</cite>.</p>
-</dd>
-</dl>
-</li>
-</ul>
-</div>
-<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">Example: schema=Pydantic class, method=”function_calling”, include_raw=False, strict=True</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">Note, OpenAI has a number of restrictions on what types of schemas can be
-provided if <code class="docutils literal notranslate"><span class="pre">strict</span></code> = True. When using Pydantic, our model cannot
-specify any Field metadata (like min/max constraints) and fields cannot
-have default values.</p>
-<p class="sd-card-text">See all constraints here: <a class="reference external" href="https://platform.openai.com/docs/guides/structured-outputs/supported-schemas">https://platform.openai.com/docs/guides/structured-outputs/supported-schemas</a></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
-
-
-<span class="k">class</span><span class="w"> </span><span class="nc">AnswerWithJustification</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">'''An answer to the user question along with justification for the answer.'''</span>
-
-    <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">justification</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
-        <span class="n">default</span><span class="o">=...</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"A justification for the answer."</span>
-    <span class="p">)</span>
-
-
-<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span>
-    <span class="n">AnswerWithJustification</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span>
-
-<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
-    <span class="s2">"What weighs more a pound of bricks or a pound of feathers"</span>
-<span class="p">)</span>
-
-<span class="c1"># -&gt; AnswerWithJustification(</span>
-<span class="c1">#     answer='They weigh the same',</span>
-<span class="c1">#     justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'</span>
-<span class="c1"># )</span>
-</pre></div>
-</div>
-</div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">Example: schema=Pydantic class, method=”function_calling”, include_raw=True</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
-
-
-<span class="k">class</span><span class="w"> </span><span class="nc">AnswerWithJustification</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">'''An answer to the user question along with justification for the answer.'''</span>
-
-    <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">justification</span><span class="p">:</span> <span class="nb">str</span>
-
-
-<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span>
-    <span class="n">AnswerWithJustification</span><span class="p">,</span> <span class="n">include_raw</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span>
-
-<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
-    <span class="s2">"What weighs more a pound of bricks or a pound of feathers"</span>
-<span class="p">)</span>
-<span class="c1"># -&gt; {</span>
-<span class="c1">#     'raw': AIMessage(content='', additional_kwargs={'tool_calls': [{'id': 'call_Ao02pnFYXD6GN1yzc0uXPsvF', 'function': {'arguments': '{"answer":"They weigh the same.","justification":"Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ."}', 'name': 'AnswerWithJustification'}, 'type': 'function'}]}),</span>
-<span class="c1">#     'parsed': AnswerWithJustification(answer='They weigh the same.', justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'),</span>
-<span class="c1">#     'parsing_error': None</span>
-<span class="c1"># }</span>
-</pre></div>
-</div>
-</div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">Example: schema=TypedDict class, method=”function_calling”, include_raw=False</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># IMPORTANT: If you are using Python &lt;=3.8, you need to import Annotated</span>
-<span class="c1"># from typing_extensions, not from typing.</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Annotated</span><span class="p">,</span> <span class="n">TypedDict</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
-
-
-<span class="k">class</span><span class="w"> </span><span class="nc">AnswerWithJustification</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">'''An answer to the user question along with justification for the answer.'''</span>
-
-    <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">justification</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
-        <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">"A justification for the answer."</span>
-    <span class="p">]</span>
-
-
-<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">AnswerWithJustification</span><span class="p">)</span>
-
-<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
-    <span class="s2">"What weighs more a pound of bricks or a pound of feathers"</span>
-<span class="p">)</span>
-<span class="c1"># -&gt; {</span>
-<span class="c1">#     'answer': 'They weigh the same',</span>
-<span class="c1">#     'justification': 'Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume and density of the two substances differ.'</span>
-<span class="c1"># }</span>
-</pre></div>
-</div>
-</div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">Example: schema=OpenAI function schema, method=”function_calling”, include_raw=False</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
-
- <span class="n">oai_schema</span> <span class="o">=</span> <span class="p">{</span>
-     <span class="s1">'name'</span><span class="p">:</span> <span class="s1">'AnswerWithJustification'</span><span class="p">,</span>
-     <span class="s1">'description'</span><span class="p">:</span> <span class="s1">'An answer to the user question along with justification for the answer.'</span><span class="p">,</span>
-     <span class="s1">'parameters'</span><span class="p">:</span> <span class="p">{</span>
-         <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'object'</span><span class="p">,</span>
-         <span class="s1">'properties'</span><span class="p">:</span> <span class="p">{</span>
-             <span class="s1">'answer'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'type'</span><span class="p">:</span> <span class="s1">'string'</span><span class="p">},</span>
-             <span class="s1">'justification'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'description'</span><span class="p">:</span> <span class="s1">'A justification for the answer.'</span><span class="p">,</span> <span class="s1">'type'</span><span class="p">:</span> <span class="s1">'string'</span><span class="p">}</span>
-         <span class="p">},</span>
-        <span class="s1">'required'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'answer'</span><span class="p">]</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-
- <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
- <span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">oai_schema</span><span class="p">)</span>
-
- <span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
-     <span class="s2">"What weighs more a pound of bricks or a pound of feathers"</span>
- <span class="p">)</span>
- <span class="c1"># -&gt; {</span>
- <span class="c1">#     'answer': 'They weigh the same',</span>
- <span class="c1">#     'justification': 'Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume and density of the two substances differ.'</span>
- <span class="c1"># }</span>
-</pre></div>
-</div>
-</div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">Example: schema=Pydantic class, method=”json_mode”, include_raw=True</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_openai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatOpenAI</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">AnswerWithJustification</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">justification</span><span class="p">:</span> <span class="nb">str</span>
-
-<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span>
-    <span class="n">AnswerWithJustification</span><span class="p">,</span>
-    <span class="n">method</span><span class="o">=</span><span class="s2">"json_mode"</span><span class="p">,</span>
-    <span class="n">include_raw</span><span class="o">=</span><span class="kc">True</span>
-<span class="p">)</span>
-
-<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
-    <span class="s2">"Answer the following question. "</span>
-    <span class="s2">"Make sure to return a JSON blob with keys 'answer' and 'justification'.</span><span class="se">\n\n</span><span class="s2">"</span>
-    <span class="s2">"What's heavier a pound of bricks or a pound of feathers?"</span>
-<span class="p">)</span>
-<span class="c1"># -&gt; {</span>
-<span class="c1">#     'raw': AIMessage(content='{\n    "answer": "They are both the same weight.",\n    "justification": "Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight." \n}'),</span>
-<span class="c1">#     'parsed': AnswerWithJustification(answer='They are both the same weight.', justification='Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight.'),</span>
-<span class="c1">#     'parsing_error': None</span>
-<span class="c1"># }</span>
-</pre></div>
-</div>
-</div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-text">Example: schema=None, method=”json_mode”, include_raw=True</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg aria-hidden="true" class="sd-octicon sd-octicon-chevron-right" height="1.5em" version="1.1" viewbox="0 0 24 24" width="1.5em"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">"json_mode"</span><span class="p">,</span> <span class="n">include_raw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
-    <span class="s2">"Answer the following question. "</span>
-    <span class="s2">"Make sure to return a JSON blob with keys 'answer' and 'justification'.</span><span class="se">\n\n</span><span class="s2">"</span>
-    <span class="s2">"What's heavier a pound of bricks or a pound of feathers?"</span>
-<span class="p">)</span>
-<span class="c1"># -&gt; {</span>
-<span class="c1">#     'raw': AIMessage(content='{\n    "answer": "They are both the same weight.",\n    "justification": "Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight." \n}'),</span>
-<span class="c1">#     'parsed': {</span>
-<span class="c1">#         'answer': 'They are both the same weight.',</span>
-<span class="c1">#         'justification': 'Both a pound of bricks and a pound of feathers weigh one pound. The difference lies in the volume and density of the materials, not the weight.'</span>
-<span class="c1">#     },</span>
-<span class="c1">#     'parsing_error': None</span>
-<span class="c1"># }</span>
-</pre></div>
-</div>
-</div>
-</details></dd></dl>
+</dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_together.chat_models.ChatTogether.with_types">
 <span class="sig-name descname"><span class="pre">with_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><span class="pre">Input</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">type</span><span class="p"><span class="pre">[</span></span><span class="pre">Output</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><span class="pre">Runnable</span></a><span class="p"><span class="pre">[</span></span><span class="pre">Input</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Output</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_together.chat_models.ChatTogether.with_types" title="Link to this definition">#</a></dt>
