@@ -13,7 +13,7 @@
         gtag('js', new Date());
         gtag('config', 'G-9B66JQQH2F');
     </script>
-<title>langchain-aws: 0.2.10 — 🦜🔗 LangChain  documentation</title>
+<title>langchain-aws: 0.2.11 — 🦜🔗 LangChain  documentation</title>
 <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 15, 2025" name="docbuild:last-update"/>
+<meta content="Jan 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -210,6 +210,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../astradb/index.html">AstraDB</a></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">AWS</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="agents.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">agents</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="chains.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chains</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="chat_models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chat_models</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="embeddings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">embeddings</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="function_calling.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">function_calling</span></code></a></li>
@@ -225,7 +226,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../cerebras/index.html">Cerebras</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../chroma/index.html">Chroma</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cohere/index.html">Cohere</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../couchbase/index.html">Couchbase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../databricks/index.html">Databricks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../elasticsearch/index.html">Elasticsearch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../exa/index.html">Exa</a></li>
@@ -283,7 +283,7 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../reference.html">LangChain Python API Reference</a></li>
-<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">langchain-aws: 0.2.10</span></li>
+<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">langchain-aws: 0.2.11</span></li>
 </ul>
 </nav>
 </div>
@@ -293,7 +293,7 @@
 <div id="searchbox"></div>
 <article class="bd-article">
 <section id="module-langchain_aws">
-<span id="langchain-aws-0-2-10"></span><span id="langchain-aws"></span><h1>langchain-aws: 0.2.10<a class="headerlink" href="#module-langchain_aws" title="Link to this heading">#</a></h1>
+<span id="langchain-aws-0-2-11"></span><span id="langchain-aws"></span><h1>langchain-aws: 0.2.11<a class="headerlink" href="#module-langchain_aws" title="Link to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
 </div>
 <section id="langchain-aws-agents">
@@ -324,6 +324,39 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="agents/langchain_aws.agents.base.parse_agent_response.html#langchain_aws.agents.base.parse_agent_response" title="langchain_aws.agents.base.parse_agent_response"><code class="xref py py-obj docutils literal notranslate"><span class="pre">agents.base.parse_agent_response</span></code></a>(response)</p></td>
 <td><p>Parses the raw response from Bedrock Agent</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="langchain-aws-chains">
+<h2><a class="reference internal" href="chains.html#langchain-aws-chains"><span class="std std-ref">chains</span></a><a class="headerlink" href="#langchain-aws-chains" title="Link to this heading">#</a></h2>
+<p><strong>Functions</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_aws.chains.graph_qa.neptune_cypher.create_neptune_opencypher_qa_chain.html#langchain_aws.chains.graph_qa.neptune_cypher.create_neptune_opencypher_qa_chain" title="langchain_aws.chains.graph_qa.neptune_cypher.create_neptune_opencypher_qa_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_cypher.create_neptune_opencypher_qa_chain</span></code></a>(...)</p></td>
+<td><p>Chain for question-answering against a Neptune graph by generating openCypher statements.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_aws.chains.graph_qa.neptune_cypher.extract_cypher.html#langchain_aws.chains.graph_qa.neptune_cypher.extract_cypher" title="langchain_aws.chains.graph_qa.neptune_cypher.extract_cypher"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_cypher.extract_cypher</span></code></a>(text)</p></td>
+<td><p>Extract Cypher code from text using Regex.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_aws.chains.graph_qa.neptune_cypher.get_prompt.html#langchain_aws.chains.graph_qa.neptune_cypher.get_prompt" title="langchain_aws.chains.graph_qa.neptune_cypher.get_prompt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_cypher.get_prompt</span></code></a>(llm)</p></td>
+<td><p>Selects the final prompt</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_aws.chains.graph_qa.neptune_cypher.trim_query.html#langchain_aws.chains.graph_qa.neptune_cypher.trim_query" title="langchain_aws.chains.graph_qa.neptune_cypher.trim_query"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_cypher.trim_query</span></code></a>(query)</p></td>
+<td><p>Trim the query to only include Cypher keywords.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_aws.chains.graph_qa.neptune_cypher.use_simple_prompt.html#langchain_aws.chains.graph_qa.neptune_cypher.use_simple_prompt" title="langchain_aws.chains.graph_qa.neptune_cypher.use_simple_prompt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_cypher.use_simple_prompt</span></code></a>(llm)</p></td>
+<td><p>Decides whether to use the simple prompt</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_aws.chains.graph_qa.neptune_sparql.create_neptune_sparql_qa_chain.html#langchain_aws.chains.graph_qa.neptune_sparql.create_neptune_sparql_qa_chain" title="langchain_aws.chains.graph_qa.neptune_sparql.create_neptune_sparql_qa_chain"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_sparql.create_neptune_sparql_qa_chain</span></code></a>(...)</p></td>
+<td><p>Chain for question-answering against a Neptune graph by generating SPARQL statements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="chains/langchain_aws.chains.graph_qa.neptune_sparql.extract_sparql.html#langchain_aws.chains.graph_qa.neptune_sparql.extract_sparql" title="langchain_aws.chains.graph_qa.neptune_sparql.extract_sparql"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_sparql.extract_sparql</span></code></a>(query)</p></td>
+<td><p>Extract SPARQL code from a text.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="chains/langchain_aws.chains.graph_qa.neptune_sparql.get_prompt.html#langchain_aws.chains.graph_qa.neptune_sparql.get_prompt" title="langchain_aws.chains.graph_qa.neptune_sparql.get_prompt"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chains.graph_qa.neptune_sparql.get_prompt</span></code></a>(...)</p></td>
+<td><p>Selects the final prompt.</p></td>
 </tr>
 </tbody>
 </table>

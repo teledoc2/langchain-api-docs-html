@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 15, 2025" name="docbuild:last-update"/>
+<meta content="Jan 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -544,7 +544,21 @@
                 <span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">value</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">loads</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s2">"."</span> <span class="o">+</span> <span class="n">attr_expr</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">loads</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">loads</span><span class="o">.</span><span class="n">discard</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Call</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">loads</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">func</span>
+                    <span class="n">attr_expr</span> <span class="o">=</span> <span class="s2">""</span>
+                    <span class="k">while</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">attr_expr</span><span class="p">:</span>
+                            <span class="n">attr_expr</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">attr</span> <span class="o">+</span> <span class="s2">"."</span> <span class="o">+</span> <span class="n">attr_expr</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">attr_expr</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">attr</span>
+                        <span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span><span class="o">.</span><span class="n">value</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">loads</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">parent</span><span class="o">.</span><span class="n">id</span> <span class="o">+</span> <span class="s2">"."</span> <span class="o">+</span> <span class="n">attr_expr</span><span class="p">)</span></div>
 </div>
 
 

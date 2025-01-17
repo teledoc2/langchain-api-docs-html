@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 15, 2025" name="docbuild:last-update"/>
+<meta content="Jan 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -301,7 +301,7 @@
         <span class="c1"># including view support by adding the views as well as tables to the all</span>
         <span class="c1"># tables list if view_support is True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_all_tables</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_inspector</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">(</span><span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span>
+            <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_inspector</span><span class="o">.</span><span class="n">get_table_names</span><span class="p">(</span><span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">))</span>
             <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_inspector</span><span class="o">.</span><span class="n">get_view_names</span><span class="p">(</span><span class="n">schema</span><span class="o">=</span><span class="n">schema</span><span class="p">)</span> <span class="k">if</span> <span class="n">view_support</span> <span class="k">else</span> <span class="p">[])</span>
         <span class="p">)</span>
 

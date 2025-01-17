@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 15, 2025" name="docbuild:last-update"/>
+<meta content="Jan 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -767,11 +767,14 @@
 <a class="viewcode-back" href="../../../community/document_loaders/langchain_community.document_loaders.confluence.ConfluenceLoader.html#langchain_community.document_loaders.confluence.ConfluenceLoader.is_public_page">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_public_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Check if a page is publicly accessible."""</span>
+
+        <span class="k">if</span> <span class="n">page</span><span class="p">[</span><span class="s2">"status"</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">"current"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
         <span class="n">restrictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">confluence</span><span class="o">.</span><span class="n">get_all_restrictions_for_content</span><span class="p">(</span><span class="n">page</span><span class="p">[</span><span class="s2">"id"</span><span class="p">])</span>
 
         <span class="k">return</span> <span class="p">(</span>
-            <span class="n">page</span><span class="p">[</span><span class="s2">"status"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"current"</span>
-            <span class="ow">and</span> <span class="ow">not</span> <span class="n">restrictions</span><span class="p">[</span><span class="s2">"read"</span><span class="p">][</span><span class="s2">"restrictions"</span><span class="p">][</span><span class="s2">"user"</span><span class="p">][</span><span class="s2">"results"</span><span class="p">]</span>
+            <span class="ow">not</span> <span class="n">restrictions</span><span class="p">[</span><span class="s2">"read"</span><span class="p">][</span><span class="s2">"restrictions"</span><span class="p">][</span><span class="s2">"user"</span><span class="p">][</span><span class="s2">"results"</span><span class="p">]</span>
             <span class="ow">and</span> <span class="ow">not</span> <span class="n">restrictions</span><span class="p">[</span><span class="s2">"read"</span><span class="p">][</span><span class="s2">"restrictions"</span><span class="p">][</span><span class="s2">"group"</span><span class="p">][</span><span class="s2">"results"</span><span class="p">]</span>
         <span class="p">)</span></div>
 

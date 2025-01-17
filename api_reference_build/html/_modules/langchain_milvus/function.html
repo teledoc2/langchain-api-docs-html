@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 15, 2025" name="docbuild:last-update"/>
+<meta content="Jan 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -284,6 +284,17 @@
         <span class="n">enable_match</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">function_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Args:</span>
+<span class="sd">            input_field_names (str): The name of the input field, default is 'text'.</span>
+<span class="sd">            output_field_names (str): The name of the output field, default is 'sparse'.</span>
+<span class="sd">            analyzer_params (Optional[Dict[Any, Any]]): The parameters for the analyzer.</span>
+<span class="sd">                Default is None. See:</span>
+<span class="sd">                https://milvus.io/docs/analyzer-overview.md#Analyzer-Overview</span>
+<span class="sd">            enable_match (bool): Whether to enable match.</span>
+<span class="sd">            function_name (Optional[str]): The name of the function. Default is None,</span>
+<span class="sd">                which means a random name will be generated.</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">function_name</span><span class="p">:</span>
             <span class="n">function_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"bm25_function_</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>

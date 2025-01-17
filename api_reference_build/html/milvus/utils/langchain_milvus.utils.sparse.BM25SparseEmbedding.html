@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 15, 2025" name="docbuild:last-update"/>
+<meta content="Jan 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -216,7 +216,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cerebras/index.html">Cerebras</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chroma/index.html">Chroma</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cohere/index.html">Cohere</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../couchbase/index.html">Couchbase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../databricks/index.html">Databricks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../elasticsearch/index.html">Elasticsearch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../exa/index.html">Exa</a></li>
@@ -301,6 +300,18 @@
 <dt class="sig sig-object py" id="langchain_milvus.utils.sparse.BM25SparseEmbedding">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_milvus.utils.sparse.</span></span><span class="sig-name descname"><span class="pre">BM25SparseEmbedding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">corpus</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'en'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_milvus/utils/sparse.html#BM25SparseEmbedding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_milvus.utils.sparse.BM25SparseEmbedding" title="Link to this definition">#</a></dt>
 <dd><p>Sparse embedding model based on BM25.</p>
+<p><a href="#id1"><span class="problematic" id="id2">**</span></a>Note: We recommend using the Milvus built-in BM25 function to implement sparse
+embedding in your application.
+This class is more of a reference because it requires the user to manage the corpus,</p>
+<blockquote>
+<div><p>which is not practical. The Milvus built-in function solves this problem and makes
+the BM25 sparse process easier and less frustrating for users.</p>
+</div></blockquote>
+<p>For more information, please refer to:
+<a class="reference external" href="https://milvus.io/docs/full-text-search.md#Full-Text-Search">https://milvus.io/docs/full-text-search.md#Full-Text-Search</a>
+and
+<a class="github reference external" href="https://github.com/milvus-io/bootcamp/blob/master/bootcamp/tutorials/integration/langchain/full_text_search_with_langchain.ipynb">milvus-io/bootcamp</a>
+**</p>
 <p>This class uses the BM25 model in Milvus model to implement sparse vector embedding.
 This model requires pymilvus[model] to be installed.
 <cite>pip install pymilvus[model]</cite>

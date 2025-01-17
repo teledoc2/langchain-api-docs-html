@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 15, 2025" name="docbuild:last-update"/>
+<meta content="Jan 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -792,6 +792,47 @@
 <span class="sd">        """</span>
         <span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">HumanMessage</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">),</span>
+            <span class="n">AIMessage</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">),</span>
+            <span class="n">HumanMessage</span><span class="p">(</span><span class="s2">"how are you"</span><span class="p">),</span>
+        <span class="p">]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">content</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="ChatModelIntegrationTests.test_double_messages_conversation">
+<a class="viewcode-back" href="../../../standard_tests/integration_tests/langchain_tests.integration_tests.chat_models.ChatModelIntegrationTests.html#langchain_tests.integration_tests.chat_models.ChatModelIntegrationTests.test_double_messages_conversation">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_double_messages_conversation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">BaseChatModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Test to verify that the model can handle double-message conversations.</span>
+
+<span class="sd">        This should pass for all integrations. Tests the model's ability to process</span>
+<span class="sd">        a sequence of double-system, double-human, and double-ai messages as context</span>
+<span class="sd">        for generating the next response.</span>
+
+<span class="sd">        .. dropdown:: Troubleshooting</span>
+
+<span class="sd">            First, debug</span>
+<span class="sd">            :meth:`~langchain_tests.integration_tests.chat_models.ChatModelIntegrationTests.test_invoke`</span>
+<span class="sd">            because this test also uses `model.invoke()`.</span>
+
+<span class="sd">            Second, debug</span>
+<span class="sd">            :meth:`~langchain_tests.integration_tests.chat_models.ChatModelIntegrationTests.test_conversation`</span>
+<span class="sd">            because this test is the "basic case" without double messages.</span>
+
+<span class="sd">            If that test passes those but not this one, you should verify that:</span>
+<span class="sd">            1. Your model API can handle double messages, or the integration should</span>
+<span class="sd">               merge messages before sending them to the API.</span>
+<span class="sd">            2. The response is a valid :class:`~langchain_core.messages.AIMessage`</span>
+<span class="sd">        """</span>
+        <span class="n">messages</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">SystemMessage</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">),</span>
+            <span class="n">SystemMessage</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">),</span>
+            <span class="n">HumanMessage</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">),</span>
+            <span class="n">HumanMessage</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">),</span>
+            <span class="n">AIMessage</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">),</span>
             <span class="n">AIMessage</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">),</span>
             <span class="n">HumanMessage</span><span class="p">(</span><span class="s2">"how are you"</span><span class="p">),</span>
         <span class="p">]</span>

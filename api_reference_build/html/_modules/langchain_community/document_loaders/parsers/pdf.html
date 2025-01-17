@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 15, 2025" name="docbuild:last-update"/>
+<meta content="Jan 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -355,7 +355,11 @@
                 <span class="n">Document</span><span class="p">(</span>
                     <span class="n">page_content</span><span class="o">=</span><span class="n">_extract_text_from_page</span><span class="p">(</span><span class="n">page</span><span class="o">=</span><span class="n">page</span><span class="p">)</span>
                     <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_images_from_page</span><span class="p">(</span><span class="n">page</span><span class="p">),</span>
-                    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">"source"</span><span class="p">:</span> <span class="n">blob</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="s2">"page"</span><span class="p">:</span> <span class="n">page_number</span><span class="p">},</span>
+                    <span class="n">metadata</span><span class="o">=</span><span class="p">{</span>
+                        <span class="s2">"source"</span><span class="p">:</span> <span class="n">blob</span><span class="o">.</span><span class="n">source</span><span class="p">,</span>
+                        <span class="s2">"page"</span><span class="p">:</span> <span class="n">page_number</span><span class="p">,</span>
+                        <span class="s2">"page_label"</span><span class="p">:</span> <span class="n">pdf_reader</span><span class="o">.</span><span class="n">page_labels</span><span class="p">[</span><span class="n">page_number</span><span class="p">],</span>
+                    <span class="p">},</span>
                     <span class="c1"># type: ignore[attr-defined]</span>
                 <span class="p">)</span>
                 <span class="k">for</span> <span class="n">page_number</span><span class="p">,</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pdf_reader</span><span class="o">.</span><span class="n">pages</span><span class="p">)</span>

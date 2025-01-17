@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 15, 2025" name="docbuild:last-update"/>
+<meta content="Jan 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -216,7 +216,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../cerebras/index.html">Cerebras</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../chroma/index.html">Chroma</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../cohere/index.html">Cohere</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../couchbase/index.html">Couchbase</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../databricks/index.html">Databricks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../elasticsearch/index.html">Elasticsearch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../exa/index.html">Exa</a></li>
@@ -303,6 +302,20 @@
 <dd><p>Milvus BM25 built-in function.</p>
 <p>See:
 <a class="reference external" href="https://milvus.io/docs/full-text-search.md">https://milvus.io/docs/full-text-search.md</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_field_names</strong> (<em>str</em>) – The name of the input field, default is ‘text’.</p></li>
+<li><p><strong>output_field_names</strong> (<em>str</em>) – The name of the output field, default is ‘sparse’.</p></li>
+<li><p><strong>analyzer_params</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>Any</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – The parameters for the analyzer.
+Default is None. See:
+<a class="reference external" href="https://milvus.io/docs/analyzer-overview.md#Analyzer-Overview">https://milvus.io/docs/analyzer-overview.md#Analyzer-Overview</a></p></li>
+<li><p><strong>enable_match</strong> (<em>bool</em>) – Whether to enable match.</p></li>
+<li><p><strong>function_name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The name of the function. Default is None,
+which means a random name will be generated.</p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">Attributes</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
 <tbody>
@@ -333,28 +346,20 @@
 </tbody>
 </table>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>input_field_names</strong> (<em>str</em>)</p></li>
-<li><p><strong>output_field_names</strong> (<em>str</em>)</p></li>
-<li><p><strong>analyzer_params</strong> (<em>Dict</em><em>[</em><em>Any</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>)</p></li>
-<li><p><strong>enable_match</strong> (<em>bool</em>)</p></li>
-<li><p><strong>function_name</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
-</ul>
-</dd>
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_milvus.function.BM25BuiltInFunction.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_field_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'text'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_field_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'sparse'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">analyzer_params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_match</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_milvus/function.html#BM25BuiltInFunction.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_milvus.function.BM25BuiltInFunction.__init__" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>input_field_names</strong> (<em>str</em>)</p></li>
-<li><p><strong>output_field_names</strong> (<em>str</em>)</p></li>
-<li><p><strong>analyzer_params</strong> (<em>Dict</em><em>[</em><em>Any</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>)</p></li>
-<li><p><strong>enable_match</strong> (<em>bool</em>)</p></li>
-<li><p><strong>function_name</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>input_field_names</strong> (<em>str</em>) – The name of the input field, default is ‘text’.</p></li>
+<li><p><strong>output_field_names</strong> (<em>str</em>) – The name of the output field, default is ‘sparse’.</p></li>
+<li><p><strong>analyzer_params</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>Any</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – The parameters for the analyzer.
+Default is None. See:
+<a class="reference external" href="https://milvus.io/docs/analyzer-overview.md#Analyzer-Overview">https://milvus.io/docs/analyzer-overview.md#Analyzer-Overview</a></p></li>
+<li><p><strong>enable_match</strong> (<em>bool</em>) – Whether to enable match.</p></li>
+<li><p><strong>function_name</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The name of the function. Default is None,
+which means a random name will be generated.</p></li>
 </ul>
 </dd>
 </dl>
