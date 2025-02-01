@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 31, 2025" name="docbuild:last-update"/>
+<meta content="Feb 01, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -267,6 +267,18 @@
 <span class="n">_MIN_BATCH_SIZE</span> <span class="o">=</span> <span class="mi">5</span>
 
 
+<span class="n">EmbeddingTaskTypes</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span>
+    <span class="s2">"RETRIEVAL_QUERY"</span><span class="p">,</span>
+    <span class="s2">"RETRIEVAL_DOCUMENT"</span><span class="p">,</span>
+    <span class="s2">"SEMANTIC_SIMILARITY"</span><span class="p">,</span>
+    <span class="s2">"CLASSIFICATION"</span><span class="p">,</span>
+    <span class="s2">"CLUSTERING"</span><span class="p">,</span>
+    <span class="s2">"QUESTION_ANSWERING"</span><span class="p">,</span>
+    <span class="s2">"FACT_VERIFICATION"</span><span class="p">,</span>
+    <span class="s2">"CODE_RETRIEVAL_QUERY"</span><span class="p">,</span>
+<span class="p">]</span>
+
+
 <div class="viewcode-block" id="GoogleEmbeddingModelType">
 <a class="viewcode-back" href="../../google_vertexai/embeddings/langchain_google_vertexai.embeddings.GoogleEmbeddingModelType.html#langchain_google_vertexai.embeddings.GoogleEmbeddingModelType">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">GoogleEmbeddingModelType</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
@@ -290,6 +302,7 @@
     <span class="n">EMBEDDINGS_NOV_2023</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
     <span class="n">EMBEDDINGS_DEC_2023</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
     <span class="n">EMBEDDINGS_MAY_2024</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
+    <span class="n">EMBEDDINGS_NOV_2024</span> <span class="o">=</span> <span class="n">auto</span><span class="p">()</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_missing_</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"GoogleEmbeddingModelVersion"</span><span class="p">:</span>
@@ -309,6 +322,8 @@
             <span class="ow">or</span> <span class="s2">"text-multilingual-embedding-preview-0409"</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="p">):</span>
             <span class="k">return</span> <span class="n">GoogleEmbeddingModelVersion</span><span class="o">.</span><span class="n">EMBEDDINGS_MAY_2024</span>
+        <span class="k">if</span> <span class="s2">"text-embedding-005"</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">GoogleEmbeddingModelVersion</span><span class="o">.</span><span class="n">EMBEDDINGS_NOV_2024</span>
 
         <span class="k">return</span> <span class="n">GoogleEmbeddingModelVersion</span><span class="o">.</span><span class="n">EMBEDDINGS_JUNE_2023</span>
 
@@ -608,17 +623,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">texts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">embeddings_task_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
-            <span class="n">Literal</span><span class="p">[</span>
-                <span class="s2">"RETRIEVAL_QUERY"</span><span class="p">,</span>
-                <span class="s2">"RETRIEVAL_DOCUMENT"</span><span class="p">,</span>
-                <span class="s2">"SEMANTIC_SIMILARITY"</span><span class="p">,</span>
-                <span class="s2">"CLASSIFICATION"</span><span class="p">,</span>
-                <span class="s2">"CLUSTERING"</span><span class="p">,</span>
-                <span class="s2">"QUESTION_ANSWERING"</span><span class="p">,</span>
-                <span class="s2">"FACT_VERIFICATION"</span><span class="p">,</span>
-            <span class="p">]</span>
-        <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">embeddings_task_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">EmbeddingTaskTypes</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">dimensions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">"""Embed a list of strings.</span>
@@ -638,6 +643,8 @@
 <span class="sd">                                          for Semantic Textual Similarity (STS).</span>
 <span class="sd">                    CLASSIFICATION - Embeddings will be used for classification.</span>
 <span class="sd">                    CLUSTERING - Embeddings will be used for clustering.</span>
+<span class="sd">                    CODE_RETRIEVAL_QUERY - Embeddings will be used for</span>
+<span class="sd">                                           code retrieval for Java and Python.</span>
 <span class="sd">                    The following are only supported on preview models:</span>
 <span class="sd">                    QUESTION_ANSWERING</span>
 <span class="sd">                    FACT_VERIFICATION</span>
@@ -682,7 +689,11 @@
 <div class="viewcode-block" id="VertexAIEmbeddings.embed_documents">
 <a class="viewcode-back" href="../../google_vertexai/embeddings/langchain_google_vertexai.embeddings.VertexAIEmbeddings.html#langchain_google_vertexai.embeddings.VertexAIEmbeddings.embed_documents">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">embed_documents</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">texts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">texts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">embeddings_task_type</span><span class="p">:</span> <span class="n">EmbeddingTaskTypes</span> <span class="o">=</span> <span class="s2">"RETRIEVAL_DOCUMENT"</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">"""Embed a list of documents.</span>
 
@@ -695,12 +706,17 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            List of embeddings, one for each text.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="s2">"RETRIEVAL_DOCUMENT"</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">embeddings_task_type</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="VertexAIEmbeddings.embed_query">
 <a class="viewcode-back" href="../../google_vertexai/embeddings/langchain_google_vertexai.embeddings.VertexAIEmbeddings.html#langchain_google_vertexai.embeddings.VertexAIEmbeddings.embed_query">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">embed_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">embed_query</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">embeddings_task_type</span><span class="p">:</span> <span class="n">EmbeddingTaskTypes</span> <span class="o">=</span> <span class="s2">"RETRIEVAL_QUERY"</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Embed a text.</span>
 
 <span class="sd">        Args:</span>
@@ -709,7 +725,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Embedding for the text.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed</span><span class="p">([</span><span class="n">text</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"RETRIEVAL_QUERY"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">embed</span><span class="p">([</span><span class="n">text</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">embeddings_task_type</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="VertexAIEmbeddings.embed_image">

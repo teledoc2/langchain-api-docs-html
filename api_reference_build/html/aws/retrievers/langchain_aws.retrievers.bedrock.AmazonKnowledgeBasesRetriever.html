@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 31, 2025" name="docbuild:last-update"/>
+<meta content="Feb 01, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -307,7 +307,7 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-aws: 0.2.11</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-aws: 0.2.12</a></li>
 <li class="breadcrumb-item"><a class="nav-link" href="../retrievers.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">retrievers</span></code></a></li>
 <li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">AmazonKnowledgeBasesRetriever</span></li>
 </ul>
@@ -341,12 +341,12 @@ EC2 instance, credentials from IMDS will be used.</p>
 </dd>
 </dl>
 <p>client: boto3 client for bedrock agent runtime.
-retrieval_config: Configuration for retrieval.</p>
+retrieval_config: Optional configuration for retrieval specified as a</p>
+<blockquote>
+<div><p>Python object (RetrievalConfig) or as a dictionary</p>
+</div></blockquote>
 </dd>
-<dt>Example:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.retrievers</span><span class="w"> </span><span class="kn">import</span> <span class="n">AmazonKnowledgeBasesRetriever</span>
-</pre></div>
-</div>
-</dd>
+<dt>Example:</dt><dd></dd>
 </dl>
 </div></blockquote>
 <dl>
@@ -411,7 +411,7 @@ use case.</p>
 <dd></dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_aws.retrievers.bedrock.AmazonKnowledgeBasesRetriever.retrieval_config">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">retrieval_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="langchain_aws.retrievers.bedrock.RetrievalConfig.html#langchain_aws.retrievers.bedrock.RetrievalConfig" title="langchain_aws.retrievers.bedrock.RetrievalConfig"><span class="pre">RetrievalConfig</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#langchain_aws.retrievers.bedrock.AmazonKnowledgeBasesRetriever.retrieval_config" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">retrieval_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="langchain_aws.retrievers.bedrock.RetrievalConfig.html#langchain_aws.retrievers.bedrock.RetrievalConfig" title="langchain_aws.retrievers.bedrock.RetrievalConfig"><span class="pre">RetrievalConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_aws.retrievers.bedrock.AmazonKnowledgeBasesRetriever.retrieval_config" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_aws.retrievers.bedrock.AmazonKnowledgeBasesRetriever.tags">

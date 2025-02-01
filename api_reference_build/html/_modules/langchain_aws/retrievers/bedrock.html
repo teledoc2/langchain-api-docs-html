@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Jan 31, 2025" name="docbuild:last-update"/>
+<meta content="Feb 01, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -220,7 +220,8 @@
 <div id="searchbox"></div>
 <article class="bd-article">
 <h1>Source code for langchain_aws.retrievers.bedrock</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">boto3</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">botocore.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
@@ -298,11 +299,10 @@
 <span class="sd">                specified. If not specified, the default credential profile or, if on an</span>
 <span class="sd">                EC2 instance, credentials from IMDS will be used.</span>
 <span class="sd">            client: boto3 client for bedrock agent runtime.</span>
-<span class="sd">            retrieval_config: Configuration for retrieval.</span>
-
+<span class="sd">            retrieval_config: Optional configuration for retrieval specified as a</span>
+<span class="sd">                Python object (RetrievalConfig) or as a dictionary</span>
 <span class="sd">        Example:</span>
 <span class="sd">            .. code-block:: python</span>
-
 <span class="sd">                from langchain_community.retrievers import AmazonKnowledgeBasesRetriever</span>
 
 <span class="sd">    retriever = AmazonKnowledgeBasesRetriever(</span>
@@ -320,7 +320,7 @@
     <span class="n">credentials_profile_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">endpoint_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">client</span><span class="p">:</span> <span class="n">Any</span>
-    <span class="n">retrieval_config</span><span class="p">:</span> <span class="n">RetrievalConfig</span>
+    <span class="n">retrieval_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">RetrievalConfig</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">min_score_confidence</span><span class="p">:</span> <span class="n">Annotated</span><span class="p">[</span>
         <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Field</span><span class="p">(</span><span class="n">ge</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">le</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
     <span class="p">]</span>
@@ -392,17 +392,53 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">run_manager</span><span class="p">:</span> <span class="n">CallbackManagerForRetrieverRun</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span>
-            <span class="n">retrievalQuery</span><span class="o">=</span><span class="p">{</span><span class="s2">"text"</span><span class="p">:</span> <span class="n">query</span><span class="o">.</span><span class="n">strip</span><span class="p">()},</span>
-            <span class="n">knowledgeBaseId</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">knowledge_base_id</span><span class="p">,</span>
-            <span class="n">retrievalConfiguration</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">retrieval_config</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span>
-                <span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span>
-            <span class="p">),</span>
-        <span class="p">)</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Get relevant document from a KnowledgeBase</span>
+
+<span class="sd">        :param query: the user's query</span>
+<span class="sd">        :param run_manager: The callback handler to use</span>
+<span class="sd">        :return: List of relevant documents</span>
+<span class="sd">        """</span>
+        <span class="n">retrieve_request</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_retrieve_request</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="o">**</span><span class="n">retrieve_request</span><span class="p">)</span>
         <span class="n">results</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">"retrievalResults"</span><span class="p">]</span>
+        <span class="n">documents</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span>
+            <span class="n">Document</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="n">AmazonKnowledgeBasesRetriever</span><span class="o">.</span><span class="n">_retrieval_results_to_documents</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_by_score_confidence</span><span class="p">(</span><span class="n">docs</span><span class="o">=</span><span class="n">documents</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_retrieve_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Build a Retrieve request</span>
+
+<span class="sd">        :param query:</span>
+<span class="sd">        :return:</span>
+<span class="sd">        """</span>
+        <span class="n">request</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"retrievalQuery"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"text"</span><span class="p">:</span> <span class="n">query</span><span class="o">.</span><span class="n">strip</span><span class="p">()},</span>
+            <span class="s2">"knowledgeBaseId"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">knowledge_base_id</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">retrieval_config</span><span class="p">:</span>
+            <span class="n">request</span><span class="p">[</span><span class="s2">"retrievalConfiguration"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">retrieval_config</span><span class="o">.</span><span class="n">model_dump</span><span class="p">(</span>
+                <span class="n">exclude_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">by_alias</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">request</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_retrieval_results_to_documents</span><span class="p">(</span>
+        <span class="n">results</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Convert the Retrieve API results to LangChain Documents</span>
+
+<span class="sd">        :param results:  Retrieve API results list</span>
+<span class="sd">        :return: List of LangChain Documents</span>
+<span class="sd">        """</span>
         <span class="n">documents</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">"content"</span><span class="p">][</span><span class="s2">"text"</span><span class="p">]</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">AmazonKnowledgeBasesRetriever</span><span class="o">.</span><span class="n">_get_content_from_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"content"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">,</span> <span class="s2">"TEXT"</span><span class="p">)</span>
             <span class="n">result</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"content"</span><span class="p">)</span>
             <span class="k">if</span> <span class="s2">"score"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
                 <span class="n">result</span><span class="p">[</span><span class="s2">"score"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
@@ -414,8 +450,36 @@
                     <span class="n">metadata</span><span class="o">=</span><span class="n">result</span><span class="p">,</span>
                 <span class="p">)</span>
             <span class="p">)</span>
+        <span class="k">return</span> <span class="n">documents</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_filter_by_score_confidence</span><span class="p">(</span><span class="n">docs</span><span class="o">=</span><span class="n">documents</span><span class="p">)</span></div>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_content_from_result</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Convert the content from one Retrieve API result to string</span>
+
+<span class="sd">        :param result: Retrieve API search result</span>
+<span class="sd">        :return: string representation of the content attribute</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Invalid search result"</span><span class="p">)</span>
+        <span class="n">content</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"content"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"Invalid search result, content is missing from the result"</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"text"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">content</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"TEXT"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"text"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">content</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"IMAGE"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"byteContent"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">content</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"ROW"</span><span class="p">:</span>
+            <span class="n">row</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"row"</span><span class="p">,</span> <span class="p">[])</span>
+            <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">row</span> <span class="k">if</span> <span class="n">row</span> <span class="k">else</span> <span class="p">[])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># future proofing this class to prevent code breaks if new types</span>
+            <span class="c1"># are introduced</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
 
 </pre></div>
 </article>
