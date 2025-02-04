@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 03, 2025" name="docbuild:last-update"/>
+<meta content="Feb 04, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -518,7 +518,10 @@ API_KEY (default), SECURITY_TOKEN, INSTANCE_PRINCIPAL, RESOURCE_PRINCIPAL</p>
 <p>Make sure you have the required policies (profile/roles) to
 access the OCI Generative AI service.
 If a specific config profile is used, you must pass
-the name of the profile (from ~/.oci/config) through auth_profile.</p>
+the name of the profile (from ~/.oci/config) through auth_profile.
+If a specific config file location is used, you must pass
+the file location where profile name configs present
+through auth_file_location</p>
 <p>To use, you must provide the compartment id
 along with the endpoint url, and model id
 as named parameters to the constructor.</p>
@@ -537,6 +540,12 @@ as named parameters to the constructor.</p>
 <p>OCIGenAI implements the standard <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Runnable</span> <span class="pre">Interface</span></code></a>. 🏃</p>
 <p>The <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Runnable</span> <span class="pre">Interface</span></code></a> has additional methods that are available on runnables, such as <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.with_types" title="langchain_core.runnables.base.Runnable.with_types"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_types</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.with_retry" title="langchain_core.runnables.base.Runnable.with_retry"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_retry</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.assign" title="langchain_core.runnables.base.Runnable.assign"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assign</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.bind" title="langchain_core.runnables.base.Runnable.bind"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bind</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.get_graph" title="langchain_core.runnables.base.Runnable.get_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_graph</span></code></a>, and more.</p>
 </div>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_community.llms.oci_generative_ai.OCIGenAI.auth_file_location">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">auth_file_location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'~/.oci/config'</span></em><a class="headerlink" href="#langchain_community.llms.oci_generative_ai.OCIGenAI.auth_file_location" title="Link to this definition">#</a></dt>
+<dd><p>Path to the config file.
+If not specified, ~/.oci/config will be used</p>
+</dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.llms.oci_generative_ai.OCIGenAI.auth_profile">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">auth_profile</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DEFAULT'</span></em><a class="headerlink" href="#langchain_community.llms.oci_generative_ai.OCIGenAI.auth_profile" title="Link to this definition">#</a></dt>
@@ -1690,6 +1699,7 @@ between retries</p></li>
 <nav aria-labelledby="pst-page-navigation-heading-2" class="bd-toc-nav page-toc">
 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_generative_ai.OCIGenAI"><code class="docutils literal notranslate"><span class="pre">OCIGenAI</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_generative_ai.OCIGenAI.auth_file_location"><code class="docutils literal notranslate"><span class="pre">auth_file_location</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_generative_ai.OCIGenAI.auth_profile"><code class="docutils literal notranslate"><span class="pre">auth_profile</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_generative_ai.OCIGenAI.auth_type"><code class="docutils literal notranslate"><span class="pre">auth_type</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.llms.oci_generative_ai.OCIGenAI.cache"><code class="docutils literal notranslate"><span class="pre">cache</span></code></a></li>

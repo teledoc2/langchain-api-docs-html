@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 03, 2025" name="docbuild:last-update"/>
+<meta content="Feb 04, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -256,6 +256,9 @@
 <span class="sd">    Make sure you have the required policies (profile/roles) to</span>
 <span class="sd">    access the OCI Generative AI service. If a specific config profile is used,</span>
 <span class="sd">    you must pass the name of the profile (~/.oci/config) through auth_profile.</span>
+<span class="sd">    If a specific config file location is used, you must pass</span>
+<span class="sd">    the file location where profile name configs present</span>
+<span class="sd">    through auth_file_location</span>
 
 <span class="sd">    To use, you must provide the compartment id</span>
 <span class="sd">    along with the endpoint url, and model id</span>
@@ -291,6 +294,11 @@
     <span class="n">auth_profile</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"DEFAULT"</span>
 <span class="w">    </span><span class="sd">"""The name of the profile in ~/.oci/config</span>
 <span class="sd">    If not specified , DEFAULT will be used </span>
+<span class="sd">    """</span>
+
+    <span class="n">auth_file_location</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"~/.oci/config"</span>
+<span class="w">    </span><span class="sd">"""Path to the config file.</span>
+<span class="sd">    If not specified, ~/.oci/config will be used</span>
 <span class="sd">    """</span>
 
     <span class="n">model_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -337,7 +345,8 @@
 
             <span class="k">if</span> <span class="n">values</span><span class="p">[</span><span class="s2">"auth_type"</span><span class="p">]</span> <span class="o">==</span> <span class="n">OCIAuthType</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
                 <span class="n">client_kwargs</span><span class="p">[</span><span class="s2">"config"</span><span class="p">]</span> <span class="o">=</span> <span class="n">oci</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span>
-                    <span class="n">profile_name</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"auth_profile"</span><span class="p">]</span>
+                    <span class="n">file_location</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"auth_file_location"</span><span class="p">],</span>
+                    <span class="n">profile_name</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"auth_profile"</span><span class="p">],</span>
                 <span class="p">)</span>
                 <span class="n">client_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"signer"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">values</span><span class="p">[</span><span class="s2">"auth_type"</span><span class="p">]</span> <span class="o">==</span> <span class="n">OCIAuthType</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
@@ -353,7 +362,8 @@
                     <span class="k">return</span> <span class="n">oci</span><span class="o">.</span><span class="n">auth</span><span class="o">.</span><span class="n">signers</span><span class="o">.</span><span class="n">SecurityTokenSigner</span><span class="p">(</span><span class="n">st_string</span><span class="p">,</span> <span class="n">pk</span><span class="p">)</span>
 
                 <span class="n">client_kwargs</span><span class="p">[</span><span class="s2">"config"</span><span class="p">]</span> <span class="o">=</span> <span class="n">oci</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">from_file</span><span class="p">(</span>
-                    <span class="n">profile_name</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"auth_profile"</span><span class="p">]</span>
+                    <span class="n">file_location</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"auth_file_location"</span><span class="p">],</span>
+                    <span class="n">profile_name</span><span class="o">=</span><span class="n">values</span><span class="p">[</span><span class="s2">"auth_profile"</span><span class="p">],</span>
                 <span class="p">)</span>
                 <span class="n">client_kwargs</span><span class="p">[</span><span class="s2">"signer"</span><span class="p">]</span> <span class="o">=</span> <span class="n">make_security_token_signer</span><span class="p">(</span>
                     <span class="n">oci_config</span><span class="o">=</span><span class="n">client_kwargs</span><span class="p">[</span><span class="s2">"config"</span><span class="p">]</span>
@@ -380,11 +390,11 @@
             <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">ex</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">"Could not authenticate with OCI client. "</span>
-                <span class="s2">"Please check if ~/.oci/config exists. "</span>
-                <span class="s2">"If INSTANCE_PRINCIPLE or RESOURCE_PRINCIPLE is used, "</span>
-                <span class="s2">"Please check the specified "</span>
-                <span class="s2">"auth_profile and auth_type are valid."</span>
+<span class="w">                </span><span class="sd">"""Could not authenticate with OCI client.</span>
+<span class="sd">                If INSTANCE_PRINCIPAL or RESOURCE_PRINCIPAL is used,</span>
+<span class="sd">                please check the specified</span>
+<span class="sd">                auth_profile, auth_file_location and auth_type are valid."""</span><span class="p">,</span>
+                <span class="n">e</span><span class="p">,</span>
             <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
         <span class="k">return</span> <span class="n">values</span></div>

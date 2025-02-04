@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 03, 2025" name="docbuild:last-update"/>
+<meta content="Feb 04, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -480,6 +480,8 @@
 </dd>
 <dt>auth_profile: Optional[str]</dt><dd><p>The name of the profile in ~/.oci/config, if not specified , DEFAULT will be used.</p>
 </dd>
+<dt>auth_file_location: Optional[str]</dt><dd><p>Path to the config file, If not specified, ~/.oci/config will be used.</p>
+</dd>
 <dt>provider: str</dt><dd><p>Provider name of the model. Default to None, will try to be derived from the model_id otherwise, requires user input.</p>
 </dd>
 </dl>
@@ -519,6 +521,12 @@ print(response.response_metadata)</p>
 <p>ChatOCIGenAI implements the standard <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Runnable</span> <span class="pre">Interface</span></code></a>. 🏃</p>
 <p>The <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Runnable</span> <span class="pre">Interface</span></code></a> has additional methods that are available on runnables, such as <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.with_types" title="langchain_core.runnables.base.Runnable.with_types"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_types</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.with_retry" title="langchain_core.runnables.base.Runnable.with_retry"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_retry</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.assign" title="langchain_core.runnables.base.Runnable.assign"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assign</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.bind" title="langchain_core.runnables.base.Runnable.bind"><code class="xref py py-meth docutils literal notranslate"><span class="pre">bind</span></code></a>, <a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable.get_graph" title="langchain_core.runnables.base.Runnable.get_graph"><code class="xref py py-meth docutils literal notranslate"><span class="pre">get_graph</span></code></a>, and more.</p>
 </div>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_community.chat_models.oci_generative_ai.ChatOCIGenAI.auth_file_location">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">auth_file_location</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'~/.oci/config'</span></em><a class="headerlink" href="#langchain_community.chat_models.oci_generative_ai.ChatOCIGenAI.auth_file_location" title="Link to this definition">#</a></dt>
+<dd><p>Path to the config file.
+If not specified, ~/.oci/config will be used</p>
+</dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_community.chat_models.oci_generative_ai.ChatOCIGenAI.auth_profile">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">auth_profile</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'DEFAULT'</span></em><a class="headerlink" href="#langchain_community.chat_models.oci_generative_ai.ChatOCIGenAI.auth_profile" title="Link to this definition">#</a></dt>
@@ -1708,6 +1716,7 @@ where _DictOrPydantic depends on the schema:</p>
 <nav aria-labelledby="pst-page-navigation-heading-2" class="bd-toc-nav page-toc">
 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.oci_generative_ai.ChatOCIGenAI"><code class="docutils literal notranslate"><span class="pre">ChatOCIGenAI</span></code></a><ul class="visible nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.oci_generative_ai.ChatOCIGenAI.auth_file_location"><code class="docutils literal notranslate"><span class="pre">auth_file_location</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.oci_generative_ai.ChatOCIGenAI.auth_profile"><code class="docutils literal notranslate"><span class="pre">auth_profile</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.oci_generative_ai.ChatOCIGenAI.auth_type"><code class="docutils literal notranslate"><span class="pre">auth_type</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.chat_models.oci_generative_ai.ChatOCIGenAI.cache"><code class="docutils literal notranslate"><span class="pre">cache</span></code></a></li>
