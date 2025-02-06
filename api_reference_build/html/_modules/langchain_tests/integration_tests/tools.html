@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 05, 2025" name="docbuild:last-update"/>
+<meta content="Feb 06, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -255,15 +255,10 @@
         <span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">tool</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">tool_call</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">tool</span><span class="o">.</span><span class="n">response_format</span> <span class="o">==</span> <span class="s2">"content"</span><span class="p">:</span>
-            <span class="n">tool_message</span> <span class="o">=</span> <span class="n">result</span>
-        <span class="k">elif</span> <span class="n">tool</span><span class="o">.</span><span class="n">response_format</span> <span class="o">==</span> <span class="s2">"content_and_artifact"</span><span class="p">:</span>
-            <span class="c1"># should be (content, artifact)</span>
-            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
-            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
-            <span class="n">tool_message</span><span class="p">,</span> <span class="n">artifact</span> <span class="o">=</span> <span class="n">result</span>
-
-            <span class="k">assert</span> <span class="n">artifact</span>  <span class="c1"># artifact can be anything, but shouldn't be none</span>
+        <span class="n">tool_message</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="k">if</span> <span class="n">tool</span><span class="o">.</span><span class="n">response_format</span> <span class="o">==</span> <span class="s2">"content_and_artifact"</span><span class="p">:</span>
+            <span class="c1"># artifact can be anything, except none</span>
+            <span class="k">assert</span> <span class="n">tool_message</span><span class="o">.</span><span class="n">artifact</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
         <span class="c1"># check content is a valid ToolMessage content</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tool_message</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span>
@@ -288,15 +283,10 @@
         <span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">tool</span><span class="o">.</span><span class="n">ainvoke</span><span class="p">(</span><span class="n">tool_call</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">tool</span><span class="o">.</span><span class="n">response_format</span> <span class="o">==</span> <span class="s2">"content"</span><span class="p">:</span>
-            <span class="n">tool_message</span> <span class="o">=</span> <span class="n">result</span>
-        <span class="k">elif</span> <span class="n">tool</span><span class="o">.</span><span class="n">response_format</span> <span class="o">==</span> <span class="s2">"content_and_artifact"</span><span class="p">:</span>
-            <span class="c1"># should be (content, artifact)</span>
-            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span>
-            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
-            <span class="n">tool_message</span><span class="p">,</span> <span class="n">artifact</span> <span class="o">=</span> <span class="n">result</span>
-
-            <span class="k">assert</span> <span class="n">artifact</span>  <span class="c1"># artifact can be anything, but shouldn't be none</span>
+        <span class="n">tool_message</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="k">if</span> <span class="n">tool</span><span class="o">.</span><span class="n">response_format</span> <span class="o">==</span> <span class="s2">"content_and_artifact"</span><span class="p">:</span>
+            <span class="c1"># artifact can be anything, except none</span>
+            <span class="k">assert</span> <span class="n">tool_message</span><span class="o">.</span><span class="n">artifact</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 
         <span class="c1"># check content is a valid ToolMessage content</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tool_message</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span>

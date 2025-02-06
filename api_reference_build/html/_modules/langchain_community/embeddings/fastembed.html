@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 05, 2025" name="docbuild:last-update"/>
+<meta content="Feb 06, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -289,6 +289,13 @@
 <span class="sd">    Defaults to `None`.</span>
 <span class="sd">    """</span>
 
+    <span class="n">gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="w">    </span><span class="sd">"""Enable the use of GPU through CUDA. This requires to install `fastembed-gpu`</span>
+<span class="sd">    instead of `fastembed`. See https://qdrant.github.io/fastembed/examples/FastEmbed_GPU</span>
+<span class="sd">    for more details.</span>
+<span class="sd">    Defaults to False.</span>
+<span class="sd">    """</span>
+
     <span class="n">model</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># : :meta private:</span>
 
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s2">"allow"</span><span class="p">,</span> <span class="n">protected_namespaces</span><span class="o">=</span><span class="p">())</span>
@@ -302,19 +309,22 @@
         <span class="n">max_length</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"max_length"</span><span class="p">)</span>
         <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cache_dir"</span><span class="p">)</span>
         <span class="n">threads</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"threads"</span><span class="p">)</span>
+        <span class="n">gpu</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"gpu"</span><span class="p">)</span>
+        <span class="n">pkg_to_import</span> <span class="o">=</span> <span class="s2">"fastembed-gpu"</span> <span class="k">if</span> <span class="n">gpu</span> <span class="k">else</span> <span class="s2">"fastembed"</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">fastembed</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">"fastembed"</span><span class="p">)</span>
+            <span class="n">fastembed</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">pkg_to_import</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-                <span class="s2">"Could not import 'fastembed' Python package. "</span>
-                <span class="s2">"Please install it with `pip install fastembed`."</span>
+                <span class="sa">f</span><span class="s2">"Could not import '</span><span class="si">{</span><span class="n">pkg_to_import</span><span class="si">}</span><span class="s2">' Python package. "</span>
+                <span class="sa">f</span><span class="s2">"Please install it with `pip install </span><span class="si">{</span><span class="n">pkg_to_import</span><span class="si">}</span><span class="s2">`."</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">importlib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">version</span><span class="p">(</span><span class="s2">"fastembed"</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">MIN_VERSION</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">importlib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">version</span><span class="p">(</span><span class="n">pkg_to_import</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">MIN_VERSION</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-                <span class="s1">'FastEmbedEmbeddings requires `pip install -U "fastembed&gt;=0.2.0"`.'</span>
+                <span class="sa">f</span><span class="s2">"FastEmbedEmbeddings requires "</span>
+                <span class="sa">f</span><span class="s1">'`pip install -U "</span><span class="si">{</span><span class="n">pkg_to_import</span><span class="si">}</span><span class="s1">&gt;=</span><span class="si">{</span><span class="n">MIN_VERSION</span><span class="si">}</span><span class="s1">"`.'</span>
             <span class="p">)</span>
 
         <span class="n">values</span><span class="p">[</span><span class="s2">"model"</span><span class="p">]</span> <span class="o">=</span> <span class="n">fastembed</span><span class="o">.</span><span class="n">TextEmbedding</span><span class="p">(</span>
@@ -322,6 +332,7 @@
             <span class="n">max_length</span><span class="o">=</span><span class="n">max_length</span><span class="p">,</span>
             <span class="n">cache_dir</span><span class="o">=</span><span class="n">cache_dir</span><span class="p">,</span>
             <span class="n">threads</span><span class="o">=</span><span class="n">threads</span><span class="p">,</span>
+            <span class="n">providers</span><span class="o">=</span><span class="p">[</span><span class="s2">"CUDAExecutionProvider"</span><span class="p">]</span> <span class="k">if</span> <span class="n">gpu</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">values</span></div>
 

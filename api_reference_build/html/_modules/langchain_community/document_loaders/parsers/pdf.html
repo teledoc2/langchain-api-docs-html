@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 05, 2025" name="docbuild:last-update"/>
+<meta content="Feb 06, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -230,9 +230,12 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">tempfile</span><span class="w"> </span><span class="kn">import</span> <span class="n">TemporaryDirectory</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">TYPE_CHECKING</span><span class="p">,</span>
     <span class="n">Any</span><span class="p">,</span>
+    <span class="n">BinaryIO</span><span class="p">,</span>
     <span class="n">Iterable</span><span class="p">,</span>
     <span class="n">Iterator</span><span class="p">,</span>
     <span class="n">Literal</span><span class="p">,</span>
@@ -256,7 +259,6 @@
 <span class="p">)</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">pdfminer</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">pdfplumber</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">pymupdf</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">pypdf</span>
@@ -500,7 +502,6 @@
 <span class="sd">                # password = None,</span>
 <span class="sd">                mode = "single",</span>
 <span class="sd">                pages_delimiter = "\n\f",</span>
-<span class="sd">                # extract_images = True,</span>
 <span class="sd">                # images_parser = TesseractBlobParser(),</span>
 <span class="sd">            )</span>
 
@@ -703,126 +704,347 @@
 <div class="viewcode-block" id="PDFMinerParser">
 <a class="viewcode-back" href="../../../../community/document_loaders/langchain_community.document_loaders.parsers.pdf.PDFMinerParser.html#langchain_community.document_loaders.parsers.pdf.PDFMinerParser">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PDFMinerParser</span><span class="p">(</span><span class="n">BaseBlobParser</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Parse `PDF` using `PDFMiner`."""</span>
+<span class="w">    </span><span class="sd">"""Parse a blob from a PDF using `pdfminer.six` library.</span>
+
+<span class="sd">    This class provides methods to parse a blob from a PDF document, supporting various</span>
+<span class="sd">    configurations such as handling password-protected PDFs, extracting images, and</span>
+<span class="sd">    defining extraction mode.</span>
+<span class="sd">    It integrates the 'pdfminer.six' library for PDF processing and offers synchronous</span>
+<span class="sd">    blob parsing.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">        Setup:</span>
+
+<span class="sd">        .. code-block:: bash</span>
+
+<span class="sd">            pip install -U langchain-community pdfminer.six pillow</span>
+
+<span class="sd">        Load a blob from a PDF file:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_core.documents.base import Blob</span>
+
+<span class="sd">            blob = Blob.from_path("./example_data/layout-parser-paper.pdf")</span>
+
+<span class="sd">        Instantiate the parser:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from langchain_community.document_loaders.parsers import PDFMinerParser</span>
+
+<span class="sd">            parser = PDFMinerParser(</span>
+<span class="sd">                # password = None,</span>
+<span class="sd">                mode = "single",</span>
+<span class="sd">                pages_delimiter = "\n\f",</span>
+<span class="sd">                # extract_images = True,</span>
+<span class="sd">                # images_to_text = convert_images_to_text_with_tesseract(),</span>
+<span class="sd">            )</span>
+
+<span class="sd">        Lazily parse the blob:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            docs = []</span>
+<span class="sd">            docs_lazy = parser.lazy_parse(blob)</span>
+
+<span class="sd">            for doc in docs_lazy:</span>
+<span class="sd">                docs.append(doc)</span>
+<span class="sd">            print(docs[0].page_content[:100])</span>
+<span class="sd">            print(docs[0].metadata)</span>
+<span class="sd">    """</span>
+
+    <span class="n">_warn_concatenate_pages</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="PDFMinerParser.__init__">
 <a class="viewcode-back" href="../../../../community/document_loaders/langchain_community.document_loaders.parsers.pdf.PDFMinerParser.html#langchain_community.document_loaders.parsers.pdf.PDFMinerParser.__init__">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">extract_images</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">concatenate_pages</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">extract_images</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">mode</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"single"</span><span class="p">,</span> <span class="s2">"page"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"single"</span><span class="p">,</span>
+        <span class="n">pages_delimiter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">_DEFAULT_PAGES_DELIMITER</span><span class="p">,</span>
+        <span class="n">images_parser</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BaseImageBlobParser</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">images_inner_format</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"text"</span><span class="p">,</span> <span class="s2">"markdown-img"</span><span class="p">,</span> <span class="s2">"html-img"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"text"</span><span class="p">,</span>
+        <span class="n">concatenate_pages</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Initialize a parser based on PDFMiner.</span>
 
 <span class="sd">        Args:</span>
+<span class="sd">            password: Optional password for opening encrypted PDFs.</span>
+<span class="sd">            mode: Extraction mode to use. Either "single" or "page" for page-wise</span>
+<span class="sd">                extraction.</span>
+<span class="sd">            pages_delimiter: A string delimiter to separate pages in single-mode</span>
+<span class="sd">                extraction.</span>
 <span class="sd">            extract_images: Whether to extract images from PDF.</span>
-<span class="sd">            concatenate_pages: If True, concatenate all PDF pages into one a single</span>
-<span class="sd">                               document. Otherwise, return one document per page.</span>
-<span class="sd">        """</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">extract_images</span> <span class="o">=</span> <span class="n">extract_images</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">concatenate_pages</span> <span class="o">=</span> <span class="n">concatenate_pages</span></div>
+<span class="sd">            images_inner_format: The format for the parsed output.</span>
+<span class="sd">                - "text" = return the content as is</span>
+<span class="sd">                - "markdown-img" = wrap the content into an image markdown link, w/ link</span>
+<span class="sd">                pointing to (`![body)(#)`]</span>
+<span class="sd">                - "html-img" = wrap the content as the `alt` text of an tag and link to</span>
+<span class="sd">                (`&lt;img alt="{body}" src="#"/&gt;`)</span>
+<span class="sd">            concatenate_pages: Deprecated. If True, concatenate all PDF pages</span>
+<span class="sd">                into one a single document. Otherwise, return one document per page.</span>
 
+<span class="sd">        Returns:</span>
+<span class="sd">            This method does not directly return data. Use the `parse` or `lazy_parse`</span>
+<span class="sd">            methods to retrieve parsed documents with content and metadata.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ValueError: If the `mode` is not "single" or "page".</span>
+
+<span class="sd">        Warnings:</span>
+<span class="sd">            `concatenate_pages` parameter is deprecated. Use `mode='single' or 'page'</span>
+<span class="sd">            instead.</span>
+<span class="sd">        """</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"single"</span><span class="p">,</span> <span class="s2">"page"</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"mode must be single or page"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">extract_images</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">images_parser</span><span class="p">:</span>
+            <span class="n">images_parser</span> <span class="o">=</span> <span class="n">RapidOCRBlobParser</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extract_images</span> <span class="o">=</span> <span class="n">extract_images</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">images_parser</span> <span class="o">=</span> <span class="n">images_parser</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">images_inner_format</span> <span class="o">=</span> <span class="n">images_inner_format</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="o">=</span> <span class="n">password</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pages_delimiter</span> <span class="o">=</span> <span class="n">pages_delimiter</span>
+        <span class="k">if</span> <span class="n">concatenate_pages</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">PDFMinerParser</span><span class="o">.</span><span class="n">_warn_concatenate_pages</span><span class="p">:</span>
+                <span class="n">PDFMinerParser</span><span class="o">.</span><span class="n">_warn_concatenate_pages</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">"`concatenate_pages` parameter is deprecated. "</span>
+                    <span class="s2">"Use `mode='single' or 'page'` instead."</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="s2">"single"</span> <span class="k">if</span> <span class="n">concatenate_pages</span> <span class="k">else</span> <span class="s2">"page"</span></div>
+
+
+<div class="viewcode-block" id="PDFMinerParser.decode_text">
+<a class="viewcode-back" href="../../../../community/document_loaders/langchain_community.document_loaders.parsers.pdf.PDFMinerParser.html#langchain_community.document_loaders.parsers.pdf.PDFMinerParser.decode_text">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">decode_text</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Decodes a PDFDocEncoding string to Unicode.</span>
+<span class="sd">        Adds py3 compatibility to pdfminer's version.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            s: The string to decode.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The decoded Unicode string.</span>
+<span class="sd">        """</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pdfminer.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDFDocEncoding</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="ow">and</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">b</span><span class="s2">"</span><span class="se">\xfe\xff</span><span class="s2">"</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="s2">"utf-16be"</span><span class="p">,</span> <span class="s2">"ignore"</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">ords</span> <span class="o">=</span> <span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">)</span>
+            <span class="k">return</span> <span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">PDFDocEncoding</span><span class="p">[</span><span class="n">o</span><span class="p">]</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">ords</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PDFMinerParser.resolve_and_decode">
+<a class="viewcode-back" href="../../../../community/document_loaders/langchain_community.document_loaders.parsers.pdf.PDFMinerParser.html#langchain_community.document_loaders.parsers.pdf.PDFMinerParser.resolve_and_decode">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resolve_and_decode</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Recursively resolve the metadata values.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            obj: The object to resolve and decode. It can be of any type.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The resolved and decoded object.</span>
+<span class="sd">        """</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pdfminer.psparser</span><span class="w"> </span><span class="kn">import</span> <span class="n">PSLiteral</span>
+
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">"resolve"</span><span class="p">):</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="n">PDFMinerParser</span><span class="o">.</span><span class="n">resolve_and_decode</span><span class="p">,</span> <span class="n">obj</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">PSLiteral</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">PDFMinerParser</span><span class="o">.</span><span class="n">decode_text</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">PDFMinerParser</span><span class="o">.</span><span class="n">decode_text</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">obj</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">PDFMinerParser</span><span class="o">.</span><span class="n">resolve_and_decode</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">obj</span>
+
+        <span class="k">return</span> <span class="n">obj</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_metadata</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">fp</span><span class="p">:</span> <span class="n">BinaryIO</span><span class="p">,</span>
+        <span class="n">password</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
+        <span class="n">caching</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Extract metadata from a PDF file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            fp: The file pointer to the PDF file.</span>
+<span class="sd">            password: The password for the PDF file, if encrypted. Defaults to an empty</span>
+<span class="sd">                string.</span>
+<span class="sd">            caching: Whether to cache the PDF structure. Defaults to True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Metadata of the PDF file.</span>
+<span class="sd">        """</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pdfminer.pdfpage</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDFDocument</span><span class="p">,</span> <span class="n">PDFPage</span><span class="p">,</span> <span class="n">PDFParser</span>
+
+        <span class="c1"># Create a PDF parser object associated with the file object.</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">PDFParser</span><span class="p">(</span><span class="n">fp</span><span class="p">)</span>
+        <span class="c1"># Create a PDF document object that stores the document structure.</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">PDFDocument</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">,</span> <span class="n">caching</span><span class="o">=</span><span class="n">caching</span><span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">info</span><span class="p">:</span>
+            <span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">metadata</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">PDFMinerParser</span><span class="o">.</span><span class="n">resolve_and_decode</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pragma: nocover</span>
+                <span class="c1"># This metadata value could not be parsed. Instead of failing the PDF</span>
+                <span class="c1"># read, treat it as a warning only if `strict_metadata=False`.</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s1">'[WARNING] Metadata key "</span><span class="si">%s</span><span class="s1">" could not be parsed due to '</span>
+                    <span class="s2">"exception: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="n">k</span><span class="p">,</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">),</span>
+                <span class="p">)</span>
+
+        <span class="c1"># Count number of pages.</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s2">"total_pages"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">PDFPage</span><span class="o">.</span><span class="n">create_pages</span><span class="p">(</span><span class="n">doc</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">metadata</span>
 
 <div class="viewcode-block" id="PDFMinerParser.lazy_parse">
 <a class="viewcode-back" href="../../../../community/document_loaders/langchain_community.document_loaders.parsers.pdf.PDFMinerParser.html#langchain_community.document_loaders.parsers.pdf.PDFMinerParser.lazy_parse">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">lazy_parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">blob</span><span class="p">:</span> <span class="n">Blob</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>  <span class="c1"># type: ignore[valid-type]</span>
-<span class="w">        </span><span class="sd">"""Lazily parse the blob."""</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Lazily parse the blob.</span>
+<span class="sd">        Insert image, if possible, between two paragraphs.</span>
+<span class="sd">        In this way, a paragraph can be continued on the next page.</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_images</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="kn">from</span><span class="w"> </span><span class="nn">pdfminer.high_level</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract_text</span>
-            <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-                    <span class="s2">"`pdfminer` package not found, please install it with "</span>
-                    <span class="s2">"`pip install pdfminer.six`"</span>
-                <span class="p">)</span>
+<span class="sd">        Args:</span>
+<span class="sd">            blob: The blob to parse.</span>
 
-            <span class="k">with</span> <span class="n">blob</span><span class="o">.</span><span class="n">as_bytes_io</span><span class="p">()</span> <span class="k">as</span> <span class="n">pdf_file_obj</span><span class="p">:</span>  <span class="c1"># type: ignore[attr-defined]</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">concatenate_pages</span><span class="p">:</span>
-                    <span class="n">text</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">pdf_file_obj</span><span class="p">)</span>
-                    <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"source"</span><span class="p">:</span> <span class="n">blob</span><span class="o">.</span><span class="n">source</span><span class="p">}</span>  <span class="c1"># type: ignore[attr-defined]</span>
-                    <span class="k">yield</span> <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="kn">from</span><span class="w"> </span><span class="nn">pdfminer.pdfpage</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDFPage</span>
+<span class="sd">        Raises:</span>
+<span class="sd">            ImportError: If the `pdfminer.six` or `pillow` package is not found.</span>
 
-                    <span class="n">pages</span> <span class="o">=</span> <span class="n">PDFPage</span><span class="o">.</span><span class="n">get_pages</span><span class="p">(</span><span class="n">pdf_file_obj</span><span class="p">)</span>
-                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pages</span><span class="p">):</span>
-                        <span class="n">text</span> <span class="o">=</span> <span class="n">extract_text</span><span class="p">(</span><span class="n">pdf_file_obj</span><span class="p">,</span> <span class="n">page_numbers</span><span class="o">=</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-                        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"source"</span><span class="p">:</span> <span class="n">blob</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="s2">"page"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)}</span>  <span class="c1"># type: ignore[attr-defined]</span>
-                        <span class="k">yield</span> <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
-
-            <span class="kn">from</span><span class="w"> </span><span class="nn">pdfminer.converter</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDFPageAggregator</span><span class="p">,</span> <span class="n">TextConverter</span>
-            <span class="kn">from</span><span class="w"> </span><span class="nn">pdfminer.layout</span><span class="w"> </span><span class="kn">import</span> <span class="n">LAParams</span>
+<span class="sd">        Yield:</span>
+<span class="sd">            An iterator over the parsed documents.</span>
+<span class="sd">        """</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">pdfminer</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">pdfminer.converter</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDFLayoutAnalyzer</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">pdfminer.layout</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+                <span class="n">LAParams</span><span class="p">,</span>
+                <span class="n">LTContainer</span><span class="p">,</span>
+                <span class="n">LTImage</span><span class="p">,</span>
+                <span class="n">LTItem</span><span class="p">,</span>
+                <span class="n">LTPage</span><span class="p">,</span>
+                <span class="n">LTText</span><span class="p">,</span>
+                <span class="n">LTTextBox</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">pdfminer.pdfinterp</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDFPageInterpreter</span><span class="p">,</span> <span class="n">PDFResourceManager</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">pdfminer.pdfpage</span><span class="w"> </span><span class="kn">import</span> <span class="n">PDFPage</span>
 
+            <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">pdfminer</span><span class="o">.</span><span class="n">__version__</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">20201018</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                    <span class="s2">"This parser is tested with pdfminer.six version 20201018 or "</span>
+                    <span class="s2">"later. Remove pdfminer, and install pdfminer.six with "</span>
+                    <span class="s2">"`pip uninstall pdfminer &amp;&amp; pip install pdfminer.six`."</span>
+                <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+                <span class="s2">"pdfminer package not found, please install it "</span>
+                <span class="s2">"with `pip install pdfminer.six`"</span>
+            <span class="p">)</span>
+
+        <span class="k">with</span> <span class="n">blob</span><span class="o">.</span><span class="n">as_bytes_io</span><span class="p">()</span> <span class="k">as</span> <span class="n">pdf_file_obj</span><span class="p">,</span> <span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tempdir</span><span class="p">:</span>
+            <span class="n">pages</span> <span class="o">=</span> <span class="n">PDFPage</span><span class="o">.</span><span class="n">get_pages</span><span class="p">(</span><span class="n">pdf_file_obj</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+            <span class="n">rsrcmgr</span> <span class="o">=</span> <span class="n">PDFResourceManager</span><span class="p">()</span>
+            <span class="n">doc_metadata</span> <span class="o">=</span> <span class="n">_purge_metadata</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_get_metadata</span><span class="p">(</span><span class="n">pdf_file_obj</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="n">doc_metadata</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">source</span>
+
+            <span class="k">class</span><span class="w"> </span><span class="nc">Visitor</span><span class="p">(</span><span class="n">PDFLayoutAnalyzer</span><span class="p">):</span>
+                <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="p">,</span>
+                    <span class="n">rsrcmgr</span><span class="p">:</span> <span class="n">PDFResourceManager</span><span class="p">,</span>
+                    <span class="n">pageno</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">laparams</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">LAParams</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rsrcmgr</span><span class="p">,</span> <span class="n">pageno</span><span class="o">=</span><span class="n">pageno</span><span class="p">,</span> <span class="n">laparams</span><span class="o">=</span><span class="n">laparams</span><span class="p">)</span>
+
+                <span class="k">def</span><span class="w"> </span><span class="nf">receive_layout</span><span class="p">(</span><span class="n">me</span><span class="p">,</span> <span class="n">ltpage</span><span class="p">:</span> <span class="n">LTPage</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">def</span><span class="w"> </span><span class="nf">render</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">LTItem</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">LTContainer</span><span class="p">):</span>
+                            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+                                <span class="n">render</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">LTText</span><span class="p">):</span>
+                            <span class="n">text_io</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">get_text</span><span class="p">())</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">LTTextBox</span><span class="p">):</span>
+                            <span class="n">text_io</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">LTImage</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_parser</span><span class="p">:</span>
+                                <span class="kn">from</span><span class="w"> </span><span class="nn">pdfminer.image</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageWriter</span>
+
+                                <span class="n">image_writer</span> <span class="o">=</span> <span class="n">ImageWriter</span><span class="p">(</span><span class="n">tempdir</span><span class="p">)</span>
+                                <span class="n">filename</span> <span class="o">=</span> <span class="n">image_writer</span><span class="o">.</span><span class="n">export_image</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+                                <span class="n">blob</span> <span class="o">=</span> <span class="n">Blob</span><span class="o">.</span><span class="n">from_path</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">tempdir</span><span class="p">)</span> <span class="o">/</span> <span class="n">filename</span><span class="p">)</span>
+                                <span class="n">blob</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"#"</span>
+                                <span class="n">image_text</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">images_parser</span><span class="o">.</span><span class="n">lazy_parse</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span>
+                                <span class="p">)</span><span class="o">.</span><span class="n">page_content</span>
+
+                                <span class="n">text_io</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                                    <span class="n">_format_inner_image</span><span class="p">(</span>
+                                        <span class="n">blob</span><span class="p">,</span> <span class="n">image_text</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">images_inner_format</span>
+                                    <span class="p">)</span>
+                                <span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="k">pass</span>
+
+                    <span class="n">render</span><span class="p">(</span><span class="n">ltpage</span><span class="p">)</span>
+
             <span class="n">text_io</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
-            <span class="k">with</span> <span class="n">blob</span><span class="o">.</span><span class="n">as_bytes_io</span><span class="p">()</span> <span class="k">as</span> <span class="n">pdf_file_obj</span><span class="p">:</span>  <span class="c1"># type: ignore[attr-defined]</span>
-                <span class="n">pages</span> <span class="o">=</span> <span class="n">PDFPage</span><span class="o">.</span><span class="n">get_pages</span><span class="p">(</span><span class="n">pdf_file_obj</span><span class="p">)</span>
-                <span class="n">rsrcmgr</span> <span class="o">=</span> <span class="n">PDFResourceManager</span><span class="p">()</span>
-                <span class="n">device_for_text</span> <span class="o">=</span> <span class="n">TextConverter</span><span class="p">(</span><span class="n">rsrcmgr</span><span class="p">,</span> <span class="n">text_io</span><span class="p">,</span> <span class="n">laparams</span><span class="o">=</span><span class="n">LAParams</span><span class="p">())</span>
-                <span class="n">device_for_image</span> <span class="o">=</span> <span class="n">PDFPageAggregator</span><span class="p">(</span><span class="n">rsrcmgr</span><span class="p">,</span> <span class="n">laparams</span><span class="o">=</span><span class="n">LAParams</span><span class="p">())</span>
-                <span class="n">interpreter_for_text</span> <span class="o">=</span> <span class="n">PDFPageInterpreter</span><span class="p">(</span><span class="n">rsrcmgr</span><span class="p">,</span> <span class="n">device_for_text</span><span class="p">)</span>
-                <span class="n">interpreter_for_image</span> <span class="o">=</span> <span class="n">PDFPageInterpreter</span><span class="p">(</span><span class="n">rsrcmgr</span><span class="p">,</span> <span class="n">device_for_image</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pages</span><span class="p">):</span>
-                    <span class="n">interpreter_for_text</span><span class="o">.</span><span class="n">process_page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
-                    <span class="n">interpreter_for_image</span><span class="o">.</span><span class="n">process_page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
-                    <span class="n">content</span> <span class="o">=</span> <span class="n">text_io</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_images_from_page</span><span class="p">(</span>
-                        <span class="n">device_for_image</span><span class="o">.</span><span class="n">get_result</span><span class="p">()</span>
-                    <span class="p">)</span>
+            <span class="n">visitor_for_all</span> <span class="o">=</span> <span class="n">PDFPageInterpreter</span><span class="p">(</span>
+                <span class="n">rsrcmgr</span><span class="p">,</span> <span class="n">Visitor</span><span class="p">(</span><span class="n">rsrcmgr</span><span class="p">,</span> <span class="n">laparams</span><span class="o">=</span><span class="n">LAParams</span><span class="p">())</span>
+            <span class="p">)</span>
+            <span class="n">all_content</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pages</span><span class="p">):</span>
+                <span class="n">text_io</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">text_io</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">visitor_for_all</span><span class="o">.</span><span class="n">process_page</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+
+                <span class="n">all_text</span> <span class="o">=</span> <span class="n">text_io</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+                <span class="c1"># For legacy compatibility, net strip()</span>
+                <span class="n">all_text</span> <span class="o">=</span> <span class="n">all_text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">"page"</span><span class="p">:</span>
                     <span class="n">text_io</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
                     <span class="n">text_io</span><span class="o">.</span><span class="n">seek</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-                    <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"source"</span><span class="p">:</span> <span class="n">blob</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="s2">"page"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)}</span>  <span class="c1"># type: ignore[attr-defined]</span>
-                    <span class="k">yield</span> <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span></div>
-
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_images_from_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">page</span><span class="p">:</span> <span class="n">pdfminer</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">LTPage</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Extract images from page and get the text with RapidOCR."""</span>
-        <span class="kn">import</span><span class="w"> </span><span class="nn">pdfminer</span>
-
-        <span class="k">def</span><span class="w"> </span><span class="nf">get_image</span><span class="p">(</span><span class="n">layout_object</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">layout_object</span><span class="p">,</span> <span class="n">pdfminer</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">LTImage</span><span class="p">):</span>
-                <span class="k">return</span> <span class="n">layout_object</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">layout_object</span><span class="p">,</span> <span class="n">pdfminer</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">LTContainer</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">layout_object</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">get_image</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span>
-
-        <span class="n">images</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="nb">filter</span><span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="nb">map</span><span class="p">(</span><span class="n">get_image</span><span class="p">,</span> <span class="n">page</span><span class="p">)):</span>
-            <span class="n">img_filter</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">stream</span><span class="p">[</span><span class="s2">"Filter"</span><span class="p">]</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img_filter</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-                <span class="n">filter_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">img_filter</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">filter_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">img_filter</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
-
-            <span class="n">without_loss</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span>
-                <span class="n">name</span> <span class="ow">in</span> <span class="n">_PDF_FILTER_WITHOUT_LOSS</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">filter_names</span>
-            <span class="p">)</span>
-            <span class="n">with_loss</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">name</span> <span class="ow">in</span> <span class="n">_PDF_FILTER_WITH_LOSS</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">filter_names</span><span class="p">)</span>
-            <span class="n">non_matching</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">filter_names</span><span class="p">}</span> <span class="o">-</span> <span class="p">{</span>
-                <span class="o">*</span><span class="n">_PDF_FILTER_WITHOUT_LOSS</span><span class="p">,</span>
-                <span class="o">*</span><span class="n">_PDF_FILTER_WITH_LOSS</span><span class="p">,</span>
-            <span class="p">}</span>
-
-            <span class="k">if</span> <span class="n">without_loss</span> <span class="ow">and</span> <span class="n">with_loss</span><span class="p">:</span>
-                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                    <span class="s2">"Image has both lossy and lossless filters. Defaulting to lossless"</span>
-                <span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">non_matching</span><span class="p">:</span>
-                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown PDF Filter(s): </span><span class="si">{</span><span class="n">non_matching</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-
-            <span class="k">if</span> <span class="n">without_loss</span><span class="p">:</span>
-                <span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">frombuffer</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">get_data</span><span class="p">(),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span>
-                        <span class="n">img</span><span class="o">.</span><span class="n">stream</span><span class="p">[</span><span class="s2">"Height"</span><span class="p">],</span> <span class="n">img</span><span class="o">.</span><span class="n">stream</span><span class="p">[</span><span class="s2">"Width"</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span>
+                    <span class="k">yield</span> <span class="n">Document</span><span class="p">(</span>
+                        <span class="n">page_content</span><span class="o">=</span><span class="n">all_text</span><span class="p">,</span>
+                        <span class="n">metadata</span><span class="o">=</span><span class="n">_validate_metadata</span><span class="p">(</span><span class="n">doc_metadata</span> <span class="o">|</span> <span class="p">{</span><span class="s2">"page"</span><span class="p">:</span> <span class="n">i</span><span class="p">}),</span>
                     <span class="p">)</span>
-                <span class="p">)</span>
-            <span class="k">elif</span> <span class="n">with_loss</span><span class="p">:</span>
-                <span class="n">images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">stream</span><span class="o">.</span><span class="n">get_data</span><span class="p">())</span>
-
-        <span class="k">return</span> <span class="n">extract_from_images_with_rapidocr</span><span class="p">(</span><span class="n">images</span><span class="p">)</span></div>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">all_text</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"</span><span class="se">\f</span><span class="s2">"</span><span class="p">):</span>
+                        <span class="n">all_text</span> <span class="o">=</span> <span class="n">all_text</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                    <span class="n">all_content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">all_text</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s2">"single"</span><span class="p">:</span>
+                <span class="c1"># Add pages_delimiter between pages</span>
+                <span class="n">document_content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pages_delimiter</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">all_content</span><span class="p">)</span>
+                <span class="k">yield</span> <span class="n">Document</span><span class="p">(</span>
+                    <span class="n">page_content</span><span class="o">=</span><span class="n">document_content</span><span class="p">,</span>
+                    <span class="n">metadata</span><span class="o">=</span><span class="n">_validate_metadata</span><span class="p">(</span><span class="n">doc_metadata</span><span class="p">),</span>
+                <span class="p">)</span></div>
+</div>
 
 
 
@@ -862,7 +1084,6 @@
 <span class="sd">                # password = None,</span>
 <span class="sd">                mode = "single",</span>
 <span class="sd">                pages_delimiter = "\n\f",</span>
-<span class="sd">                # extract_images = True,</span>
 <span class="sd">                # images_parser = TesseractBlobParser(),</span>
 <span class="sd">                # extract_tables="markdown",</span>
 <span class="sd">                # extract_tables_settings=None,</span>
