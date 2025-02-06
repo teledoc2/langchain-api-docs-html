@@ -355,7 +355,7 @@
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">chat_model_class</span><span class="o">.</span><span class="n">with_structured_output</span>
             <span class="ow">is</span> <span class="ow">not</span> <span class="n">BaseChatModel</span><span class="o">.</span><span class="n">with_structured_output</span>
-        <span class="p">)</span>
+        <span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_tool_calling</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">structured_output_kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
@@ -517,9 +517,9 @@
 <span class="sd">        Boolean property indicating whether the chat model supports structured</span>
 <span class="sd">        output.</span>
 
-<span class="sd">        By default, this is determined by whether the chat model's</span>
-<span class="sd">        ``with_structured_output`` method is overridden. If the base implementation is</span>
-<span class="sd">        intended to be used, this method should be overridden.</span>
+<span class="sd">        By default, this is determined by whether the chat model overrides the</span>
+<span class="sd">        ``with_structured_output`` or ``bind_tools`` methods. If the base</span>
+<span class="sd">        implementations are intended to be used, this method should be overridden.</span>
 
 <span class="sd">        See: https://python.langchain.com/docs/concepts/structured_outputs/</span>
 

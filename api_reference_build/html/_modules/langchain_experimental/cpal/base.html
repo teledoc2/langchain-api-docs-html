@@ -227,7 +227,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">ClassVar</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">cast</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pydantic</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain.base_language</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseLanguageModel</span>
@@ -401,7 +401,8 @@
     <span class="n">causal_chain</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CausalChain</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">intervention_chain</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">InterventionChain</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">query_chain</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">QueryChain</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">_story</span><span class="p">:</span> <span class="n">StoryModel</span> <span class="o">=</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="c1"># TODO: change name ?</span>
+    <span class="c1"># TODO: change name  of _story?</span>
+    <span class="n">_story</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">StoryModel</span><span class="p">]</span> <span class="o">=</span> <span class="n">pydantic</span><span class="o">.</span><span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 
 <div class="viewcode-block" id="CPALChain.from_univariate_prompt">
 <a class="viewcode-back" href="../../../experimental/cpal/langchain_experimental.cpal.base.CPALChain.html#langchain_experimental.cpal.base.CPALChain.from_univariate_prompt">[docs]</a>
@@ -541,7 +542,7 @@
 <span class="sd">            &gt;&gt;&gt; cpal_chain.draw(path="graph.svg")</span>
 <span class="sd">            &gt;&gt;&gt; SVG('graph.svg')</span>
 <span class="sd">        """</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_story</span><span class="o">.</span><span class="n">_networkx_wrapper</span><span class="o">.</span><span class="n">draw_graphviz</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+        <span class="n">cast</span><span class="p">(</span><span class="n">StoryModel</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_story</span><span class="p">)</span><span class="o">.</span><span class="n">_networkx_wrapper</span><span class="o">.</span><span class="n">draw_graphviz</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 </div>
 
 </pre></div>

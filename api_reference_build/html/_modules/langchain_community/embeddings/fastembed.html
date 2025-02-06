@@ -310,21 +310,21 @@
         <span class="n">cache_dir</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"cache_dir"</span><span class="p">)</span>
         <span class="n">threads</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"threads"</span><span class="p">)</span>
         <span class="n">gpu</span> <span class="o">=</span> <span class="n">values</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"gpu"</span><span class="p">)</span>
-        <span class="n">pkg_to_import</span> <span class="o">=</span> <span class="s2">"fastembed-gpu"</span> <span class="k">if</span> <span class="n">gpu</span> <span class="k">else</span> <span class="s2">"fastembed"</span>
+        <span class="n">pkg_to_install</span> <span class="o">=</span> <span class="s2">"fastembed-gpu"</span> <span class="k">if</span> <span class="n">gpu</span> <span class="k">else</span> <span class="s2">"fastembed"</span>
 
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">fastembed</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">pkg_to_import</span><span class="p">)</span>
+            <span class="n">fastembed</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">"fastembed"</span><span class="p">)</span>
 
         <span class="k">except</span> <span class="ne">ModuleNotFoundError</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"Could not import '</span><span class="si">{</span><span class="n">pkg_to_import</span><span class="si">}</span><span class="s2">' Python package. "</span>
-                <span class="sa">f</span><span class="s2">"Please install it with `pip install </span><span class="si">{</span><span class="n">pkg_to_import</span><span class="si">}</span><span class="s2">`."</span>
+                <span class="s2">"Could not import 'fastembed' Python package. "</span>
+                <span class="sa">f</span><span class="s2">"Please install it with `pip install </span><span class="si">{</span><span class="n">pkg_to_install</span><span class="si">}</span><span class="s2">`."</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">importlib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">version</span><span class="p">(</span><span class="n">pkg_to_import</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">MIN_VERSION</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">importlib</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">version</span><span class="p">(</span><span class="n">pkg_to_install</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">MIN_VERSION</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"FastEmbedEmbeddings requires "</span>
-                <span class="sa">f</span><span class="s1">'`pip install -U "</span><span class="si">{</span><span class="n">pkg_to_import</span><span class="si">}</span><span class="s1">&gt;=</span><span class="si">{</span><span class="n">MIN_VERSION</span><span class="si">}</span><span class="s1">"`.'</span>
+                <span class="sa">f</span><span class="s1">'`pip install -U "</span><span class="si">{</span><span class="n">pkg_to_install</span><span class="si">}</span><span class="s1">&gt;=</span><span class="si">{</span><span class="n">MIN_VERSION</span><span class="si">}</span><span class="s1">"`.'</span>
             <span class="p">)</span>
 
         <span class="n">values</span><span class="p">[</span><span class="s2">"model"</span><span class="p">]</span> <span class="o">=</span> <span class="n">fastembed</span><span class="o">.</span><span class="n">TextEmbedding</span><span class="p">(</span>
