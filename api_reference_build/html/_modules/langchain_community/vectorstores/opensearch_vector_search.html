@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 08, 2025" name="docbuild:last-update"/>
+<meta content="Feb 09, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1627,7 +1627,9 @@
 
 <span class="sd">        """</span>
         <span class="n">embeddings</span> <span class="o">=</span> <span class="n">embedding</span><span class="o">.</span><span class="n">embed_documents</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
-        <span class="n">bulk_size</span> <span class="o">=</span> <span class="n">bulk_size</span> <span class="k">if</span> <span class="n">bulk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">cls</span><span class="o">.</span><span class="n">bulk_size</span>
+        <span class="n">bulk_size</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">bulk_size</span> <span class="k">if</span> <span class="n">bulk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"bulk_size"</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">from_embeddings</span><span class="p">(</span>
             <span class="n">embeddings</span><span class="p">,</span>
             <span class="n">texts</span><span class="p">,</span>
@@ -1696,7 +1698,9 @@
 
 <span class="sd">        """</span>
         <span class="n">embeddings</span> <span class="o">=</span> <span class="k">await</span> <span class="n">embedding</span><span class="o">.</span><span class="n">aembed_documents</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
-        <span class="n">bulk_size</span> <span class="o">=</span> <span class="n">bulk_size</span> <span class="k">if</span> <span class="n">bulk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">cls</span><span class="o">.</span><span class="n">bulk_size</span>
+        <span class="n">bulk_size</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">bulk_size</span> <span class="k">if</span> <span class="n">bulk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"bulk_size"</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="k">await</span> <span class="bp">cls</span><span class="o">.</span><span class="n">afrom_embeddings</span><span class="p">(</span>
             <span class="n">embeddings</span><span class="p">,</span>
             <span class="n">texts</span><span class="p">,</span>
@@ -1786,7 +1790,9 @@
             <span class="s2">"max_chunk_bytes"</span><span class="p">,</span>
             <span class="s2">"is_aoss"</span><span class="p">,</span>
         <span class="p">]</span>
-        <span class="n">bulk_size</span> <span class="o">=</span> <span class="n">bulk_size</span> <span class="k">if</span> <span class="n">bulk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">cls</span><span class="o">.</span><span class="n">bulk_size</span>
+        <span class="n">bulk_size</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">bulk_size</span> <span class="k">if</span> <span class="n">bulk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"bulk_size"</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">_validate_embeddings_and_bulk_size</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">),</span> <span class="n">bulk_size</span><span class="p">)</span>
         <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="c1"># Get the index name from either from kwargs or ENV Variable</span>
@@ -1922,7 +1928,9 @@
             <span class="s2">"max_chunk_bytes"</span><span class="p">,</span>
             <span class="s2">"is_aoss"</span><span class="p">,</span>
         <span class="p">]</span>
-        <span class="n">bulk_size</span> <span class="o">=</span> <span class="n">bulk_size</span> <span class="k">if</span> <span class="n">bulk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">cls</span><span class="o">.</span><span class="n">bulk_size</span>
+        <span class="n">bulk_size</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">bulk_size</span> <span class="k">if</span> <span class="n">bulk_size</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="s2">"bulk_size"</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="n">_validate_embeddings_and_bulk_size</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">),</span> <span class="n">bulk_size</span><span class="p">)</span>
         <span class="n">dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="c1"># Get the index name from either from kwargs or ENV Variable</span>
