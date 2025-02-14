@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 13, 2025" name="docbuild:last-update"/>
+<meta content="Feb 14, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -282,6 +282,17 @@
 
 <span class="sd">            documents = [document_1, document_2, document_3]</span>
 <span class="sd">            vector_store.add_documents(documents=documents)</span>
+
+<span class="sd">    Inspect documents:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            top_n = 10</span>
+<span class="sd">            for index, (id, doc) in enumerate(vector_store.store.items()):</span>
+<span class="sd">                if index &lt; top_n:</span>
+<span class="sd">                    # docs have keys 'id', 'vector', 'text', 'metadata'</span>
+<span class="sd">                    print(f"{id}: {doc['text']}")</span>
+<span class="sd">                else:</span>
+<span class="sd">                    break</span>
 
 <span class="sd">    Delete Documents:</span>
 <span class="sd">        .. code-block:: python</span>

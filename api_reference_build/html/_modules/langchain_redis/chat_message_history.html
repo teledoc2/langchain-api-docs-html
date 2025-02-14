@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 13, 2025" name="docbuild:last-update"/>
+<meta content="Feb 14, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -334,7 +334,8 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">redis_client</span><span class="o">.</span><span class="n">ft</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index_name</span><span class="p">)</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">ResponseError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">"unknown index name"</span><span class="p">:</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s2">"unknown index name"</span> <span class="ow">in</span> <span class="n">msg</span> <span class="ow">or</span> <span class="s2">"no such index"</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">:</span>
                 <span class="n">schema</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">TagField</span><span class="p">(</span><span class="s2">"$.session_id"</span><span class="p">,</span> <span class="n">as_name</span><span class="o">=</span><span class="s2">"session_id"</span><span class="p">),</span>
                     <span class="n">TextField</span><span class="p">(</span><span class="s2">"$.data.content"</span><span class="p">,</span> <span class="n">as_name</span><span class="o">=</span><span class="s2">"content"</span><span class="p">),</span>

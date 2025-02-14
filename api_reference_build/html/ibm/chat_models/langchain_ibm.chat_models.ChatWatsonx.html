@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 13, 2025" name="docbuild:last-update"/>
+<meta content="Feb 14, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -313,19 +313,17 @@ it as a named parameter to the constructor.</p>
 </div>
 </div>
 </details><p class="rubric">Example</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ibm_watsonx_ai.metanames</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenTextParamsMetaNames</span>
-<span class="n">parameters</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">DECODING_METHOD</span><span class="p">:</span> <span class="s2">"sample"</span><span class="p">,</span>
-    <span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">MAX_NEW_TOKENS</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
-    <span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">MIN_NEW_TOKENS</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">TEMPERATURE</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
-    <span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">TOP_K</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
-    <span class="n">GenTextParamsMetaNames</span><span class="o">.</span><span class="n">TOP_P</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-<span class="p">}</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ibm_watsonx_ai.foundation_models.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">TextChatParameters</span>
+
+<span class="n">parameters</span> <span class="o">=</span> <span class="n">TextChatParameters</span><span class="p">(</span>
+    <span class="n">max_tokens</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+    <span class="n">temperature</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">top_p</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_ibm</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatWatsonx</span>
 <span class="n">watsonx_llm</span> <span class="o">=</span> <span class="n">ChatWatsonx</span><span class="p">(</span>
-    <span class="n">model_id</span><span class="o">=</span><span class="s2">"meta-llama/llama-3-70b-instruct"</span><span class="p">,</span>
+    <span class="n">model_id</span><span class="o">=</span><span class="s2">"meta-llama/llama-3-3-70b-instruct"</span><span class="p">,</span>
     <span class="n">url</span><span class="o">=</span><span class="s2">"https://us-south.ml.cloud.ibm.com"</span><span class="p">,</span>
     <span class="n">apikey</span><span class="o">=</span><span class="s2">"*****"</span><span class="p">,</span>
     <span class="n">project_id</span><span class="o">=</span><span class="s2">"*****"</span><span class="p">,</span>
@@ -403,6 +401,12 @@ text so far, decreasing the model’s likelihood to repeat the same line verbati
 <dd><p>Instance_id of the CPD instance.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_ibm.chat_models.ChatWatsonx.logit_bias">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">logit_bias</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_ibm.chat_models.ChatWatsonx.logit_bias" title="Link to this definition">#</a></dt>
+<dd><p>Increasing or decreasing probability of tokens being selected
+during generation.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_ibm.chat_models.ChatWatsonx.logprobs">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">logprobs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_ibm.chat_models.ChatWatsonx.logprobs" title="Link to this definition">#</a></dt>
 <dd><p>Whether to return log probabilities of the output tokens or not.
@@ -470,9 +474,21 @@ text so far, increasing the model’s likelihood to talk about new topics.</p>
 <dd><p>The chat response format parameters.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_ibm.chat_models.ChatWatsonx.seed">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">seed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_ibm.chat_models.ChatWatsonx.seed" title="Link to this definition">#</a></dt>
+<dd><p>Random number generator seed to use in sampling mode
+for experimental repeatability.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_ibm.chat_models.ChatWatsonx.space_id">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">space_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_ibm.chat_models.ChatWatsonx.space_id" title="Link to this definition">#</a></dt>
 <dd><p>ID of the Watson Studio space.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_ibm.chat_models.ChatWatsonx.stop">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stop</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_ibm.chat_models.ChatWatsonx.stop" title="Link to this definition">#</a></dt>
+<dd><p>Stop sequences are one or more strings which will cause the text generation
+to stop if/when they are produced as part of the output.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_ibm.chat_models.ChatWatsonx.streaming">
@@ -1814,6 +1830,7 @@ where _DictOrPydantic depends on the schema:</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.disable_streaming"><code class="docutils literal notranslate"><span class="pre">disable_streaming</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.frequency_penalty"><code class="docutils literal notranslate"><span class="pre">frequency_penalty</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.instance_id"><code class="docutils literal notranslate"><span class="pre">instance_id</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.logit_bias"><code class="docutils literal notranslate"><span class="pre">logit_bias</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.logprobs"><code class="docutils literal notranslate"><span class="pre">logprobs</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.max_tokens"><code class="docutils literal notranslate"><span class="pre">max_tokens</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.metadata"><code class="docutils literal notranslate"><span class="pre">metadata</span></code></a></li>
@@ -1825,7 +1842,9 @@ where _DictOrPydantic depends on the schema:</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.project_id"><code class="docutils literal notranslate"><span class="pre">project_id</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.rate_limiter"><code class="docutils literal notranslate"><span class="pre">rate_limiter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.response_format"><code class="docutils literal notranslate"><span class="pre">response_format</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.seed"><code class="docutils literal notranslate"><span class="pre">seed</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.space_id"><code class="docutils literal notranslate"><span class="pre">space_id</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.streaming"><code class="docutils literal notranslate"><span class="pre">streaming</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.tags"><code class="docutils literal notranslate"><span class="pre">tags</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.chat_models.ChatWatsonx.temperature"><code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>

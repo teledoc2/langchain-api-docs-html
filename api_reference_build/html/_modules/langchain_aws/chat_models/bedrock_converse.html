@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 13, 2025" name="docbuild:last-update"/>
+<meta content="Feb 14, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -766,7 +766,12 @@
         <span class="p">)</span>
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s2">"stream"</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">message_chunk</span> <span class="o">:=</span> <span class="n">_parse_stream_event</span><span class="p">(</span><span class="n">event</span><span class="p">):</span>
-                <span class="k">yield</span> <span class="n">ChatGenerationChunk</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message_chunk</span><span class="p">)</span>
+                <span class="n">generation_chunk</span> <span class="o">=</span> <span class="n">ChatGenerationChunk</span><span class="p">(</span><span class="n">message</span><span class="o">=</span><span class="n">message_chunk</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">run_manager</span><span class="p">:</span>
+                    <span class="n">run_manager</span><span class="o">.</span><span class="n">on_llm_new_token</span><span class="p">(</span>
+                        <span class="n">generation_chunk</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">chunk</span><span class="o">=</span><span class="n">generation_chunk</span>
+                    <span class="p">)</span>
+                <span class="k">yield</span> <span class="n">generation_chunk</span>
 
     <span class="c1"># TODO: Add async support once there are async bedrock.converse methods.</span>
 
