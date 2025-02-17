@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 16, 2025" name="docbuild:last-update"/>
+<meta content="Feb 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -225,6 +225,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">cast</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">uuid</span><span class="w"> </span><span class="kn">import</span> <span class="n">uuid4</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core._api</span><span class="w"> </span><span class="kn">import</span> <span class="n">deprecated</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.callbacks</span><span class="w"> </span><span class="kn">import</span> <span class="n">CallbackManagerForRetrieverRun</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.documents</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.retrievers</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseRetriever</span>
@@ -233,6 +234,11 @@
 
 <div class="viewcode-block" id="WeaviateHybridSearchRetriever">
 <a class="viewcode-back" href="../../../community/retrievers/langchain_community.retrievers.weaviate_hybrid_search.WeaviateHybridSearchRetriever.html#langchain_community.retrievers.weaviate_hybrid_search.WeaviateHybridSearchRetriever">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.18"</span><span class="p">,</span>
+    <span class="n">removal</span><span class="o">=</span><span class="s2">"1.0"</span><span class="p">,</span>
+    <span class="n">alternative_import</span><span class="o">=</span><span class="s2">"langchain_weaviate.WeaviateVectorStore"</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">WeaviateHybridSearchRetriever</span><span class="p">(</span><span class="n">BaseRetriever</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""`Weaviate hybrid search` retriever.</span>
 

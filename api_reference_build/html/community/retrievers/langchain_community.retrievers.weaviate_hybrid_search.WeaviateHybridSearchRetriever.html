@@ -49,12 +49,12 @@
 <script>DOCUMENTATION_OPTIONS.pagename = 'community/retrievers/langchain_community.retrievers.weaviate_hybrid_search.WeaviateHybridSearchRetriever';</script>
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
-<link href="langchain_community.retrievers.web_research.QuestionListOutputParser.html" rel="next" title="QuestionListOutputParser"/>
-<link href="langchain_community.retrievers.vespa_retriever.VespaRetriever.html" rel="prev" title="VespaRetriever"/>
+<link href="../storage.html" rel="next" title="storage"/>
+<link href="langchain_community.retrievers.qdrant_sparse_vector_retriever.QdrantSparseVectorRetriever.html" rel="prev" title="QdrantSparseVectorRetriever"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 16, 2025" name="docbuild:last-update"/>
+<meta content="Feb 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -276,7 +276,6 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.tfidf.TFIDFRetriever.html">TFIDFRetriever</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.thirdai_neuraldb.NeuralDBRetriever.html">NeuralDBRetriever</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.vespa_retriever.VespaRetriever.html">VespaRetriever</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">WeaviateHybridSearchRetriever</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.web_research.QuestionListOutputParser.html">QuestionListOutputParser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.web_research.SearchQueries.html">SearchQueries</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.web_research.WebResearchRetriever.html">WebResearchRetriever</a></li>
@@ -304,6 +303,7 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.google_vertex_ai_search.GoogleVertexAISearchRetriever.html">GoogleVertexAISearchRetriever</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.kendra.AmazonKendraRetriever.html">AmazonKendraRetriever</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.qdrant_sparse_vector_retriever.QdrantSparseVectorRetriever.html">QdrantSparseVectorRetriever</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">WeaviateHybridSearchRetriever</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../storage.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">storage</span></code></a></li>
@@ -399,6 +399,9 @@
 <dt class="sig sig-object py" id="langchain_community.retrievers.weaviate_hybrid_search.WeaviateHybridSearchRetriever">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_community.retrievers.weaviate_hybrid_search.</span></span><span class="sig-name descname"><span class="pre">WeaviateHybridSearchRetriever</span></span><a class="reference internal" href="../../_modules/langchain_community/retrievers/weaviate_hybrid_search.html#WeaviateHybridSearchRetriever"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.retrievers.weaviate_hybrid_search.WeaviateHybridSearchRetriever" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../core/retrievers/langchain_core.retrievers.BaseRetriever.html#langchain_core.retrievers.BaseRetriever" title="langchain_core.retrievers.BaseRetriever"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseRetriever</span></code></a></p>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.3.18: </span>Use <code class="docutils literal notranslate"><span class="pre">:class:`~langchain_weaviate.WeaviateVectorStore`</span></code> instead. It will not be removed until langchain-community==1.0.</p>
+</div>
 <p><cite>Weaviate hybrid search</cite> retriever.</p>
 <dl class="simple">
 <dt>See the documentation:</dt><dd><p><a class="reference external" href="https://weaviate.io/blog/hybrid-search-explained">https://weaviate.io/blog/hybrid-search-explained</a></p>

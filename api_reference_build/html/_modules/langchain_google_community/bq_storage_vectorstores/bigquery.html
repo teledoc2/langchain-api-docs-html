@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 16, 2025" name="docbuild:last-update"/>
+<meta content="Feb 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -260,6 +260,9 @@
 <span class="sd">    `batch_search` method.</span>
 <span class="sd">    Optionally, this class can leverage a Vertex AI Feature Store for online serving</span>
 <span class="sd">    through the `to_vertex_fs_vector_store` method.</span>
+<span class="sd">    Note that the `bigquery.datasets.create permission` is required even if the</span>
+<span class="sd">    dataset already exists. This can be avoided by specifying `temp_dataset_name` as</span>
+<span class="sd">    the name of an existing dataset.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        embedding: Embedding model for generating and comparing embeddings.</span>
@@ -270,6 +273,8 @@
 <span class="sd">        content_field: Name of the column storing document content (default: "content").</span>
 <span class="sd">        embedding_field: Name of the column storing text embeddings (default:</span>
 <span class="sd">            "embedding").</span>
+<span class="sd">        temp_dataset_name: Name of the BigQuery dataset to be used to upload temporary</span>
+<span class="sd">            BQ tables. If None, will default to "{dataset_name}_temp".</span>
 <span class="sd">        doc_id_field: Name of the column storing document IDs (default: "doc_id").</span>
 <span class="sd">        credentials: Optional Google Cloud credentials object.</span>
 <span class="sd">        embedding_dimension: Dimension of the embedding vectors (inferred if not</span>

@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 16, 2025" name="docbuild:last-update"/>
+<meta content="Feb 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -276,7 +276,6 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.tfidf.TFIDFRetriever.html">TFIDFRetriever</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.thirdai_neuraldb.NeuralDBRetriever.html">NeuralDBRetriever</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.vespa_retriever.VespaRetriever.html">VespaRetriever</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.weaviate_hybrid_search.WeaviateHybridSearchRetriever.html">WeaviateHybridSearchRetriever</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.web_research.QuestionListOutputParser.html">QuestionListOutputParser</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.web_research.SearchQueries.html">SearchQueries</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.web_research.WebResearchRetriever.html">WebResearchRetriever</a></li>
@@ -304,6 +303,7 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.google_vertex_ai_search.GoogleVertexAISearchRetriever.html">GoogleVertexAISearchRetriever</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.kendra.AmazonKendraRetriever.html">AmazonKendraRetriever</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.qdrant_sparse_vector_retriever.QdrantSparseVectorRetriever.html">QdrantSparseVectorRetriever</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_community.retrievers.weaviate_hybrid_search.WeaviateHybridSearchRetriever.html">WeaviateHybridSearchRetriever</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../storage.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">storage</span></code></a></li>
@@ -412,13 +412,15 @@ based on a search query.</p>
 <li><p><cite>needle_api_key</cite> (Optional[str]): The API key for authenticating with Needle.</p></li>
 <li><p><cite>collection_id</cite> (str): The ID of the Needle collection to search in.</p></li>
 <li><p><cite>client</cite> (Optional[NeedleClient]): An optional instance of the NeedleClient.</p></li>
+<li><p><cite>top_k</cite> (Optional[int]): Maximum number of results to return.</p></li>
 </ul>
 </dd>
 <dt>Usage:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.retrievers.needle</span><span class="w"> </span><span class="kn">import</span> <span class="n">NeedleRetriever</span>
 
 <span class="n">retriever</span> <span class="o">=</span> <span class="n">NeedleRetriever</span><span class="p">(</span>
     <span class="n">needle_api_key</span><span class="o">=</span><span class="s2">"your-api-key"</span><span class="p">,</span>
-    <span class="n">collection_id</span><span class="o">=</span><span class="s2">"your-collection-id"</span>
+    <span class="n">collection_id</span><span class="o">=</span><span class="s2">"your-collection-id"</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="o">=</span><span class="mi">10</span>  <span class="c1"># optional</span>
 <span class="p">)</span>
 
 <span class="n">results</span> <span class="o">=</span> <span class="n">retriever</span><span class="o">.</span><span class="n">retrieve</span><span class="p">(</span><span class="s2">"example query"</span><span class="p">)</span>
@@ -465,6 +467,11 @@ These tags will be associated with each call to this retriever,
 and passed as arguments to the handlers defined in <cite>callbacks</cite>.
 You can use these to eg identify a specific instance of a retriever with its
 use case.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_community.retrievers.needle.NeedleRetriever.top_k">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">top_k</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_community.retrievers.needle.NeedleRetriever.top_k" title="Link to this definition">#</a></dt>
+<dd><p>Maximum number of search results to return</p>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_community.retrievers.needle.NeedleRetriever.abatch">
@@ -1459,6 +1466,7 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.retrievers.needle.NeedleRetriever.metadata"><code class="docutils literal notranslate"><span class="pre">metadata</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.retrievers.needle.NeedleRetriever.needle_api_key"><code class="docutils literal notranslate"><span class="pre">needle_api_key</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.retrievers.needle.NeedleRetriever.tags"><code class="docutils literal notranslate"><span class="pre">tags</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.retrievers.needle.NeedleRetriever.top_k"><code class="docutils literal notranslate"><span class="pre">top_k</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.retrievers.needle.NeedleRetriever.abatch"><code class="docutils literal notranslate"><span class="pre">abatch()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.retrievers.needle.NeedleRetriever.abatch_as_completed"><code class="docutils literal notranslate"><span class="pre">abatch_as_completed()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_community.retrievers.needle.NeedleRetriever.aget_relevant_documents"><code class="docutils literal notranslate"><span class="pre">aget_relevant_documents()</span></code></a></li>
