@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 21, 2025" name="docbuild:last-update"/>
+<meta content="Feb 22, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -234,7 +234,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.embeddings</span><span class="w"> </span><span class="kn">import</span> <span class="n">Embeddings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.load.dump</span><span class="w"> </span><span class="kn">import</span> <span class="n">dumps</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.load.load</span><span class="w"> </span><span class="kn">import</span> <span class="n">loads</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.v1</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span> <span class="k">as</span> <span class="n">FieldV1</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">redis</span><span class="w"> </span><span class="kn">import</span> <span class="n">Redis</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">redis.commands.json.path</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">redis.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ResponseError</span>
@@ -250,19 +250,14 @@
 <div class="viewcode-block" id="EmbeddingsVectorizer">
 <a class="viewcode-back" href="../../redis/cache/langchain_redis.cache.EmbeddingsVectorizer.html#langchain_redis.cache.EmbeddingsVectorizer">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">EmbeddingsVectorizer</span><span class="p">(</span><span class="n">BaseVectorizer</span><span class="p">):</span>
-    <span class="c1"># BaseVectorizer is a pydantic.v1.BaseModel so we need to use pydantic.v1.Field.</span>
-    <span class="n">embeddings</span><span class="p">:</span> <span class="n">Embeddings</span> <span class="o">=</span> <span class="n">FieldV1</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">FieldV1</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">"custom_embeddings"</span><span class="p">)</span>
+    <span class="n">embeddings</span><span class="p">:</span> <span class="n">Embeddings</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+    <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s2">"custom_embeddings"</span><span class="p">)</span>
 
-    <span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
-        <span class="n">arbitrary_types_allowed</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">arbitrary_types_allowed</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<div class="viewcode-block" id="EmbeddingsVectorizer.__init__">
-<a class="viewcode-back" href="../../redis/cache/langchain_redis.cache.EmbeddingsVectorizer.html#langchain_redis.cache.EmbeddingsVectorizer.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">embeddings</span><span class="p">:</span> <span class="n">Embeddings</span><span class="p">):</span>
         <span class="n">dims</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="s2">"test"</span><span class="p">))</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"custom_embeddings"</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">dims</span><span class="p">,</span> <span class="n">embeddings</span><span class="o">=</span><span class="n">embeddings</span><span class="p">)</span></div>
-
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"custom_embeddings"</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">dims</span><span class="p">,</span> <span class="n">embeddings</span><span class="o">=</span><span class="n">embeddings</span><span class="p">)</span>
 
 <div class="viewcode-block" id="EmbeddingsVectorizer.encode">
 <a class="viewcode-back" href="../../redis/cache/langchain_redis.cache.EmbeddingsVectorizer.html#langchain_redis.cache.EmbeddingsVectorizer.encode">[docs]</a>

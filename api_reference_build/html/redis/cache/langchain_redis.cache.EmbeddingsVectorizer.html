@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 21, 2025" name="docbuild:last-update"/>
+<meta content="Feb 22, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -286,7 +286,7 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-redis: 0.1.3</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-redis: 0.2.0</a></li>
 <li class="breadcrumb-item"><a class="nav-link" href="../cache.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cache</span></code></a></li>
 <li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">EmbeddingsVectorizer</span></li>
 </ul>
@@ -299,105 +299,30 @@
 <article class="bd-article">
 <section id="embeddingsvectorizer">
 <h1>EmbeddingsVectorizer<a class="headerlink" href="#embeddingsvectorizer" title="Link to this heading">#</a></h1>
-<dl class="py class">
+<dl class="py class pydantic_model">
 <dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_redis.cache.</span></span><span class="sig-name descname"><span class="pre">EmbeddingsVectorizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><span class="pre">Embeddings</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_redis/cache.html#EmbeddingsVectorizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer" title="Link to this definition">#</a></dt>
-<dd><p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p>
-<p class="rubric">Attributes</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
-<tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code></p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p class="rubric">Methods</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.__init__" title="langchain_redis.cache.EmbeddingsVectorizer.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(embeddings)</p></td>
-<td><p>Create a new model by parsing and validating input data from keyword arguments.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.aembed" title="langchain_redis.cache.EmbeddingsVectorizer.aembed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aembed</span></code></a>(text[, dtype])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.aembed_many" title="langchain_redis.cache.EmbeddingsVectorizer.aembed_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aembed_many</span></code></a>(texts[, dtype])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.batchify" title="langchain_redis.cache.EmbeddingsVectorizer.batchify"><code class="xref py py-obj docutils literal notranslate"><span class="pre">batchify</span></code></a>(seq, size[, preprocess])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.check_dims" title="langchain_redis.cache.EmbeddingsVectorizer.check_dims"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_dims</span></code></a>(value)</p></td>
-<td><p>Ensures the dims are a positive integer.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.check_dtype" title="langchain_redis.cache.EmbeddingsVectorizer.check_dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">check_dtype</span></code></a>()</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.construct" title="langchain_redis.cache.EmbeddingsVectorizer.construct"><code class="xref py py-obj docutils literal notranslate"><span class="pre">construct</span></code></a>([_fields_set])</p></td>
-<td><p>Creates a new model setting __dict__ and __fields_set__ from trusted or pre-validated data.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.copy" title="langchain_redis.cache.EmbeddingsVectorizer.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>(*[, include, exclude, update, deep])</p></td>
-<td><p>Duplicate a model, optionally choose which fields to include, exclude and change.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.dict" title="langchain_redis.cache.EmbeddingsVectorizer.dict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code></a>(*[, include, exclude, by_alias, ...])</p></td>
-<td><p>Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.embed" title="langchain_redis.cache.EmbeddingsVectorizer.embed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed</span></code></a>(text[, dtype])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.embed_many" title="langchain_redis.cache.EmbeddingsVectorizer.embed_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed_many</span></code></a>(texts[, dtype])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.encode" title="langchain_redis.cache.EmbeddingsVectorizer.encode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">encode</span></code></a>(texts, dtype, **kwargs)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.from_orm" title="langchain_redis.cache.EmbeddingsVectorizer.from_orm"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_orm</span></code></a>(obj)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.json" title="langchain_redis.cache.EmbeddingsVectorizer.json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">json</span></code></a>(*[, include, exclude, by_alias, ...])</p></td>
-<td><p>Generate a JSON representation of the model, <cite>include</cite> and <cite>exclude</cite> arguments as per <cite>dict()</cite>.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_file" title="langchain_redis.cache.EmbeddingsVectorizer.parse_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_file</span></code></a>(path, *[, content_type, ...])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_obj" title="langchain_redis.cache.EmbeddingsVectorizer.parse_obj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_obj</span></code></a>(obj)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_raw" title="langchain_redis.cache.EmbeddingsVectorizer.parse_raw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_raw</span></code></a>(b, *[, content_type, encoding, ...])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.schema" title="langchain_redis.cache.EmbeddingsVectorizer.schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema</span></code></a>([by_alias, ref_template])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.schema_json" title="langchain_redis.cache.EmbeddingsVectorizer.schema_json"><code class="xref py py-obj docutils literal notranslate"><span class="pre">schema_json</span></code></a>(*[, by_alias, ref_template])</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.update_forward_refs" title="langchain_redis.cache.EmbeddingsVectorizer.update_forward_refs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update_forward_refs</span></code></a>(**localns)</p></td>
-<td><p>Try to update ForwardRefs on fields based on this Model, globalns and localns.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.cache.EmbeddingsVectorizer.validate" title="langchain_redis.cache.EmbeddingsVectorizer.validate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate</span></code></a>(value)</p></td>
-<td><p></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>embeddings</strong> (<a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><em>Embeddings</em></a>)</p>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><span class="pre">Embeddings</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_redis/cache.html#EmbeddingsVectorizer.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.__init__" title="Link to this definition">#</a></dt>
-<dd><p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises ValidationError if the input data cannot be parsed to form a valid model.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>embeddings</strong> (<a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><em>Embeddings</em></a>)</p>
-</dd>
-</dl>
-</dd></dl>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_redis.cache.</span></span><span class="sig-name descname"><span class="pre">EmbeddingsVectorizer</span></span><a class="reference internal" href="../../_modules/langchain_redis/cache.html#EmbeddingsVectorizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseVectorizer</span></code></p>
+<p>Create a new model by parsing and validating input data from keyword arguments.</p>
+<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
+validated to form a valid model.</p>
+<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.dims">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dims</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.dims" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.dtype">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dtype</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'float32'</span></em><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.dtype" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.embeddings">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">embeddings</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><span class="pre">Embeddings</span></a></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.embeddings" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.model">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'custom_embeddings'</span></em><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.model" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.aembed">
 <em class="property"><span class="k"><span class="pre">async</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aembed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">VectorDataType</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'float32'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/langchain_redis/cache.html#EmbeddingsVectorizer.aembed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.aembed" title="Link to this definition">#</a></dt>
@@ -440,77 +365,6 @@
 <li><p><strong>size</strong> (<em>int</em>)</p></li>
 <li><p><strong>preprocess</strong> (<em>Callable</em><em> | </em><em>None</em>)</p></li>
 </ul>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.check_dims">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_dims</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.check_dims" title="Link to this definition">#</a></dt>
-<dd><p>Ensures the dims are a positive integer.</p>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.check_dtype">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_dtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.check_dtype" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.construct">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">construct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">_fields_set</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">SetStr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model"><span class="pre">Model</span></a></span></span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.construct" title="Link to this definition">#</a></dt>
-<dd><p>Creates a new model setting __dict__ and __fields_set__ from trusted or pre-validated data.
-Default values are respected, but no other validation is performed.
-Behaves as if <cite>Config.extra = ‘allow’</cite> was set since it adds all passed values</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>_fields_set</strong> (<em>SetStr</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>values</strong> (<em>Any</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model">Model</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AbstractSetIntStr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MappingIntStrAny</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AbstractSetIntStr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MappingIntStrAny</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DictStrAny</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model"><span class="pre">Model</span></a></span></span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.copy" title="Link to this definition">#</a></dt>
-<dd><p>Duplicate a model, optionally choose which fields to include, exclude and change.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>include</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – fields to include in new model</p></li>
-<li><p><strong>exclude</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>) – fields to exclude from new model, as with values this takes precedence over include</p></li>
-<li><p><strong>update</strong> (<em>DictStrAny</em><em> | </em><em>None</em>) – values to change/add in the new model. Note: the data is not validated before creating
-the new model: you should trust this data</p></li>
-<li><p><strong>deep</strong> (<em>bool</em>) – set to <cite>True</cite> to make a deep copy of the model</p></li>
-<li><p><strong>self</strong> (<a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model"><em>Model</em></a>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>new model instance</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model">Model</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.dict">
-<span class="sig-name descname"><span class="pre">dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AbstractSetIntStr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MappingIntStrAny</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AbstractSetIntStr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MappingIntStrAny</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">DictStrAny</span></span></span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.dict" title="Link to this definition">#</a></dt>
-<dd><p>Generate a dictionary representation of the model, optionally specifying which fields to include or exclude.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>include</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>exclude</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>by_alias</strong> (<em>bool</em>)</p></li>
-<li><p><strong>skip_defaults</strong> (<em>bool</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>exclude_unset</strong> (<em>bool</em>)</p></li>
-<li><p><strong>exclude_defaults</strong> (<em>bool</em>)</p></li>
-<li><p><strong>exclude_none</strong> (<em>bool</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>DictStrAny</p>
 </dd>
 </dl>
 </dd></dl>
@@ -562,147 +416,10 @@ the new model: you should trust this data</p></li>
 </dd>
 </dl>
 </dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.from_orm">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_orm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model"><span class="pre">Model</span></a></span></span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.from_orm" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>obj</strong> (<em>Any</em>)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model">Model</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.json">
-<span class="sig-name descname"><span class="pre">json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">include</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AbstractSetIntStr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MappingIntStrAny</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AbstractSetIntStr</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">MappingIntStrAny</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_defaults</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_unset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_defaults</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_none</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">models_as_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">dumps_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.json" title="Link to this definition">#</a></dt>
-<dd><p>Generate a JSON representation of the model, <cite>include</cite> and <cite>exclude</cite> arguments as per <cite>dict()</cite>.</p>
-<p><cite>encoder</cite> is an optional function to supply as <cite>default</cite> to json.dumps(), other arguments as per <cite>json.dumps()</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>include</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>exclude</strong> (<em>AbstractSetIntStr</em><em> | </em><em>MappingIntStrAny</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>by_alias</strong> (<em>bool</em>)</p></li>
-<li><p><strong>skip_defaults</strong> (<em>bool</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>exclude_unset</strong> (<em>bool</em>)</p></li>
-<li><p><strong>exclude_defaults</strong> (<em>bool</em>)</p></li>
-<li><p><strong>exclude_none</strong> (<em>bool</em>)</p></li>
-<li><p><strong>encoder</strong> (<em>Callable</em><em>[</em><em>[</em><em>Any</em><em>]</em><em>, </em><em>Any</em><em>] </em><em>| </em><em>None</em>)</p></li>
-<li><p><strong>models_as_dict</strong> (<em>bool</em>)</p></li>
-<li><p><strong>dumps_kwargs</strong> (<em>Any</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.parse_file">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'utf8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proto</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Protocol</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_pickle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model"><span class="pre">Model</span></a></span></span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_file" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>str</em><em> | </em><em>Path</em>)</p></li>
-<li><p><strong>content_type</strong> (<em>str</em>)</p></li>
-<li><p><strong>encoding</strong> (<em>str</em>)</p></li>
-<li><p><strong>proto</strong> (<em>Protocol</em>)</p></li>
-<li><p><strong>allow_pickle</strong> (<em>bool</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model">Model</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.parse_obj">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_obj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model"><span class="pre">Model</span></a></span></span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_obj" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>obj</strong> (<em>Any</em>)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model">Model</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.parse_raw">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_raw</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">content_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">encoding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'utf8'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proto</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Protocol</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">allow_pickle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model"><span class="pre">Model</span></a></span></span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_raw" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>b</strong> (<em>str</em><em> | </em><em>bytes</em>)</p></li>
-<li><p><strong>content_type</strong> (<em>str</em>)</p></li>
-<li><p><strong>encoding</strong> (<em>str</em>)</p></li>
-<li><p><strong>proto</strong> (<em>Protocol</em>)</p></li>
-<li><p><strong>allow_pickle</strong> (<em>bool</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model">Model</a></p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.schema">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schema</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'#/definitions/{model}'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">DictStrAny</span></span></span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.schema" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>by_alias</strong> (<em>bool</em>)</p></li>
-<li><p><strong>ref_template</strong> (<em>str</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>DictStrAny</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.schema_json">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">schema_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">by_alias</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_template</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'#/definitions/{model}'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">dumps_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.schema_json" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>by_alias</strong> (<em>bool</em>)</p></li>
-<li><p><strong>ref_template</strong> (<em>str</em>)</p></li>
-<li><p><strong>dumps_kwargs</strong> (<em>Any</em>)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.update_forward_refs">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">update_forward_refs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">localns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.update_forward_refs" title="Link to this definition">#</a></dt>
-<dd><p>Try to update ForwardRefs on fields based on this Model, globalns and localns.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>localns</strong> (<em>Any</em>)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.validate">
-<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model"><span class="pre">Model</span></a></span></span><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.validate" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>value</strong> (<em>Any</em>)</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="../../community/chains/langchain_community.chains.pebblo_retrieval.models.Model.html#langchain_community.chains.pebblo_retrieval.models.Model" title="langchain_community.chains.pebblo_retrieval.models.Model">Model</a></p>
-</dd>
-</dl>
-</dd></dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="langchain_redis.cache.EmbeddingsVectorizer.type">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#langchain_redis.cache.EmbeddingsVectorizer.type" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 </dd></dl>
 <ul class="simple">
 </ul>
@@ -718,27 +435,17 @@ the new model: you should trust this data</p></li>
 <nav aria-labelledby="pst-page-navigation-heading-2" class="bd-toc-nav page-toc">
 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer"><code class="docutils literal notranslate"><span class="pre">EmbeddingsVectorizer</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.dims"><code class="docutils literal notranslate"><span class="pre">dims</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.dtype"><code class="docutils literal notranslate"><span class="pre">dtype</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.embeddings"><code class="docutils literal notranslate"><span class="pre">embeddings</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.aembed"><code class="docutils literal notranslate"><span class="pre">aembed()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.aembed_many"><code class="docutils literal notranslate"><span class="pre">aembed_many()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.batchify"><code class="docutils literal notranslate"><span class="pre">batchify()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.check_dims"><code class="docutils literal notranslate"><span class="pre">check_dims()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.check_dtype"><code class="docutils literal notranslate"><span class="pre">check_dtype()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.construct"><code class="docutils literal notranslate"><span class="pre">construct()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.copy"><code class="docutils literal notranslate"><span class="pre">copy()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.dict"><code class="docutils literal notranslate"><span class="pre">dict()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.embed"><code class="docutils literal notranslate"><span class="pre">embed()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.embed_many"><code class="docutils literal notranslate"><span class="pre">embed_many()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.encode"><code class="docutils literal notranslate"><span class="pre">encode()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.from_orm"><code class="docutils literal notranslate"><span class="pre">from_orm()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.json"><code class="docutils literal notranslate"><span class="pre">json()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_file"><code class="docutils literal notranslate"><span class="pre">parse_file()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_obj"><code class="docutils literal notranslate"><span class="pre">parse_obj()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.parse_raw"><code class="docutils literal notranslate"><span class="pre">parse_raw()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.schema"><code class="docutils literal notranslate"><span class="pre">schema()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.schema_json"><code class="docutils literal notranslate"><span class="pre">schema_json()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.update_forward_refs"><code class="docutils literal notranslate"><span class="pre">update_forward_refs()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.validate"><code class="docutils literal notranslate"><span class="pre">validate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_redis.cache.EmbeddingsVectorizer.type"><code class="docutils literal notranslate"><span class="pre">type</span></code></a></li>
 </ul>
 </li>
 </ul>

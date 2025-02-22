@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 21, 2025" name="docbuild:last-update"/>
+<meta content="Feb 22, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -286,7 +286,7 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-redis: 0.1.3</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-redis: 0.2.0</a></li>
 <li class="breadcrumb-item"><a class="nav-link" href="../vectorstores.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vectorstores</span></code></a></li>
 <li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">RedisVectorStore</span></li>
 </ul>
@@ -422,6 +422,19 @@ pre-existing Redis connection via the redis_client argument.</p>
 </div>
 </dd>
 </dl>
+<p>Initialize the RedisVectorStore.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>embeddings</strong> (<a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><em>Embeddings</em></a>) – The Embeddings instance used for this store.</p></li>
+<li><p><strong>config</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../config/langchain_redis.config.RedisConfig.html#langchain_redis.config.RedisConfig" title="langchain_redis.config.RedisConfig"><em>RedisConfig</em></a><em>]</em>) – Optional RedisConfig object. If not provided, a new
+one will be created from kwargs.</p></li>
+<li><p><strong>ttl</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – Optional time-to-live for Redis keys.</p></li>
+<li><p><strong>**kwargs</strong> (<em>Any</em>) – Additional keyword arguments for RedisConfig if
+config is not provided.</p></li>
+</ul>
+</dd>
+</dl>
 <p class="rubric">Attributes</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
@@ -441,7 +454,7 @@ pre-existing Redis connection via the redis_client argument.</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#langchain_redis.vectorstores.RedisVectorStore.__init__" title="langchain_redis.vectorstores.RedisVectorStore.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(embeddings[, config, ttl])</p></td>
-<td><p></p></td>
+<td><p>Initialize the RedisVectorStore.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#langchain_redis.vectorstores.RedisVectorStore.aadd_documents" title="langchain_redis.vectorstores.RedisVectorStore.aadd_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aadd_documents</span></code></a>(documents, **kwargs)</p></td>
 <td><p>Async run more documents through the embeddings and add to the vectorstore.</p></td>
@@ -536,26 +549,19 @@ pre-existing Redis connection via the redis_client argument.</p>
 </tbody>
 </table>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>embeddings</strong> (<a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><em>Embeddings</em></a>)</p></li>
-<li><p><strong>config</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="../config/langchain_redis.config.RedisConfig.html#langchain_redis.config.RedisConfig" title="langchain_redis.config.RedisConfig"><em>RedisConfig</em></a><em>]</em>)</p></li>
-<li><p><strong>ttl</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>)</p></li>
-<li><p><strong>kwargs</strong> (<em>Any</em>)</p></li>
-</ul>
-</dd>
-</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_redis.vectorstores.RedisVectorStore.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">embeddings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><span class="pre">Embeddings</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../config/langchain_redis.config.RedisConfig.html#langchain_redis.config.RedisConfig" title="langchain_redis.config.RedisConfig"><span class="pre">RedisConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ttl</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_redis/vectorstores.html#RedisVectorStore.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_redis.vectorstores.RedisVectorStore.__init__" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><p>Initialize the RedisVectorStore.</p>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>embeddings</strong> (<a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><em>Embeddings</em></a>)</p></li>
-<li><p><strong>config</strong> (<a class="reference internal" href="../config/langchain_redis.config.RedisConfig.html#langchain_redis.config.RedisConfig" title="langchain_redis.config.RedisConfig"><em>RedisConfig</em></a><em> | </em><em>None</em>)</p></li>
-<li><p><strong>ttl</strong> (<em>int</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>kwargs</strong> (<em>Any</em>)</p></li>
+<li><p><strong>embeddings</strong> (<a class="reference internal" href="../../core/embeddings/langchain_core.embeddings.embeddings.Embeddings.html#langchain_core.embeddings.embeddings.Embeddings" title="langchain_core.embeddings.embeddings.Embeddings"><em>Embeddings</em></a>) – The Embeddings instance used for this store.</p></li>
+<li><p><strong>config</strong> (<a class="reference internal" href="../config/langchain_redis.config.RedisConfig.html#langchain_redis.config.RedisConfig" title="langchain_redis.config.RedisConfig"><em>RedisConfig</em></a><em> | </em><em>None</em>) – Optional RedisConfig object. If not provided, a new
+one will be created from kwargs.</p></li>
+<li><p><strong>ttl</strong> (<em>int</em><em> | </em><em>None</em>) – Optional time-to-live for Redis keys.</p></li>
+<li><p><strong>**kwargs</strong> (<em>Any</em>) – Additional keyword arguments for RedisConfig if
+config is not provided.</p></li>
 </ul>
 </dd>
 </dl>

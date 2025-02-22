@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 21, 2025" name="docbuild:last-update"/>
+<meta content="Feb 22, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -290,6 +290,7 @@
     <span class="n">event_stream</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">"completion"</span><span class="p">]</span>
     <span class="n">session_id</span> <span class="o">=</span> <span class="n">response</span><span class="p">[</span><span class="s2">"sessionId"</span><span class="p">]</span>
     <span class="n">trace_log_elements</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">event_stream</span><span class="p">:</span>
         <span class="k">if</span> <span class="s2">"trace"</span> <span class="ow">in</span> <span class="n">event</span><span class="p">:</span>
             <span class="n">trace_log_elements</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">event</span><span class="p">[</span><span class="s2">"trace"</span><span class="p">])</span>
@@ -301,10 +302,13 @@
         <span class="k">if</span> <span class="s2">"chunk"</span> <span class="ow">in</span> <span class="n">event</span><span class="p">:</span>
             <span class="n">response_text</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s2">"chunk"</span><span class="p">][</span><span class="s2">"bytes"</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="s2">"files"</span> <span class="ow">in</span> <span class="n">event</span><span class="p">:</span>
+            <span class="n">files</span> <span class="o">=</span> <span class="n">event</span><span class="p">[</span><span class="s2">"files"</span><span class="p">][</span><span class="s2">"files"</span><span class="p">]</span>
+
     <span class="n">trace_log</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">trace_log_elements</span><span class="p">)</span>
 
     <span class="n">agent_finish</span> <span class="o">=</span> <span class="n">BedrockAgentFinish</span><span class="p">(</span>
-        <span class="n">return_values</span><span class="o">=</span><span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="n">response_text</span><span class="p">},</span>
+        <span class="n">return_values</span><span class="o">=</span><span class="p">{</span><span class="s2">"output"</span><span class="p">:</span> <span class="n">response_text</span><span class="p">,</span> <span class="s2">"files"</span><span class="p">:</span> <span class="n">files</span><span class="p">},</span>
         <span class="n">log</span><span class="o">=</span><span class="n">response_text</span><span class="p">,</span>
         <span class="n">session_id</span><span class="o">=</span><span class="n">session_id</span><span class="p">,</span>
         <span class="n">trace_log</span><span class="o">=</span><span class="n">trace_log</span><span class="p">,</span>
@@ -427,6 +431,7 @@
     <span class="n">agent_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
     <span class="n">tools</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseTool</span><span class="p">],</span>
     <span class="n">enable_human_input</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">enable_code_interpreter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Create the bedrock action groups for the agent"""</span>
 
@@ -451,6 +456,15 @@
         <span class="n">bedrock_client</span><span class="o">.</span><span class="n">create_agent_action_group</span><span class="p">(</span>
             <span class="n">actionGroupName</span><span class="o">=</span><span class="s2">"UserInputAction"</span><span class="p">,</span>
             <span class="n">parentActionGroupSignature</span><span class="o">=</span><span class="s2">"AMAZON.UserInput"</span><span class="p">,</span>
+            <span class="n">actionGroupState</span><span class="o">=</span><span class="s2">"ENABLED"</span><span class="p">,</span>
+            <span class="n">agentId</span><span class="o">=</span><span class="n">agent_id</span><span class="p">,</span>
+            <span class="n">agentVersion</span><span class="o">=</span><span class="s2">"DRAFT"</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">enable_code_interpreter</span><span class="p">:</span>
+        <span class="n">bedrock_client</span><span class="o">.</span><span class="n">create_agent_action_group</span><span class="p">(</span>
+            <span class="n">actionGroupName</span><span class="o">=</span><span class="s2">"CodeInterpreterAction"</span><span class="p">,</span>
+            <span class="n">parentActionGroupSignature</span><span class="o">=</span><span class="s2">"AMAZON.CodeInterpreter"</span><span class="p">,</span>
             <span class="n">actionGroupState</span><span class="o">=</span><span class="s2">"ENABLED"</span><span class="p">,</span>
             <span class="n">agentId</span><span class="o">=</span><span class="n">agent_id</span><span class="p">,</span>
             <span class="n">agentVersion</span><span class="o">=</span><span class="s2">"DRAFT"</span><span class="p">,</span>
@@ -652,6 +666,7 @@
         <span class="n">runtime_endpoint_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">enable_trace</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">enable_human_input</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">enable_code_interpreter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BedrockAgentsRunnable</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""</span>
@@ -693,6 +708,8 @@
 <span class="sd">                invoking the agent</span>
 <span class="sd">            enable_human_input: Boolean flag to specify whether a human as a tool should</span>
 <span class="sd">                 be enabled for the agent.</span>
+<span class="sd">            enable_code_interpreter: Boolean flag to specify whether a code interpreter</span>
+<span class="sd">            should be enabled for this session.</span>
 <span class="sd">            **kwargs: Additional arguments</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            BedrockAgentsRunnable configured to invoke the Bedrock agent</span>
@@ -727,7 +744,11 @@
                     <span class="n">idle_session_ttl_in_seconds</span><span class="o">=</span><span class="n">idle_session_ttl_in_seconds</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="n">_create_bedrock_action_groups</span><span class="p">(</span>
-                    <span class="n">bedrock_client</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">,</span> <span class="n">tools</span><span class="p">,</span> <span class="n">enable_human_input</span>
+                    <span class="n">bedrock_client</span><span class="p">,</span>
+                    <span class="n">agent_id</span><span class="p">,</span>
+                    <span class="n">tools</span><span class="p">,</span>
+                    <span class="n">enable_human_input</span><span class="p">,</span>
+                    <span class="n">enable_code_interpreter</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="n">_prepare_agent</span><span class="p">(</span><span class="n">bedrock_client</span><span class="p">,</span> <span class="n">agent_id</span><span class="p">)</span>
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>

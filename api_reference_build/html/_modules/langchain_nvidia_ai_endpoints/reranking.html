@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 21, 2025" name="docbuild:last-update"/>
+<meta content="Feb 22, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -280,6 +280,10 @@
     <span class="n">max_batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
         <span class="n">_DEFAULT_BATCH_SIZE</span><span class="p">,</span> <span class="n">ge</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">"The maximum batch size."</span>
     <span class="p">)</span>
+    <span class="n">extra_headers</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span>
+        <span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s2">"Extra headers to include in the request."</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">"""</span>
@@ -404,7 +408,9 @@
         <span class="p">}</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">truncate</span><span class="p">:</span>
             <span class="n">payload</span><span class="p">[</span><span class="s2">"truncate"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">truncate</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">get_req</span><span class="p">(</span><span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">get_req</span><span class="p">(</span>
+            <span class="n">payload</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span> <span class="n">extra_headers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extra_headers</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
             <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
         <span class="c1"># todo: handle errors</span>
