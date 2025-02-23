@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Feb 22, 2025" name="docbuild:last-update"/>
+<meta content="Feb 23, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -5015,7 +5015,7 @@
                     <span class="p">)</span>
 
             <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-            <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># type: ignore[no-untyped-def]</span>
+            <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
                 <span class="k">return</span> <span class="k">await</span> <span class="n">run_in_executor</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="n">afunc</span> <span class="o">=</span> <span class="n">f</span>
@@ -5263,7 +5263,7 @@
                 <span class="p">)</span>
 
             <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
-            <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>  <span class="c1"># type: ignore[no-untyped-def]</span>
+            <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
                 <span class="k">return</span> <span class="k">await</span> <span class="n">run_in_executor</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
             <span class="n">afunc</span> <span class="o">=</span> <span class="n">f</span>
