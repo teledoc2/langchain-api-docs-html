@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 05, 2025" name="docbuild:last-update"/>
+<meta content="Mar 06, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -220,7 +220,8 @@
 <div id="searchbox"></div>
 <article class="bd-article">
 <h1>Source code for langchain_google_community.bq_storage_vectorstores.bigquery</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">threading</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lock</span><span class="p">,</span> <span class="n">Thread</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Type</span><span class="p">,</span> <span class="n">Union</span>
@@ -422,6 +423,7 @@
         <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
         <span class="n">batch_size</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]]]:</span>
 <span class="w">        </span><span class="sd">"""Performs a similarity search using vector embeddings</span>
 
@@ -442,6 +444,8 @@
 <span class="sd">                - If a string is provided, it is assumed to be a valid SQL WHERE clause.</span>
 <span class="sd">            k: The number of top results to return for each query.</span>
 <span class="sd">            batch_size: The size of batches to process embeddings.</span>
+<span class="sd">            options: (Optional) A dictionary representing additional options for</span>
+<span class="sd">                VECTOR_SEARCH.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A list of lists of lists. Each inner list represents the results for a</span>
@@ -458,7 +462,12 @@
             <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">batch_size</span>  <span class="c1"># type: ignore[operator]</span>
             <span class="n">embs_batch</span> <span class="o">=</span> <span class="n">embeddings</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
             <span class="n">search_results</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_search_embeddings</span><span class="p">(</span><span class="n">embeddings</span><span class="o">=</span><span class="n">embs_batch</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_search_embeddings</span><span class="p">(</span>
+                    <span class="n">embeddings</span><span class="o">=</span><span class="n">embs_batch</span><span class="p">,</span>
+                    <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span>
+                    <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+                    <span class="n">options</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"options"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="p">)</span>
             <span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_langchain_documents</span><span class="p">(</span>
@@ -519,6 +528,7 @@
         <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
         <span class="n">table_to_query</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">fields_to_exclude</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="c1"># Get where filter</span>
         <span class="n">where_filter_expr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_filters</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
@@ -562,7 +572,8 @@
 <span class="s2">            "</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_field</span><span class="si">}</span><span class="s2">",</span>
 <span class="s2">            (SELECT row_num, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_field</span><span class="si">}</span><span class="s2"> FROM embeddings),</span>
 <span class="s2">            distance_type =&gt; "</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">distance_type</span><span class="si">}</span><span class="s2">",</span>
-<span class="s2">            top_k =&gt; </span><span class="si">{</span><span class="n">k</span><span class="si">}</span>
+<span class="s2">            top_k =&gt; </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">,</span>
+<span class="s2">            options =&gt; '</span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">options</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">options</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{})</span><span class="si">}</span><span class="s2">'</span>
 <span class="s2">        )</span>
 <span class="s2">        """</span>
         <span class="c1"># Wrap the Inner Query with an Outer SELECT to eliminate "base." column prefix</span>
@@ -580,11 +591,15 @@
         <span class="n">embeddings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span>
         <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">google.cloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">bigquery</span>  <span class="c1"># type: ignore[attr-defined]</span>
 
         <span class="n">full_query</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_search_query</span><span class="p">(</span>
-            <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">num_embeddings</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">)</span>
+            <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span>
+            <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+            <span class="n">num_embeddings</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">),</span>
+            <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">(</span>
@@ -682,6 +697,7 @@
         <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
         <span class="n">expire_hours_temp_table</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
+        <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]]]:</span>
 <span class="w">        </span><span class="sd">"""Multi-purpose batch search function. Accepts either embeddings or queries</span>
 <span class="sd">        but not both. Optionally returns similarity scores and/or matched embeddings</span>
@@ -703,7 +719,9 @@
 <span class="sd">            with_scores: If True, returns the relevance scores of the results along with</span>
 <span class="sd">                the documents</span>
 <span class="sd">            with_embeddings: If True, returns the embeddings of the results along with</span>
-<span class="sd">            the documents</span>
+<span class="sd">                the documents</span>
+<span class="sd">            options: (Optional) A dictionary representing additional options for</span>
+<span class="sd">                VECTOR_SEARCH.</span>
 <span class="sd">        """</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">google.cloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">bigquery</span>  <span class="c1"># type: ignore[attr-defined]</span>
 
@@ -733,6 +751,7 @@
             <span class="n">num_embeddings</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">),</span>
             <span class="n">table_to_query</span><span class="o">=</span><span class="n">table_ref</span><span class="p">,</span>
             <span class="n">fields_to_exclude</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_field</span><span class="p">],</span>
+            <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="n">job_config</span> <span class="o">=</span> <span class="n">bigquery</span><span class="o">.</span><span class="n">QueryJobConfig</span><span class="p">(</span>
@@ -785,6 +804,8 @@
 <span class="sd">                for each matched document. Defaults to False.</span>
 <span class="sd">            with_embeddings: (Optional) If True, include the matched document's</span>
 <span class="sd">                embedding vector in the result. Defaults to False.</span>
+<span class="sd">            options: (Optional) A dictionary representing additional options for</span>
+<span class="sd">                VECTOR_SEARCH.</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            A list of `k` documents for each embedding in `embeddings`</span>
 <span class="sd">        """</span>
@@ -829,6 +850,8 @@
 <span class="sd">                - If a string is provided, it is assumed to be a valid SQL WHERE clause.</span>
 <span class="sd">            k: (Optional) The number of top-ranking similar documents to return per</span>
 <span class="sd">                embedding. Defaults to 5.</span>
+<span class="sd">            options: (Optional) A dictionary representing additional options for</span>
+<span class="sd">                VECTOR_SEARCH.</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            Return docs most similar to embedding vector.</span>
 <span class="sd">        """</span>
@@ -844,6 +867,7 @@
         <span class="n">embedding</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
         <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">"""Return docs most similar to embedding vector with scores.</span>
 
@@ -859,11 +883,13 @@
 <span class="sd">                - If a string is provided, it is assumed to be a valid SQL WHERE clause.</span>
 <span class="sd">            k: (Optional) The number of top-ranking similar documents to return per</span>
 <span class="sd">                embedding. Defaults to 5.</span>
+<span class="sd">            options: (Optional) A dictionary representing additional options for</span>
+<span class="sd">                VECTOR_SEARCH.</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            Return docs most similar to embedding vector.</span>
 <span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">similarity_search_by_vectors</span><span class="p">(</span>
-            <span class="n">embeddings</span><span class="o">=</span><span class="p">[</span><span class="n">embedding</span><span class="p">],</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">with_scores</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">embeddings</span><span class="o">=</span><span class="p">[</span><span class="n">embedding</span><span class="p">],</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">with_scores</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
@@ -886,6 +912,8 @@
 <span class="sd">                - If a string is provided, it is assumed to be a valid SQL WHERE clause.</span>
 <span class="sd">            k: (Optional) The number of top-ranking similar documents to return per</span>
 <span class="sd">                embedding. Defaults to 5.</span>
+<span class="sd">            options: (Optional) A dictionary representing additional options for</span>
+<span class="sd">                VECTOR_SEARCH.</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            Return docs most similar to input query.</span>
 <span class="sd">        """</span>
@@ -919,12 +947,14 @@
 <span class="sd">                - If a string is provided, it is assumed to be a valid SQL WHERE clause.</span>
 <span class="sd">            k: (Optional) The number of top-ranking similar documents to return per</span>
 <span class="sd">                embedding. Defaults to 5.</span>
+<span class="sd">            options: (Optional) A dictionary representing additional options for</span>
+<span class="sd">                VECTOR_SEARCH.</span>
 <span class="sd">        Returns:</span>
 <span class="sd">            Return docs most similar to input query along with scores.</span>
 <span class="sd">        """</span>
         <span class="n">embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">similarity_search_by_vector_with_score</span><span class="p">(</span>
-            <span class="n">embedding</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span>
+            <span class="n">embedding</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="nb">filter</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
         <span class="p">)</span></div>
 
 

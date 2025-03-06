@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 05, 2025" name="docbuild:last-update"/>
+<meta content="Mar 06, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -307,6 +307,7 @@
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Initialize with Lance DB vectorstore"""</span>
         <span class="n">lancedb</span> <span class="o">=</span> <span class="n">guard_import</span><span class="p">(</span><span class="s2">"lancedb"</span><span class="p">)</span>
+        <span class="n">lancedb</span><span class="o">.</span><span class="n">remote</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">guard_import</span><span class="p">(</span><span class="s2">"lancedb.remote.table"</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_embedding</span> <span class="o">=</span> <span class="n">embedding</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_vector_key</span> <span class="o">=</span> <span class="n">vector_key</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_id_key</span> <span class="o">=</span> <span class="n">id_key</span>
