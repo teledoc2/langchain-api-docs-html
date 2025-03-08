@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 07, 2025" name="docbuild:last-update"/>
+<meta content="Mar 08, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -277,8 +277,8 @@
 <a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.langchain.wait_for_all_tracers.html#langchain_core.tracers.langchain.wait_for_all_tracers">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">wait_for_all_tracers</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Wait for all tracers to finish."""</span>
-    <span class="k">if</span> <span class="n">rt</span><span class="o">.</span><span class="n">_CLIENT</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">rt</span><span class="o">.</span><span class="n">_CLIENT</span><span class="o">.</span><span class="n">tracing_queue</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">rt</span><span class="o">.</span><span class="n">_CLIENT</span><span class="o">.</span><span class="n">tracing_queue</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div>
+    <span class="k">if</span> <span class="n">rt</span><span class="o">.</span><span class="n">_CLIENT</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">rt</span><span class="o">.</span><span class="n">_CLIENT</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
 
 
 
@@ -563,8 +563,8 @@
 <a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.langchain.LangChainTracer.html#langchain_core.tracers.langchain.LangChainTracer.wait_for_futures">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">wait_for_futures</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Wait for the given futures to complete."""</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">tracing_queue</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">tracing_queue</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span></div>
 </div>
 
 </pre></div>

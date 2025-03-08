@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 07, 2025" name="docbuild:last-update"/>
+<meta content="Mar 08, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -281,7 +281,7 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-groq: 0.2.4</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-groq: 0.2.5</a></li>
 <li class="breadcrumb-item"><a class="nav-link" href="../chat_models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chat_models</span></code></a></li>
 <li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">ChatGroq</span></li>
 </ul>
@@ -313,7 +313,7 @@ can be passed in, even if not explicitly saved on this class.</p>
 </div>
 </dd>
 <dt>Key init args — completion params:</dt><dd><dl class="simple">
-<dt>model: str</dt><dd><p>Name of Groq model to use. E.g. “mixtral-8x7b-32768”.</p>
+<dt>model: str</dt><dd><p>Name of Groq model to use. E.g. “llama-3.1-8b-instant”.</p>
 </dd>
 <dt>temperature: float</dt><dd><p>Sampling temperature. Ranges from 0.0 to 1.0.</p>
 </dd>
@@ -345,7 +345,7 @@ section.</p>
 <dt>Instantiate:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_groq</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatGroq</span>
 
 <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatGroq</span><span class="p">(</span>
-    <span class="n">model</span><span class="o">=</span><span class="s2">"mixtral-8x7b-32768"</span><span class="p">,</span>
+    <span class="n">model</span><span class="o">=</span><span class="s2">"llama-3.1-8b-instant"</span><span class="p">,</span>
     <span class="n">temperature</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
     <span class="n">max_retries</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
     <span class="c1"># other params...</span>
@@ -367,7 +367,7 @@ section.</p>
 <span class="n">response_metadata</span><span class="o">=</span><span class="p">{</span><span class="s1">'token_usage'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'completion_tokens'</span><span class="p">:</span> <span class="mi">38</span><span class="p">,</span>
 <span class="s1">'prompt_tokens'</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span> <span class="s1">'total_tokens'</span><span class="p">:</span> <span class="mi">66</span><span class="p">,</span> <span class="s1">'completion_time'</span><span class="p">:</span>
 <span class="mf">0.057975474</span><span class="p">,</span> <span class="s1">'prompt_time'</span><span class="p">:</span> <span class="mf">0.005366091</span><span class="p">,</span> <span class="s1">'queue_time'</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-<span class="s1">'total_time'</span><span class="p">:</span> <span class="mf">0.063341565</span><span class="p">},</span> <span class="s1">'model_name'</span><span class="p">:</span> <span class="s1">'mixtral-8x7b-32768'</span><span class="p">,</span>
+<span class="s1">'total_time'</span><span class="p">:</span> <span class="mf">0.063341565</span><span class="p">},</span> <span class="s1">'model_name'</span><span class="p">:</span> <span class="s1">'llama-3.1-8b-instant'</span><span class="p">,</span>
 <span class="s1">'system_fingerprint'</span><span class="p">:</span> <span class="s1">'fp_c5f20b5bb1'</span><span class="p">,</span> <span class="s1">'finish_reason'</span><span class="p">:</span> <span class="s1">'stop'</span><span class="p">,</span>
 <span class="s1">'logprobs'</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span> <span class="nb">id</span><span class="o">=</span><span class="s1">'run-ecc71d70-e10c-4b69-8b8c-b8027d95d4b8-0'</span><span class="p">)</span>
 </pre></div>
@@ -435,7 +435,7 @@ id=’run-a3c35ac4-0750-4d08-ac55-bfc63805de76’)</p>
 <span class="n">response_metadata</span><span class="o">=</span><span class="p">{</span><span class="s1">'token_usage'</span><span class="p">:</span> <span class="p">{</span><span class="s1">'completion_tokens'</span><span class="p">:</span> <span class="mi">53</span><span class="p">,</span>
 <span class="s1">'prompt_tokens'</span><span class="p">:</span> <span class="mi">28</span><span class="p">,</span> <span class="s1">'total_tokens'</span><span class="p">:</span> <span class="mi">81</span><span class="p">,</span> <span class="s1">'completion_time'</span><span class="p">:</span>
 <span class="mf">0.083623752</span><span class="p">,</span> <span class="s1">'prompt_time'</span><span class="p">:</span> <span class="mf">0.007365126</span><span class="p">,</span> <span class="s1">'queue_time'</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-<span class="s1">'total_time'</span><span class="p">:</span> <span class="mf">0.090988878</span><span class="p">},</span> <span class="s1">'model_name'</span><span class="p">:</span> <span class="s1">'mixtral-8x7b-32768'</span><span class="p">,</span>
+<span class="s1">'total_time'</span><span class="p">:</span> <span class="mf">0.090988878</span><span class="p">},</span> <span class="s1">'model_name'</span><span class="p">:</span> <span class="s1">'llama-3.1-8b-instant'</span><span class="p">,</span>
 <span class="s1">'system_fingerprint'</span><span class="p">:</span> <span class="s1">'fp_c5f20b5bb1'</span><span class="p">,</span> <span class="s1">'finish_reason'</span><span class="p">:</span> <span class="s1">'stop'</span><span class="p">,</span>
 <span class="s1">'logprobs'</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span> <span class="nb">id</span><span class="o">=</span><span class="s1">'run-897f3391-1bea-42e2-82e0-686e2367bcf8-0'</span><span class="p">)</span>
 </pre></div>
@@ -500,7 +500,7 @@ id=’run-a3c35ac4-0750-4d08-ac55-bfc63805de76’)</p>
 <span class="s1">'prompt_time'</span><span class="p">:</span> <span class="mf">0.007518279</span><span class="p">,</span>
 <span class="s1">'queue_time'</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
 <span class="s1">'total_time'</span><span class="p">:</span> <span class="mf">0.11947467</span><span class="p">},</span>
-<span class="s1">'model_name'</span><span class="p">:</span> <span class="s1">'mixtral-8x7b-32768'</span><span class="p">,</span>
+<span class="s1">'model_name'</span><span class="p">:</span> <span class="s1">'llama-3.1-8b-instant'</span><span class="p">,</span>
 <span class="s1">'system_fingerprint'</span><span class="p">:</span> <span class="s1">'fp_c5f20b5bb1'</span><span class="p">,</span>
 <span class="s1">'finish_reason'</span><span class="p">:</span> <span class="s1">'stop'</span><span class="p">,</span>
 <span class="s1">'logprobs'</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>

@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 07, 2025" name="docbuild:last-update"/>
+<meta content="Mar 08, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -746,6 +746,41 @@
 
 <span class="sd">            "The image depicts a sunny day with a partly cloudy sky. The sky is a brilliant blue color with scattered white clouds drifting across. The lighting and cloud patterns suggest pleasant, mild weather conditions. The scene shows a grassy field or meadow with a wooden boardwalk trail leading through it, indicating an outdoor setting on a nice day well-suited for enjoying nature."</span>
 
+<span class="sd">    PDF input:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from base64 import b64encode</span>
+<span class="sd">            from langchain_anthropic import ChatAnthropic</span>
+<span class="sd">            from langchain_core.messages import HumanMessage</span>
+<span class="sd">            import requests</span>
+
+<span class="sd">            url = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"</span>
+<span class="sd">            data = b64encode(requests.get(url).content).decode()</span>
+
+<span class="sd">            llm = ChatAnthropic(model="claude-3-5-sonnet-latest")</span>
+<span class="sd">            ai_msg = llm.invoke(</span>
+<span class="sd">                [</span>
+<span class="sd">                    HumanMessage(</span>
+<span class="sd">                        [</span>
+<span class="sd">                            "Summarize this document.",</span>
+<span class="sd">                            {</span>
+<span class="sd">                                "type": "document",</span>
+<span class="sd">                                "source": {</span>
+<span class="sd">                                    "type": "base64",</span>
+<span class="sd">                                    "data": data,</span>
+<span class="sd">                                    "media_type": "application/pdf",</span>
+<span class="sd">                                },</span>
+<span class="sd">                            },</span>
+<span class="sd">                        ]</span>
+<span class="sd">                    )</span>
+<span class="sd">                ]</span>
+<span class="sd">            )</span>
+<span class="sd">            ai_msg.content</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            "This appears to be a simple document..."</span>
+
 <span class="sd">    Extended thinking:</span>
 <span class="sd">        Claude 3.7 Sonnet supports an</span>
 <span class="sd">        `extended thinking &lt;https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking&gt;`_</span>
@@ -1206,7 +1241,10 @@
         <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">thinking_admonition</span><span class="p">)</span>
         <span class="n">llm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bind_tools</span><span class="p">(</span>
             <span class="p">[</span><span class="n">schema</span><span class="p">],</span>
-            <span class="n">structured_output_format</span><span class="o">=</span><span class="p">{</span><span class="s2">"kwargs"</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">"schema"</span><span class="p">:</span> <span class="n">formatted_tool</span><span class="p">},</span>
+            <span class="n">ls_structured_output_format</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">"kwargs"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"method"</span><span class="p">:</span> <span class="s2">"function_calling"</span><span class="p">},</span>
+                <span class="s2">"schema"</span><span class="p">:</span> <span class="n">formatted_tool</span><span class="p">,</span>
+            <span class="p">},</span>
         <span class="p">)</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_raise_if_no_tool_calls</span><span class="p">(</span><span class="n">message</span><span class="p">:</span> <span class="n">AIMessage</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AIMessage</span><span class="p">:</span>
@@ -1526,7 +1564,10 @@
             <span class="n">llm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bind_tools</span><span class="p">(</span>
                 <span class="p">[</span><span class="n">schema</span><span class="p">],</span>
                 <span class="n">tool_choice</span><span class="o">=</span><span class="n">tool_name</span><span class="p">,</span>
-                <span class="n">structured_output_format</span><span class="o">=</span><span class="p">{</span><span class="s2">"kwargs"</span><span class="p">:</span> <span class="p">{},</span> <span class="s2">"schema"</span><span class="p">:</span> <span class="n">formatted_tool</span><span class="p">},</span>
+                <span class="n">ls_structured_output_format</span><span class="o">=</span><span class="p">{</span>
+                    <span class="s2">"kwargs"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"method"</span><span class="p">:</span> <span class="s2">"function_calling"</span><span class="p">},</span>
+                    <span class="s2">"schema"</span><span class="p">:</span> <span class="n">formatted_tool</span><span class="p">,</span>
+                <span class="p">},</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_basemodel_subclass</span><span class="p">(</span><span class="n">schema</span><span class="p">):</span>

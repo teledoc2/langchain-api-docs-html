@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 07, 2025" name="docbuild:last-update"/>
+<meta content="Mar 08, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -242,7 +242,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseTool</span><span class="p">,</span> <span class="n">tool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.utils.function_calling</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">convert_to_openai_tool</span><span class="p">,</span>
+    <span class="n">convert_to_json_schema</span><span class="p">,</span>
     <span class="n">tool_example_to_messages</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
@@ -294,21 +294,21 @@
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_TestCallbackHandler</span><span class="p">(</span><span class="n">BaseCallbackHandler</span><span class="p">):</span>
-    <span class="n">metadatas</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span>
+    <span class="n">options</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metadatas</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">on_chat_model_start</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">serialized</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="n">messages</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">options</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">metadatas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">_MagicFunctionSchema</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
@@ -1514,16 +1514,16 @@
         <span class="p">)</span>
         <span class="n">validation_function</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">invoke_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">invoke_callback</span><span class="o">.</span><span class="n">options</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
             <span class="s2">"Expected on_chat_model_start to be called once"</span>
         <span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">invoke_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">invoke_callback</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-            <span class="n">invoke_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"structured_output_format"</span><span class="p">][</span><span class="s2">"schema"</span><span class="p">],</span> <span class="nb">dict</span>
+            <span class="n">invoke_callback</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"ls_structured_output_format"</span><span class="p">][</span><span class="s2">"schema"</span><span class="p">],</span> <span class="nb">dict</span>
         <span class="p">)</span>
-        <span class="k">assert</span> <span class="n">invoke_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"structured_output_format"</span><span class="p">][</span>
+        <span class="k">assert</span> <span class="n">invoke_callback</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"ls_structured_output_format"</span><span class="p">][</span>
             <span class="s2">"schema"</span>
-        <span class="p">]</span> <span class="o">==</span> <span class="n">convert_to_openai_tool</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">==</span> <span class="n">convert_to_json_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
 
         <span class="n">stream_callback</span> <span class="o">=</span> <span class="n">_TestCallbackHandler</span><span class="p">()</span>
 
@@ -1533,16 +1533,16 @@
             <span class="n">validation_function</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">chunk</span>
 
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">stream_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">stream_callback</span><span class="o">.</span><span class="n">options</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
             <span class="s2">"Expected on_chat_model_start to be called once"</span>
         <span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stream_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">stream_callback</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-            <span class="n">stream_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"structured_output_format"</span><span class="p">][</span><span class="s2">"schema"</span><span class="p">],</span> <span class="nb">dict</span>
+            <span class="n">stream_callback</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"ls_structured_output_format"</span><span class="p">][</span><span class="s2">"schema"</span><span class="p">],</span> <span class="nb">dict</span>
         <span class="p">)</span>
-        <span class="k">assert</span> <span class="n">stream_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"structured_output_format"</span><span class="p">][</span>
+        <span class="k">assert</span> <span class="n">stream_callback</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"ls_structured_output_format"</span><span class="p">][</span>
             <span class="s2">"schema"</span>
-        <span class="p">]</span> <span class="o">==</span> <span class="n">convert_to_openai_tool</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span></div>
+        <span class="p">]</span> <span class="o">==</span> <span class="n">convert_to_json_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ChatModelIntegrationTests.test_structured_output_async">
@@ -1593,16 +1593,16 @@
         <span class="p">)</span>
         <span class="n">validation_function</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ainvoke_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">ainvoke_callback</span><span class="o">.</span><span class="n">options</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
             <span class="s2">"Expected on_chat_model_start to be called once"</span>
         <span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ainvoke_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ainvoke_callback</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-            <span class="n">ainvoke_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"structured_output_format"</span><span class="p">][</span><span class="s2">"schema"</span><span class="p">],</span> <span class="nb">dict</span>
+            <span class="n">ainvoke_callback</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"ls_structured_output_format"</span><span class="p">][</span><span class="s2">"schema"</span><span class="p">],</span> <span class="nb">dict</span>
         <span class="p">)</span>
-        <span class="k">assert</span> <span class="n">ainvoke_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"structured_output_format"</span><span class="p">][</span>
+        <span class="k">assert</span> <span class="n">ainvoke_callback</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"ls_structured_output_format"</span><span class="p">][</span>
             <span class="s2">"schema"</span>
-        <span class="p">]</span> <span class="o">==</span> <span class="n">convert_to_openai_tool</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
+        <span class="p">]</span> <span class="o">==</span> <span class="n">convert_to_json_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span>
 
         <span class="n">astream_callback</span> <span class="o">=</span> <span class="n">_TestCallbackHandler</span><span class="p">()</span>
 
@@ -1612,17 +1612,17 @@
             <span class="n">validation_function</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">chunk</span>
 
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">astream_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">astream_callback</span><span class="o">.</span><span class="n">options</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
             <span class="s2">"Expected on_chat_model_start to be called once"</span>
         <span class="p">)</span>
 
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">astream_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">astream_callback</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">dict</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
-            <span class="n">astream_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"structured_output_format"</span><span class="p">][</span><span class="s2">"schema"</span><span class="p">],</span> <span class="nb">dict</span>
+            <span class="n">astream_callback</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"ls_structured_output_format"</span><span class="p">][</span><span class="s2">"schema"</span><span class="p">],</span> <span class="nb">dict</span>
         <span class="p">)</span>
-        <span class="k">assert</span> <span class="n">astream_callback</span><span class="o">.</span><span class="n">metadatas</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"structured_output_format"</span><span class="p">][</span>
+        <span class="k">assert</span> <span class="n">astream_callback</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"ls_structured_output_format"</span><span class="p">][</span>
             <span class="s2">"schema"</span>
-        <span class="p">]</span> <span class="o">==</span> <span class="n">convert_to_openai_tool</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span></div>
+        <span class="p">]</span> <span class="o">==</span> <span class="n">convert_to_json_schema</span><span class="p">(</span><span class="n">schema</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ChatModelIntegrationTests.test_structured_output_pydantic_2_v1">
