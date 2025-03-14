@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 13, 2025" name="docbuild:last-update"/>
+<meta content="Mar 14, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -2445,6 +2445,74 @@
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
         <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">content</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+
+
+<div class="viewcode-block" id="ChatModelIntegrationTests.test_agent_loop">
+<a class="viewcode-back" href="../../../standard_tests/integration_tests/langchain_tests.integration_tests.chat_models.ChatModelIntegrationTests.html#langchain_tests.integration_tests.chat_models.ChatModelIntegrationTests.test_agent_loop">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">test_agent_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">BaseChatModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Test that the model supports a simple ReAct agent loop. This test is skipped</span>
+<span class="sd">        if the ``has_tool_calling`` property on the test class is set to False.</span>
+
+<span class="sd">        This test is optional and should be skipped if the model does not support</span>
+<span class="sd">        tool calling (see Configuration below).</span>
+
+<span class="sd">        .. dropdown:: Configuration</span>
+
+<span class="sd">            To disable tool calling tests, set ``has_tool_calling`` to False in your</span>
+<span class="sd">            test class:</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                class TestMyChatModelIntegration(ChatModelIntegrationTests):</span>
+<span class="sd">                    @property</span>
+<span class="sd">                    def has_tool_calling(self) -&gt; bool:</span>
+<span class="sd">                        return False</span>
+
+<span class="sd">        .. dropdown:: Troubleshooting</span>
+
+<span class="sd">            If this test fails, check that ``bind_tools`` is implemented to correctly</span>
+<span class="sd">            translate LangChain tool objects into the appropriate schema for your</span>
+<span class="sd">            chat model.</span>
+
+<span class="sd">            Check also that all required information (e.g., tool calling identifiers)</span>
+<span class="sd">            from AIMessage objects is propagated correctly to model payloads.</span>
+
+<span class="sd">            This test may fail if the chat model does not consistently generate tool</span>
+<span class="sd">            calls in response to an appropriate query. In these cases you can ``xfail``</span>
+<span class="sd">            the test:</span>
+
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                @pytest.mark.xfail(reason=("Does not support tool_choice."))</span>
+<span class="sd">                def test_agent_loop(self, model: BaseChatModel) -&gt; None:</span>
+<span class="sd">                    super().test_agent_loop(model)</span>
+
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_tool_calling</span><span class="p">:</span>
+            <span class="n">pytest</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="s2">"Test requires tool calling."</span><span class="p">)</span>
+
+        <span class="nd">@tool</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">get_weather</span><span class="p">(</span><span class="n">location</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">            </span><span class="sd">"""Call to surf the web."""</span>
+            <span class="k">return</span> <span class="s2">"It's sunny."</span>
+
+        <span class="n">llm_with_tools</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">bind_tools</span><span class="p">([</span><span class="n">get_weather</span><span class="p">])</span>
+        <span class="n">input_message</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span><span class="s2">"What is the weather in San Francisco, CA?"</span><span class="p">)</span>
+        <span class="n">tool_call_message</span> <span class="o">=</span> <span class="n">llm_with_tools</span><span class="o">.</span><span class="n">invoke</span><span class="p">([</span><span class="n">input_message</span><span class="p">])</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tool_call_message</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">)</span>
+        <span class="n">tool_calls</span> <span class="o">=</span> <span class="n">tool_call_message</span><span class="o">.</span><span class="n">tool_calls</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">tool_calls</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+        <span class="n">tool_call</span> <span class="o">=</span> <span class="n">tool_calls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">tool_message</span> <span class="o">=</span> <span class="n">get_weather</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">tool_call</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tool_message</span><span class="p">,</span> <span class="n">ToolMessage</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">llm_with_tools</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">input_message</span><span class="p">,</span>
+                <span class="n">tool_call_message</span><span class="p">,</span>
+                <span class="n">tool_message</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">)</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">invoke_with_audio_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">stream</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AIMessage</span><span class="p">:</span>

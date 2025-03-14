@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 13, 2025" name="docbuild:last-update"/>
+<meta content="Mar 14, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -386,6 +386,13 @@
 
         <span class="n">messages</span> <span class="o">=</span> <span class="n">messages_from_dict</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">messages</span>
+
+<div class="viewcode-block" id="MongoDBChatMessageHistory.close">
+<a class="viewcode-back" href="../../mongodb/chat_message_histories/langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.html#langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.close">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Close the resources used by the MongoDBChatMessageHistory."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
 
 <div class="viewcode-block" id="MongoDBChatMessageHistory.add_message">
 <a class="viewcode-back" href="../../mongodb/chat_message_histories/langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.html#langchain_mongodb.chat_message_histories.MongoDBChatMessageHistory.add_message">[docs]</a>

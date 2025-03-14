@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 13, 2025" name="docbuild:last-update"/>
+<meta content="Mar 14, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -338,16 +338,19 @@ details and configurations.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.loaders.MongoDBLoader.aload" title="langchain_mongodb.loaders.MongoDBLoader.aload"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aload</span></code></a>()</p></td>
 <td><p>Asynchronously loads data into Document objects.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.loaders.MongoDBLoader.from_connection_string" title="langchain_mongodb.loaders.MongoDBLoader.from_connection_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_connection_string</span></code></a>(connection_string, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.loaders.MongoDBLoader.close" title="langchain_mongodb.loaders.MongoDBLoader.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
+<td><p>Close the resources used by the MongoDBLoader.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.loaders.MongoDBLoader.from_connection_string" title="langchain_mongodb.loaders.MongoDBLoader.from_connection_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_connection_string</span></code></a>(connection_string, ...)</p></td>
 <td><p>Creates a MongoDB loader with necessary database connection details and configurations.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.loaders.MongoDBLoader.lazy_load" title="langchain_mongodb.loaders.MongoDBLoader.lazy_load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lazy_load</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.loaders.MongoDBLoader.lazy_load" title="langchain_mongodb.loaders.MongoDBLoader.lazy_load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lazy_load</span></code></a>()</p></td>
 <td><p>A lazy loader for Documents.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.loaders.MongoDBLoader.load" title="langchain_mongodb.loaders.MongoDBLoader.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.loaders.MongoDBLoader.load" title="langchain_mongodb.loaders.MongoDBLoader.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>()</p></td>
 <td><p>Load data into Document objects.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.loaders.MongoDBLoader.load_and_split" title="langchain_mongodb.loaders.MongoDBLoader.load_and_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_and_split</span></code></a>([text_splitter])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.loaders.MongoDBLoader.load_and_split" title="langchain_mongodb.loaders.MongoDBLoader.load_and_split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_and_split</span></code></a>([text_splitter])</p></td>
 <td><p>Load Documents and split into chunks.</p></td>
 </tr>
 </tbody>
@@ -394,6 +397,16 @@ details and configurations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>List</em>[<a class="reference internal" href="../../core/documents/langchain_core.documents.base.Document.html#langchain_core.documents.base.Document" title="langchain_core.documents.base.Document"><em>Document</em></a>]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="langchain_mongodb.loaders.MongoDBLoader.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/langchain_mongodb/loaders.html#MongoDBLoader.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_mongodb.loaders.MongoDBLoader.close" title="Link to this definition">#</a></dt>
+<dd><p>Close the resources used by the MongoDBLoader.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -479,6 +492,7 @@ Defaults to RecursiveCharacterTextSplitter.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.loaders.MongoDBLoader.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.loaders.MongoDBLoader.alazy_load"><code class="docutils literal notranslate"><span class="pre">alazy_load()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.loaders.MongoDBLoader.aload"><code class="docutils literal notranslate"><span class="pre">aload()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.loaders.MongoDBLoader.close"><code class="docutils literal notranslate"><span class="pre">close()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.loaders.MongoDBLoader.from_connection_string"><code class="docutils literal notranslate"><span class="pre">from_connection_string()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.loaders.MongoDBLoader.lazy_load"><code class="docutils literal notranslate"><span class="pre">lazy_load()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.loaders.MongoDBLoader.load"><code class="docutils literal notranslate"><span class="pre">load()</span></code></a></li>

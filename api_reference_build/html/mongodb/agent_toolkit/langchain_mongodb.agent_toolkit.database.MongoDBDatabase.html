@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 13, 2025" name="docbuild:last-update"/>
+<meta content="Mar 14, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -330,25 +330,28 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.__init__" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(client, database[, schema, ...])</p></td>
 <td><p>Create a MongoDBDatabase from client and database name.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.from_connection_string" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.from_connection_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_connection_string</span></code></a>(connection_string[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.close" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
+<td><p>Close the resources used by the MongoDBDatabase.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.from_connection_string" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.from_connection_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_connection_string</span></code></a>(connection_string[, ...])</p></td>
 <td><p>Construct a MongoDBDatabase from URI.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_collection_info" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_collection_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_collection_info</span></code></a>([collection_names])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_collection_info" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_collection_info"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_collection_info</span></code></a>([collection_names])</p></td>
 <td><p>Get information about specified collections.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_collection_info_no_throw" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_collection_info_no_throw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_collection_info_no_throw</span></code></a>([collection_names])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_collection_info_no_throw" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_collection_info_no_throw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_collection_info_no_throw</span></code></a>([collection_names])</p></td>
 <td><p>Get information about specified collections.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_context" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_context</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_context" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_context"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_context</span></code></a>()</p></td>
 <td><p>Return db context that you may want in agent prompt.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_usable_collection_names" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_usable_collection_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_usable_collection_names</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_usable_collection_names" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_usable_collection_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_usable_collection_names</span></code></a>()</p></td>
 <td><p>Get names of collections available.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.run" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(command)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.run" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(command)</p></td>
 <td><p>Execute a MongoDB aggregation command and return a string representing the results.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.run_no_throw" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.run_no_throw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_no_throw</span></code></a>(command)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.run_no_throw" title="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.run_no_throw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run_no_throw</span></code></a>(command)</p></td>
 <td><p>Execute a MongoDB command and return a string representing the results.</p></td>
 </tr>
 </tbody>
@@ -382,6 +385,16 @@
 <li><p><strong>sample_docs_in_collection_info</strong> (<em>int</em>)</p></li>
 <li><p><strong>indexes_in_collection_info</strong> (<em>bool</em>)</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="langchain_mongodb.agent_toolkit.database.MongoDBDatabase.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/langchain_mongodb/agent_toolkit/database.html#MongoDBDatabase.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.close" title="Link to this definition">#</a></dt>
+<dd><p>Close the resources used by the MongoDBDatabase.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -506,6 +519,7 @@ If the statement returns no rows, an empty string is returned.</p>
 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase"><code class="docutils literal notranslate"><span class="pre">MongoDBDatabase</span></code></a><ul class="visible nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.close"><code class="docutils literal notranslate"><span class="pre">close()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.from_connection_string"><code class="docutils literal notranslate"><span class="pre">from_connection_string()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_collection_info"><code class="docutils literal notranslate"><span class="pre">get_collection_info()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.agent_toolkit.database.MongoDBDatabase.get_collection_info_no_throw"><code class="docutils literal notranslate"><span class="pre">get_collection_info_no_throw()</span></code></a></li>

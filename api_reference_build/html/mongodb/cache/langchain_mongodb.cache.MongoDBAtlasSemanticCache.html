@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 13, 2025" name="docbuild:last-update"/>
+<meta content="Mar 14, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -417,49 +417,52 @@ the stored text. Defaults to None.</p></li>
 <tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.clear" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>(**kwargs)</p></td>
 <td><p>Clear cache that can take additional keyword arguments.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.create_vector_search_index" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.create_vector_search_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_vector_search_index</span></code></a>(dimensions[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.close" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
+<td><p>Close the resources used by the MongoDBAtlasVectorSearch.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.create_vector_search_index" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.create_vector_search_index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_vector_search_index</span></code></a>(dimensions[, ...])</p></td>
 <td><p>Creates a MongoDB Atlas vectorSearch index for the VectorStore</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.delete" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>([ids])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.delete" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.delete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete</span></code></a>([ids])</p></td>
 <td><p>Delete documents from VectorStore by ids.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.from_connection_string" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.from_connection_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_connection_string</span></code></a>(connection_string, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.from_connection_string" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.from_connection_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_connection_string</span></code></a>(connection_string, ...)</p></td>
 <td><p>Construct a <cite>MongoDB Atlas Vector Search</cite> vector store from a MongoDB connection URI.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.from_documents" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.from_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_documents</span></code></a>(documents, embedding, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.from_documents" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.from_documents"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_documents</span></code></a>(documents, embedding, **kwargs)</p></td>
 <td><p>Return VectorStore initialized from documents and embeddings.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.from_texts" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.from_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_texts</span></code></a>(texts, embedding[, metadatas, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.from_texts" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.from_texts"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_texts</span></code></a>(texts, embedding[, metadatas, ...])</p></td>
 <td><p>Construct a <cite>MongoDB Atlas Vector Search</cite> vector store from raw documents.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.get_by_ids" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.get_by_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_by_ids</span></code></a>(ids, /)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.get_by_ids" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.get_by_ids"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_by_ids</span></code></a>(ids, /)</p></td>
 <td><p>Get documents by their IDs.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.lookup" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.lookup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lookup</span></code></a>(prompt, llm_string)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.lookup" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.lookup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lookup</span></code></a>(prompt, llm_string)</p></td>
 <td><p>Look up based on prompt and llm_string.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.max_marginal_relevance_search" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.max_marginal_relevance_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_marginal_relevance_search</span></code></a>(query[, k, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.max_marginal_relevance_search" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.max_marginal_relevance_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_marginal_relevance_search</span></code></a>(query[, k, ...])</p></td>
 <td><p>Return documents selected using the maximal marginal relevance.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.max_marginal_relevance_search_by_vector" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.max_marginal_relevance_search_by_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_marginal_relevance_search_by_vector</span></code></a>(...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.max_marginal_relevance_search_by_vector" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.max_marginal_relevance_search_by_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max_marginal_relevance_search_by_vector</span></code></a>(...)</p></td>
 <td><p>Return docs selected using the maximal marginal relevance.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.search" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search</span></code></a>(query, search_type, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.search" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">search</span></code></a>(query, search_type, **kwargs)</p></td>
 <td><p>Return docs most similar to query using a specified search type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search</span></code></a>(query[, k, pre_filter, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search</span></code></a>(query[, k, pre_filter, ...])</p></td>
 <td><p>Return MongoDB documents most similar to the given query.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search_by_vector" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search_by_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_by_vector</span></code></a>(embedding[, k])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search_by_vector" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search_by_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_by_vector</span></code></a>(embedding[, k])</p></td>
 <td><p>Return docs most similar to embedding vector.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search_with_relevance_scores" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search_with_relevance_scores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_with_relevance_scores</span></code></a>(query)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search_with_relevance_scores" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search_with_relevance_scores"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_with_relevance_scores</span></code></a>(query)</p></td>
 <td><p>Return docs and relevance scores in the range [0, 1].</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search_with_score" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search_with_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_with_score</span></code></a>(query[, k, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search_with_score" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.similarity_search_with_score"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search_with_score</span></code></a>(query[, k, ...])</p></td>
 <td><p>Return MongoDB documents most similar to the given query and their scores.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.update" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(prompt, llm_string, return_val[, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.update" title="langchain_mongodb.cache.MongoDBAtlasSemanticCache.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(prompt, llm_string, return_val[, ...])</p></td>
 <td><p>Update cache based on prompt and llm_string.</p></td>
 </tr>
 </tbody>
@@ -1032,6 +1035,16 @@ self.clear(llm_string=”fake-model”)</p>
 </dl>
 </dd></dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="langchain_mongodb.cache.MongoDBAtlasSemanticCache.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.close" title="Link to this definition">#</a></dt>
+<dd><p>Close the resources used by the MongoDBAtlasVectorSearch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
 <dt class="sig sig-object py" id="langchain_mongodb.cache.MongoDBAtlasSemanticCache.create_vector_search_index">
 <span class="sig-name descname"><span class="pre">create_vector_search_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dimensions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wait_until_complete</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.create_vector_search_index" title="Link to this definition">#</a></dt>
 <dd><p>Creates a MongoDB Atlas vectorSearch index for the VectorStore</p>
@@ -1478,6 +1491,7 @@ post_filter_pipeline: (Optional) Arbitrary pipeline of MongoDB</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.aupdate"><code class="docutils literal notranslate"><span class="pre">aupdate()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.bulk_embed_and_insert_texts"><code class="docutils literal notranslate"><span class="pre">bulk_embed_and_insert_texts()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.clear"><code class="docutils literal notranslate"><span class="pre">clear()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.close"><code class="docutils literal notranslate"><span class="pre">close()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.create_vector_search_index"><code class="docutils literal notranslate"><span class="pre">create_vector_search_index()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.delete"><code class="docutils literal notranslate"><span class="pre">delete()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.cache.MongoDBAtlasSemanticCache.from_connection_string"><code class="docutils literal notranslate"><span class="pre">from_connection_string()</span></code></a></li>

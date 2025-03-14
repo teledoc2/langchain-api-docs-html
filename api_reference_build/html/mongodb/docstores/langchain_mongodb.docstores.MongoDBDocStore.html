@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 13, 2025" name="docbuild:last-update"/>
+<meta content="Mar 14, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -334,22 +334,25 @@ It can contain any valid BSON type.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.docstores.MongoDBDocStore.ayield_keys" title="langchain_mongodb.docstores.MongoDBDocStore.ayield_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ayield_keys</span></code></a>(*[, prefix])</p></td>
 <td><p>Async get an iterator over keys that match the given prefix.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.docstores.MongoDBDocStore.from_connection_string" title="langchain_mongodb.docstores.MongoDBDocStore.from_connection_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_connection_string</span></code></a>(connection_string, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.docstores.MongoDBDocStore.close" title="langchain_mongodb.docstores.MongoDBDocStore.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
+<td><p>Close the resources used by the MongoDBDocStore.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.docstores.MongoDBDocStore.from_connection_string" title="langchain_mongodb.docstores.MongoDBDocStore.from_connection_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_connection_string</span></code></a>(connection_string, ...)</p></td>
 <td><p>Construct a Key-Value Store from a MongoDB connection URI.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.docstores.MongoDBDocStore.insert_many" title="langchain_mongodb.docstores.MongoDBDocStore.insert_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_many</span></code></a>(texts, metadatas, ids)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.docstores.MongoDBDocStore.insert_many" title="langchain_mongodb.docstores.MongoDBDocStore.insert_many"><code class="xref py py-obj docutils literal notranslate"><span class="pre">insert_many</span></code></a>(texts, metadatas, ids)</p></td>
 <td><p>Bulk insert single batch of texts, embeddings, and optionally ids.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.docstores.MongoDBDocStore.mdelete" title="langchain_mongodb.docstores.MongoDBDocStore.mdelete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mdelete</span></code></a>(keys)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.docstores.MongoDBDocStore.mdelete" title="langchain_mongodb.docstores.MongoDBDocStore.mdelete"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mdelete</span></code></a>(keys)</p></td>
 <td><p>Delete the given keys and their associated values.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.docstores.MongoDBDocStore.mget" title="langchain_mongodb.docstores.MongoDBDocStore.mget"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mget</span></code></a>(keys)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.docstores.MongoDBDocStore.mget" title="langchain_mongodb.docstores.MongoDBDocStore.mget"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mget</span></code></a>(keys)</p></td>
 <td><p>Get the values associated with the given keys.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.docstores.MongoDBDocStore.mset" title="langchain_mongodb.docstores.MongoDBDocStore.mset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mset</span></code></a>(key_value_pairs[, batch_size])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.docstores.MongoDBDocStore.mset" title="langchain_mongodb.docstores.MongoDBDocStore.mset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mset</span></code></a>(key_value_pairs[, batch_size])</p></td>
 <td><p>Set the values for the given keys.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.docstores.MongoDBDocStore.yield_keys" title="langchain_mongodb.docstores.MongoDBDocStore.yield_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yield_keys</span></code></a>(*[, prefix])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.docstores.MongoDBDocStore.yield_keys" title="langchain_mongodb.docstores.MongoDBDocStore.yield_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">yield_keys</span></code></a>(*[, prefix])</p></td>
 <td><p>Get an iterator over keys that match the given prefix.</p></td>
 </tr>
 </tbody>
@@ -436,6 +439,16 @@ depending on what makes more sense for the given store.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><em>AsyncIterator</em>[<em>K</em>] | <em>AsyncIterator</em>[str]</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="langchain_mongodb.docstores.MongoDBDocStore.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/langchain_mongodb/docstores.html#MongoDBDocStore.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_mongodb.docstores.MongoDBDocStore.close" title="Link to this definition">#</a></dt>
+<dd><p>Close the resources used by the MongoDBDocStore.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -565,6 +578,7 @@ depending on what makes more sense for the given store.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.docstores.MongoDBDocStore.amget"><code class="docutils literal notranslate"><span class="pre">amget()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.docstores.MongoDBDocStore.amset"><code class="docutils literal notranslate"><span class="pre">amset()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.docstores.MongoDBDocStore.ayield_keys"><code class="docutils literal notranslate"><span class="pre">ayield_keys()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.docstores.MongoDBDocStore.close"><code class="docutils literal notranslate"><span class="pre">close()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.docstores.MongoDBDocStore.from_connection_string"><code class="docutils literal notranslate"><span class="pre">from_connection_string()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.docstores.MongoDBDocStore.insert_many"><code class="docutils literal notranslate"><span class="pre">insert_many()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.docstores.MongoDBDocStore.mdelete"><code class="docutils literal notranslate"><span class="pre">mdelete()</span></code></a></li>

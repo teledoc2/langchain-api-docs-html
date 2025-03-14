@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 13, 2025" name="docbuild:last-update"/>
+<meta content="Mar 14, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -396,22 +396,25 @@ Defaults to .prompts.NAME_EXTRACTION_INSTRUCTIONS</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.chat_response" title="langchain_mongodb.graphrag.graph.MongoDBGraphStore.chat_response"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chat_response</span></code></a>(query[, chat_model, prompt])</p></td>
 <td><p>Responds to a query given information found in Knowledge Graph.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.extract_entities" title="langchain_mongodb.graphrag.graph.MongoDBGraphStore.extract_entities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_entities</span></code></a>(raw_document, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.close" title="langchain_mongodb.graphrag.graph.MongoDBGraphStore.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
+<td><p>Close the resources used by the MongoDBGraphStore.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.extract_entities" title="langchain_mongodb.graphrag.graph.MongoDBGraphStore.extract_entities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_entities</span></code></a>(raw_document, **kwargs)</p></td>
 <td><p>Extract entities and their relations using chosen prompt and LLM.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.extract_entity_names" title="langchain_mongodb.graphrag.graph.MongoDBGraphStore.extract_entity_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_entity_names</span></code></a>(raw_document, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.extract_entity_names" title="langchain_mongodb.graphrag.graph.MongoDBGraphStore.extract_entity_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">extract_entity_names</span></code></a>(raw_document, **kwargs)</p></td>
 <td><p>Extract entity names from a document for similarity_search.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.find_entity_by_name" title="langchain_mongodb.graphrag.graph.MongoDBGraphStore.find_entity_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_entity_by_name</span></code></a>(name)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.find_entity_by_name" title="langchain_mongodb.graphrag.graph.MongoDBGraphStore.find_entity_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">find_entity_by_name</span></code></a>(name)</p></td>
 <td><p>Utility to get Entity dict from Knowledge Graph / Collection.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.from_connection_string" title="langchain_mongodb.graphrag.graph.MongoDBGraphStore.from_connection_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_connection_string</span></code></a>(connection_string, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.from_connection_string" title="langchain_mongodb.graphrag.graph.MongoDBGraphStore.from_connection_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_connection_string</span></code></a>(connection_string, ...)</p></td>
 <td><p>Construct a <cite>MongoDB KnowLedge Graph for RAG</cite> from a MongoDB connection URI.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.related_entities" title="langchain_mongodb.graphrag.graph.MongoDBGraphStore.related_entities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">related_entities</span></code></a>(starting_entities[, max_depth])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.related_entities" title="langchain_mongodb.graphrag.graph.MongoDBGraphStore.related_entities"><code class="xref py py-obj docutils literal notranslate"><span class="pre">related_entities</span></code></a>(starting_entities[, max_depth])</p></td>
 <td><p>Traverse Graph along relationship edges to find connected entities.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.similarity_search" title="langchain_mongodb.graphrag.graph.MongoDBGraphStore.similarity_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search</span></code></a>(input_document)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.similarity_search" title="langchain_mongodb.graphrag.graph.MongoDBGraphStore.similarity_search"><code class="xref py py-obj docutils literal notranslate"><span class="pre">similarity_search</span></code></a>(input_document)</p></td>
 <td><p>Retrieve list of connected Entities found via traversal of KnowledgeGraph.</p></td>
 </tr>
 </tbody>
@@ -481,6 +484,16 @@ Existing entities identified in documents will be updated.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="../../core/messages/langchain_core.messages.ai.AIMessage.html#langchain_core.messages.ai.AIMessage" title="langchain_core.messages.ai.AIMessage"><em>AIMessage</em></a></p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="langchain_mongodb.graphrag.graph.MongoDBGraphStore.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/langchain_mongodb/graphrag/graph.html#MongoDBGraphStore.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.close" title="Link to this definition">#</a></dt>
+<dd><p>Close the resources used by the MongoDBGraphStore.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -634,6 +647,7 @@ or until the operation reaches a recursion depth specified by this parameter.</p
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.__init__"><code class="docutils literal notranslate"><span class="pre">__init__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.add_documents"><code class="docutils literal notranslate"><span class="pre">add_documents()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.chat_response"><code class="docutils literal notranslate"><span class="pre">chat_response()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.close"><code class="docutils literal notranslate"><span class="pre">close()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.extract_entities"><code class="docutils literal notranslate"><span class="pre">extract_entities()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.extract_entity_names"><code class="docutils literal notranslate"><span class="pre">extract_entity_names()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.graphrag.graph.MongoDBGraphStore.find_entity_by_name"><code class="docutils literal notranslate"><span class="pre">find_entity_by_name()</span></code></a></li>

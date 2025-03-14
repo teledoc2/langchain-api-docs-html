@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 13, 2025" name="docbuild:last-update"/>
+<meta content="Mar 14, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -346,25 +346,28 @@ For more details, see the <a class="reference external" href="https://python.lan
 <tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.aupdate" title="langchain_mongodb.indexes.MongoDBRecordManager.aupdate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">aupdate</span></code></a>(keys, *[, group_ids, time_at_least])</p></td>
 <td><p>Asynchronously upsert documents into the MongoDB collection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.create_schema" title="langchain_mongodb.indexes.MongoDBRecordManager.create_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_schema</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.close" title="langchain_mongodb.indexes.MongoDBRecordManager.close"><code class="xref py py-obj docutils literal notranslate"><span class="pre">close</span></code></a>()</p></td>
+<td><p>Close the resources used by the MongoDBRecordManager.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.create_schema" title="langchain_mongodb.indexes.MongoDBRecordManager.create_schema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_schema</span></code></a>()</p></td>
 <td><p>Create the database schema for the document manager.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.delete_keys" title="langchain_mongodb.indexes.MongoDBRecordManager.delete_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_keys</span></code></a>(keys)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.delete_keys" title="langchain_mongodb.indexes.MongoDBRecordManager.delete_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">delete_keys</span></code></a>(keys)</p></td>
 <td><p>Delete documents from the MongoDB collection.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.exists" title="langchain_mongodb.indexes.MongoDBRecordManager.exists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exists</span></code></a>(keys)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.exists" title="langchain_mongodb.indexes.MongoDBRecordManager.exists"><code class="xref py py-obj docutils literal notranslate"><span class="pre">exists</span></code></a>(keys)</p></td>
 <td><p>Check if the given keys exist in the MongoDB collection.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.from_connection_string" title="langchain_mongodb.indexes.MongoDBRecordManager.from_connection_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_connection_string</span></code></a>(connection_string, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.from_connection_string" title="langchain_mongodb.indexes.MongoDBRecordManager.from_connection_string"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_connection_string</span></code></a>(connection_string, ...)</p></td>
 <td><p>Construct a RecordManager from a MongoDB connection URI.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.get_time" title="langchain_mongodb.indexes.MongoDBRecordManager.get_time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_time</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.get_time" title="langchain_mongodb.indexes.MongoDBRecordManager.get_time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_time</span></code></a>()</p></td>
 <td><p>Get the current server time as a timestamp.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.list_keys" title="langchain_mongodb.indexes.MongoDBRecordManager.list_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_keys</span></code></a>(*[, before, after, group_ids, limit])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.list_keys" title="langchain_mongodb.indexes.MongoDBRecordManager.list_keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list_keys</span></code></a>(*[, before, after, group_ids, limit])</p></td>
 <td><p>List documents in the MongoDB collection based on the provided date range.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.update" title="langchain_mongodb.indexes.MongoDBRecordManager.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(keys, *[, group_ids, time_at_least])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#langchain_mongodb.indexes.MongoDBRecordManager.update" title="langchain_mongodb.indexes.MongoDBRecordManager.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>(keys, *[, group_ids, time_at_least])</p></td>
 <td><p>Upsert documents into the MongoDB collection.</p></td>
 </tr>
 </tbody>
@@ -470,6 +473,16 @@ based on the provided date range.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="langchain_mongodb.indexes.MongoDBRecordManager.close">
+<span class="sig-name descname"><span class="pre">close</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/langchain_mongodb/indexes.html#MongoDBRecordManager.close"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_mongodb.indexes.MongoDBRecordManager.close" title="Link to this definition">#</a></dt>
+<dd><p>Close the resources used by the MongoDBRecordManager.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -595,6 +608,7 @@ based on the provided date range.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.indexes.MongoDBRecordManager.aget_time"><code class="docutils literal notranslate"><span class="pre">aget_time()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.indexes.MongoDBRecordManager.alist_keys"><code class="docutils literal notranslate"><span class="pre">alist_keys()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.indexes.MongoDBRecordManager.aupdate"><code class="docutils literal notranslate"><span class="pre">aupdate()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.indexes.MongoDBRecordManager.close"><code class="docutils literal notranslate"><span class="pre">close()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.indexes.MongoDBRecordManager.create_schema"><code class="docutils literal notranslate"><span class="pre">create_schema()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.indexes.MongoDBRecordManager.delete_keys"><code class="docutils literal notranslate"><span class="pre">delete_keys()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_mongodb.indexes.MongoDBRecordManager.exists"><code class="docutils literal notranslate"><span class="pre">exists()</span></code></a></li>
