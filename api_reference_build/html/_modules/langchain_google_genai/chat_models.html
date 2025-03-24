@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 23, 2025" name="docbuild:last-update"/>
+<meta content="Mar 24, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -254,6 +254,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">google.ai.generativelanguage_v1beta.types</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">Blob</span><span class="p">,</span>
     <span class="n">Candidate</span><span class="p">,</span>
+    <span class="n">CodeExecution</span><span class="p">,</span>
     <span class="n">Content</span><span class="p">,</span>
     <span class="n">FileData</span><span class="p">,</span>
     <span class="n">FunctionCall</span><span class="p">,</span>
@@ -267,9 +268,7 @@
     <span class="n">ToolConfig</span><span class="p">,</span>
     <span class="n">VideoMetadata</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">google.ai.generativelanguage_v1beta.types</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Tool</span> <span class="k">as</span> <span class="n">GoogleTool</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">google.ai.generativelanguage_v1beta.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tool</span> <span class="k">as</span> <span class="n">GoogleTool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.callbacks.manager</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AsyncCallbackManagerForLLMRun</span><span class="p">,</span>
     <span class="n">CallbackManagerForLLMRun</span><span class="p">,</span>
@@ -294,7 +293,7 @@
     <span class="n">parse_tool_calls</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.outputs</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatGeneration</span><span class="p">,</span> <span class="n">ChatGenerationChunk</span><span class="p">,</span> <span class="n">ChatResult</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">Runnable</span><span class="p">,</span> <span class="n">RunnablePassthrough</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">Runnable</span><span class="p">,</span> <span class="n">RunnableConfig</span><span class="p">,</span> <span class="n">RunnablePassthrough</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseTool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.utils.function_calling</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_to_openai_tool</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -683,6 +682,41 @@
             <span class="k">elif</span> <span class="n">text</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Unexpected content type"</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="s2">"executable_code"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">part</span><span class="o">.</span><span class="n">executable_code</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">part</span><span class="o">.</span><span class="n">executable_code</span><span class="o">.</span><span class="n">code</span> <span class="ow">and</span> <span class="n">part</span><span class="o">.</span><span class="n">executable_code</span><span class="o">.</span><span class="n">language</span><span class="p">:</span>
+                <span class="n">code_message</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"executable_code"</span><span class="p">,</span>
+                    <span class="s2">"executable_code"</span><span class="p">:</span> <span class="n">part</span><span class="o">.</span><span class="n">executable_code</span><span class="o">.</span><span class="n">code</span><span class="p">,</span>
+                    <span class="s2">"language"</span><span class="p">:</span> <span class="n">part</span><span class="o">.</span><span class="n">executable_code</span><span class="o">.</span><span class="n">language</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+                    <span class="n">content</span> <span class="o">=</span> <span class="p">[</span><span class="n">code_message</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">content</span> <span class="o">=</span> <span class="p">[</span><span class="n">content</span><span class="p">,</span> <span class="n">code_message</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">code_message</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Unexpected content type"</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">hasattr</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="s2">"code_execution_result"</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">part</span><span class="o">.</span><span class="n">code_execution_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">part</span><span class="o">.</span><span class="n">code_execution_result</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+                <span class="n">execution_result</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"code_execution_result"</span><span class="p">,</span>
+                    <span class="s2">"code_execution_result"</span><span class="p">:</span> <span class="n">part</span><span class="o">.</span><span class="n">code_execution_result</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
+                <span class="p">}</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">content</span><span class="p">:</span>
+                    <span class="n">content</span> <span class="o">=</span> <span class="p">[</span><span class="n">execution_result</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="n">content</span> <span class="o">=</span> <span class="p">[</span><span class="n">content</span><span class="p">,</span> <span class="n">execution_result</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">execution_result</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">"Unexpected content type"</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">part</span><span class="o">.</span><span class="n">inline_data</span><span class="o">.</span><span class="n">mime_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"image/"</span><span class="p">):</span>
             <span class="n">image_format</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">inline_data</span><span class="o">.</span><span class="n">mime_type</span><span class="p">[</span><span class="mi">6</span><span class="p">:]</span>
             <span class="n">message</span> <span class="o">=</span> <span class="p">{</span>
@@ -746,6 +780,16 @@
                     <span class="p">)</span>
     <span class="k">if</span> <span class="n">content</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">content</span> <span class="o">=</span> <span class="s2">""</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"executable_code"</span> <span class="ow">in</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">content</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+<span class="w">            </span><span class="sd">"""</span>
+<span class="sd">        ⚠️ Warning: Output may vary each run.  </span>
+<span class="sd">        - 'executable_code': Always present.  </span>
+<span class="sd">        - 'execution_result' &amp; 'image_url': May be absent for some queries.  </span>
+
+<span class="sd">        Validate before using in production.</span>
+<span class="sd">"""</span>
+        <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">streaming</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">AIMessageChunk</span><span class="p">(</span>
@@ -963,6 +1007,16 @@
 <span class="sd">              'args': {'location': 'New York City, NY'},</span>
 <span class="sd">              'id': '634582de-5186-4e4b-968b-f192f0a93678'}]</span>
 
+<span class="sd">    Use Search with Gemini 2:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from google.ai.generativelanguage_v1beta.types import Tool as GenAITool</span>
+<span class="sd">            llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp")</span>
+<span class="sd">            resp = llm.invoke(</span>
+<span class="sd">                "When is the next total solar eclipse in US?",</span>
+<span class="sd">                tools=[GenAITool(google_search={})],</span>
+<span class="sd">            )</span>
+
 <span class="sd">    Structured output:</span>
 <span class="sd">        .. code-block:: python</span>
 
@@ -1074,6 +1128,14 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_llm_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">"chat-google-generative-ai"</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_supports_code_execution</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="s2">"gemini-1.5-pro"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+            <span class="ow">or</span> <span class="s2">"gemini-1.5-flash"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+            <span class="ow">or</span> <span class="s2">"gemini-2"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+        <span class="p">)</span>
+
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">is_lc_serializable</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">True</span>
@@ -1147,6 +1209,45 @@
             <span class="s2">"safety_settings"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safety_settings</span><span class="p">,</span>
             <span class="s2">"response_modalities"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_modalities</span><span class="p">,</span>
         <span class="p">}</span>
+
+<div class="viewcode-block" id="ChatGoogleGenerativeAI.invoke">
+<a class="viewcode-back" href="../../google_genai/chat_models/langchain_google_genai.chat_models.ChatGoogleGenerativeAI.html#langchain_google_genai.chat_models.ChatGoogleGenerativeAI.invoke">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">invoke</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="nb">input</span><span class="p">:</span> <span class="n">LanguageModelInput</span><span class="p">,</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">RunnableConfig</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">code_execution</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseMessage</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Enable code execution. Supported on: gemini-1.5-pro, gemini-1.5-flash,</span>
+<span class="sd">        gemini-2.0-flash, and gemini-2.0-pro. When enabled, the model can execute</span>
+<span class="sd">        code to solve problems.</span>
+<span class="sd">        """</span>
+
+<span class="w">        </span><span class="sd">"""Override invoke to add code_execution parameter."""</span>
+
+        <span class="k">if</span> <span class="n">code_execution</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_supports_code_execution</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Code execution is only supported on Gemini 1.5 Pro, </span><span class="se">\</span>
+<span class="s2">                    Gemini 1.5 Flash, "</span>
+                    <span class="sa">f</span><span class="s2">"Gemini 2.0 Flash, and Gemini 2.0 Pro models. </span><span class="se">\</span>
+<span class="s2">                    Current model: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="s2">"tools"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">code_execution_tool</span> <span class="o">=</span> <span class="n">GoogleTool</span><span class="p">(</span><span class="n">code_execution</span><span class="o">=</span><span class="n">CodeExecution</span><span class="p">())</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">"tools"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">code_execution_tool</span><span class="p">]</span>
+
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"Tools are already defined."</span> <span class="s2">"code_execution tool can't be defined"</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_ls_params</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">stop</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
@@ -1426,8 +1527,12 @@
                 <span class="s2">"Must specify at most one of tool_choice and tool_config, received "</span>
                 <span class="sa">f</span><span class="s2">"both:</span><span class="se">\n\n</span><span class="si">{</span><span class="n">tool_choice</span><span class="si">=}</span><span class="se">\n\n</span><span class="si">{</span><span class="n">tool_config</span><span class="si">=}</span><span class="s2">"</span>
             <span class="p">)</span>
+
         <span class="n">formatted_tools</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">tools</span><span class="p">:</span>
+        <span class="n">code_execution_tool</span> <span class="o">=</span> <span class="n">GoogleTool</span><span class="p">(</span><span class="n">code_execution</span><span class="o">=</span><span class="n">CodeExecution</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">tools</span> <span class="o">==</span> <span class="p">[</span><span class="n">code_execution_tool</span><span class="p">]:</span>
+            <span class="n">formatted_tools</span> <span class="o">=</span> <span class="n">tools</span>
+        <span class="k">elif</span> <span class="n">tools</span><span class="p">:</span>
             <span class="n">formatted_tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">convert_to_genai_function_declarations</span><span class="p">(</span><span class="n">tools</span><span class="p">)]</span>
         <span class="k">elif</span> <span class="n">functions</span><span class="p">:</span>
             <span class="n">formatted_tools</span> <span class="o">=</span> <span class="p">[</span><span class="n">convert_to_genai_function_declarations</span><span class="p">(</span><span class="n">functions</span><span class="p">)]</span>
@@ -1453,9 +1558,20 @@
                     <span class="sa">f</span><span class="s2">"be specified if 'tools' is specified."</span>
                 <span class="p">)</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-            <span class="n">all_names</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">formatted_tools</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">t</span><span class="o">.</span><span class="n">function_declarations</span>
-            <span class="p">]</span>
+            <span class="n">all_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">formatted_tools</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">"function_declarations"</span><span class="p">):</span>
+                    <span class="n">t_with_declarations</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+                    <span class="n">all_names</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span>
+                        <span class="n">f</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">t_with_declarations</span><span class="o">.</span><span class="n">function_declarations</span>
+                    <span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">GoogleTool</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="s2">"code_execution"</span><span class="p">):</span>
+                    <span class="k">continue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"Tool </span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2"> doesn't have function_declarations attribute"</span>
+                    <span class="p">)</span>
+
             <span class="n">tool_config</span> <span class="o">=</span> <span class="n">_tool_choice_to_tool_config</span><span class="p">(</span><span class="n">tool_choice</span><span class="p">,</span> <span class="n">all_names</span><span class="p">)</span>
 
         <span class="n">formatted_tool_config</span> <span class="o">=</span> <span class="kc">None</span>

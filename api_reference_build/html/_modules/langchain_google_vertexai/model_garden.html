@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 23, 2025" name="docbuild:last-update"/>
+<meta content="Mar 24, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -423,6 +423,7 @@
     <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>
         <span class="n">populate_by_name</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
+    <span class="n">model_kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
 
     <span class="c1"># Needed so that mypy doesn't flag missing aliased init args.</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -461,13 +462,14 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_default_params</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">{</span>
+        <span class="n">default_parameters</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">"model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span><span class="p">,</span>
             <span class="s2">"max_tokens"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_output_tokens</span><span class="p">,</span>
             <span class="s2">"temperature"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
             <span class="s2">"top_k"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_k</span><span class="p">,</span>
             <span class="s2">"top_p"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_p</span><span class="p">,</span>
         <span class="p">}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="o">**</span><span class="n">default_parameters</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">model_kwargs</span><span class="p">}</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_format_params</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
