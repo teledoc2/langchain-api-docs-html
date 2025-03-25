@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 24, 2025" name="docbuild:last-update"/>
+<meta content="Mar 25, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -649,6 +649,10 @@ try to output the information in a tabular structure or
 output the key/value pairs with a colon (key: value).
 This helps most LLMs to achieve better accuracy when
 processing these texts.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Document</span></code> objects are returned with metadata that includes the <code class="docutils literal notranslate"><span class="pre">source</span></code> and
+a 1-based index of the page number in <code class="docutils literal notranslate"><span class="pre">page</span></code>. Note that <code class="docutils literal notranslate"><span class="pre">page</span></code> represents
+the index of the result returned from Textract, not necessarily the as-written
+page number in the document.</p>
 <p>Initializes the parser.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

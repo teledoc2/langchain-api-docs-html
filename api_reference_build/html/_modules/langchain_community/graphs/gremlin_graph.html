@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 24, 2025" name="docbuild:last-update"/>
+<meta content="Mar 25, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -244,6 +244,8 @@
 <span class="sd">    traversal_source (str): The traversal source to use for queries. Defaults to 'g'.</span>
 <span class="sd">    message_serializer (Optional[Any]): The message serializer to use for requests.</span>
 <span class="sd">                                        Defaults to serializer.GraphSONSerializersV2d0()</span>
+<span class="sd">    include_edge_properties (bool): Whether to include edge properties in</span>
+<span class="sd">                                    the gremlin graph schema. Defaults to False</span>
 <span class="sd">    *Security note*: Make sure that the database connection uses credentials</span>
 <span class="sd">        that are narrowly-scoped to only include necessary permissions.</span>
 <span class="sd">        Failure to do so may result in data corruption or loss, since the calling</span>
@@ -272,6 +274,7 @@
         <span class="n">password</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">traversal_source</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"g"</span><span class="p">,</span>
         <span class="n">message_serializer</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">include_edge_properties</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Create a new Gremlin graph wrapper instance."""</span>
         <span class="k">try</span><span class="p">:</span>
@@ -295,7 +298,8 @@
             <span class="k">if</span> <span class="n">message_serializer</span>
             <span class="k">else</span> <span class="n">serializer</span><span class="o">.</span><span class="n">GraphSONSerializersV2d0</span><span class="p">(),</span>
         <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">include_edge_properties</span> <span class="o">=</span> <span class="n">include_edge_properties</span></div>
 
 
     <span class="nd">@property</span>
@@ -331,11 +335,27 @@
             <span class="p">[</span>
                 <span class="s2">"Vertex labels are the following:"</span><span class="p">,</span>
                 <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">vertex_schema</span><span class="p">),</span>
-                <span class="s2">"Edge labes are the following:"</span><span class="p">,</span>
+                <span class="s2">"Edge labels are the following:"</span><span class="p">,</span>
                 <span class="s2">","</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">edge_schema</span><span class="p">),</span>
                 <span class="sa">f</span><span class="s2">"Vertices have following properties:</span><span class="se">\n</span><span class="si">{</span><span class="n">vertex_properties</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
             <span class="p">]</span>
-        <span class="p">)</span></div>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">include_edge_properties</span><span class="p">:</span>
+            <span class="n">edge_properties</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span>
+                    <span class="s2">"g.E().group().by(label)"</span>
+                    <span class="s2">".by(project('inVLabel', 'outVLabel','properties')"</span>
+                    <span class="s2">".by(inV().label()).by(outV().label()).by(properties().key().dedup()"</span>
+                    <span class="s2">".fold()).dedup().fold())"</span>
+                <span class="p">)</span>
+                <span class="o">.</span><span class="n">all</span><span class="p">()</span>
+                <span class="o">.</span><span class="n">result</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">structured_schema</span><span class="p">[</span><span class="s2">"edge_props"</span><span class="p">]</span> <span class="o">=</span> <span class="n">edge_properties</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">schema</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Edges have the following properties, grouped by label and"</span>
+                <span class="sa">f</span><span class="s2">" the distinct inV and outV labels:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">edge_properties</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="GremlinGraph.query">

@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 24, 2025" name="docbuild:last-update"/>
+<meta content="Mar 25, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1788,6 +1788,11 @@
 <span class="sd">    output the key/value pairs with a colon (key: value).</span>
 <span class="sd">    This helps most LLMs to achieve better accuracy when</span>
 <span class="sd">    processing these texts.</span>
+
+<span class="sd">    ``Document`` objects are returned with metadata that includes the ``source`` and</span>
+<span class="sd">    a 1-based index of the page number in ``page``. Note that ``page`` represents</span>
+<span class="sd">    the index of the result returned from Textract, not necessarily the as-written</span>
+<span class="sd">    page number in the document.</span>
 
 <span class="sd">    """</span>
 

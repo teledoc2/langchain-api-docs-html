@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 24, 2025" name="docbuild:last-update"/>
+<meta content="Mar 25, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -353,7 +353,7 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-core: 0.3.47</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-core: 0.3.48</a></li>
 <li class="breadcrumb-item"><a class="nav-link" href="../messages.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">messages</span></code></a></li>
 <li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">trim_messages</span></li>
 </ul>
@@ -400,10 +400,17 @@ the first message in the history if present. To achieve this set the
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>messages</strong> (<em>Union</em><em>[</em><em>Sequence</em><em>[</em><em>MessageLikeRepresentation</em><em>]</em><em>, </em><em>None</em><em>]</em>) – Sequence of Message-like objects to trim.</p></li>
 <li><p><strong>max_tokens</strong> – Max token count of trimmed messages.</p></li>
-<li><p><strong>token_counter</strong> – Function or llm for counting tokens in a BaseMessage or a list of
+<li><p><strong>token_counter</strong> – <p>Function or llm for counting tokens in a BaseMessage or a list of
 BaseMessage. If a BaseLanguageModel is passed in then
 BaseLanguageModel.get_num_tokens_from_messages() will be used.
-Set to <cite>len</cite> to count the number of <strong>messages</strong> in the chat history.</p></li>
+Set to <cite>len</cite> to count the number of <strong>messages</strong> in the chat history.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Use <cite>count_tokens_approximately</cite> to get fast, approximate token counts.
+This is recommended for using <cite>trim_messages</cite> on the hot path, where
+exact token counting is not necessary.</p>
+</div>
+</p></li>
 <li><p><strong>strategy</strong> – Strategy for trimming.
 - “first”: Keep the first &lt;= n_count tokens of the messages.
 - “last”: Keep the last &lt;= n_count tokens of the messages.

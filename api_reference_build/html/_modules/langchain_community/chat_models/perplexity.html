@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 24, 2025" name="docbuild:last-update"/>
+<meta content="Mar 25, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -298,21 +298,92 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">ChatPerplexity</span><span class="p">(</span><span class="n">BaseChatModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""`Perplexity AI` Chat models API.</span>
 
-<span class="sd">    To use, you should have the ``openai`` python package installed, and the</span>
-<span class="sd">    environment variable ``PPLX_API_KEY`` set to your API key.</span>
-<span class="sd">    Any parameters that are valid to be passed to the openai.create call can be passed</span>
-<span class="sd">    in, even if not explicitly saved on this class.</span>
+<span class="sd">    Setup:</span>
+<span class="sd">        To use, you should have the ``openai`` python package installed, and the</span>
+<span class="sd">        environment variable ``PPLX_API_KEY`` set to your API key.</span>
+<span class="sd">        Any parameters that are valid to be passed to the openai.create call</span>
+<span class="sd">        can be passed in, even if not explicitly saved on this class.</span>
 
-<span class="sd">    Example:</span>
-<span class="sd">        .. code-block:: python</span>
+<span class="sd">        .. code-block:: bash</span>
 
-<span class="sd">            from langchain_community.chat_models import ChatPerplexity</span>
+<span class="sd">            pip install openai</span>
+<span class="sd">            export PPLX_API_KEY=your_api_key</span>
 
-<span class="sd">            chat = ChatPerplexity(</span>
-<span class="sd">                model="llama-3.1-sonar-small-128k-online",</span>
-<span class="sd">                temperature=0.7,</span>
-<span class="sd">            )</span>
-<span class="sd">    """</span>
+<span class="sd">        Key init args - completion params:</span>
+<span class="sd">            model: str</span>
+<span class="sd">                Name of the model to use. e.g. "llama-3.1-sonar-small-128k-online"</span>
+<span class="sd">            temperature: float</span>
+<span class="sd">                Sampling temperature to use. Default is 0.7</span>
+<span class="sd">            max_tokens: Optional[int]</span>
+<span class="sd">                Maximum number of tokens to generate.</span>
+<span class="sd">            streaming: bool</span>
+<span class="sd">                Whether to stream the results or not.</span>
+
+<span class="sd">        Key init args - client params:</span>
+<span class="sd">            pplx_api_key: Optional[str]</span>
+<span class="sd">                API key for PerplexityChat API. Default is None.</span>
+<span class="sd">            request_timeout: Optional[Union[float, Tuple[float, float]]]</span>
+<span class="sd">                Timeout for requests to PerplexityChat completion API. Default is None.</span>
+<span class="sd">            max_retries: int</span>
+<span class="sd">                Maximum number of retries to make when generating.</span>
+
+<span class="sd">        See full list of supported init args and their descriptions in the params section.</span>
+
+<span class="sd">        Instantiate:</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from langchain_community.chat_models import ChatPerplexity</span>
+
+<span class="sd">                llm = ChatPerplexity(</span>
+<span class="sd">                    model="llama-3.1-sonar-small-128k-online",</span>
+<span class="sd">                    temperature=0.7,</span>
+<span class="sd">                )</span>
+
+<span class="sd">        Invoke:</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                messages = [</span>
+<span class="sd">                    ("system", "You are a chatbot."),</span>
+<span class="sd">                    ("user", "Hello!")</span>
+<span class="sd">                ]</span>
+<span class="sd">                llm.invoke(messages)</span>
+
+<span class="sd">        Invoke with structured output:</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from pydantic import BaseModel</span>
+
+<span class="sd">                class StructuredOutput(BaseModel):</span>
+<span class="sd">                    role: str</span>
+<span class="sd">                    content: str</span>
+
+<span class="sd">                llm.with_structured_output(StructuredOutput)</span>
+<span class="sd">                llm.invoke(messages)</span>
+
+<span class="sd">        Invoke with perplexity-specific params:</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                llm.invoke(messages, extra_body={"search_recency_filter": "week"})</span>
+
+<span class="sd">        Stream:</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                for chunk in llm.stream(messages):</span>
+<span class="sd">                    print(chunk.content)</span>
+
+<span class="sd">        Token usage:</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                response = llm.invoke(messages)</span>
+<span class="sd">                response.usage_metadata</span>
+
+<span class="sd">        Response metadata:</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                response = llm.invoke(messages)</span>
+<span class="sd">                response.response_metadata</span>
+
+<span class="sd">    """</span>  <span class="c1"># noqa: E501</span>
 
     <span class="n">client</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: :meta private:</span>
     <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"llama-3.1-sonar-small-128k-online"</span>

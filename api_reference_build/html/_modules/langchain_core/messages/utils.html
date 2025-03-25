@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 24, 2025" name="docbuild:last-update"/>
+<meta content="Mar 25, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -923,6 +923,12 @@
 <span class="sd">            BaseMessage. If a BaseLanguageModel is passed in then</span>
 <span class="sd">            BaseLanguageModel.get_num_tokens_from_messages() will be used.</span>
 <span class="sd">            Set to `len` to count the number of **messages** in the chat history.</span>
+
+<span class="sd">            Note:</span>
+<span class="sd">                Use `count_tokens_approximately` to get fast, approximate token counts.</span>
+<span class="sd">                This is recommended for using `trim_messages` on the hot path, where</span>
+<span class="sd">                exact token counting is not necessary.</span>
+
 <span class="sd">        strategy: Strategy for trimming.</span>
 <span class="sd">            - "first": Keep the first &lt;= n_count tokens of the messages.</span>
 <span class="sd">            - "last": Keep the last &lt;= n_count tokens of the messages.</span>
