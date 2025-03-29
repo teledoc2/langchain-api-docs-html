@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 28, 2025" name="docbuild:last-update"/>
+<meta content="Mar 29, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1357,19 +1357,34 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Combined prompt template.</span>
 <span class="sd">        """</span>
+        <span class="n">partials</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">partial_variables</span><span class="p">}</span>
+
+        <span class="c1"># Need to check that other has partial variables since it may not be</span>
+        <span class="c1"># a ChatPromptTemplate.</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">"partial_variables"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">partial_variables</span><span class="p">:</span>
+            <span class="n">partials</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">partial_variables</span><span class="p">)</span>
+
         <span class="c1"># Allow for easy combining</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ChatPromptTemplate</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">ChatPromptTemplate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span>  <span class="c1"># type: ignore[call-arg]</span>
+            <span class="k">return</span> <span class="n">ChatPromptTemplate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+                <span class="o">**</span><span class="n">partials</span>
+            <span class="p">)</span>  <span class="c1"># type: ignore[call-arg]</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span>
             <span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="n">BaseMessagePromptTemplate</span><span class="p">,</span> <span class="n">BaseMessage</span><span class="p">,</span> <span class="n">BaseChatPromptTemplate</span><span class="p">)</span>
         <span class="p">):</span>
-            <span class="k">return</span> <span class="n">ChatPromptTemplate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">+</span> <span class="p">[</span><span class="n">other</span><span class="p">])</span>  <span class="c1"># type: ignore[call-arg]</span>
+            <span class="k">return</span> <span class="n">ChatPromptTemplate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">+</span> <span class="p">[</span><span class="n">other</span><span class="p">])</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+                <span class="o">**</span><span class="n">partials</span>
+            <span class="p">)</span>  <span class="c1"># type: ignore[call-arg]</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="n">_other</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">ChatPromptTemplate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">+</span> <span class="n">_other</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span>  <span class="c1"># type: ignore[call-arg]</span>
+            <span class="k">return</span> <span class="n">ChatPromptTemplate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">+</span> <span class="n">_other</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+                <span class="o">**</span><span class="n">partials</span>
+            <span class="p">)</span>  <span class="c1"># type: ignore[call-arg]</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">prompt</span> <span class="o">=</span> <span class="n">HumanMessagePromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">ChatPromptTemplate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">+</span> <span class="p">[</span><span class="n">prompt</span><span class="p">])</span>  <span class="c1"># type: ignore[call-arg]</span>
+            <span class="k">return</span> <span class="n">ChatPromptTemplate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">+</span> <span class="p">[</span><span class="n">prompt</span><span class="p">])</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
+                <span class="o">**</span><span class="n">partials</span>
+            <span class="p">)</span>  <span class="c1"># type: ignore[call-arg]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unsupported operand type for +: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>

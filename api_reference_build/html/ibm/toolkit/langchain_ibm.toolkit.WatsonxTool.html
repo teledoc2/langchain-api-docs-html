@@ -50,11 +50,11 @@
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
 <link href="langchain_ibm.toolkit.WatsonxToolkit.html" rel="next" title="WatsonxToolkit"/>
-<link href="langchain_ibm.toolkit.ToolSchema.html" rel="prev" title="ToolSchema"/>
+<link href="../toolkit.html" rel="prev" title="toolkit"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 28, 2025" name="docbuild:last-update"/>
+<meta content="Mar 29, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -232,9 +232,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../llms.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">llms</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../rerank.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rerank</span></code></a></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../toolkit.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">toolkit</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="langchain_ibm.toolkit.ToolSchema.html">ToolSchema</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">WatsonxTool</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_ibm.toolkit.WatsonxToolkit.html">WatsonxToolkit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_ibm.toolkit.json_schema_to_pydantic_model.html">json_schema_to_pydantic_model</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a></li>
@@ -288,7 +288,7 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-ibm: 0.3.8</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-ibm: 0.3.9</a></li>
 <li class="breadcrumb-item"><a class="nav-link" href="../toolkit.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">toolkit</span></code></a></li>
 <li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">WatsonxTool</span></li>
 </ul>
@@ -320,7 +320,7 @@ and should be treated as part of the system prompt.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_ibm.toolkit.WatsonxTool.args_schema">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">args_schema</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseModel</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;class</span> <span class="pre">'langchain_ibm.toolkit.ToolSchema'&gt;</span></em><a class="headerlink" href="#langchain_ibm.toolkit.WatsonxTool.args_schema" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">args_schema</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Type</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseModel</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;class</span> <span class="pre">'pydantic.main.BaseModel'&gt;</span></em><a class="headerlink" href="#langchain_ibm.toolkit.WatsonxTool.args_schema" title="Link to this definition">#</a></dt>
 <dd><p>Pydantic model class to validate and parse the tool’s input arguments.</p>
 <p>Args schema should be either:</p>
 <ul class="simple">
@@ -389,6 +389,11 @@ that after the tool is called, the AgentExecutor will stop looping.</p>
 These tags will be associated with each call to this tool,
 and passed as arguments to the handlers defined in <cite>callbacks</cite>.
 You can use these to eg identify a specific instance of a tool with its use case.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_ibm.toolkit.WatsonxTool.tool_config">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tool_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_ibm.toolkit.WatsonxTool.tool_config" title="Link to this definition">#</a></dt>
+<dd><p>Config properties to be used when running a tool if applicable.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_ibm.toolkit.WatsonxTool.tool_config_schema">
@@ -1081,6 +1086,31 @@ for more details.</p></li>
 </dl>
 </dd></dl>
 <dl class="py method">
+<dt class="sig sig-object py" id="langchain_ibm.toolkit.WatsonxTool.set_tool_config">
+<span class="sig-name descname"><span class="pre">set_tool_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../_modules/langchain_ibm/toolkit.html#WatsonxTool.set_tool_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_ibm.toolkit.WatsonxTool.set_tool_config" title="Link to this definition">#</a></dt>
+<dd><p>Set tool config properties.</p>
+<p>Example:
+.. code-block:: python</p>
+<blockquote>
+<div><p>google_search = watsonx_toolkit.get_tool(“GoogleSearch”)
+print(google_search.tool_config_schema)
+tool_config = {</p>
+<blockquote>
+<div><p>“maxResults”: 3</p>
+</div></blockquote>
+<p>}
+google_search.set_tool_config(tool_config)</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tool_config</strong> (<em>dict</em>)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+<dl class="py method">
 <dt class="sig sig-object py" id="langchain_ibm.toolkit.WatsonxTool.stream">
 <span class="sig-name descname"><span class="pre">stream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../core/runnables/langchain_core.runnables.config.RunnableConfig.html#langchain_core.runnables.config.RunnableConfig" title="langchain_core.runnables.config.RunnableConfig"><span class="pre">RunnableConfig</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">Iterator</span><span class="p"><span class="pre">[</span></span><span class="pre">Output</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_ibm.toolkit.WatsonxTool.stream" title="Link to this definition">#</a></dt>
 <dd><p>Default implementation of stream, which calls invoke.
@@ -1435,6 +1465,7 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.WatsonxTool.response_format"><code class="docutils literal notranslate"><span class="pre">response_format</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.WatsonxTool.return_direct"><code class="docutils literal notranslate"><span class="pre">return_direct</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.WatsonxTool.tags"><code class="docutils literal notranslate"><span class="pre">tags</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.WatsonxTool.tool_config"><code class="docutils literal notranslate"><span class="pre">tool_config</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.WatsonxTool.tool_config_schema"><code class="docutils literal notranslate"><span class="pre">tool_config_schema</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.WatsonxTool.tool_input_schema"><code class="docutils literal notranslate"><span class="pre">tool_input_schema</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.WatsonxTool.verbose"><code class="docutils literal notranslate"><span class="pre">verbose</span></code></a></li>
@@ -1453,6 +1484,7 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.WatsonxTool.configurable_fields"><code class="docutils literal notranslate"><span class="pre">configurable_fields()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.WatsonxTool.invoke"><code class="docutils literal notranslate"><span class="pre">invoke()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.WatsonxTool.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.WatsonxTool.set_tool_config"><code class="docutils literal notranslate"><span class="pre">set_tool_config()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.WatsonxTool.stream"><code class="docutils literal notranslate"><span class="pre">stream()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.WatsonxTool.with_alisteners"><code class="docutils literal notranslate"><span class="pre">with_alisteners()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.WatsonxTool.with_config"><code class="docutils literal notranslate"><span class="pre">with_config()</span></code></a></li>

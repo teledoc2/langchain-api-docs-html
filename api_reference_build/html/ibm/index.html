@@ -13,7 +13,7 @@
         gtag('js', new Date());
         gtag('config', 'G-9B66JQQH2F');
     </script>
-<title>langchain-ibm: 0.3.8 — 🦜🔗 LangChain  documentation</title>
+<title>langchain-ibm: 0.3.9 — 🦜🔗 LangChain  documentation</title>
 <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 28, 2025" name="docbuild:last-update"/>
+<meta content="Mar 29, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -280,7 +280,7 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../reference.html">LangChain Python API Reference</a></li>
-<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">langchain-ibm: 0.3.8</span></li>
+<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">langchain-ibm: 0.3.9</span></li>
 </ul>
 </nav>
 </div>
@@ -290,7 +290,7 @@
 <div id="searchbox"></div>
 <article class="bd-article">
 <section id="module-langchain_ibm">
-<span id="langchain-ibm-0-3-8"></span><span id="langchain-ibm"></span><h1>langchain-ibm: 0.3.8<a class="headerlink" href="#module-langchain_ibm" title="Link to this heading">#</a></h1>
+<span id="langchain-ibm-0-3-9"></span><span id="langchain-ibm"></span><h1>langchain-ibm: 0.3.9<a class="headerlink" href="#module-langchain_ibm" title="Link to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
 </div>
 <section id="langchain-ibm-chat-models">
@@ -346,14 +346,20 @@
 <p><strong>Classes</strong></p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="toolkit/langchain_ibm.toolkit.ToolSchema.html#langchain_ibm.toolkit.ToolSchema" title="langchain_ibm.toolkit.ToolSchema"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toolkit.ToolSchema</span></code></a></p></td>
-<td><p>Create a new model by parsing and validating input data from keyword arguments.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="toolkit/langchain_ibm.toolkit.WatsonxTool.html#langchain_ibm.toolkit.WatsonxTool" title="langchain_ibm.toolkit.WatsonxTool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toolkit.WatsonxTool</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="toolkit/langchain_ibm.toolkit.WatsonxTool.html#langchain_ibm.toolkit.WatsonxTool" title="langchain_ibm.toolkit.WatsonxTool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toolkit.WatsonxTool</span></code></a></p></td>
 <td><p>IBM watsonx.ai Tool.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="toolkit/langchain_ibm.toolkit.WatsonxToolkit.html#langchain_ibm.toolkit.WatsonxToolkit" title="langchain_ibm.toolkit.WatsonxToolkit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toolkit.WatsonxToolkit</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="toolkit/langchain_ibm.toolkit.WatsonxToolkit.html#langchain_ibm.toolkit.WatsonxToolkit" title="langchain_ibm.toolkit.WatsonxToolkit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toolkit.WatsonxToolkit</span></code></a></p></td>
 <td><p>IBM watsonx.ai Toolkit.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Functions</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="toolkit/langchain_ibm.toolkit.json_schema_to_pydantic_model.html#langchain_ibm.toolkit.json_schema_to_pydantic_model" title="langchain_ibm.toolkit.json_schema_to_pydantic_model"><code class="xref py py-obj docutils literal notranslate"><span class="pre">toolkit.json_schema_to_pydantic_model</span></code></a>(name, ...)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -370,10 +376,13 @@
 <tr class="row-even"><td><p><a class="reference internal" href="utils/langchain_ibm.utils.check_for_attribute.html#langchain_ibm.utils.check_for_attribute" title="langchain_ibm.utils.check_for_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.check_for_attribute</span></code></a>(value, key, env_key)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="utils/langchain_ibm.utils.extract_chat_params.html#langchain_ibm.utils.extract_chat_params" title="langchain_ibm.utils.extract_chat_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.extract_chat_params</span></code></a>(kwargs[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="utils/langchain_ibm.utils.convert_to_watsonx_tool.html#langchain_ibm.utils.convert_to_watsonx_tool" title="langchain_ibm.utils.convert_to_watsonx_tool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.convert_to_watsonx_tool</span></code></a>(tool)</p></td>
+<td><p>Convert <cite>WatsonxTool</cite> to watsonx tool structure.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="utils/langchain_ibm.utils.extract_chat_params.html#langchain_ibm.utils.extract_chat_params" title="langchain_ibm.utils.extract_chat_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.extract_chat_params</span></code></a>(kwargs[, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="utils/langchain_ibm.utils.extract_params.html#langchain_ibm.utils.extract_params" title="langchain_ibm.utils.extract_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.extract_params</span></code></a>(kwargs[, default_params])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="utils/langchain_ibm.utils.extract_params.html#langchain_ibm.utils.extract_params" title="langchain_ibm.utils.extract_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.extract_params</span></code></a>(kwargs[, default_params])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>

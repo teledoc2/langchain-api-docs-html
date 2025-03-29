@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 28, 2025" name="docbuild:last-update"/>
+<meta content="Mar 29, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -224,33 +224,34 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">urllib.parse</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Any</span><span class="p">,</span>
     <span class="n">Dict</span><span class="p">,</span>
+    <span class="n">List</span><span class="p">,</span>
     <span class="n">Optional</span><span class="p">,</span>
     <span class="n">Type</span><span class="p">,</span>
     <span class="n">Union</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">ibm_watsonx_ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIClient</span><span class="p">,</span> <span class="n">Credentials</span>  <span class="c1"># type: ignore</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">ibm_watsonx_ai.foundation_models.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tool</span><span class="p">,</span> <span class="n">Toolkit</span>  <span class="c1"># type: ignore</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ibm_watsonx_ai.foundation_models.utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>  <span class="c1"># type: ignore</span>
+    <span class="n">Tool</span><span class="p">,</span>
+    <span class="n">Toolkit</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.callbacks</span><span class="w"> </span><span class="kn">import</span> <span class="n">CallbackManagerForToolRun</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.tools.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseTool</span><span class="p">,</span> <span class="n">BaseToolkit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.utils.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">secret_from_env</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">ConfigDict</span><span class="p">,</span> <span class="n">Field</span><span class="p">,</span> <span class="n">SecretStr</span><span class="p">,</span> <span class="n">model_validator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BaseModel</span><span class="p">,</span>
+    <span class="n">ConfigDict</span><span class="p">,</span>
+    <span class="n">Field</span><span class="p">,</span>
+    <span class="n">PrivateAttr</span><span class="p">,</span>
+    <span class="n">SecretStr</span><span class="p">,</span>
+    <span class="n">create_model</span><span class="p">,</span>
+    <span class="n">model_validator</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_ibm.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_for_attribute</span>
-
-
-<div class="viewcode-block" id="ToolSchema">
-<a class="viewcode-back" href="../../ibm/toolkit/langchain_ibm.toolkit.ToolSchema.html#langchain_ibm.toolkit.ToolSchema">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ToolSchema</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-    <span class="nb">input</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span>
-<span class="w">    </span><span class="sd">"""Input to be used when running a tool."""</span>
-
-    <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="w">    </span><span class="sd">"""Configuration options that can be passed for some tools, </span>
-<span class="sd">    must match the config schema for the tool."""</span></div>
-
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_ibm.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_for_attribute</span><span class="p">,</span> <span class="n">convert_to_watsonx_tool</span>
 
 
 <div class="viewcode-block" id="WatsonxTool">
@@ -274,15 +275,18 @@
     <span class="n">tool_config_schema</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""Schema of the config that can be provided when running the tool if applicable."""</span>
 
-    <span class="n">args_schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">]</span> <span class="o">=</span> <span class="n">ToolSchema</span>
+    <span class="n">tool_config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Config properties to be used when running a tool if applicable."""</span>
 
-    <span class="n">watsonx_tool</span><span class="p">:</span> <span class="n">Tool</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1">#: :meta private:</span>
+    <span class="n">args_schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">]</span> <span class="o">=</span> <span class="n">BaseModel</span>
+
+    <span class="n">_watsonx_tool</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Tool</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="c1">#: :meta private:</span>
 
     <span class="n">watsonx_client</span><span class="p">:</span> <span class="n">APIClient</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_tool</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">watsonx_tool</span> <span class="o">=</span> <span class="n">Tool</span><span class="p">(</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_watsonx_tool</span> <span class="o">=</span> <span class="n">Tool</span><span class="p">(</span>
             <span class="n">api_client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">watsonx_client</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
@@ -290,16 +294,50 @@
             <span class="n">input_schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool_input_schema</span><span class="p">,</span>
             <span class="n">config_schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tool_config_schema</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="n">converted_tool</span> <span class="o">=</span> <span class="n">convert_to_watsonx_tool</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">json_schema</span> <span class="o">=</span> <span class="n">converted_tool</span><span class="p">[</span><span class="s2">"function"</span><span class="p">][</span><span class="s2">"parameters"</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args_schema</span> <span class="o">=</span> <span class="n">json_schema_to_pydantic_model</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"ToolArgsSchema"</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">json_schema</span>
+        <span class="p">)</span>
+
         <span class="k">return</span> <span class="bp">self</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="nb">input</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">],</span>
-        <span class="n">config</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="n">run_manager</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CallbackManagerForToolRun</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Run the tool."""</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">watsonx_tool</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool_input_schema</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">input</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"input"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">input</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool_input_schema</span><span class="p">[</span><span class="s2">"properties"</span><span class="p">]</span>
+            <span class="p">}</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_watsonx_tool</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tool_config</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span>
+
+<div class="viewcode-block" id="WatsonxTool.set_tool_config">
+<a class="viewcode-back" href="../../ibm/toolkit/langchain_ibm.toolkit.WatsonxTool.html#langchain_ibm.toolkit.WatsonxTool.set_tool_config">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_tool_config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool_config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Set tool config properties.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            google_search = watsonx_toolkit.get_tool("GoogleSearch")</span>
+<span class="sd">            print(google_search.tool_config_schema)</span>
+<span class="sd">            tool_config = {</span>
+<span class="sd">                "maxResults": 3</span>
+<span class="sd">            }</span>
+<span class="sd">            google_search.set_tool_config(tool_config)</span>
+
+<span class="sd">        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool_config</span> <span class="o">=</span> <span class="n">tool_config</span></div>
+</div>
 
 
 
@@ -329,20 +367,19 @@
 <span class="sd">            watsonx_toolkit = WatsonxToolkit(</span>
 <span class="sd">                url="https://us-south.ml.cloud.ibm.com",</span>
 <span class="sd">                apikey="*****",</span>
-<span class="sd">                project_id="*****",</span>
 <span class="sd">            )</span>
 <span class="sd">            tools = watsonx_toolkit.get_tools()</span>
 
-<span class="sd">            google_search = watsonx_toolkit.get_tool("GoogleSearch")</span>
+<span class="sd">            google_search = watsonx_toolkit.get_tool(tool_name="GoogleSearch")</span>
 
-<span class="sd">            config = {</span>
+<span class="sd">            tool_config = {</span>
 <span class="sd">                "maxResults": 3,</span>
 <span class="sd">            }</span>
+<span class="sd">            google_search.set_tool_config(tool_config)</span>
 <span class="sd">            input = {</span>
 <span class="sd">                "input": "Search IBM",</span>
-<span class="sd">                "config": config,</span>
 <span class="sd">            }</span>
-<span class="sd">            search_result = google_search.invoke(input=input)</span>
+<span class="sd">            search_result = google_search.invoke(input)</span>
 
 <span class="sd">    """</span>
 
@@ -375,7 +412,10 @@
 <span class="sd">        * True - default path to truststore will be taken</span>
 <span class="sd">        * False - no verification will be made"""</span>
 
-    <span class="n">watsonx_toolkit</span><span class="p">:</span> <span class="n">Toolkit</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1">#: :meta private:</span>
+    <span class="n">_tools</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">WatsonxTool</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Tools in the toolkit."""</span>
+
+    <span class="n">_watsonx_toolkit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Toolkit</span><span class="p">]</span> <span class="o">=</span> <span class="n">PrivateAttr</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  <span class="c1">#: :meta private:</span>
 
     <span class="n">watsonx_client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">APIClient</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -385,7 +425,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_environment</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Validate that credentials and python package exists in environment."""</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">watsonx_client</span><span class="p">,</span> <span class="n">APIClient</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">watsonx_toolkit</span> <span class="o">=</span> <span class="n">Toolkit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">watsonx_client</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_watsonx_toolkit</span> <span class="o">=</span> <span class="n">Toolkit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">watsonx_client</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">check_for_attribute</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">url</span><span class="p">,</span> <span class="s2">"url"</span><span class="p">,</span> <span class="s2">"WATSONX_URL"</span><span class="p">)</span>
 
@@ -417,17 +457,9 @@
                 <span class="n">project_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project_id</span><span class="p">,</span>
                 <span class="n">space_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">space_id</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">watsonx_toolkit</span> <span class="o">=</span> <span class="n">Toolkit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">watsonx_client</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_watsonx_toolkit</span> <span class="o">=</span> <span class="n">Toolkit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">watsonx_client</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span>
-
-<div class="viewcode-block" id="WatsonxToolkit.get_tools">
-<a class="viewcode-back" href="../../ibm/toolkit/langchain_ibm.toolkit.WatsonxToolkit.html#langchain_ibm.toolkit.WatsonxToolkit.get_tools">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_tools</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">WatsonxTool</span><span class="p">]:</span>  <span class="c1"># type: ignore</span>
-<span class="w">        </span><span class="sd">"""Get the tools in the toolkit."""</span>
-        <span class="n">tools</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">watsonx_toolkit</span><span class="o">.</span><span class="n">get_tools</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="p">[</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tools</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">WatsonxTool</span><span class="p">(</span>
                 <span class="n">watsonx_client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">watsonx_client</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="n">tool</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span>
@@ -436,20 +468,54 @@
                 <span class="n">tool_input_schema</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"input_schema"</span><span class="p">),</span>
                 <span class="n">tool_config_schema</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"config_schema"</span><span class="p">),</span>
             <span class="p">)</span>
-            <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">tools</span>
-        <span class="p">]</span></div>
+            <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_watsonx_toolkit</span><span class="o">.</span><span class="n">get_tools</span><span class="p">()</span>
+        <span class="p">]</span>
+
+        <span class="k">return</span> <span class="bp">self</span>
+
+<div class="viewcode-block" id="WatsonxToolkit.get_tools">
+<a class="viewcode-back" href="../../ibm/toolkit/langchain_ibm.toolkit.WatsonxToolkit.html#langchain_ibm.toolkit.WatsonxToolkit.get_tools">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_tools</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">WatsonxTool</span><span class="p">]:</span>  <span class="c1"># type: ignore</span>
+<span class="w">        </span><span class="sd">"""Get the tools in the toolkit."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tools</span>  <span class="c1"># type: ignore[return-value]</span></div>
 
 
 <div class="viewcode-block" id="WatsonxToolkit.get_tool">
 <a class="viewcode-back" href="../../ibm/toolkit/langchain_ibm.toolkit.WatsonxToolkit.html#langchain_ibm.toolkit.WatsonxToolkit.get_tool">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_tool</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WatsonxTool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Get the tool with a given name."""</span>
-        <span class="n">tools</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tools</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">tools</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_tools</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">tool</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">tool_name</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">tool</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"A tool with the given name (</span><span class="si">{</span><span class="n">tool_name</span><span class="si">}</span><span class="s2">) was not found."</span><span class="p">)</span></div>
 </div>
+
+
+
+<div class="viewcode-block" id="json_schema_to_pydantic_model">
+<a class="viewcode-back" href="../../ibm/toolkit/langchain_ibm.toolkit.json_schema_to_pydantic_model.html#langchain_ibm.toolkit.json_schema_to_pydantic_model">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">json_schema_to_pydantic_model</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Type</span><span class="p">[</span><span class="n">BaseModel</span><span class="p">]:</span>
+    <span class="n">properties</span> <span class="o">=</span> <span class="n">schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"properties"</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">type_mapping</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"string"</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="s2">"integer"</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="s2">"number"</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="s2">"boolean"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+        <span class="s2">"array"</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+        <span class="s2">"object"</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">field_schema</span> <span class="ow">in</span> <span class="n">properties</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">field_type</span> <span class="o">=</span> <span class="n">field_schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"type"</span><span class="p">,</span> <span class="s2">"string"</span><span class="p">)</span>
+        <span class="n">is_required</span> <span class="o">=</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="n">schema</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"required"</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="n">py_type</span> <span class="o">=</span> <span class="n">type_mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field_type</span><span class="p">,</span> <span class="n">Any</span><span class="p">)</span>
+
+        <span class="n">fields</span><span class="p">[</span><span class="n">field_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">py_type</span><span class="p">,</span> <span class="o">...</span> <span class="k">if</span> <span class="n">is_required</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">create_model</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">fields</span><span class="p">)</span>  <span class="c1"># type: ignore[call-overload]</span></div>
 
 </pre></div>
 </article>

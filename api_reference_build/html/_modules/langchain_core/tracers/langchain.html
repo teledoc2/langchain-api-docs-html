@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 28, 2025" name="docbuild:last-update"/>
+<meta content="Mar 29, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -464,7 +464,11 @@
             <span class="n">extra</span> <span class="o">=</span> <span class="n">run_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"extra"</span><span class="p">,</span> <span class="p">{})</span>
             <span class="n">extra</span><span class="p">[</span><span class="s2">"runtime"</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_runtime_environment</span><span class="p">()</span>
             <span class="n">run_dict</span><span class="p">[</span><span class="s2">"extra"</span><span class="p">]</span> <span class="o">=</span> <span class="n">extra</span>
-            <span class="n">inputs_is_truthy</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">run_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"inputs"</span><span class="p">))</span>
+            <span class="n">inputs_</span> <span class="o">=</span> <span class="n">run_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"inputs"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">inputs_</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs_</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">inputs_</span><span class="o">.</span><span class="n">values</span><span class="p">())))):</span>
+                <span class="n">inputs_is_truthy</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">inputs_is_truthy</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">run</span><span class="o">.</span><span class="n">extra</span><span class="p">[</span><span class="s2">"inputs_is_truthy"</span><span class="p">]</span> <span class="o">=</span> <span class="n">inputs_is_truthy</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">create_run</span><span class="p">(</span><span class="o">**</span><span class="n">run_dict</span><span class="p">,</span> <span class="n">project_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project_name</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>

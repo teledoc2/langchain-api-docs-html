@@ -50,11 +50,11 @@
 <link href="../_static/favicon.png" rel="icon"/>
 <link href="../search.html" rel="search" title="Search"/>
 <link href="utils/langchain_ibm.utils.check_duplicate_chat_params.html" rel="next" title="check_duplicate_chat_params"/>
-<link href="toolkit/langchain_ibm.toolkit.WatsonxToolkit.html" rel="prev" title="WatsonxToolkit"/>
+<link href="toolkit/langchain_ibm.toolkit.json_schema_to_pydantic_model.html" rel="prev" title="json_schema_to_pydantic_model"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 28, 2025" name="docbuild:last-update"/>
+<meta content="Mar 29, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -232,6 +232,7 @@
 <li class="toctree-l2 current active has-children"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="utils/langchain_ibm.utils.check_duplicate_chat_params.html">check_duplicate_chat_params</a></li>
 <li class="toctree-l3"><a class="reference internal" href="utils/langchain_ibm.utils.check_for_attribute.html">check_for_attribute</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils/langchain_ibm.utils.convert_to_watsonx_tool.html">convert_to_watsonx_tool</a></li>
 <li class="toctree-l3"><a class="reference internal" href="utils/langchain_ibm.utils.extract_chat_params.html">extract_chat_params</a></li>
 <li class="toctree-l3"><a class="reference internal" href="utils/langchain_ibm.utils.extract_params.html">extract_params</a></li>
 </ul>
@@ -286,7 +287,7 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="index.html">langchain-ibm: 0.3.8</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="index.html">langchain-ibm: 0.3.9</a></li>
 <li aria-current="page" class="breadcrumb-item active"><span class="ellipsis"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></span></li>
 </ul>
 </nav>
@@ -307,10 +308,13 @@
 <tr class="row-even"><td><p><a class="reference internal" href="utils/langchain_ibm.utils.check_for_attribute.html#langchain_ibm.utils.check_for_attribute" title="langchain_ibm.utils.check_for_attribute"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.check_for_attribute</span></code></a>(value, key, env_key)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="utils/langchain_ibm.utils.extract_chat_params.html#langchain_ibm.utils.extract_chat_params" title="langchain_ibm.utils.extract_chat_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.extract_chat_params</span></code></a>(kwargs[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="utils/langchain_ibm.utils.convert_to_watsonx_tool.html#langchain_ibm.utils.convert_to_watsonx_tool" title="langchain_ibm.utils.convert_to_watsonx_tool"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.convert_to_watsonx_tool</span></code></a>(tool)</p></td>
+<td><p>Convert <cite>WatsonxTool</cite> to watsonx tool structure.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="utils/langchain_ibm.utils.extract_chat_params.html#langchain_ibm.utils.extract_chat_params" title="langchain_ibm.utils.extract_chat_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.extract_chat_params</span></code></a>(kwargs[, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="utils/langchain_ibm.utils.extract_params.html#langchain_ibm.utils.extract_params" title="langchain_ibm.utils.extract_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.extract_params</span></code></a>(kwargs[, default_params])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="utils/langchain_ibm.utils.extract_params.html#langchain_ibm.utils.extract_params" title="langchain_ibm.utils.extract_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.extract_params</span></code></a>(kwargs[, default_params])</p></td>
 <td><p></p></td>
 </tr>
 </tbody>

@@ -13,7 +13,7 @@
         gtag('js', new Date());
         gtag('config', 'G-9B66JQQH2F');
     </script>
-<title>ToolSchema — 🦜🔗 LangChain  documentation</title>
+<title>convert_to_watsonx_tool — 🦜🔗 LangChain  documentation</title>
 <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
@@ -46,15 +46,15 @@
 <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
 <script src="../../_static/copybutton.js?v=f281be69"></script>
 <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-<script>DOCUMENTATION_OPTIONS.pagename = 'ibm/toolkit/langchain_ibm.toolkit.ToolSchema';</script>
+<script>DOCUMENTATION_OPTIONS.pagename = 'ibm/utils/langchain_ibm.utils.convert_to_watsonx_tool';</script>
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
-<link href="langchain_ibm.toolkit.WatsonxTool.html" rel="next" title="WatsonxTool"/>
-<link href="../toolkit.html" rel="prev" title="toolkit"/>
+<link href="langchain_ibm.utils.extract_chat_params.html" rel="next" title="extract_chat_params"/>
+<link href="langchain_ibm.utils.check_for_attribute.html" rel="prev" title="check_for_attribute"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 28, 2025" name="docbuild:last-update"/>
+<meta content="Mar 29, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -231,13 +231,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../embeddings.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">embeddings</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../llms.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">llms</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../rerank.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">rerank</span></code></a></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="../toolkit.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">toolkit</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">ToolSchema</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_ibm.toolkit.WatsonxTool.html">WatsonxTool</a></li>
-<li class="toctree-l3"><a class="reference internal" href="langchain_ibm.toolkit.WatsonxToolkit.html">WatsonxToolkit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../toolkit.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">toolkit</span></code></a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="langchain_ibm.utils.check_duplicate_chat_params.html">check_duplicate_chat_params</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_ibm.utils.check_for_attribute.html">check_for_attribute</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">convert_to_watsonx_tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_ibm.utils.extract_chat_params.html">extract_chat_params</a></li>
+<li class="toctree-l3"><a class="reference internal" href="langchain_ibm.utils.extract_params.html">extract_params</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2"><a class="reference internal" href="../utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../milvus/index.html">Milvus</a></li>
@@ -288,9 +290,9 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-ibm: 0.3.8</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="../toolkit.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">toolkit</span></code></a></li>
-<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">ToolSchema</span></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-ibm: 0.3.9</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a></li>
+<li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">convert_to_watsonx_tool</span></li>
 </ul>
 </nav>
 </div>
@@ -299,27 +301,56 @@
 </div>
 <div id="searchbox"></div>
 <article class="bd-article">
-<section id="toolschema">
-<h1>ToolSchema<a class="headerlink" href="#toolschema" title="Link to this heading">#</a></h1>
-<dl class="py class pydantic_model">
-<dt class="sig sig-object py" id="langchain_ibm.toolkit.ToolSchema">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">langchain_ibm.toolkit.</span></span><span class="sig-name descname"><span class="pre">ToolSchema</span></span><a class="reference internal" href="../../_modules/langchain_ibm/toolkit.html#ToolSchema"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_ibm.toolkit.ToolSchema" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseModel</span></code></p>
-<p>Create a new model by parsing and validating input data from keyword arguments.</p>
-<p>Raises [<cite>ValidationError</cite>][pydantic_core.ValidationError] if the input data cannot be
-validated to form a valid model.</p>
-<p><cite>self</cite> is explicitly positional-only to allow <cite>self</cite> as a field name.</p>
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="langchain_ibm.toolkit.ToolSchema.config">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_ibm.toolkit.ToolSchema.config" title="Link to this definition">#</a></dt>
-<dd><p>Configuration options that can be passed for some tools,
-must match the config schema for the tool.</p>
-</dd></dl>
-<dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="langchain_ibm.toolkit.ToolSchema.input">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">input</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#langchain_ibm.toolkit.ToolSchema.input" title="Link to this definition">#</a></dt>
-<dd><p>Input to be used when running a tool.</p>
-</dd></dl>
+<section id="convert-to-watsonx-tool">
+<h1>convert_to_watsonx_tool<a class="headerlink" href="#convert-to-watsonx-tool" title="Link to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="langchain_ibm.utils.convert_to_watsonx_tool">
+<span class="sig-prename descclassname"><span class="pre">langchain_ibm.utils.</span></span><span class="sig-name descname"><span class="pre">convert_to_watsonx_tool</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tool</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../toolkit/langchain_ibm.toolkit.WatsonxTool.html#langchain_ibm.toolkit.WatsonxTool" title="langchain_ibm.toolkit.WatsonxTool"><span class="pre">WatsonxTool</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../../_modules/langchain_ibm/utils.html#convert_to_watsonx_tool"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_ibm.utils.convert_to_watsonx_tool" title="Link to this definition">#</a></dt>
+<dd><p>Convert <cite>WatsonxTool</cite> to watsonx tool structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tool</strong> (<a class="reference internal" href="../toolkit/langchain_ibm.toolkit.WatsonxTool.html#langchain_ibm.toolkit.WatsonxTool" title="langchain_ibm.toolkit.WatsonxTool"><em>WatsonxTool</em></a>) – <cite>WatsonxTool</cite> from <cite>WatsonxToolkit</cite></p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_ibm</span><span class="w"> </span><span class="kn">import</span> <span class="n">WatsonxToolkit</span>
+
+<span class="n">watsonx_toolkit</span> <span class="o">=</span> <span class="n">WatsonxToolkit</span><span class="p">(</span>
+    <span class="n">url</span><span class="o">=</span><span class="s2">"https://us-south.ml.cloud.ibm.com"</span><span class="p">,</span>
+    <span class="n">apikey</span><span class="o">=</span><span class="s2">"*****"</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">weather_tool</span> <span class="o">=</span> <span class="n">watsonx_toolkit</span><span class="o">.</span><span class="n">get_tool</span><span class="p">(</span><span class="s2">"Weather"</span><span class="p">)</span>
+<span class="n">convert_to_watsonx_tool</span><span class="p">(</span><span class="n">weather_tool</span><span class="p">)</span>
+
+<span class="c1"># Return</span>
+<span class="c1"># {</span>
+<span class="c1">#     "type": "function",</span>
+<span class="c1">#     "function": {</span>
+<span class="c1">#         "name": "Weather",</span>
+<span class="c1">#         "description": "Find the weather for a city.",</span>
+<span class="c1">#         "parameters": {</span>
+<span class="c1">#             "type": "object",</span>
+<span class="c1">#             "properties": {</span>
+<span class="c1">#                 "location": {</span>
+<span class="c1">#                     "title": "location",</span>
+<span class="c1">#                     "description": "Name of the location",</span>
+<span class="c1">#                     "type": "string",</span>
+<span class="c1">#                 },</span>
+<span class="c1">#                 "country": {</span>
+<span class="c1">#                     "title": "country",</span>
+<span class="c1">#                     "description": "Name of the state or country",</span>
+<span class="c1">#                     "type": "string",</span>
+<span class="c1">#                 },</span>
+<span class="c1">#             },</span>
+<span class="c1">#             "required": ["location"],</span>
+<span class="c1">#         },</span>
+<span class="c1">#     },</span>
+<span class="c1"># }</span>
+</pre></div>
+</div>
 </dd></dl>
 <ul class="simple">
 </ul>
@@ -334,11 +365,7 @@ must match the config schema for the tool.</p>
   </div>
 <nav aria-labelledby="pst-page-navigation-heading-2" class="bd-toc-nav page-toc">
 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.ToolSchema"><code class="docutils literal notranslate"><span class="pre">ToolSchema</span></code></a><ul class="visible nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.ToolSchema.config"><code class="docutils literal notranslate"><span class="pre">config</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.toolkit.ToolSchema.input"><code class="docutils literal notranslate"><span class="pre">input</span></code></a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_ibm.utils.convert_to_watsonx_tool"><code class="docutils literal notranslate"><span class="pre">convert_to_watsonx_tool()</span></code></a></li>
 </ul>
 </nav></div>
 </div></div>

@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 28, 2025" name="docbuild:last-update"/>
+<meta content="Mar 29, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -889,8 +889,17 @@
         <span class="c1"># pass as a positional argument.</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tool_input</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">(</span><span class="n">tool_input</span><span class="p">,),</span> <span class="p">{}</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tool_input</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="c1"># Make a shallow copy of the input to allow downstream code</span>
+            <span class="c1"># to modify the root level of the input without affecting the</span>
+            <span class="c1"># original input.</span>
+            <span class="c1"># This is used by the tool to inject run time information like</span>
+            <span class="c1"># the callback manager.</span>
+            <span class="k">return</span> <span class="p">(),</span> <span class="n">tool_input</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">(),</span> <span class="n">tool_input</span>
+            <span class="c1"># This code path is not expected to be reachable.</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invalid tool input type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">tool_input</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BaseTool.run">
 <a class="viewcode-back" href="../../../core/tools/langchain_core.tools.base.BaseTool.html#langchain_azure_dynamic_sessions.tools.sessions.BaseTool.run">[docs]</a>

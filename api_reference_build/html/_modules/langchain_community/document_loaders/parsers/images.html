@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Mar 28, 2025" name="docbuild:last-update"/>
+<meta content="Mar 29, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -279,7 +279,11 @@
 
         <span class="k">with</span> <span class="n">blob</span><span class="o">.</span><span class="n">as_bytes_io</span><span class="p">()</span> <span class="k">as</span> <span class="n">buf</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">blob</span><span class="o">.</span><span class="n">mimetype</span> <span class="o">==</span> <span class="s2">"application/x-npy"</span><span class="p">:</span>
-                <span class="n">img</span> <span class="o">=</span> <span class="n">Img</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">buf</span><span class="p">))</span>
+                <span class="n">array</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">3</span> <span class="ow">and</span> <span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Grayscale image</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">Img</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">mode</span><span class="o">=</span><span class="s2">"L"</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">img</span> <span class="o">=</span> <span class="n">Img</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">img</span> <span class="o">=</span> <span class="n">Img</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">buf</span><span class="p">)</span>
             <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_analyze_image</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
