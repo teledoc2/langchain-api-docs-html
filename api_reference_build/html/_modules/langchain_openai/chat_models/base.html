@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1715,6 +1715,7 @@
         <span class="p">]</span> <span class="o">=</span> <span class="s2">"function_calling"</span><span class="p">,</span>
         <span class="n">include_raw</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">strict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">tools</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Runnable</span><span class="p">[</span><span class="n">LanguageModelInput</span><span class="p">,</span> <span class="n">_DictOrPydantic</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Model wrapper that returns outputs formatted to match the given schema.</span>
@@ -1775,6 +1776,51 @@
 <span class="sd">                - None:</span>
 <span class="sd">                    ``strict`` argument will not be passed to the model.</span>
 
+<span class="sd">            tools:</span>
+<span class="sd">                A list of tool-like objects to bind to the chat model. Requires that:</span>
+
+<span class="sd">                - ``method`` is ``"json_schema"`` (default).</span>
+<span class="sd">                - ``strict=True``</span>
+<span class="sd">                - ``include_raw=True``</span>
+
+<span class="sd">                If a model elects to call a</span>
+<span class="sd">                tool, the resulting ``AIMessage`` in ``"raw"`` will include tool calls.</span>
+
+<span class="sd">                .. dropdown:: Example</span>
+
+<span class="sd">                    .. code-block:: python</span>
+
+<span class="sd">                        from langchain.chat_models import init_chat_model</span>
+<span class="sd">                        from pydantic import BaseModel</span>
+
+
+<span class="sd">                        class ResponseSchema(BaseModel):</span>
+<span class="sd">                            response: str</span>
+
+
+<span class="sd">                        def get_weather(location: str) -&gt; str:</span>
+<span class="sd">                            \"\"\"Get weather at a location.\"\"\"</span>
+<span class="sd">                            pass</span>
+
+<span class="sd">                        llm = init_chat_model("openai:gpt-4o-mini")</span>
+
+<span class="sd">                        structured_llm = llm.with_structured_output(</span>
+<span class="sd">                            ResponseSchema,</span>
+<span class="sd">                            tools=[get_weather],</span>
+<span class="sd">                            strict=True,</span>
+<span class="sd">                            include_raw=True,</span>
+<span class="sd">                        )</span>
+
+<span class="sd">                        structured_llm.invoke("What's the weather in Boston?")</span>
+
+<span class="sd">                    .. code-block:: python</span>
+
+<span class="sd">                        {</span>
+<span class="sd">                            "raw": AIMessage(content="", tool_calls=[...], ...),</span>
+<span class="sd">                            "parsing_error": None,</span>
+<span class="sd">                            "parsed": None,</span>
+<span class="sd">                        }</span>
+
 <span class="sd">            kwargs: Additional keyword args aren't supported.</span>
 
 <span class="sd">        Returns:</span>
@@ -1796,6 +1842,9 @@
 
 <span class="sd">            Support for ``strict`` argument added.</span>
 <span class="sd">            Support for ``method`` = "json_schema" added.</span>
+
+<span class="sd">        .. versionchanged:: 0.3.12</span>
+<span class="sd">            Support for ``tools`` added.</span>
 <span class="sd">        """</span>  <span class="c1"># noqa: E501</span>
         <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Received unsupported arguments </span><span class="si">{</span><span class="n">kwargs</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
@@ -1880,13 +1929,18 @@
                     <span class="s2">"Received None."</span>
                 <span class="p">)</span>
             <span class="n">response_format</span> <span class="o">=</span> <span class="n">_convert_to_openai_response_format</span><span class="p">(</span><span class="n">schema</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">)</span>
-            <span class="n">llm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span>
+            <span class="n">bind_kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">response_format</span><span class="o">=</span><span class="n">response_format</span><span class="p">,</span>
                 <span class="n">ls_structured_output_format</span><span class="o">=</span><span class="p">{</span>
                     <span class="s2">"kwargs"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"method"</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span> <span class="s2">"strict"</span><span class="p">:</span> <span class="n">strict</span><span class="p">},</span>
                     <span class="s2">"schema"</span><span class="p">:</span> <span class="n">convert_to_openai_tool</span><span class="p">(</span><span class="n">schema</span><span class="p">),</span>
                 <span class="p">},</span>
             <span class="p">)</span>
+            <span class="k">if</span> <span class="n">tools</span><span class="p">:</span>
+                <span class="n">bind_kwargs</span><span class="p">[</span><span class="s2">"tools"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="n">convert_to_openai_tool</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">strict</span><span class="o">=</span><span class="n">strict</span><span class="p">)</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tools</span>
+                <span class="p">]</span>
+            <span class="n">llm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="o">**</span><span class="n">bind_kwargs</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">is_pydantic_schema</span><span class="p">:</span>
                 <span class="n">output_parser</span> <span class="o">=</span> <span class="n">RunnableLambda</span><span class="p">(</span>
                     <span class="n">partial</span><span class="p">(</span><span class="n">_oai_structured_outputs_parser</span><span class="p">,</span> <span class="n">schema</span><span class="o">=</span><span class="n">cast</span><span class="p">(</span><span class="nb">type</span><span class="p">,</span> <span class="n">schema</span><span class="p">))</span>
@@ -3022,7 +3076,7 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_oai_structured_outputs_parser</span><span class="p">(</span>
     <span class="n">ai_msg</span><span class="p">:</span> <span class="n">AIMessage</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">_BM</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PydanticBaseModel</span><span class="p">:</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">PydanticBaseModel</span><span class="p">]:</span>
     <span class="k">if</span> <span class="n">parsed</span> <span class="o">:=</span> <span class="n">ai_msg</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"parsed"</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parsed</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">schema</span><span class="p">(</span><span class="o">**</span><span class="n">parsed</span><span class="p">)</span>
@@ -3030,6 +3084,8 @@
             <span class="k">return</span> <span class="n">parsed</span>
     <span class="k">elif</span> <span class="n">ai_msg</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"refusal"</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">OpenAIRefusalError</span><span class="p">(</span><span class="n">ai_msg</span><span class="o">.</span><span class="n">additional_kwargs</span><span class="p">[</span><span class="s2">"refusal"</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">ai_msg</span><span class="o">.</span><span class="n">tool_calls</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="s2">"Structured Output response does not have a 'parsed' field nor a 'refusal' "</span>

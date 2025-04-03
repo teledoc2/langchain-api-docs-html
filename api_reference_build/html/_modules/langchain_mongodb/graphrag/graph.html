@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -231,7 +231,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.documents</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.language_models.chat_models</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseChatModel</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">AIMessage</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts.chat</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span><span class="p">,</span> <span class="n">SystemMessagePromptTemplate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.prompts.chat</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatPromptTemplate</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables</span><span class="w"> </span><span class="kn">import</span> <span class="n">RunnableSequence</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo</span><span class="w"> </span><span class="kn">import</span> <span class="n">MongoClient</span><span class="p">,</span> <span class="n">UpdateOne</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymongo.collection</span><span class="w"> </span><span class="kn">import</span> <span class="n">Collection</span>
@@ -329,7 +329,7 @@
         <span class="n">allowed_entity_types</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">allowed_relationship_types</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">entity_examples</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">entity_name_examples</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">entity_name_examples</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
         <span class="n">validate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
         <span class="n">validation_action</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"warn"</span><span class="p">,</span>
     <span class="p">):</span>
@@ -418,6 +418,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">query_prompt</span> <span class="o">=</span> <span class="p">(</span>
             <span class="n">prompts</span><span class="o">.</span><span class="n">query_prompt</span> <span class="k">if</span> <span class="n">query_prompt</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">query_prompt</span>
         <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entity_examples</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">example_templates</span><span class="o">.</span><span class="n">entity_extraction</span>
+            <span class="k">if</span> <span class="n">entity_examples</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="n">entity_examples</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">entity_name_examples</span> <span class="o">=</span> <span class="n">entity_name_examples</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">max_depth</span> <span class="o">=</span> <span class="n">max_depth</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_schema</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">entity_schema</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">allowed_entity_types</span><span class="p">:</span>
@@ -433,22 +440,7 @@
                 <span class="s2">"enum"</span>
             <span class="p">]</span> <span class="o">=</span> <span class="n">allowed_relationship_types</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">allowed_relationship_types</span> <span class="o">=</span> <span class="p">[]</span>
-
-        <span class="c1"># Include examples</span>
-        <span class="k">if</span> <span class="n">entity_examples</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">entity_examples</span> <span class="o">=</span> <span class="n">example_templates</span><span class="o">.</span><span class="n">entity_extraction</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">entity_prompt</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-            <span class="mi">1</span><span class="p">,</span>
-            <span class="n">SystemMessagePromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="n">entity_examples</span><span class="p">),</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">entity_name_examples</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">query_prompt</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
-                <span class="mi">1</span><span class="p">,</span>
-                <span class="n">SystemMessagePromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">"## Additional Examples </span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">entity_name_examples</span><span class="si">}</span><span class="s2">"</span>
-                <span class="p">),</span>
-            <span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">allowed_relationship_types</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 
     <span class="nd">@property</span>
@@ -615,6 +607,7 @@
             <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">input_document</span><span class="o">=</span><span class="n">raw_document</span><span class="p">,</span>
                 <span class="n">entity_schema</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_schema</span><span class="p">,</span>
+                <span class="n">entity_examples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_examples</span><span class="p">,</span>
                 <span class="n">allowed_entity_types</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">allowed_entity_types</span><span class="p">,</span>
                 <span class="n">allowed_relationship_types</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">allowed_relationship_types</span><span class="p">,</span>
             <span class="p">)</span>
@@ -648,6 +641,7 @@
         <span class="n">response</span><span class="p">:</span> <span class="n">AIMessage</span> <span class="o">=</span> <span class="n">chain</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
             <span class="nb">dict</span><span class="p">(</span>
                 <span class="n">input_document</span><span class="o">=</span><span class="n">raw_document</span><span class="p">,</span>
+                <span class="n">entity_name_examples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">entity_name_examples</span><span class="p">,</span>
                 <span class="n">allowed_entity_types</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">allowed_entity_types</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>

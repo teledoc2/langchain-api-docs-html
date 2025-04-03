@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -485,10 +485,9 @@
             <span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_id</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">single_result</span>
-            <span class="k">elif</span> <span class="n">single_result</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">single_result</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">single_result</span><span class="p">[</span><span class="s2">"args"</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">return</span> <span class="kc">None</span>
         <span class="n">parsed_result</span> <span class="o">=</span> <span class="p">[</span><span class="n">res</span> <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">parsed_result</span> <span class="k">if</span> <span class="n">res</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_name</span><span class="p">]</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_id</span><span class="p">:</span>
             <span class="n">parsed_result</span> <span class="o">=</span> <span class="p">[</span><span class="n">res</span><span class="p">[</span><span class="s2">"args"</span><span class="p">]</span> <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">parsed_result</span><span class="p">]</span>
@@ -550,8 +549,7 @@
                 <span class="k">raise</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_tool_only</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">pydantic_objects</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">pydantic_objects</span> <span class="k">else</span> <span class="kc">None</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">pydantic_objects</span></div>
+        <span class="k">return</span> <span class="n">pydantic_objects</span></div>
 </div>
 
 </pre></div>

@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -245,7 +245,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypeGuard</span><span class="p">,</span> <span class="n">override</span>
 
 <span class="c1"># Re-export create-model for backwards compatibility</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.utils.pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_model</span> <span class="k">as</span> <span class="n">create_model</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.utils.pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">create_model</span>  <span class="c1"># noqa: F401</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -260,9 +260,9 @@
 
     <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.runnables.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">StreamEvent</span>
 
-<span class="n">Input</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"Input"</span><span class="p">,</span> <span class="n">contravariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Input</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"Input"</span><span class="p">,</span> <span class="n">contravariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># noqa: PLC0105</span>
 <span class="c1"># Output type should implement __concat__, as eg str, list, dict do</span>
-<span class="n">Output</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"Output"</span><span class="p">,</span> <span class="n">covariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">Output</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"Output"</span><span class="p">,</span> <span class="n">covariant</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># noqa: PLC0105</span>
 
 
 <div class="viewcode-block" id="gated_coro">
@@ -746,11 +746,10 @@
                     <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">kk</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]:</span>
                         <span class="k">if</span> <span class="n">vv</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                             <span class="k">break</span>
-                        <span class="k">else</span><span class="p">:</span>
-                            <span class="k">try</span><span class="p">:</span>
-                                <span class="n">vv</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">vv</span><span class="p">,</span> <span class="n">part</span><span class="p">)</span>
-                            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-                                <span class="k">break</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="n">vv</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">vv</span><span class="p">,</span> <span class="n">part</span><span class="p">)</span>
+                        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                            <span class="k">break</span>
                     <span class="k">else</span><span class="p">:</span>
                         <span class="n">values</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vv</span><span class="p">)</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">SyntaxError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="ne">OSError</span><span class="p">,</span> <span class="ne">SystemError</span><span class="p">):</span>

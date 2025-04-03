@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -378,6 +378,104 @@ to the ChatGoogleGenerativeAI constructor.</p>
 </pre></div>
 </div>
 </dd>
+<dt>Context Caching:</dt><dd><p>Context caching allows you to store and reuse content (e.g., PDFs, images) for faster processing.
+The <cite>cached_content</cite> parameter accepts a cache name created via the Google Generative AI API.
+Below are two examples: caching a single file directly and caching multiple files using <cite>Part</cite>.</p>
+<p>Single File Example:
+This caches a single file and queries it.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">google</span><span class="w"> </span><span class="kn">import</span> <span class="n">genai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">google.genai</span><span class="w"> </span><span class="kn">import</span> <span class="n">types</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_google_genai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatGoogleGenerativeAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">HumanMessage</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">genai</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+
+<span class="c1"># Upload file</span>
+<span class="n">file</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s2">"./example_file"</span><span class="p">)</span>
+<span class="k">while</span> <span class="n">file</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'PROCESSING'</span><span class="p">:</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">file</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="c1"># Create cache</span>
+<span class="n">model</span> <span class="o">=</span> <span class="s1">'models/gemini-1.5-flash-001'</span>
+<span class="n">cache</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">caches</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">CreateCachedContentConfig</span><span class="p">(</span>
+        <span class="n">display_name</span><span class="o">=</span><span class="s1">'Cached Content'</span><span class="p">,</span>
+        <span class="n">system_instruction</span><span class="o">=</span><span class="p">(</span>
+            <span class="s1">'You are an expert content analyzer, and your job is to answer '</span>
+            <span class="s1">'the user'</span><span class="n">s</span> <span class="n">query</span> <span class="n">based</span> <span class="n">on</span> <span class="n">the</span> <span class="n">file</span> <span class="n">you</span> <span class="n">have</span> <span class="n">access</span> <span class="n">to</span><span class="o">.</span><span class="s1">'</span>
+        <span class="p">),</span>
+        <span class="n">contents</span><span class="o">=</span><span class="p">[</span><span class="n">file</span><span class="p">],</span>
+        <span class="n">ttl</span><span class="o">=</span><span class="s2">"300s"</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Query with LangChain</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatGoogleGenerativeAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">cached_content</span><span class="o">=</span><span class="n">cache</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">message</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">"Summarize the main points of the content."</span><span class="p">)</span>
+<span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">([</span><span class="n">message</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Multiple Files Example:
+This caches two files using <cite>Part</cite> and queries them together.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">google</span><span class="w"> </span><span class="kn">import</span> <span class="n">genai</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">google.genai.types</span><span class="w"> </span><span class="kn">import</span> <span class="n">CreateCachedContentConfig</span><span class="p">,</span> <span class="n">Content</span><span class="p">,</span> <span class="n">Part</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_google_genai</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatGoogleGenerativeAI</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">HumanMessage</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">genai</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+
+<span class="c1"># Upload files</span>
+<span class="n">file_1</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s2">"./file1"</span><span class="p">)</span>
+<span class="k">while</span> <span class="n">file_1</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'PROCESSING'</span><span class="p">:</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">file_1</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">file_1</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="n">file_2</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="s2">"./file2"</span><span class="p">)</span>
+<span class="k">while</span> <span class="n">file_2</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s1">'PROCESSING'</span><span class="p">:</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">file_2</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">files</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">file_2</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+<span class="c1"># Create cache with multiple files</span>
+<span class="n">contents</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">Content</span><span class="p">(</span>
+        <span class="n">role</span><span class="o">=</span><span class="s2">"user"</span><span class="p">,</span>
+        <span class="n">parts</span><span class="o">=</span><span class="p">[</span>
+            <span class="n">Part</span><span class="o">.</span><span class="n">from_uri</span><span class="p">(</span><span class="n">file_uri</span><span class="o">=</span><span class="n">file_1</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">mime_type</span><span class="o">=</span><span class="n">file_1</span><span class="o">.</span><span class="n">mime_type</span><span class="p">),</span>
+            <span class="n">Part</span><span class="o">.</span><span class="n">from_uri</span><span class="p">(</span><span class="n">file_uri</span><span class="o">=</span><span class="n">file_2</span><span class="o">.</span><span class="n">uri</span><span class="p">,</span> <span class="n">mime_type</span><span class="o">=</span><span class="n">file_2</span><span class="o">.</span><span class="n">mime_type</span><span class="p">),</span>
+        <span class="p">],</span>
+    <span class="p">)</span>
+<span class="p">]</span>
+<span class="n">model</span> <span class="o">=</span> <span class="s2">"gemini-1.5-flash-001"</span>
+<span class="n">cache</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">caches</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">config</span><span class="o">=</span><span class="n">CreateCachedContentConfig</span><span class="p">(</span>
+        <span class="n">display_name</span><span class="o">=</span><span class="s1">'Cached Contents'</span><span class="p">,</span>
+        <span class="n">system_instruction</span><span class="o">=</span><span class="p">(</span>
+            <span class="s1">'You are an expert content analyzer, and your job is to answer '</span>
+            <span class="s1">'the user'</span><span class="n">s</span> <span class="n">query</span> <span class="n">based</span> <span class="n">on</span> <span class="n">the</span> <span class="n">files</span> <span class="n">you</span> <span class="n">have</span> <span class="n">access</span> <span class="n">to</span><span class="o">.</span><span class="s1">'</span>
+        <span class="p">),</span>
+        <span class="n">contents</span><span class="o">=</span><span class="n">contents</span><span class="p">,</span>
+        <span class="n">ttl</span><span class="o">=</span><span class="s2">"300s"</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Query with LangChain</span>
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatGoogleGenerativeAI</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+    <span class="n">cached_content</span><span class="o">=</span><span class="n">cache</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">message</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="s2">"Provide a summary of the key information across both files."</span><span class="p">)</span>
+<span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">([</span><span class="n">message</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd>
 <dt>Tool calling:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span><span class="p">,</span> <span class="n">Field</span>
 
 
@@ -659,7 +757,7 @@ HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT: HarmBlockThreshold.BLOCK_NONE,</p>
 <dt class="sig sig-object py" id="langchain_google_genai.chat_models.ChatGoogleGenerativeAI.temperature">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">temperature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.7</span></em><a class="headerlink" href="#langchain_google_genai.chat_models.ChatGoogleGenerativeAI.temperature" title="Link to this definition">#</a></dt>
 <dd><p>Run inference with this temperature. Must by in the closed interval
-[0.0, 1.0].</p>
+[0.0, 2.0].</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_google_genai.chat_models.ChatGoogleGenerativeAI.timeout">

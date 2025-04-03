@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -497,9 +497,9 @@
 
     <span class="k">if</span> <span class="n">type_</span> <span class="ow">in</span> <span class="n">visited</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">visited</span><span class="p">[</span><span class="n">type_</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">depth</span> <span class="o">&gt;=</span> <span class="n">_MAX_TYPED_DICT_RECURSION</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">depth</span> <span class="o">&gt;=</span> <span class="n">_MAX_TYPED_DICT_RECURSION</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">type_</span>
-    <span class="k">elif</span> <span class="n">is_typeddict</span><span class="p">(</span><span class="n">type_</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">is_typeddict</span><span class="p">(</span><span class="n">type_</span><span class="p">):</span>
         <span class="n">typed_dict</span> <span class="o">=</span> <span class="n">type_</span>
         <span class="n">docstring</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getdoc</span><span class="p">(</span><span class="n">typed_dict</span><span class="p">)</span>
         <span class="n">annotations_</span> <span class="o">=</span> <span class="n">typed_dict</span><span class="o">.</span><span class="vm">__annotations__</span>
@@ -523,7 +523,7 @@
                         <span class="sa">f</span><span class="s2">"type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">field_desc</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
                     <span class="p">)</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">arg_desc</span> <span class="o">:=</span> <span class="n">arg_descriptions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">arg_desc</span> <span class="o">:=</span> <span class="n">arg_descriptions</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
                     <span class="n">field_kwargs</span><span class="p">[</span><span class="s2">"description"</span><span class="p">]</span> <span class="o">=</span> <span class="n">arg_desc</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">pass</span>
@@ -540,15 +540,14 @@
         <span class="n">model</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">description</span>
         <span class="n">visited</span><span class="p">[</span><span class="n">typed_dict</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>
         <span class="k">return</span> <span class="n">model</span>
-    <span class="k">elif</span> <span class="p">(</span><span class="n">origin</span> <span class="o">:=</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">type_</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">type_args</span> <span class="o">:=</span> <span class="n">get_args</span><span class="p">(</span><span class="n">type_</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">origin</span> <span class="o">:=</span> <span class="n">get_origin</span><span class="p">(</span><span class="n">type_</span><span class="p">))</span> <span class="ow">and</span> <span class="p">(</span><span class="n">type_args</span> <span class="o">:=</span> <span class="n">get_args</span><span class="p">(</span><span class="n">type_</span><span class="p">)):</span>
         <span class="n">subscriptable_origin</span> <span class="o">=</span> <span class="n">_py_38_safe_origin</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
         <span class="n">type_args</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
             <span class="n">_convert_any_typed_dicts_to_pydantic</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">visited</span><span class="o">=</span><span class="n">visited</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">type_args</span>  <span class="c1"># type: ignore[index]</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="n">subscriptable_origin</span><span class="p">[</span><span class="n">type_args</span><span class="p">]</span>  <span class="c1"># type: ignore[index]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">type_</span>
+    <span class="k">return</span> <span class="n">type_</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_format_tool_to_openai_function</span><span class="p">(</span><span class="n">tool</span><span class="p">:</span> <span class="n">BaseTool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionDescription</span><span class="p">:</span>
@@ -568,33 +567,31 @@
             <span class="k">return</span> <span class="n">_convert_json_schema_to_openai_function</span><span class="p">(</span>
                 <span class="n">tool</span><span class="o">.</span><span class="n">tool_call_schema</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">description</span>
             <span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">tool_call_schema</span><span class="p">,</span> <span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">BaseModelV1</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">tool</span><span class="o">.</span><span class="n">tool_call_schema</span><span class="p">,</span> <span class="p">(</span><span class="n">BaseModel</span><span class="p">,</span> <span class="n">BaseModelV1</span><span class="p">)):</span>
             <span class="k">return</span> <span class="n">_convert_pydantic_to_openai_function</span><span class="p">(</span>
                 <span class="n">tool</span><span class="o">.</span><span class="n">tool_call_schema</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="n">tool</span><span class="o">.</span><span class="n">description</span>
             <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"Unsupported tool call schema: </span><span class="si">{</span><span class="n">tool</span><span class="o">.</span><span class="n">tool_call_schema</span><span class="si">}</span><span class="s2">. "</span>
-                <span class="s2">"Tool call schema must be a JSON schema dict or a Pydantic model."</span>
-            <span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">{</span>
-            <span class="s2">"name"</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s2">"description"</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
-            <span class="s2">"parameters"</span><span class="p">:</span> <span class="p">{</span>
-                <span class="c1"># This is a hack to get around the fact that some tools</span>
-                <span class="c1"># do not expose an args_schema, and expect an argument</span>
-                <span class="c1"># which is a string.</span>
-                <span class="c1"># And Open AI does not support an array type for the</span>
-                <span class="c1"># parameters.</span>
-                <span class="s2">"properties"</span><span class="p">:</span> <span class="p">{</span>
-                    <span class="s2">"__arg1"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"title"</span><span class="p">:</span> <span class="s2">"__arg1"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">},</span>
-                <span class="p">},</span>
-                <span class="s2">"required"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"__arg1"</span><span class="p">],</span>
-                <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"object"</span><span class="p">,</span>
+        <span class="n">error_msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Unsupported tool call schema: </span><span class="si">{</span><span class="n">tool</span><span class="o">.</span><span class="n">tool_call_schema</span><span class="si">}</span><span class="s2">. "</span>
+            <span class="s2">"Tool call schema must be a JSON schema dict or a Pydantic model."</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_msg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">"name"</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="s2">"description"</span><span class="p">:</span> <span class="n">tool</span><span class="o">.</span><span class="n">description</span><span class="p">,</span>
+        <span class="s2">"parameters"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="c1"># This is a hack to get around the fact that some tools</span>
+            <span class="c1"># do not expose an args_schema, and expect an argument</span>
+            <span class="c1"># which is a string.</span>
+            <span class="c1"># And Open AI does not support an array type for the</span>
+            <span class="c1"># parameters.</span>
+            <span class="s2">"properties"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"__arg1"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"title"</span><span class="p">:</span> <span class="s2">"__arg1"</span><span class="p">,</span> <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"string"</span><span class="p">},</span>
             <span class="p">},</span>
-        <span class="p">}</span>
+            <span class="s2">"required"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"__arg1"</span><span class="p">],</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"object"</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">}</span>
 
 
 <span class="n">format_tool_to_openai_function</span> <span class="o">=</span> <span class="n">deprecated</span><span class="p">(</span>
@@ -976,7 +973,7 @@
             <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"Args:"</span><span class="p">):</span>
                 <span class="n">args_block</span> <span class="o">=</span> <span class="n">block</span>
                 <span class="k">break</span>
-            <span class="k">elif</span> <span class="n">block</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">"Returns:"</span><span class="p">,</span> <span class="s2">"Example:"</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">block</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">"Returns:"</span><span class="p">,</span> <span class="s2">"Example:"</span><span class="p">)):</span>
                 <span class="c1"># Don't break in case Args come after</span>
                 <span class="n">past_descriptors</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">elif</span> <span class="ow">not</span> <span class="n">past_descriptors</span><span class="p">:</span>

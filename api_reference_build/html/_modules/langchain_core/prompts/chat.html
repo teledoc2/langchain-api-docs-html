@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -792,7 +792,7 @@
                 <span class="n">partial_variables</span><span class="o">=</span><span class="n">partial_variables</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">if</span> <span class="p">(</span><span class="n">partial_variables</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">partial_variables</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Partial variables are not supported for list of templates."</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
@@ -850,9 +850,8 @@
                     <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invalid template: </span><span class="si">{</span><span class="n">tmpl</span><span class="si">}</span><span class="s2">"</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invalid template: </span><span class="si">{</span><span class="n">template</span><span class="si">}</span><span class="s2">"</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>  <span class="c1"># noqa: TRY004</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invalid template: </span><span class="si">{</span><span class="n">template</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>  <span class="c1"># noqa: TRY004</span>
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_template_file</span><span class="p">(</span>
@@ -904,8 +903,7 @@
 <span class="sd">            List of input variable names.</span>
 <span class="sd">        """</span>
         <span class="n">prompts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="p">]</span>
-        <span class="n">input_variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">iv</span> <span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="n">prompts</span> <span class="k">for</span> <span class="n">iv</span> <span class="ow">in</span> <span class="n">prompt</span><span class="o">.</span><span class="n">input_variables</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">input_variables</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">iv</span> <span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="n">prompts</span> <span class="k">for</span> <span class="n">iv</span> <span class="ow">in</span> <span class="n">prompt</span><span class="o">.</span><span class="n">input_variables</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseMessage</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Format the prompt template.</span>
@@ -921,19 +919,18 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_class</span><span class="p">(</span>
                 <span class="n">content</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">additional_kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">additional_kwargs</span>
             <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">content</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
-                <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">var</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">prompt</span><span class="o">.</span><span class="n">input_variables</span><span class="p">}</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">StringPromptTemplate</span><span class="p">):</span>
-                    <span class="n">formatted</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ImageURL</span><span class="p">]</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
-                    <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="n">formatted</span><span class="p">})</span>
-                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">ImagePromptTemplate</span><span class="p">):</span>
-                    <span class="n">formatted</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
-                    <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"image_url"</span><span class="p">,</span> <span class="s2">"image_url"</span><span class="p">:</span> <span class="n">formatted</span><span class="p">})</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_class</span><span class="p">(</span>
-                <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">additional_kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">additional_kwargs</span>
-            <span class="p">)</span>
+        <span class="n">content</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">var</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">prompt</span><span class="o">.</span><span class="n">input_variables</span><span class="p">}</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">StringPromptTemplate</span><span class="p">):</span>
+                <span class="n">formatted</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ImageURL</span><span class="p">]</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+                <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="n">formatted</span><span class="p">})</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">ImagePromptTemplate</span><span class="p">):</span>
+                <span class="n">formatted</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+                <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"image_url"</span><span class="p">,</span> <span class="s2">"image_url"</span><span class="p">:</span> <span class="n">formatted</span><span class="p">})</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_class</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">additional_kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">additional_kwargs</span>
+        <span class="p">)</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">aformat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BaseMessage</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Async format the prompt template.</span>
@@ -949,19 +946,18 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_class</span><span class="p">(</span>
                 <span class="n">content</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">additional_kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">additional_kwargs</span>
             <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">content</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
-                <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">var</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">prompt</span><span class="o">.</span><span class="n">input_variables</span><span class="p">}</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">StringPromptTemplate</span><span class="p">):</span>
-                    <span class="n">formatted</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ImageURL</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="n">prompt</span><span class="o">.</span><span class="n">aformat</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
-                    <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="n">formatted</span><span class="p">})</span>
-                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">ImagePromptTemplate</span><span class="p">):</span>
-                    <span class="n">formatted</span> <span class="o">=</span> <span class="k">await</span> <span class="n">prompt</span><span class="o">.</span><span class="n">aformat</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
-                    <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"image_url"</span><span class="p">,</span> <span class="s2">"image_url"</span><span class="p">:</span> <span class="n">formatted</span><span class="p">})</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_class</span><span class="p">(</span>
-                <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">additional_kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">additional_kwargs</span>
-            <span class="p">)</span>
+        <span class="n">content</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">prompt</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="p">:</span>
+            <span class="n">inputs</span> <span class="o">=</span> <span class="p">{</span><span class="n">var</span><span class="p">:</span> <span class="n">kwargs</span><span class="p">[</span><span class="n">var</span><span class="p">]</span> <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">prompt</span><span class="o">.</span><span class="n">input_variables</span><span class="p">}</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">StringPromptTemplate</span><span class="p">):</span>
+                <span class="n">formatted</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ImageURL</span><span class="p">]</span> <span class="o">=</span> <span class="k">await</span> <span class="n">prompt</span><span class="o">.</span><span class="n">aformat</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+                <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="n">formatted</span><span class="p">})</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">ImagePromptTemplate</span><span class="p">):</span>
+                <span class="n">formatted</span> <span class="o">=</span> <span class="k">await</span> <span class="n">prompt</span><span class="o">.</span><span class="n">aformat</span><span class="p">(</span><span class="o">**</span><span class="n">inputs</span><span class="p">)</span>
+                <span class="n">content</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"image_url"</span><span class="p">,</span> <span class="s2">"image_url"</span><span class="p">:</span> <span class="n">formatted</span><span class="p">})</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_class</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">additional_kwargs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">additional_kwargs</span>
+        <span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">pretty_repr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">html</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Human-readable representation.</span>
@@ -1351,25 +1347,24 @@
             <span class="k">return</span> <span class="n">ChatPromptTemplate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
                 <span class="o">**</span><span class="n">partials</span>
             <span class="p">)</span>  <span class="c1"># type: ignore[call-arg]</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
             <span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="n">BaseMessagePromptTemplate</span><span class="p">,</span> <span class="n">BaseMessage</span><span class="p">,</span> <span class="n">BaseChatPromptTemplate</span><span class="p">)</span>
         <span class="p">):</span>
             <span class="k">return</span> <span class="n">ChatPromptTemplate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">+</span> <span class="p">[</span><span class="n">other</span><span class="p">])</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
                 <span class="o">**</span><span class="n">partials</span>
             <span class="p">)</span>  <span class="c1"># type: ignore[call-arg]</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="n">_other</span> <span class="o">=</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">ChatPromptTemplate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">+</span> <span class="n">_other</span><span class="o">.</span><span class="n">messages</span><span class="p">)</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
                 <span class="o">**</span><span class="n">partials</span>
             <span class="p">)</span>  <span class="c1"># type: ignore[call-arg]</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">prompt</span> <span class="o">=</span> <span class="n">HumanMessagePromptTemplate</span><span class="o">.</span><span class="n">from_template</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">ChatPromptTemplate</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span> <span class="o">+</span> <span class="p">[</span><span class="n">prompt</span><span class="p">])</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span>
                 <span class="o">**</span><span class="n">partials</span>
             <span class="p">)</span>  <span class="c1"># type: ignore[call-arg]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unsupported operand type for +: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
-            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Unsupported operand type for +: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
@@ -1666,8 +1661,7 @@
             <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">indices</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">))</span>
             <span class="n">messages</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">stop</span><span class="p">:</span><span class="n">step</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">ChatPromptTemplate</span><span class="o">.</span><span class="n">from_messages</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">messages</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Get the length of the chat template."""</span>

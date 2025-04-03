@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -484,8 +484,7 @@
         <span class="n">prompt</span> <span class="o">=</span> <span class="n">prompts</span><span class="p">[</span><span class="n">missing_prompt_idxs</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
         <span class="k">if</span> <span class="n">llm_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">llm_cache</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">llm_string</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
-    <span class="n">llm_output</span> <span class="o">=</span> <span class="n">new_results</span><span class="o">.</span><span class="n">llm_output</span>
-    <span class="k">return</span> <span class="n">llm_output</span></div>
+    <span class="k">return</span> <span class="n">new_results</span><span class="o">.</span><span class="n">llm_output</span></div>
 
 
 
@@ -521,8 +520,7 @@
         <span class="n">prompt</span> <span class="o">=</span> <span class="n">prompts</span><span class="p">[</span><span class="n">missing_prompt_idxs</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
         <span class="k">if</span> <span class="n">llm_cache</span><span class="p">:</span>
             <span class="k">await</span> <span class="n">llm_cache</span><span class="o">.</span><span class="n">aupdate</span><span class="p">(</span><span class="n">prompt</span><span class="p">,</span> <span class="n">llm_string</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span>
-    <span class="n">llm_output</span> <span class="o">=</span> <span class="n">new_results</span><span class="o">.</span><span class="n">llm_output</span>
-    <span class="k">return</span> <span class="n">llm_output</span></div>
+    <span class="k">return</span> <span class="n">new_results</span><span class="o">.</span><span class="n">llm_output</span></div>
 
 
 
@@ -569,16 +567,15 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_convert_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">LanguageModelInput</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">PromptValue</span><span class="p">:</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">PromptValue</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">input</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">StringPromptValue</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="nb">input</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">ChatPromptValue</span><span class="p">(</span><span class="n">messages</span><span class="o">=</span><span class="n">convert_to_messages</span><span class="p">(</span><span class="nb">input</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"Invalid input type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span><span class="si">}</span><span class="s2">. "</span>
-                <span class="s2">"Must be a PromptValue, str, or list of BaseMessages."</span>
-            <span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>  <span class="c1"># noqa: TRY004</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Invalid input type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="nb">input</span><span class="p">)</span><span class="si">}</span><span class="s2">. "</span>
+            <span class="s2">"Must be a PromptValue, str, or list of BaseMessages."</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>  <span class="c1"># noqa: TRY004</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_ls_params</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -699,8 +696,7 @@
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">return_exceptions</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"list[str]"</span><span class="p">,</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">])</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span>
+                <span class="k">raise</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">batches</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="n">inputs</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">max_concurrency</span><span class="p">]</span>
@@ -749,8 +745,7 @@
             <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">return_exceptions</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"list[str]"</span><span class="p">,</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">])</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">raise</span>
+                <span class="k">raise</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">batches</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="n">inputs</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="n">max_concurrency</span><span class="p">]</span>
@@ -1230,14 +1225,13 @@
                     <span class="n">callback_managers</span><span class="p">,</span> <span class="n">prompts</span><span class="p">,</span> <span class="n">run_name_list</span><span class="p">,</span> <span class="n">run_ids_list</span>
                 <span class="p">)</span>
             <span class="p">]</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_helper</span><span class="p">(</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_helper</span><span class="p">(</span>
                 <span class="n">prompts</span><span class="p">,</span>
                 <span class="n">stop</span><span class="p">,</span>
                 <span class="n">run_managers</span><span class="p">,</span>
                 <span class="n">new_arg_supported</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">new_arg_supported</span><span class="p">),</span>
                 <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="k">return</span> <span class="n">output</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_prompts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">run_managers</span> <span class="o">=</span> <span class="p">[</span>
                 <span class="n">callback_managers</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">on_llm_start</span><span class="p">(</span>
@@ -1489,14 +1483,13 @@
                 <span class="p">]</span>
             <span class="p">)</span>
             <span class="n">run_managers</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">run_managers</span><span class="p">]</span>  <span class="c1"># type: ignore[misc]</span>
-            <span class="n">output</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_agenerate_helper</span><span class="p">(</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_agenerate_helper</span><span class="p">(</span>
                 <span class="n">prompts</span><span class="p">,</span>
                 <span class="n">stop</span><span class="p">,</span>
                 <span class="n">run_managers</span><span class="p">,</span>  <span class="c1"># type: ignore[arg-type]</span>
                 <span class="n">new_arg_supported</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">new_arg_supported</span><span class="p">),</span>
                 <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>  <span class="c1"># type: ignore[arg-type]</span>
             <span class="p">)</span>
-            <span class="k">return</span> <span class="n">output</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">missing_prompts</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">run_managers</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
                 <span class="o">*</span><span class="p">[</span>

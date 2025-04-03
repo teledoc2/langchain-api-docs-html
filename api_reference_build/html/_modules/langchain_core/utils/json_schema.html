@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -282,13 +282,12 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">obj_out</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
         <span class="k">return</span> <span class="n">obj_out</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">_dereference_refs_helper</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">full_schema</span><span class="p">,</span> <span class="n">skip_keys</span><span class="p">,</span> <span class="n">processed_refs</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">obj</span>
         <span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">obj</span>
+    <span class="k">return</span> <span class="n">obj</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_infer_skip_keys</span><span class="p">(</span>

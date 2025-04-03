@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -314,8 +314,7 @@
         <span class="c1"># Then the next tag could be a standalone</span>
         <span class="c1"># Otherwise it can't be</span>
         <span class="k">return</span> <span class="n">padding</span><span class="o">.</span><span class="n">isspace</span><span class="p">()</span> <span class="ow">or</span> <span class="n">padding</span> <span class="o">==</span> <span class="s2">""</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+    <span class="k">return</span> <span class="kc">False</span></div>
 
 
 
@@ -340,8 +339,7 @@
         <span class="k">return</span> <span class="n">on_newline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isspace</span><span class="p">()</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">on_newline</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="c1"># If we're a tag can't be a standalone</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
+    <span class="k">return</span> <span class="kc">False</span></div>
 
 
 
@@ -564,8 +562,8 @@
 
     <span class="c1"># &amp; must be handled first</span>
     <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"&amp;"</span><span class="p">,</span> <span class="s2">"&amp;amp;"</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="n">html_codes</span><span class="p">:</span>
-        <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">html_codes</span><span class="p">[</span><span class="n">char</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">char</span><span class="p">,</span> <span class="n">code</span> <span class="ow">in</span> <span class="n">html_codes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">char</span><span class="p">,</span> <span class="n">code</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">string</span>
 
 

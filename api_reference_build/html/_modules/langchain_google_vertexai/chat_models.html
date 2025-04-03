@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1007,6 +1007,56 @@
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            AIMessage(content="J'adore programmer. ", response_metadata={'is_blocked': False, 'safety_ratings': [{'category': 'HARM_CATEGORY_HATE_SPEECH', 'probability_label': 'NEGLIGIBLE', 'probability_score': 0.1, 'blocked': False, 'severity': 'HARM_SEVERITY_NEGLIGIBLE', 'severity_score': 0.1}, {'category': 'HARM_CATEGORY_DANGEROUS_CONTENT', 'probability_label': 'NEGLIGIBLE', 'probability_score': 0.1, 'blocked': False, 'severity': 'HARM_SEVERITY_NEGLIGIBLE', 'severity_score': 0.1}, {'category': 'HARM_CATEGORY_HARASSMENT', 'probability_label': 'NEGLIGIBLE', 'probability_score': 0.1, 'blocked': False, 'severity': 'HARM_SEVERITY_NEGLIGIBLE', 'severity_score': 0.1}, {'category': 'HARM_CATEGORY_SEXUALLY_EXPLICIT', 'probability_label': 'NEGLIGIBLE', 'probability_score': 0.1, 'blocked': False, 'severity': 'HARM_SEVERITY_NEGLIGIBLE', 'severity_score': 0.1}], 'citation_metadata': None, 'usage_metadata': {'prompt_token_count': 17, 'candidates_token_count': 7, 'total_token_count': 24}}, id='run-925ce305-2268-44c4-875f-dde9128520ad-0')</span>
+
+<span class="sd">    Context Caching:</span>
+<span class="sd">        Context caching allows you to store and reuse content (e.g., PDFs, images) for faster processing.</span>
+<span class="sd">        The `cached_content` parameter accepts a cache name created via the Google Generative AI API with Vertex AI.</span>
+<span class="sd">        Below is an example of caching content from GCS and querying it.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">        This caches content from GCS and queries it.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from google import genai</span>
+<span class="sd">            from google.genai.types import Content, CreateCachedContentConfig, HttpOptions, Part</span>
+<span class="sd">            from langchain_google_vertexai import ChatVertexAI</span>
+<span class="sd">            from langchain_core.messages import HumanMessage</span>
+
+<span class="sd">            client = genai.Client(http_options=HttpOptions(api_version="v1beta1"))</span>
+
+<span class="sd">            contents = [</span>
+<span class="sd">                Content(</span>
+<span class="sd">                    role="user",</span>
+<span class="sd">                    parts=[</span>
+<span class="sd">                        Part.from_uri(</span>
+<span class="sd">                            file_uri="gs://your-bucket/file1",</span>
+<span class="sd">                            mime_type="application/pdf",</span>
+<span class="sd">                        ),</span>
+<span class="sd">                        Part.from_uri(</span>
+<span class="sd">                            file_uri="gs://your-bucket/file2",</span>
+<span class="sd">                            mime_type="image/jpeg",</span>
+<span class="sd">                        ),</span>
+<span class="sd">                    ],</span>
+<span class="sd">                )</span>
+<span class="sd">            ]</span>
+
+<span class="sd">            cache = client.caches.create(</span>
+<span class="sd">                model="gemini-1.5-flash-001",</span>
+<span class="sd">                config=CreateCachedContentConfig(</span>
+<span class="sd">                    contents=contents,</span>
+<span class="sd">                    system_instruction="You are an expert content analyzer.",</span>
+<span class="sd">                    display_name="content-cache",</span>
+<span class="sd">                    ttl="300s",</span>
+<span class="sd">                ),</span>
+<span class="sd">            )</span>
+
+<span class="sd">            llm = ChatVertexAI(</span>
+<span class="sd">                model_name="gemini-1.5-flash-001",</span>
+<span class="sd">                cached_content=cache.name,</span>
+<span class="sd">            )</span>
+<span class="sd">            message = HumanMessage(content="Provide a summary of the key information across the content.")</span>
+<span class="sd">            llm.invoke([message])</span>
 
 <span class="sd">    Tool calling:</span>
 <span class="sd">        .. code-block:: python</span>

@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -966,6 +966,109 @@
 
 <span class="sd">            # batch:</span>
 <span class="sd">            # await llm.abatch([messages])</span>
+
+<span class="sd">    Context Caching:</span>
+<span class="sd">        Context caching allows you to store and reuse content (e.g., PDFs, images) for faster processing.</span>
+<span class="sd">        The `cached_content` parameter accepts a cache name created via the Google Generative AI API.</span>
+<span class="sd">        Below are two examples: caching a single file directly and caching multiple files using `Part`.</span>
+
+<span class="sd">        Single File Example:</span>
+<span class="sd">        This caches a single file and queries it.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from google import genai</span>
+<span class="sd">            from google.genai import types</span>
+<span class="sd">            import time</span>
+<span class="sd">            from langchain_google_genai import ChatGoogleGenerativeAI</span>
+<span class="sd">            from langchain_core.messages import HumanMessage</span>
+
+<span class="sd">            client = genai.Client()</span>
+
+<span class="sd">            # Upload file</span>
+<span class="sd">            file = client.files.upload(file="./example_file")</span>
+<span class="sd">            while file.state.name == 'PROCESSING':</span>
+<span class="sd">                time.sleep(2)</span>
+<span class="sd">                file = client.files.get(name=file.name)</span>
+
+<span class="sd">            # Create cache</span>
+<span class="sd">            model = 'models/gemini-1.5-flash-001'</span>
+<span class="sd">            cache = client.caches.create(</span>
+<span class="sd">                model=model,</span>
+<span class="sd">                config=types.CreateCachedContentConfig(</span>
+<span class="sd">                    display_name='Cached Content',</span>
+<span class="sd">                    system_instruction=(</span>
+<span class="sd">                        'You are an expert content analyzer, and your job is to answer '</span>
+<span class="sd">                        'the user\'s query based on the file you have access to.'</span>
+<span class="sd">                    ),</span>
+<span class="sd">                    contents=[file],</span>
+<span class="sd">                    ttl="300s",</span>
+<span class="sd">                )</span>
+<span class="sd">            )</span>
+
+<span class="sd">            # Query with LangChain</span>
+<span class="sd">            llm = ChatGoogleGenerativeAI(</span>
+<span class="sd">                model=model,</span>
+<span class="sd">                cached_content=cache.name,</span>
+<span class="sd">            )</span>
+<span class="sd">            message = HumanMessage(content="Summarize the main points of the content.")</span>
+<span class="sd">            llm.invoke([message])</span>
+
+<span class="sd">        Multiple Files Example:</span>
+<span class="sd">        This caches two files using `Part` and queries them together.</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            from google import genai</span>
+<span class="sd">            from google.genai.types import CreateCachedContentConfig, Content, Part</span>
+<span class="sd">            import time</span>
+<span class="sd">            from langchain_google_genai import ChatGoogleGenerativeAI</span>
+<span class="sd">            from langchain_core.messages import HumanMessage</span>
+
+<span class="sd">            client = genai.Client()</span>
+
+<span class="sd">            # Upload files</span>
+<span class="sd">            file_1 = client.files.upload(file="./file1")</span>
+<span class="sd">            while file_1.state.name == 'PROCESSING':</span>
+<span class="sd">                time.sleep(2)</span>
+<span class="sd">                file_1 = client.files.get(name=file_1.name)</span>
+
+<span class="sd">            file_2 = client.files.upload(file="./file2")</span>
+<span class="sd">            while file_2.state.name == 'PROCESSING':</span>
+<span class="sd">                time.sleep(2)</span>
+<span class="sd">                file_2 = client.files.get(name=file_2.name)</span>
+
+<span class="sd">            # Create cache with multiple files</span>
+<span class="sd">            contents = [</span>
+<span class="sd">                Content(</span>
+<span class="sd">                    role="user",</span>
+<span class="sd">                    parts=[</span>
+<span class="sd">                        Part.from_uri(file_uri=file_1.uri, mime_type=file_1.mime_type),</span>
+<span class="sd">                        Part.from_uri(file_uri=file_2.uri, mime_type=file_2.mime_type),</span>
+<span class="sd">                    ],</span>
+<span class="sd">                )</span>
+<span class="sd">            ]</span>
+<span class="sd">            model = "gemini-1.5-flash-001"</span>
+<span class="sd">            cache = client.caches.create(</span>
+<span class="sd">                model=model,</span>
+<span class="sd">                config=CreateCachedContentConfig(</span>
+<span class="sd">                    display_name='Cached Contents',</span>
+<span class="sd">                    system_instruction=(</span>
+<span class="sd">                        'You are an expert content analyzer, and your job is to answer '</span>
+<span class="sd">                        'the user\'s query based on the files you have access to.'</span>
+<span class="sd">                    ),</span>
+<span class="sd">                    contents=contents,</span>
+<span class="sd">                    ttl="300s",</span>
+<span class="sd">                )</span>
+<span class="sd">            )</span>
+
+<span class="sd">            # Query with LangChain</span>
+<span class="sd">            llm = ChatGoogleGenerativeAI(</span>
+<span class="sd">                model=model,</span>
+<span class="sd">                cached_content=cache.name,</span>
+<span class="sd">            )</span>
+<span class="sd">            message = HumanMessage(content="Provide a summary of the key information across both files.")</span>
+<span class="sd">            llm.invoke([message])</span>
 
 <span class="sd">    Tool calling:</span>
 <span class="sd">        .. code-block:: python</span>

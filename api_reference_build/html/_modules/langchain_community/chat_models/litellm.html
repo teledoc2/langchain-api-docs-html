@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -270,6 +270,7 @@
     <span class="n">ToolCallChunk</span><span class="p">,</span>
     <span class="n">ToolMessage</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages.ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">UsageMetadata</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.outputs</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">ChatGeneration</span><span class="p">,</span>
     <span class="n">ChatGenerationChunk</span><span class="p">,</span>
@@ -646,14 +647,19 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_create_chat_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">ChatResult</span><span class="p">:</span>
         <span class="n">generations</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">token_usage</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"usage"</span><span class="p">,</span> <span class="p">{})</span>
         <span class="k">for</span> <span class="n">res</span> <span class="ow">in</span> <span class="n">response</span><span class="p">[</span><span class="s2">"choices"</span><span class="p">]:</span>
             <span class="n">message</span> <span class="o">=</span> <span class="n">_convert_dict_to_message</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">"message"</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">AIMessage</span><span class="p">):</span>
+                <span class="n">message</span><span class="o">.</span><span class="n">response_metadata</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">"model_name"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+                <span class="p">}</span>
+                <span class="n">message</span><span class="o">.</span><span class="n">usage_metadata</span> <span class="o">=</span> <span class="n">_create_usage_metadata</span><span class="p">(</span><span class="n">token_usage</span><span class="p">)</span>
             <span class="n">gen</span> <span class="o">=</span> <span class="n">ChatGeneration</span><span class="p">(</span>
                 <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span>
                 <span class="n">generation_info</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">finish_reason</span><span class="o">=</span><span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"finish_reason"</span><span class="p">)),</span>
             <span class="p">)</span>
             <span class="n">generations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
-        <span class="n">token_usage</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"usage"</span><span class="p">,</span> <span class="p">{})</span>
         <span class="n">set_model_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">set_model_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_name</span>
@@ -825,6 +831,16 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_llm_type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">"litellm-chat"</span></div>
 
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_create_usage_metadata</span><span class="p">(</span><span class="n">token_usage</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">UsageMetadata</span><span class="p">:</span>
+    <span class="n">input_tokens</span> <span class="o">=</span> <span class="n">token_usage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"prompt_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">output_tokens</span> <span class="o">=</span> <span class="n">token_usage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"completion_tokens"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">UsageMetadata</span><span class="p">(</span>
+        <span class="n">input_tokens</span><span class="o">=</span><span class="n">input_tokens</span><span class="p">,</span>
+        <span class="n">output_tokens</span><span class="o">=</span><span class="n">output_tokens</span><span class="p">,</span>
+        <span class="n">total_tokens</span><span class="o">=</span><span class="n">input_tokens</span> <span class="o">+</span> <span class="n">output_tokens</span><span class="p">,</span>
+    <span class="p">)</span>
 </pre></div>
 </article>
 </div>

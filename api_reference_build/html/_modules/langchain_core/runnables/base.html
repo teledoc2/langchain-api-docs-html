@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -495,10 +495,8 @@
         <span class="k">if</span> <span class="n">suffix</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">name_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isupper</span><span class="p">():</span>
                 <span class="k">return</span> <span class="n">name_</span> <span class="o">+</span> <span class="n">suffix</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">name_</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">name_</span></div>
+            <span class="k">return</span> <span class="n">name_</span> <span class="o">+</span> <span class="s2">"_"</span> <span class="o">+</span> <span class="n">suffix</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">name_</span></div>
 
 
     <span class="nd">@property</span>
@@ -754,10 +752,9 @@
                 <span class="k">if</span> <span class="n">field_name</span> <span class="ow">in</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">include</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="s2">"configurable"</span><span class="p">]</span>
             <span class="p">},</span>
         <span class="p">}</span>
-        <span class="n">model</span> <span class="o">=</span> <span class="n">create_model_v2</span><span class="p">(</span>  <span class="c1"># type: ignore[call-overload]</span>
+        <span class="k">return</span> <span class="n">create_model_v2</span><span class="p">(</span>  <span class="c1"># type: ignore[call-overload]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">(</span><span class="s2">"Config"</span><span class="p">),</span> <span class="n">field_definitions</span><span class="o">=</span><span class="n">all_fields</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">model</span></div>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="Runnable.get_config_jsonschema">
@@ -2371,8 +2368,7 @@
                 <span class="n">run_manager</span><span class="o">.</span><span class="n">on_chain_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">return_exceptions</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"list[Output]"</span><span class="p">,</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">])</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span>
+            <span class="k">raise</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">first_exception</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">for</span> <span class="n">run_manager</span><span class="p">,</span> <span class="n">out</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">run_managers</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
@@ -2383,8 +2379,7 @@
                     <span class="n">run_manager</span><span class="o">.</span><span class="n">on_chain_end</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">return_exceptions</span> <span class="ow">or</span> <span class="n">first_exception</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"list[Output]"</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">first_exception</span>
+            <span class="k">raise</span> <span class="n">first_exception</span>
 
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_abatch_with_config</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2450,8 +2445,7 @@
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">return_exceptions</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"list[Output]"</span><span class="p">,</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">input</span><span class="p">])</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span>
+            <span class="k">raise</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">first_exception</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">coros</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Awaitable</span><span class="p">[</span><span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -2464,8 +2458,7 @@
             <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">coros</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">return_exceptions</span> <span class="ow">or</span> <span class="n">first_exception</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"list[Output]"</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">first_exception</span>
+            <span class="k">raise</span> <span class="n">first_exception</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_transform_stream_with_config</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -2948,7 +2941,7 @@
     <span class="n">first</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">first</span><span class="o">.</span><span class="n">get_input_schema</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">RunnableAssign</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">RunnableAssign</span><span class="p">):</span>
         <span class="n">next_input_schema</span> <span class="o">=</span> <span class="n">_seq_input_schema</span><span class="p">(</span><span class="n">steps</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">config</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">next_input_schema</span><span class="p">,</span> <span class="n">RootModel</span><span class="p">):</span>
             <span class="c1"># it's a dict as expected</span>
@@ -2974,7 +2967,7 @@
     <span class="n">last</span> <span class="o">=</span> <span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">last</span><span class="o">.</span><span class="n">get_input_schema</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">RunnableAssign</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">last</span><span class="p">,</span> <span class="n">RunnableAssign</span><span class="p">):</span>
         <span class="n">mapper_output_schema</span> <span class="o">=</span> <span class="n">last</span><span class="o">.</span><span class="n">mapper</span><span class="o">.</span><span class="n">get_output_schema</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
         <span class="n">prev_output_schema</span> <span class="o">=</span> <span class="n">_seq_output_schema</span><span class="p">(</span><span class="n">steps</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">config</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">issubclass</span><span class="p">(</span><span class="n">prev_output_schema</span><span class="p">,</span> <span class="n">RootModel</span><span class="p">):</span>
@@ -3005,11 +2998,10 @@
                         <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">last</span><span class="o">.</span><span class="n">keys</span>
                     <span class="p">},</span>
                 <span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">field</span> <span class="o">=</span> <span class="n">prev_output_schema</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="n">last</span><span class="o">.</span><span class="n">keys</span><span class="p">]</span>
-                <span class="k">return</span> <span class="n">create_model_v2</span><span class="p">(</span>  <span class="c1"># type: ignore[call-overload]</span>
-                    <span class="s2">"RunnableSequenceOutput"</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">annotation</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
-                <span class="p">)</span>
+            <span class="n">field</span> <span class="o">=</span> <span class="n">prev_output_schema</span><span class="o">.</span><span class="n">model_fields</span><span class="p">[</span><span class="n">last</span><span class="o">.</span><span class="n">keys</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">create_model_v2</span><span class="p">(</span>  <span class="c1"># type: ignore[call-overload]</span>
+                <span class="s2">"RunnableSequenceOutput"</span><span class="p">,</span> <span class="n">root</span><span class="o">=</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">annotation</span><span class="p">,</span> <span class="n">field</span><span class="o">.</span><span class="n">default</span><span class="p">)</span>
+            <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">last</span><span class="o">.</span><span class="n">get_output_schema</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
 
@@ -3323,14 +3315,13 @@
                 <span class="n">other</span><span class="o">.</span><span class="n">last</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="n">other</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">RunnableSequence</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">first</span><span class="p">,</span>
-                <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">middle</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">,</span>
-                <span class="n">coerce_to_runnable</span><span class="p">(</span><span class="n">other</span><span class="p">),</span>
-                <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">RunnableSequence</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">first</span><span class="p">,</span>
+            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">middle</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">,</span>
+            <span class="n">coerce_to_runnable</span><span class="p">(</span><span class="n">other</span><span class="p">),</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__ror__</span><span class="p">(</span>
@@ -3352,14 +3343,13 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="n">other</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">RunnableSequence</span><span class="p">(</span>
-                <span class="n">coerce_to_runnable</span><span class="p">(</span><span class="n">other</span><span class="p">),</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">first</span><span class="p">,</span>
-                <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">middle</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">RunnableSequence</span><span class="p">(</span>
+            <span class="n">coerce_to_runnable</span><span class="p">(</span><span class="n">other</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">first</span><span class="p">,</span>
+            <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">middle</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="RunnableSequence.invoke">
 <a class="viewcode-back" href="../../../core/runnables/langchain_core.runnables.base.RunnableSequence.html#langchain_azure_dynamic_sessions.tools.sessions.RunnableSequence.invoke">[docs]</a>
@@ -3567,8 +3557,7 @@
                 <span class="n">rm</span><span class="o">.</span><span class="n">on_chain_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">return_exceptions</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"list[Output]"</span><span class="p">,</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">])</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span>
+            <span class="k">raise</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">first_exception</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">for</span> <span class="n">run_manager</span><span class="p">,</span> <span class="n">out</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">run_managers</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
@@ -3579,8 +3568,7 @@
                     <span class="n">run_manager</span><span class="o">.</span><span class="n">on_chain_end</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">return_exceptions</span> <span class="ow">or</span> <span class="n">first_exception</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"list[Output]"</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">first_exception</span></div>
+            <span class="k">raise</span> <span class="n">first_exception</span></div>
 
 
 <div class="viewcode-block" id="RunnableSequence.abatch">
@@ -3703,8 +3691,7 @@
             <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">rm</span><span class="o">.</span><span class="n">on_chain_error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">rm</span> <span class="ow">in</span> <span class="n">run_managers</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">return_exceptions</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"list[Output]"</span><span class="p">,</span> <span class="p">[</span><span class="n">e</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">inputs</span><span class="p">])</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span>
+            <span class="k">raise</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">first_exception</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="ne">Exception</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">coros</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Awaitable</span><span class="p">[</span><span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
@@ -3717,8 +3704,7 @@
             <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">coros</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">return_exceptions</span> <span class="ow">or</span> <span class="n">first_exception</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"list[Output]"</span><span class="p">,</span> <span class="n">inputs</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">first_exception</span></div>
+            <span class="k">raise</span> <span class="n">first_exception</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_transform</span><span class="p">(</span>
@@ -4187,8 +4173,7 @@
                     <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
                         <span class="n">step</span><span class="o">.</span><span class="n">ainvoke</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">child_config</span><span class="p">),</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span>
                     <span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">ainvoke</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">child_config</span><span class="p">))</span>
+                <span class="k">return</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span><span class="n">step</span><span class="o">.</span><span class="n">ainvoke</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span> <span class="n">child_config</span><span class="p">))</span>
 
         <span class="c1"># gather results from all steps</span>
         <span class="k">try</span><span class="p">:</span>
@@ -4512,10 +4497,9 @@
             <span class="n">first_param</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">first_param</span> <span class="ow">and</span> <span class="n">first_param</span><span class="o">.</span><span class="n">annotation</span> <span class="o">!=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
                 <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">first_param</span><span class="o">.</span><span class="n">annotation</span><span class="p">,</span> <span class="s2">"__args__"</span><span class="p">,</span> <span class="p">(</span><span class="n">Any</span><span class="p">,))[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">Any</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Any</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">Any</span>
 
     <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_input_schema</span><span class="p">(</span>
@@ -4591,12 +4575,10 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">RunnableGenerator</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_transform"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">"_transform"</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transform</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_transform</span>
-            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_atransform"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">"_atransform"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"_atransform"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">"_atransform"</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_atransform</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_atransform</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
     <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -4817,10 +4799,9 @@
             <span class="n">first_param</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="kc">None</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">first_param</span> <span class="ow">and</span> <span class="n">first_param</span><span class="o">.</span><span class="n">annotation</span> <span class="o">!=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="o">.</span><span class="n">empty</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">first_param</span><span class="o">.</span><span class="n">annotation</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">Any</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Any</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">Any</span>
 
     <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_input_schema</span><span class="p">(</span>
@@ -4846,16 +4827,15 @@
                 <span class="n">fields</span> <span class="o">=</span> <span class="p">{</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span> <span class="p">(</span><span class="n">Any</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">}</span>
                 <span class="c1"># It's a dict, lol</span>
                 <span class="k">return</span> <span class="n">create_model_v2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">(</span><span class="s2">"Input"</span><span class="p">),</span> <span class="n">field_definitions</span><span class="o">=</span><span class="n">fields</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">module</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">"__module__"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">create_model_v2</span><span class="p">(</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">(</span><span class="s2">"Input"</span><span class="p">),</span>
-                    <span class="n">root</span><span class="o">=</span><span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
-                    <span class="c1"># To create the schema, we need to provide the module</span>
-                    <span class="c1"># where the underlying function is defined.</span>
-                    <span class="c1"># This allows pydantic to resolve type annotations appropriately.</span>
-                    <span class="n">module_name</span><span class="o">=</span><span class="n">module</span><span class="p">,</span>
-                <span class="p">)</span>
+            <span class="n">module</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="s2">"__module__"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">create_model_v2</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_name</span><span class="p">(</span><span class="s2">"Input"</span><span class="p">),</span>
+                <span class="n">root</span><span class="o">=</span><span class="nb">list</span><span class="p">[</span><span class="n">Any</span><span class="p">],</span>
+                <span class="c1"># To create the schema, we need to provide the module</span>
+                <span class="c1"># where the underlying function is defined.</span>
+                <span class="c1"># This allows pydantic to resolve type annotations appropriately.</span>
+                <span class="n">module_name</span><span class="o">=</span><span class="n">module</span><span class="p">,</span>
+            <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">InputType</span> <span class="o">!=</span> <span class="n">Any</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_input_schema</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -4887,10 +4867,9 @@
                 <span class="p">):</span>
                     <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">sig</span><span class="o">.</span><span class="n">return_annotation</span><span class="p">,</span> <span class="s2">"__args__"</span><span class="p">,</span> <span class="p">(</span><span class="n">Any</span><span class="p">,))[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">return</span> <span class="n">sig</span><span class="o">.</span><span class="n">return_annotation</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">Any</span>
         <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">Any</span>
+            <span class="k">pass</span>
+        <span class="k">return</span> <span class="n">Any</span>
 
     <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_output_schema</span><span class="p">(</span>
@@ -4981,12 +4960,10 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">RunnableLambda</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"func"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">"func"</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">func</span>
-            <span class="k">elif</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"afunc"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">"afunc"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">"afunc"</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">"afunc"</span><span class="p">):</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">afunc</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">afunc</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="kc">False</span>
-        <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""A string representation of this Runnable."""</span>
@@ -5180,12 +5157,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_config</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">),</span>
                 <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s2">"Cannot invoke a coroutine function synchronously."</span>
-                <span class="s2">"Use `ainvoke` instead."</span>
-            <span class="p">)</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">"Cannot invoke a coroutine function synchronously.Use `ainvoke` instead."</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
     <span class="nd">@override</span>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">ainvoke</span><span class="p">(</span>
@@ -6335,7 +6308,7 @@
                     <span class="p">)</span>
 
                 <span class="k">return</span> <span class="n">wrapper</span>
-            <span class="k">elif</span> <span class="n">config_param</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="o">.</span><span class="n">POSITIONAL_OR_KEYWORD</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">config_param</span><span class="o">.</span><span class="n">kind</span> <span class="o">==</span> <span class="n">inspect</span><span class="o">.</span><span class="n">Parameter</span><span class="o">.</span><span class="n">POSITIONAL_OR_KEYWORD</span><span class="p">:</span>
                 <span class="n">idx</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">inspect</span><span class="o">.</span><span class="n">signature</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">"config"</span><span class="p">)</span>
 
                 <span class="nd">@wraps</span><span class="p">(</span><span class="n">attr</span><span class="p">)</span>
@@ -6344,14 +6317,11 @@
                         <span class="n">argsl</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
                         <span class="n">argsl</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">merge_configs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">argsl</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
                         <span class="k">return</span> <span class="n">attr</span><span class="p">(</span><span class="o">*</span><span class="n">argsl</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="k">return</span> <span class="n">attr</span><span class="p">(</span>
-                            <span class="o">*</span><span class="n">args</span><span class="p">,</span>
-                            <span class="n">config</span><span class="o">=</span><span class="n">merge_configs</span><span class="p">(</span>
-                                <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"config"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                            <span class="p">),</span>
-                            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-                        <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">attr</span><span class="p">(</span>
+                        <span class="o">*</span><span class="n">args</span><span class="p">,</span>
+                        <span class="n">config</span><span class="o">=</span><span class="n">merge_configs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"config"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+                        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                    <span class="p">)</span>
 
                 <span class="k">return</span> <span class="n">wrapper</span>
 
@@ -6409,18 +6379,17 @@
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">thing</span><span class="p">,</span> <span class="n">Runnable</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">thing</span>
-    <span class="k">elif</span> <span class="n">is_async_generator</span><span class="p">(</span><span class="n">thing</span><span class="p">)</span> <span class="ow">or</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgeneratorfunction</span><span class="p">(</span><span class="n">thing</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">is_async_generator</span><span class="p">(</span><span class="n">thing</span><span class="p">)</span> <span class="ow">or</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isgeneratorfunction</span><span class="p">(</span><span class="n">thing</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">RunnableGenerator</span><span class="p">(</span><span class="n">thing</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="nb">callable</span><span class="p">(</span><span class="n">thing</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">callable</span><span class="p">(</span><span class="n">thing</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">RunnableLambda</span><span class="p">(</span><span class="n">cast</span><span class="p">(</span><span class="s2">"Callable[[Input], Output]"</span><span class="p">,</span> <span class="n">thing</span><span class="p">))</span>
-    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">thing</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">thing</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="s2">"Runnable[Input, Output]"</span><span class="p">,</span> <span class="n">RunnableParallel</span><span class="p">(</span><span class="n">thing</span><span class="p">))</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"Expected a Runnable, callable or dict."</span>
-            <span class="sa">f</span><span class="s2">"Instead got an unsupported type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">thing</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
-        <span class="p">)</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
+    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"Expected a Runnable, callable or dict."</span>
+        <span class="sa">f</span><span class="s2">"Instead got an unsupported type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">thing</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span></div>
 
 
 

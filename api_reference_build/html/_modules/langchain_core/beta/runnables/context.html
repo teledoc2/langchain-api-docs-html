@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -281,11 +281,10 @@
     <span class="n">wout_prefix</span> <span class="o">=</span> <span class="n">id_</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">CONTEXT_CONFIG_PREFIX</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">wout_prefix</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">CONTEXT_CONFIG_SUFFIX_GET</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">wout_prefix</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">CONTEXT_CONFIG_SUFFIX_GET</span><span class="p">)]</span>
-    <span class="k">elif</span> <span class="n">wout_prefix</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">CONTEXT_CONFIG_SUFFIX_SET</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">wout_prefix</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">CONTEXT_CONFIG_SUFFIX_SET</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">wout_prefix</span><span class="p">[:</span> <span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">CONTEXT_CONFIG_SUFFIX_SET</span><span class="p">)]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invalid context config id </span><span class="si">{</span><span class="n">id_</span><span class="si">}</span><span class="s2">"</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"Invalid context config id </span><span class="si">{</span><span class="n">id_</span><span class="si">}</span><span class="s2">"</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_config_with_context</span><span class="p">(</span>
@@ -429,8 +428,7 @@
         <span class="n">configurable</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"configurable"</span><span class="p">,</span> <span class="p">{})</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">configurable</span><span class="p">[</span><span class="n">id_</span><span class="p">]()</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">id_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ids</span><span class="p">)}</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">configurable</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]]()</span></div>
+        <span class="k">return</span> <span class="n">configurable</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]]()</span></div>
 
 
 <div class="viewcode-block" id="ContextGet.ainvoke">
@@ -444,8 +442,7 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="n">values</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">configurable</span><span class="p">[</span><span class="n">id_</span><span class="p">]()</span> <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ids</span><span class="p">))</span>
             <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="k">await</span> <span class="n">configurable</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]]()</span></div>
+        <span class="k">return</span> <span class="k">await</span> <span class="n">configurable</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ids</span><span class="p">[</span><span class="mi">0</span><span class="p">]]()</span></div>
 </div>
 
 
@@ -717,8 +714,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_print_keys</span><span class="p">(</span><span class="n">keys</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">keys</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">keys</span><span class="si">}</span><span class="s2">'"</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">'"</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">'"</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">)</span>
 </pre></div>
 </article>
 </div>

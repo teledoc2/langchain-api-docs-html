@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 02, 2025" name="docbuild:last-update"/>
+<meta content="Apr 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -328,8 +328,7 @@
     <span class="c1"># noqa for insecure warning elsewhere</span>
     <span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">()</span>  <span class="c1"># noqa: S701</span>
     <span class="n">ast</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
-    <span class="n">variables</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">find_undeclared_variables</span><span class="p">(</span><span class="n">ast</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">variables</span>
+    <span class="k">return</span> <span class="n">meta</span><span class="o">.</span><span class="n">find_undeclared_variables</span><span class="p">(</span><span class="n">ast</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="mustache_formatter">
