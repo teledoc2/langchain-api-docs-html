@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 04, 2025" name="docbuild:last-update"/>
+<meta content="Apr 05, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -277,8 +277,10 @@
     <span class="n">_extract_tool_calls</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_google_vertexai._anthropic_utils</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_documents_in_params</span><span class="p">,</span>
     <span class="n">_format_messages_anthropic</span><span class="p">,</span>
     <span class="n">_make_message_chunk_from_anthropic_event</span><span class="p">,</span>
+    <span class="n">_thinking_in_params</span><span class="p">,</span>
     <span class="n">_tools_in_params</span><span class="p">,</span>
     <span class="n">convert_to_anthropic_tool</span><span class="p">,</span>
 <span class="p">)</span>
@@ -608,7 +610,11 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">stream</span> <span class="o">=</span> <span class="n">_stream_with_retry</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">coerce_content_to_string</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">_tools_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">coerce_content_to_string</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="n">_tools_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">_documents_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">_thinking_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">_make_message_chunk_from_anthropic_event</span><span class="p">(</span>
                 <span class="n">event</span><span class="p">,</span>
@@ -644,7 +650,11 @@
             <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_client</span><span class="o">.</span><span class="n">messages</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="n">stream</span> <span class="o">=</span> <span class="k">await</span> <span class="n">_astream_with_retry</span><span class="p">(</span><span class="o">**</span><span class="n">params</span><span class="p">)</span>
-        <span class="n">coerce_content_to_string</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">_tools_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="n">coerce_content_to_string</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="ow">not</span> <span class="n">_tools_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">_documents_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="ow">not</span> <span class="n">_thinking_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+        <span class="p">)</span>
         <span class="k">async</span> <span class="k">for</span> <span class="n">event</span> <span class="ow">in</span> <span class="n">stream</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="n">_make_message_chunk_from_anthropic_event</span><span class="p">(</span>
                 <span class="n">event</span><span class="p">,</span>

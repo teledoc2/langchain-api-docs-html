@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 04, 2025" name="docbuild:last-update"/>
+<meta content="Apr 05, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -973,7 +973,8 @@
             <span class="n">pages</span> <span class="o">=</span> <span class="n">PDFPage</span><span class="o">.</span><span class="n">get_pages</span><span class="p">(</span><span class="n">pdf_file_obj</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
             <span class="n">rsrcmgr</span> <span class="o">=</span> <span class="n">PDFResourceManager</span><span class="p">()</span>
             <span class="n">doc_metadata</span> <span class="o">=</span> <span class="n">_purge_metadata</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_get_metadata</span><span class="p">(</span><span class="n">pdf_file_obj</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
+                <span class="p">{</span><span class="s2">"producer"</span><span class="p">:</span> <span class="s2">"PDFMiner"</span><span class="p">,</span> <span class="s2">"creator"</span><span class="p">:</span> <span class="s2">"PDFMiner"</span><span class="p">,</span> <span class="s2">"creationdate"</span><span class="p">:</span> <span class="s2">""</span><span class="p">}</span>
+                <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_metadata</span><span class="p">(</span><span class="n">pdf_file_obj</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span> <span class="ow">or</span> <span class="s2">""</span><span class="p">)</span>
             <span class="p">)</span>
             <span class="n">doc_metadata</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">source</span>
 
@@ -1256,7 +1257,11 @@
                     <span class="n">doc</span> <span class="o">=</span> <span class="n">pymupdf</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="s2">"pdf"</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">doc</span><span class="o">.</span><span class="n">is_encrypted</span><span class="p">:</span>
                     <span class="n">doc</span><span class="o">.</span><span class="n">authenticate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">password</span><span class="p">)</span>
-                <span class="n">doc_metadata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_metadata</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">blob</span><span class="p">)</span>
+                <span class="n">doc_metadata</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">"producer"</span><span class="p">:</span> <span class="s2">"PyMuPDF"</span><span class="p">,</span>
+                    <span class="s2">"creator"</span><span class="p">:</span> <span class="s2">"PyMuPDF"</span><span class="p">,</span>
+                    <span class="s2">"creationdate"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+                <span class="p">}</span> <span class="o">|</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_metadata</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">blob</span><span class="p">)</span>
                 <span class="n">full_content</span> <span class="o">=</span> <span class="p">[]</span>
                 <span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
                     <span class="n">all_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_page_content</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">page</span><span class="p">,</span> <span class="n">text_kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
@@ -1570,7 +1575,11 @@
                     <span class="p">)</span>
                     <span class="n">full_content</span> <span class="o">=</span> <span class="p">[]</span>
 
-                    <span class="n">doc_metadata</span> <span class="o">=</span> <span class="n">_purge_metadata</span><span class="p">(</span><span class="n">pdf_reader</span><span class="o">.</span><span class="n">get_metadata_dict</span><span class="p">())</span>
+                    <span class="n">doc_metadata</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="s2">"producer"</span><span class="p">:</span> <span class="s2">"PyPDFium2"</span><span class="p">,</span>
+                        <span class="s2">"creator"</span><span class="p">:</span> <span class="s2">"PyPDFium2"</span><span class="p">,</span>
+                        <span class="s2">"creationdate"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+                    <span class="p">}</span> <span class="o">|</span> <span class="n">_purge_metadata</span><span class="p">(</span><span class="n">pdf_reader</span><span class="o">.</span><span class="n">get_metadata_dict</span><span class="p">())</span>
                     <span class="n">doc_metadata</span><span class="p">[</span><span class="s2">"source"</span><span class="p">]</span> <span class="o">=</span> <span class="n">blob</span><span class="o">.</span><span class="n">source</span>
                     <span class="n">doc_metadata</span><span class="p">[</span><span class="s2">"total_pages"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pdf_reader</span><span class="p">)</span>
 

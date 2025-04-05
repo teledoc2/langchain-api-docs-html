@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 04, 2025" name="docbuild:last-update"/>
+<meta content="Apr 05, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -220,8 +220,7 @@
 <div id="searchbox"></div>
 <article class="bd-article">
 <h1>Source code for langchain_core.globals</h1><div class="highlight"><pre>
-<span></span><span class="c1"># flake8: noqa</span>
-<span class="sd">"""Global values and configuration that apply to all of LangChain."""</span>
+<span></span><span class="sd">"""Global values and configuration that apply to all of LangChain."""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Optional</span>
@@ -251,25 +250,27 @@
         <span class="kn">import</span><span class="w"> </span><span class="nn">langchain</span>  <span class="c1"># type: ignore[import]</span>
 
         <span class="c1"># We're about to run some deprecated code, don't report warnings from it.</span>
-        <span class="c1"># The user called the correct (non-deprecated) code path and shouldn't get warnings.</span>
+        <span class="c1"># The user called the correct (non-deprecated) code path and shouldn't get</span>
+        <span class="c1"># warnings.</span>
         <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
                 <span class="s2">"ignore"</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="p">(</span>
-                    <span class="s2">"Importing verbose from langchain root module is no longer supported"</span>
+                    <span class="s2">"Importing verbose from langchain root module "</span>
+                    <span class="s2">"is no longer supported"</span>
                 <span class="p">),</span>
             <span class="p">)</span>
             <span class="c1"># N.B.: This is a workaround for an unfortunate quirk of Python's</span>
             <span class="c1">#       module-level `__getattr__()` implementation:</span>
             <span class="c1"># https://github.com/langchain-ai/langchain/pull/11311#issuecomment-1743780004</span>
             <span class="c1">#</span>
-            <span class="c1"># Remove it once `langchain.verbose` is no longer supported, and once all users</span>
-            <span class="c1"># have migrated to using `set_verbose()` here.</span>
+            <span class="c1"># Remove it once `langchain.verbose` is no longer supported, and once all</span>
+            <span class="c1"># users have migrated to using `set_verbose()` here.</span>
             <span class="n">langchain</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">value</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="k">pass</span>
 
-    <span class="k">global</span> <span class="n">_verbose</span>
+    <span class="k">global</span> <span class="n">_verbose</span>  <span class="c1"># noqa: PLW0603</span>
     <span class="n">_verbose</span> <span class="o">=</span> <span class="n">value</span></div>
 
 
@@ -286,30 +287,32 @@
         <span class="kn">import</span><span class="w"> </span><span class="nn">langchain</span>  <span class="c1"># type: ignore[import]</span>
 
         <span class="c1"># We're about to run some deprecated code, don't report warnings from it.</span>
-        <span class="c1"># The user called the correct (non-deprecated) code path and shouldn't get warnings.</span>
+        <span class="c1"># The user called the correct (non-deprecated) code path and shouldn't get</span>
+        <span class="c1"># warnings.</span>
         <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
                 <span class="s2">"ignore"</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="p">(</span>
-                    <span class="s2">".*Importing verbose from langchain root module is no longer supported"</span>
+                    <span class="s2">".*Importing verbose from langchain root module "</span>
+                    <span class="s2">"is no longer supported"</span>
                 <span class="p">),</span>
             <span class="p">)</span>
             <span class="c1"># N.B.: This is a workaround for an unfortunate quirk of Python's</span>
             <span class="c1">#       module-level `__getattr__()` implementation:</span>
             <span class="c1"># https://github.com/langchain-ai/langchain/pull/11311#issuecomment-1743780004</span>
             <span class="c1">#</span>
-            <span class="c1"># Remove it once `langchain.verbose` is no longer supported, and once all users</span>
-            <span class="c1"># have migrated to using `set_verbose()` here.</span>
+            <span class="c1"># Remove it once `langchain.verbose` is no longer supported, and once all</span>
+            <span class="c1"># users have migrated to using `set_verbose()` here.</span>
             <span class="c1">#</span>
-            <span class="c1"># In the meantime, the `verbose` setting is considered True if either the old</span>
-            <span class="c1"># or the new value are True. This accommodates users who haven't migrated</span>
-            <span class="c1"># to using `set_verbose()` yet. Those users are getting deprecation warnings</span>
-            <span class="c1"># directing them to use `set_verbose()` when they import `langchain.verbose`.</span>
+            <span class="c1"># In the meantime, the `verbose` setting is considered True if either the</span>
+            <span class="c1"># old or the new value are True. This accommodates users who haven't</span>
+            <span class="c1"># migrated to using `set_verbose()` yet. Those users are getting</span>
+            <span class="c1"># deprecation warnings directing them to use `set_verbose()` when they</span>
+            <span class="c1"># import `langchain.verbose`.</span>
             <span class="n">old_verbose</span> <span class="o">=</span> <span class="n">langchain</span><span class="o">.</span><span class="n">verbose</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="n">old_verbose</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">global</span> <span class="n">_verbose</span>
     <span class="k">return</span> <span class="n">_verbose</span> <span class="ow">or</span> <span class="n">old_verbose</span></div>
 
 
@@ -326,23 +329,25 @@
         <span class="kn">import</span><span class="w"> </span><span class="nn">langchain</span>  <span class="c1"># type: ignore[import]</span>
 
         <span class="c1"># We're about to run some deprecated code, don't report warnings from it.</span>
-        <span class="c1"># The user called the correct (non-deprecated) code path and shouldn't get warnings.</span>
+        <span class="c1"># The user called the correct (non-deprecated) code path and shouldn't get</span>
+        <span class="c1"># warnings.</span>
         <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
                 <span class="s2">"ignore"</span><span class="p">,</span>
-                <span class="n">message</span><span class="o">=</span><span class="s2">"Importing debug from langchain root module is no longer supported"</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">"Importing debug from langchain root module "</span>
+                <span class="s2">"is no longer supported"</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="c1"># N.B.: This is a workaround for an unfortunate quirk of Python's</span>
             <span class="c1">#       module-level `__getattr__()` implementation:</span>
             <span class="c1"># https://github.com/langchain-ai/langchain/pull/11311#issuecomment-1743780004</span>
             <span class="c1">#</span>
-            <span class="c1"># Remove it once `langchain.debug` is no longer supported, and once all users</span>
-            <span class="c1"># have migrated to using `set_debug()` here.</span>
+            <span class="c1"># Remove it once `langchain.debug` is no longer supported, and once all</span>
+            <span class="c1"># users have migrated to using `set_debug()` here.</span>
             <span class="n">langchain</span><span class="o">.</span><span class="n">debug</span> <span class="o">=</span> <span class="n">value</span>
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="k">pass</span>
 
-    <span class="k">global</span> <span class="n">_debug</span>
+    <span class="k">global</span> <span class="n">_debug</span>  <span class="c1"># noqa: PLW0603</span>
     <span class="n">_debug</span> <span class="o">=</span> <span class="n">value</span></div>
 
 
@@ -359,18 +364,20 @@
         <span class="kn">import</span><span class="w"> </span><span class="nn">langchain</span>  <span class="c1"># type: ignore[import]</span>
 
         <span class="c1"># We're about to run some deprecated code, don't report warnings from it.</span>
-        <span class="c1"># The user called the correct (non-deprecated) code path and shouldn't get warnings.</span>
+        <span class="c1"># The user called the correct (non-deprecated) code path and shouldn't get</span>
+        <span class="c1"># warnings.</span>
         <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
                 <span class="s2">"ignore"</span><span class="p">,</span>
-                <span class="n">message</span><span class="o">=</span><span class="s2">"Importing debug from langchain root module is no longer supported"</span><span class="p">,</span>
+                <span class="n">message</span><span class="o">=</span><span class="s2">"Importing debug from langchain root module "</span>
+                <span class="s2">"is no longer supported"</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="c1"># N.B.: This is a workaround for an unfortunate quirk of Python's</span>
             <span class="c1">#       module-level `__getattr__()` implementation:</span>
             <span class="c1"># https://github.com/langchain-ai/langchain/pull/11311#issuecomment-1743780004</span>
             <span class="c1">#</span>
-            <span class="c1"># Remove it once `langchain.debug` is no longer supported, and once all users</span>
-            <span class="c1"># have migrated to using `set_debug()` here.</span>
+            <span class="c1"># Remove it once `langchain.debug` is no longer supported, and once all</span>
+            <span class="c1"># users have migrated to using `set_debug()` here.</span>
             <span class="c1">#</span>
             <span class="c1"># In the meantime, the `debug` setting is considered True if either the old</span>
             <span class="c1"># or the new value are True. This accommodates users who haven't migrated</span>
@@ -380,7 +387,6 @@
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="n">old_debug</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">global</span> <span class="n">_debug</span>
     <span class="k">return</span> <span class="n">_debug</span> <span class="ow">or</span> <span class="n">old_debug</span></div>
 
 
@@ -397,12 +403,14 @@
         <span class="kn">import</span><span class="w"> </span><span class="nn">langchain</span>  <span class="c1"># type: ignore[import]</span>
 
         <span class="c1"># We're about to run some deprecated code, don't report warnings from it.</span>
-        <span class="c1"># The user called the correct (non-deprecated) code path and shouldn't get warnings.</span>
+        <span class="c1"># The user called the correct (non-deprecated) code path and shouldn't get</span>
+        <span class="c1"># warnings.</span>
         <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
                 <span class="s2">"ignore"</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="p">(</span>
-                    <span class="s2">"Importing llm_cache from langchain root module is no longer supported"</span>
+                    <span class="s2">"Importing llm_cache from langchain root module "</span>
+                    <span class="s2">"is no longer supported"</span>
                 <span class="p">),</span>
             <span class="p">)</span>
             <span class="c1"># N.B.: This is a workaround for an unfortunate quirk of Python's</span>
@@ -415,7 +423,7 @@
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="k">pass</span>
 
-    <span class="k">global</span> <span class="n">_llm_cache</span>
+    <span class="k">global</span> <span class="n">_llm_cache</span>  <span class="c1"># noqa: PLW0603</span>
     <span class="n">_llm_cache</span> <span class="o">=</span> <span class="n">value</span></div>
 
 
@@ -432,12 +440,14 @@
         <span class="kn">import</span><span class="w"> </span><span class="nn">langchain</span>  <span class="c1"># type: ignore[import]</span>
 
         <span class="c1"># We're about to run some deprecated code, don't report warnings from it.</span>
-        <span class="c1"># The user called the correct (non-deprecated) code path and shouldn't get warnings.</span>
+        <span class="c1"># The user called the correct (non-deprecated) code path and shouldn't get</span>
+        <span class="c1"># warnings.</span>
         <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span>
                 <span class="s2">"ignore"</span><span class="p">,</span>
                 <span class="n">message</span><span class="o">=</span><span class="p">(</span>
-                    <span class="s2">"Importing llm_cache from langchain root module is no longer supported"</span>
+                    <span class="s2">"Importing llm_cache from langchain root module "</span>
+                    <span class="s2">"is no longer supported"</span>
                 <span class="p">),</span>
             <span class="p">)</span>
             <span class="c1"># N.B.: This is a workaround for an unfortunate quirk of Python's</span>
@@ -457,7 +467,6 @@
     <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
         <span class="n">old_llm_cache</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">global</span> <span class="n">_llm_cache</span>
     <span class="k">return</span> <span class="n">_llm_cache</span> <span class="ow">or</span> <span class="n">old_llm_cache</span></div>
 
 </pre></div>

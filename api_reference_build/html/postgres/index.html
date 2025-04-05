@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 04, 2025" name="docbuild:last-update"/>
+<meta content="Apr 05, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -237,6 +237,8 @@
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">Postgres</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="chat_message_histories.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chat_message_histories</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="translator.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">translator</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">utils</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="v2.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">v2</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="vectorstores.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">vectorstores</span></code></a></li>
 </ul>
 </details></li>
@@ -310,6 +312,93 @@
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="translator/langchain_postgres.translator.PGVectorTranslator.html#langchain_postgres.translator.PGVectorTranslator" title="langchain_postgres.translator.PGVectorTranslator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translator.PGVectorTranslator</span></code></a>()</p></td>
 <td><p>Translate <cite>PGVector</cite> internal query language elements to valid filters.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="langchain-postgres-utils">
+<h2><a class="reference internal" href="utils.html#langchain-postgres-utils"><span class="std std-ref">utils</span></a><a class="headerlink" href="#langchain-postgres-utils" title="Link to this heading">#</a></h2>
+<p><strong>Functions</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="utils/langchain_postgres.utils.pgvector_migrator.aextract_pgvector_collection.html#langchain_postgres.utils.pgvector_migrator.aextract_pgvector_collection" title="langchain_postgres.utils.pgvector_migrator.aextract_pgvector_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.pgvector_migrator.aextract_pgvector_collection</span></code></a>(...)</p></td>
+<td><p>Extract all data belonging to a PGVector collection.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="utils/langchain_postgres.utils.pgvector_migrator.alist_pgvector_collection_names.html#langchain_postgres.utils.pgvector_migrator.alist_pgvector_collection_names" title="langchain_postgres.utils.pgvector_migrator.alist_pgvector_collection_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.pgvector_migrator.alist_pgvector_collection_names</span></code></a>(engine)</p></td>
+<td><p>Lists all collection names present in PGVector table.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="utils/langchain_postgres.utils.pgvector_migrator.amigrate_pgvector_collection.html#langchain_postgres.utils.pgvector_migrator.amigrate_pgvector_collection" title="langchain_postgres.utils.pgvector_migrator.amigrate_pgvector_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.pgvector_migrator.amigrate_pgvector_collection</span></code></a>(...)</p></td>
+<td><p>Migrate all data present in a PGVector collection to use separate tables for each collection.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="utils/langchain_postgres.utils.pgvector_migrator.extract_pgvector_collection.html#langchain_postgres.utils.pgvector_migrator.extract_pgvector_collection" title="langchain_postgres.utils.pgvector_migrator.extract_pgvector_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.pgvector_migrator.extract_pgvector_collection</span></code></a>(...)</p></td>
+<td><p>Extract all data belonging to a PGVector collection.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="utils/langchain_postgres.utils.pgvector_migrator.list_pgvector_collection_names.html#langchain_postgres.utils.pgvector_migrator.list_pgvector_collection_names" title="langchain_postgres.utils.pgvector_migrator.list_pgvector_collection_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.pgvector_migrator.list_pgvector_collection_names</span></code></a>(engine)</p></td>
+<td><p>Lists all collection names present in PGVector table.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="utils/langchain_postgres.utils.pgvector_migrator.migrate_pgvector_collection.html#langchain_postgres.utils.pgvector_migrator.migrate_pgvector_collection" title="langchain_postgres.utils.pgvector_migrator.migrate_pgvector_collection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">utils.pgvector_migrator.migrate_pgvector_collection</span></code></a>(...)</p></td>
+<td><p>Migrate all data present in a PGVector collection to use separate tables for each collection.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="langchain-postgres-v2">
+<h2><a class="reference internal" href="v2.html#langchain-postgres-v2"><span class="std std-ref">v2</span></a><a class="headerlink" href="#langchain-postgres-v2" title="Link to this heading">#</a></h2>
+<p><strong>Classes</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.async_vectorstore.AsyncPGVectorStore.html#langchain_postgres.v2.async_vectorstore.AsyncPGVectorStore" title="langchain_postgres.v2.async_vectorstore.AsyncPGVectorStore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.async_vectorstore.AsyncPGVectorStore</span></code></a>(key, ...)</p></td>
+<td><p>Postgres Vector Store class</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.engine.Column.html#langchain_postgres.v2.engine.Column" title="langchain_postgres.v2.engine.Column"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.engine.Column</span></code></a>(name, data_type[, nullable])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.engine.ColumnDict.html#langchain_postgres.v2.engine.ColumnDict" title="langchain_postgres.v2.engine.ColumnDict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.engine.ColumnDict</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.engine.PGEngine.html#langchain_postgres.v2.engine.PGEngine" title="langchain_postgres.v2.engine.PGEngine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.engine.PGEngine</span></code></a>(key, pool, loop, thread)</p></td>
+<td><p>A class for managing connections to a Postgres database.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.indexes.BaseIndex.html#langchain_postgres.v2.indexes.BaseIndex" title="langchain_postgres.v2.indexes.BaseIndex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.indexes.BaseIndex</span></code></a>(name, index_type, ...)</p></td>
+<td><p>Abstract base class for defining vector indexes.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.indexes.DistanceStrategy.html#langchain_postgres.v2.indexes.DistanceStrategy" title="langchain_postgres.v2.indexes.DistanceStrategy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.indexes.DistanceStrategy</span></code></a>(value)</p></td>
+<td><p>Enumerator of the Distance strategies.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.indexes.ExactNearestNeighbor.html#langchain_postgres.v2.indexes.ExactNearestNeighbor" title="langchain_postgres.v2.indexes.ExactNearestNeighbor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.indexes.ExactNearestNeighbor</span></code></a>(name, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.indexes.HNSWIndex.html#langchain_postgres.v2.indexes.HNSWIndex" title="langchain_postgres.v2.indexes.HNSWIndex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.indexes.HNSWIndex</span></code></a>(name, index_type, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.indexes.HNSWQueryOptions.html#langchain_postgres.v2.indexes.HNSWQueryOptions" title="langchain_postgres.v2.indexes.HNSWQueryOptions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.indexes.HNSWQueryOptions</span></code></a>([ef_search])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.indexes.IVFFlatIndex.html#langchain_postgres.v2.indexes.IVFFlatIndex" title="langchain_postgres.v2.indexes.IVFFlatIndex"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.indexes.IVFFlatIndex</span></code></a>(name, index_type, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.indexes.IVFFlatQueryOptions.html#langchain_postgres.v2.indexes.IVFFlatQueryOptions" title="langchain_postgres.v2.indexes.IVFFlatQueryOptions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.indexes.IVFFlatQueryOptions</span></code></a>([probes])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.indexes.QueryOptions.html#langchain_postgres.v2.indexes.QueryOptions" title="langchain_postgres.v2.indexes.QueryOptions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.indexes.QueryOptions</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.indexes.StrategyMixin.html#langchain_postgres.v2.indexes.StrategyMixin" title="langchain_postgres.v2.indexes.StrategyMixin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.indexes.StrategyMixin</span></code></a>(operator, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.vectorstores.PGVectorStore.html#langchain_postgres.v2.vectorstores.PGVectorStore" title="langchain_postgres.v2.vectorstores.PGVectorStore"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.vectorstores.PGVectorStore</span></code></a>(key, engine, vs)</p></td>
+<td><p>Postgres Vector Store class</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>Functions</strong></p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="v2/langchain_postgres.v2.indexes.validate_identifier.html#langchain_postgres.v2.indexes.validate_identifier" title="langchain_postgres.v2.indexes.validate_identifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v2.indexes.validate_identifier</span></code></a>(identifier)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>

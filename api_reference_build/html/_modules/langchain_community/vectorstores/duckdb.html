@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 04, 2025" name="docbuild:last-update"/>
+<meta content="Apr 05, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -240,6 +240,9 @@
 <span class="n">DEFAULT_TEXT_KEY</span> <span class="o">=</span> <span class="s2">"text"</span>
 <span class="n">DEFAULT_TABLE_NAME</span> <span class="o">=</span> <span class="s2">"embeddings"</span>
 <span class="n">SIMILARITY_ALIAS</span> <span class="o">=</span> <span class="s2">"similarity_score"</span>
+<span class="n">DUCKDB_FETCHALL_PAGE_CONTENT_INDEX</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">DUCKDB_FETCHALL_METADATA_INDEX</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">DUCKDB_FETCHALL_SIMILARITY_SCORE_INDEX</span> <span class="o">=</span> <span class="mi">4</span>
 
 
 <div class="viewcode-block" id="DuckDB">
@@ -428,12 +431,14 @@
         <span class="k">return</span> <span class="n">ids</span></div>
 
 
-<div class="viewcode-block" id="DuckDB.similarity_search">
-<a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.duckdb.DuckDB.html#langchain_community.vectorstores.duckdb.DuckDB.similarity_search">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">similarity_search</span><span class="p">(</span>
+<div class="viewcode-block" id="DuckDB.similarity_search_pd">
+<a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.duckdb.DuckDB.html#langchain_community.vectorstores.duckdb.DuckDB.similarity_search_pd">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">similarity_search_pd</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Performs a similarity search for a given query string.</span>
+<span class="sd">        Requires pandas to be installed.</span>
+<span class="sd">        This was the previously executed method for similarity search.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            query: The query string to search for.</span>
@@ -473,6 +478,56 @@
                     <span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">SIMILARITY_ALIAS</span><span class="si">}</span><span class="s2">"</span><span class="p">:</span> <span class="n">docs</span><span class="p">[</span><span class="n">SIMILARITY_ALIAS</span><span class="p">][</span><span class="n">idx</span><span class="p">],</span>
                 <span class="p">}</span>
                 <span class="k">if</span> <span class="n">docs</span><span class="p">[</span><span class="s2">"metadata"</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+                <span class="k">else</span> <span class="p">{},</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">docs</span><span class="p">))</span>
+        <span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="DuckDB.similarity_search">
+<a class="viewcode-back" href="../../../community/vectorstores/langchain_community.vectorstores.duckdb.DuckDB.html#langchain_community.vectorstores.duckdb.DuckDB.similarity_search">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">similarity_search</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Performs a similarity search for a given query string.</span>
+<span class="sd">        Does not require pandas to be installed.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query: The query string to search for.</span>
+<span class="sd">            k: The number of similar texts to return.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of Documents most similar to the query.</span>
+<span class="sd">        """</span>
+
+        <span class="n">embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_embedding</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">list_cosine_similarity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">duckdb</span><span class="o">.</span><span class="n">FunctionExpression</span><span class="p">(</span>
+            <span class="s2">"list_cosine_similarity"</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">duckdb</span><span class="o">.</span><span class="n">ColumnExpression</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_key</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">duckdb</span><span class="o">.</span><span class="n">ConstantExpression</span><span class="p">(</span><span class="n">embedding</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="o">.</span><span class="n">select</span><span class="p">(</span>
+                <span class="o">*</span><span class="p">[</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">duckdb</span><span class="o">.</span><span class="n">StarExpression</span><span class="p">(</span><span class="n">exclude</span><span class="o">=</span><span class="p">[]),</span>
+                    <span class="n">list_cosine_similarity</span><span class="o">.</span><span class="n">alias</span><span class="p">(</span><span class="n">SIMILARITY_ALIAS</span><span class="p">),</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="o">.</span><span class="n">order</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">SIMILARITY_ALIAS</span><span class="si">}</span><span class="s2"> desc"</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">limit</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="n">Document</span><span class="p">(</span>
+                <span class="n">page_content</span><span class="o">=</span><span class="n">docs</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">DUCKDB_FETCHALL_PAGE_CONTENT_INDEX</span><span class="p">],</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="p">{</span>
+                    <span class="o">**</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">docs</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">DUCKDB_FETCHALL_METADATA_INDEX</span><span class="p">]),</span>
+                    <span class="c1"># using underscore prefix to avoid conflicts with user metadata keys</span>
+                    <span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">SIMILARITY_ALIAS</span><span class="si">}</span><span class="s2">"</span><span class="p">:</span> <span class="n">docs</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span>
+                        <span class="n">DUCKDB_FETCHALL_SIMILARITY_SCORE_INDEX</span>
+                    <span class="p">],</span>
+                <span class="p">}</span>
+                <span class="k">if</span> <span class="n">docs</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="n">DUCKDB_FETCHALL_METADATA_INDEX</span><span class="p">]</span>
                 <span class="k">else</span> <span class="p">{},</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">docs</span><span class="p">))</span>

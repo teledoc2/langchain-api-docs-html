@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 04, 2025" name="docbuild:last-update"/>
+<meta content="Apr 05, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -244,6 +244,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">uuid</span><span class="w"> </span><span class="kn">import</span> <span class="n">UUID</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">langsmith.run_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_tracing_context</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.callbacks.base</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">BaseCallbackHandler</span><span class="p">,</span>
@@ -681,9 +682,6 @@
 
 
 
-<span class="n">BRM</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">"BRM"</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="s2">"BaseRunManager"</span><span class="p">)</span>
-
-
 <div class="viewcode-block" id="BaseRunManager">
 <a class="viewcode-back" href="../../../core/callbacks/langchain_core.callbacks.manager.BaseRunManager.html#langchain_core.callbacks.manager.BaseRunManager">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BaseRunManager</span><span class="p">(</span><span class="n">RunManagerMixin</span><span class="p">):</span>
@@ -733,7 +731,7 @@
 <div class="viewcode-block" id="BaseRunManager.get_noop_manager">
 <a class="viewcode-back" href="../../../core/callbacks/langchain_core.callbacks.manager.BaseRunManager.html#langchain_core.callbacks.manager.BaseRunManager.get_noop_manager">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">get_noop_manager</span><span class="p">(</span><span class="bp">cls</span><span class="p">:</span> <span class="nb">type</span><span class="p">[</span><span class="n">BRM</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">BRM</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_noop_manager</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Return a manager that doesn't perform any operations.</span>
 
 <span class="sd">        Returns:</span>
