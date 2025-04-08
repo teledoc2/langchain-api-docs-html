@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 07, 2025" name="docbuild:last-update"/>
+<meta content="Apr 08, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -353,6 +353,12 @@ See: <a class="reference external" href="https://boto3.amazonaws.com/v1/document
 Not required unless using temporary credentials.
 See: <a class="reference external" href="https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html">https://boto3.amazonaws.com/v1/documentation/api/latest/guide/credentials.html</a></p>
 <p>If not provided, will be read from ‘AWS_SESSION_TOKEN’ environment variable.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_aws.llms.bedrock.BedrockBase.base_model_id">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">base_model_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'base_model')</span></em><a class="headerlink" href="#langchain_aws.llms.bedrock.BedrockBase.base_model_id" title="Link to this definition">#</a></dt>
+<dd><p>An optional field to pass the base model id. If provided, this will be used over
+the value of model_id to identify the base model.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_aws.llms.bedrock.BedrockBase.cache">
@@ -1511,6 +1517,7 @@ between retries</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.aws_access_key_id"><code class="docutils literal notranslate"><span class="pre">aws_access_key_id</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.aws_secret_access_key"><code class="docutils literal notranslate"><span class="pre">aws_secret_access_key</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.aws_session_token"><code class="docutils literal notranslate"><span class="pre">aws_session_token</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.base_model_id"><code class="docutils literal notranslate"><span class="pre">base_model_id</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.cache"><code class="docutils literal notranslate"><span class="pre">cache</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.callbacks"><code class="docutils literal notranslate"><span class="pre">callbacks</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_aws.llms.bedrock.BedrockBase.config"><code class="docutils literal notranslate"><span class="pre">config</span></code></a></li>

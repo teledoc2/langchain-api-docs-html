@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 07, 2025" name="docbuild:last-update"/>
+<meta content="Apr 08, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -967,6 +967,10 @@
                         <span class="nb">dict</span><span class="p">(</span><span class="n">stream_resp</span><span class="p">)</span> <span class="k">if</span> <span class="n">stream_resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"done"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span> <span class="k">else</span> <span class="kc">None</span>
                     <span class="p">),</span>
                 <span class="p">)</span>
+                <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">generation_info</span> <span class="ow">and</span> <span class="p">(</span>
+                    <span class="n">model</span> <span class="o">:=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">generation_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model"</span><span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="n">chunk</span><span class="o">.</span><span class="n">generation_info</span><span class="p">[</span><span class="s2">"model_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>  <span class="c1"># backwards compat</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_reasoning</span><span class="p">:</span>
                     <span class="n">message</span><span class="p">,</span> <span class="n">is_thinking</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_reasoning</span><span class="p">(</span>
                         <span class="n">chunk</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">is_thinking</span>
@@ -1015,6 +1019,10 @@
                         <span class="nb">dict</span><span class="p">(</span><span class="n">stream_resp</span><span class="p">)</span> <span class="k">if</span> <span class="n">stream_resp</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"done"</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">True</span> <span class="k">else</span> <span class="kc">None</span>
                     <span class="p">),</span>
                 <span class="p">)</span>
+                <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">generation_info</span> <span class="ow">and</span> <span class="p">(</span>
+                    <span class="n">model</span> <span class="o">:=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">generation_info</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"model"</span><span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="n">chunk</span><span class="o">.</span><span class="n">generation_info</span><span class="p">[</span><span class="s2">"model_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">model</span>  <span class="c1"># backwards compat</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_reasoning</span><span class="p">:</span>
                     <span class="n">message</span><span class="p">,</span> <span class="n">is_thinking</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_reasoning</span><span class="p">(</span>
                         <span class="n">chunk</span><span class="o">.</span><span class="n">message</span><span class="p">,</span> <span class="n">is_thinking</span>

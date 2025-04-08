@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 07, 2025" name="docbuild:last-update"/>
+<meta content="Apr 08, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -225,7 +225,6 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">uuid</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
 
@@ -404,7 +403,8 @@
         <span class="n">stmt</span> <span class="o">=</span> <span class="s2">"SELECT column_name, data_type FROM information_schema.columns WHERE table_name = :table_name AND table_schema = :schema_name"</span>
         <span class="k">async</span> <span class="k">with</span> <span class="n">engine</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
             <span class="n">result</span> <span class="o">=</span> <span class="k">await</span> <span class="n">conn</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span>
-                <span class="n">text</span><span class="p">(</span><span class="n">stmt</span><span class="p">),</span> <span class="p">{</span><span class="s2">"table_name"</span><span class="p">:</span> <span class="n">table_name</span><span class="p">,</span> <span class="s2">"schema_name"</span><span class="p">:</span> <span class="n">schema_name</span><span class="p">}</span>
+                <span class="n">text</span><span class="p">(</span><span class="n">stmt</span><span class="p">),</span>
+                <span class="p">{</span><span class="s2">"table_name"</span><span class="p">:</span> <span class="n">table_name</span><span class="p">,</span> <span class="s2">"schema_name"</span><span class="p">:</span> <span class="n">schema_name</span><span class="p">},</span>
             <span class="p">)</span>
             <span class="n">result_map</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">mappings</span><span class="p">()</span>
             <span class="n">results</span> <span class="o">=</span> <span class="n">result_map</span><span class="o">.</span><span class="n">fetchall</span><span class="p">()</span>
@@ -783,7 +783,7 @@
         <span class="n">embedding</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">RowMapping</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Perform similarity search query on database."""</span>
@@ -801,16 +801,22 @@
 
         <span class="n">column_names</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">'"</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1">"'</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">columns</span><span class="p">)</span>
 
+        <span class="n">safe_filter</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">filter_dict</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="nb">filter</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="nb">filter</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-            <span class="nb">filter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_filter_clause</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
-        <span class="nb">filter</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"WHERE </span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="nb">filter</span> <span class="k">else</span> <span class="s2">""</span>
+            <span class="n">safe_filter</span><span class="p">,</span> <span class="n">filter_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_filter_clause</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
+        <span class="n">param_filter</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"WHERE </span><span class="si">{</span><span class="n">safe_filter</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">safe_filter</span> <span class="k">else</span> <span class="s2">""</span>
         <span class="n">inline_embed_func</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_service</span><span class="p">,</span> <span class="s2">"embed_query_inline"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">embedding</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="n">inline_embed_func</span><span class="p">)</span> <span class="ow">and</span> <span class="s2">"query"</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
             <span class="n">query_embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_service</span><span class="o">.</span><span class="n">embed_query_inline</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">"query"</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">query_embedding</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">dimension</span><span class="p">)</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">dimension</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">embedding</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span>
-        <span class="n">stmt</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'SELECT </span><span class="si">{</span><span class="n">column_names</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">search_function</span><span class="si">}</span><span class="s1">("</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_column</span><span class="si">}</span><span class="s1">", :query_embedding) as distance FROM "</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">schema_name</span><span class="si">}</span><span class="s1">"."</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table_name</span><span class="si">}</span><span class="s1">" </span><span class="si">{</span><span class="nb">filter</span><span class="si">}</span><span class="s1"> ORDER BY "</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_column</span><span class="si">}</span><span class="s1">" </span><span class="si">{</span><span class="n">operator</span><span class="si">}</span><span class="s1"> :query_embedding LIMIT :k;'</span>
+        <span class="n">stmt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""SELECT </span><span class="si">{</span><span class="n">column_names</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">search_function</span><span class="si">}</span><span class="s2">("</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_column</span><span class="si">}</span><span class="s2">", :query_embedding) as distance</span>
+<span class="s2">        FROM "</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">schema_name</span><span class="si">}</span><span class="s2">"."</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">table_name</span><span class="si">}</span><span class="s2">" </span><span class="si">{</span><span class="n">param_filter</span><span class="si">}</span><span class="s2"> ORDER BY "</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_column</span><span class="si">}</span><span class="s2">" </span><span class="si">{</span><span class="n">operator</span><span class="si">}</span><span class="s2"> :query_embedding LIMIT :k;</span>
+<span class="s2">        """</span>
         <span class="n">param_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"query_embedding"</span><span class="p">:</span> <span class="n">query_embedding</span><span class="p">,</span> <span class="s2">"k"</span><span class="p">:</span> <span class="n">k</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">filter_dict</span><span class="p">:</span>
+            <span class="n">param_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">filter_dict</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_query_options</span><span class="p">:</span>
             <span class="k">async</span> <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span> <span class="k">as</span> <span class="n">conn</span><span class="p">:</span>
                 <span class="c1"># Set each query option individually</span>
@@ -833,7 +839,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Return docs selected by similarity search on query."""</span>
@@ -867,7 +873,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">"""Return docs and distance scores selected by similarity search on query."""</span>
@@ -891,7 +897,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">embedding</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Return docs selected by vector similarity search."""</span>
@@ -908,7 +914,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">embedding</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">"""Return docs and distance scores selected by vector similarity search."""</span>
@@ -947,7 +953,7 @@
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">fetch_k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">lambda_mult</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Return docs selected using the maximal marginal relevance."""</span>
@@ -971,7 +977,7 @@
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">fetch_k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">lambda_mult</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Return docs selected using the maximal marginal relevance."""</span>
@@ -997,7 +1003,7 @@
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">fetch_k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">lambda_mult</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">"""Return docs and distance scores selected using the maximal marginal relevance."""</span>
@@ -1114,7 +1120,7 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Check if index exists in the table."""</span>
         <span class="n">index_name</span> <span class="o">=</span> <span class="n">index_name</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">table_name</span> <span class="o">+</span> <span class="n">DEFAULT_INDEX_NAME_SUFFIX</span>
-        <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"""</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">"""</span>
 <span class="s2">        SELECT tablename, indexname</span>
 <span class="s2">        FROM pg_indexes</span>
 <span class="s2">        WHERE tablename = :table_name AND schemaname = :schema_name AND indexname = :index_name;</span>
@@ -1182,7 +1188,7 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Create a filter for a specific field.</span>
 
 <span class="sd">        Args:</span>
@@ -1235,15 +1241,17 @@
         <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="n">COMPARISONS_TO_NATIVE</span><span class="p">:</span>
             <span class="c1"># Then we implement an equality filter</span>
             <span class="c1"># native is trusted input</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">filter_value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                <span class="n">filter_value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">filter_value</span><span class="si">}</span><span class="s2">'"</span>
             <span class="n">native</span> <span class="o">=</span> <span class="n">COMPARISONS_TO_NATIVE</span><span class="p">[</span><span class="n">operator</span><span class="p">]</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">native</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">filter_value</span><span class="si">}</span><span class="s2">)"</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">())</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"-"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">native</span><span class="si">}</span><span class="s2"> :</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="p">{</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2">"</span><span class="p">:</span> <span class="n">filter_value</span><span class="p">}</span>
         <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">"$between"</span><span class="p">:</span>
             <span class="c1"># Use AND with two comparisons</span>
             <span class="n">low</span><span class="p">,</span> <span class="n">high</span> <span class="o">=</span> <span class="n">filter_value</span>
 
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> BETWEEN </span><span class="si">{</span><span class="n">low</span><span class="si">}</span><span class="s2"> AND </span><span class="si">{</span><span class="n">high</span><span class="si">}</span><span class="s2">)"</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> BETWEEN :</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">_low AND :</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">_high)"</span><span class="p">,</span> <span class="p">{</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">_low"</span><span class="p">:</span> <span class="n">low</span><span class="p">,</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">_high"</span><span class="p">:</span> <span class="n">high</span><span class="p">,</span>
+            <span class="p">}</span>
         <span class="k">elif</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"$in"</span><span class="p">,</span> <span class="s2">"$nin"</span><span class="p">,</span> <span class="s2">"$like"</span><span class="p">,</span> <span class="s2">"$ilike"</span><span class="p">}:</span>
             <span class="c1"># We'll do force coercion to text</span>
             <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"$in"</span><span class="p">,</span> <span class="s2">"$nin"</span><span class="p">}:</span>
@@ -1259,15 +1267,15 @@
                         <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"$in"</span><span class="p">}:</span>
-                <span class="n">values</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">filter_value</span><span class="p">))</span>
-                <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> IN </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2">)"</span>
+                <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> = ANY(:</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">_in)"</span><span class="p">,</span> <span class="p">{</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">_in"</span><span class="p">:</span> <span class="n">filter_value</span><span class="p">}</span>
             <span class="k">elif</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"$nin"</span><span class="p">}:</span>
-                <span class="n">values</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">filter_value</span><span class="p">))</span>
-                <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> NOT IN </span><span class="si">{</span><span class="n">values</span><span class="si">}</span><span class="s2">)"</span>
+                <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> &lt;&gt; ALL (:</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">_nin)"</span><span class="p">,</span> <span class="p">{</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">_nin"</span><span class="p">:</span> <span class="n">filter_value</span><span class="p">}</span>
             <span class="k">elif</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"$like"</span><span class="p">}:</span>
-                <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> LIKE '</span><span class="si">{</span><span class="n">filter_value</span><span class="si">}</span><span class="s2">')"</span>
+                <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> LIKE :</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">_like)"</span><span class="p">,</span> <span class="p">{</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">_like"</span><span class="p">:</span> <span class="n">filter_value</span><span class="p">}</span>
             <span class="k">elif</span> <span class="n">operator</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"$ilike"</span><span class="p">}:</span>
-                <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> ILIKE '</span><span class="si">{</span><span class="n">filter_value</span><span class="si">}</span><span class="s2">')"</span>
+                <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> ILIKE :</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">_ilike)"</span><span class="p">,</span> <span class="p">{</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2">_ilike"</span><span class="p">:</span> <span class="n">filter_value</span>
+                <span class="p">}</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">operator</span> <span class="o">==</span> <span class="s2">"$exists"</span><span class="p">:</span>
@@ -1278,13 +1286,13 @@
                 <span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">filter_value</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> IS NOT NULL)"</span>
+                    <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> IS NOT NULL)"</span><span class="p">,</span> <span class="p">{}</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> IS NULL)"</span>
+                    <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">field</span><span class="si">}</span><span class="s2"> IS NULL)"</span><span class="p">,</span> <span class="p">{}</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_create_filter_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_filter_clause</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filters</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Create LangChain filter representation to matching SQL where clauses</span>
 
 <span class="sd">        Args:</span>
@@ -1321,7 +1329,11 @@
                 <span class="n">op</span> <span class="o">=</span> <span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>  <span class="c1"># Extract the operator</span>
                 <span class="n">filter_clause</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_create_filter_clause</span><span class="p">(</span><span class="n">el</span><span class="p">)</span> <span class="k">for</span> <span class="n">el</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
                 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filter_clause</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="sa">f</span><span class="s1">' </span><span class="si">{</span><span class="n">op</span><span class="si">}</span><span class="s1"> '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filter_clause</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span>
+                    <span class="n">all_clauses</span> <span class="o">=</span> <span class="p">[</span><span class="n">clause</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">clause</span> <span class="ow">in</span> <span class="n">filter_clause</span><span class="p">]</span>
+                    <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="k">for</span> <span class="n">clause</span> <span class="ow">in</span> <span class="n">filter_clause</span><span class="p">:</span>
+                        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">clause</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="sa">f</span><span class="s1">' </span><span class="si">{</span><span class="n">op</span><span class="si">}</span><span class="s1"> '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">all_clauses</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span> <span class="n">params</span>
                 <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">filter_clause</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                     <span class="k">return</span> <span class="n">filter_clause</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -1334,11 +1346,15 @@
                     <span class="n">not_conditions</span> <span class="o">=</span> <span class="p">[</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">_create_filter_clause</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">value</span>
                     <span class="p">]</span>
-                    <span class="n">not_stmts</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"NOT </span><span class="si">{</span><span class="n">condition</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">condition</span> <span class="ow">in</span> <span class="n">not_conditions</span><span class="p">]</span>
-                    <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="s1">' AND '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">not_stmts</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span>
+                    <span class="n">all_clauses</span> <span class="o">=</span> <span class="p">[</span><span class="n">clause</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">clause</span> <span class="ow">in</span> <span class="n">not_conditions</span><span class="p">]</span>
+                    <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+                    <span class="k">for</span> <span class="n">clause</span> <span class="ow">in</span> <span class="n">not_conditions</span><span class="p">:</span>
+                        <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">clause</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                    <span class="n">not_stmts</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"NOT </span><span class="si">{</span><span class="n">condition</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">condition</span> <span class="ow">in</span> <span class="n">all_clauses</span><span class="p">]</span>
+                    <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="s1">' AND '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">not_stmts</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span> <span class="n">params</span>
                 <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
-                    <span class="n">not_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_filter_clause</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-                    <span class="k">return</span> <span class="sa">f</span><span class="s2">"(NOT </span><span class="si">{</span><span class="n">not_</span><span class="si">}</span><span class="s2">)"</span>
+                    <span class="n">not_</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_filter_clause</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="sa">f</span><span class="s2">"(NOT </span><span class="si">{</span><span class="n">not_</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span> <span class="n">params</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">"Invalid filter condition. Expected a dictionary "</span>
@@ -1361,7 +1377,11 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_handle_field_filter</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">filters</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
             <span class="p">]</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">and_</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="s1">' AND '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">and_</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span>
+                <span class="n">all_clauses</span> <span class="o">=</span> <span class="p">[</span><span class="n">clause</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">clause</span> <span class="ow">in</span> <span class="n">and_</span><span class="p">]</span>
+                <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">clause</span> <span class="ow">in</span> <span class="n">and_</span><span class="p">:</span>
+                    <span class="n">params</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">clause</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">return</span> <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="s1">' AND '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">all_clauses</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span><span class="p">,</span> <span class="n">params</span>
             <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">and_</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">and_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
@@ -1370,7 +1390,7 @@
                     <span class="s2">"but got an empty dictionary"</span>
                 <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">""</span>
+            <span class="k">return</span> <span class="s2">""</span><span class="p">,</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="AsyncPGVectorStore.get_by_ids">
 <a class="viewcode-back" href="../../../postgres/v2/langchain_postgres.v2.async_vectorstore.AsyncPGVectorStore.html#langchain_postgres.v2.async_vectorstore.AsyncPGVectorStore.get_by_ids">[docs]</a>
@@ -1472,7 +1492,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
@@ -1486,7 +1506,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
@@ -1500,7 +1520,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">embedding</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
@@ -1514,7 +1534,7 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">embedding</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
@@ -1530,7 +1550,7 @@
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">fetch_k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">lambda_mult</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
@@ -1546,7 +1566,7 @@
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">fetch_k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">lambda_mult</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
@@ -1562,7 +1582,7 @@
         <span class="n">k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">fetch_k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">lambda_mult</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">|</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="nb">filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>

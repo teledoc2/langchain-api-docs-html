@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 07, 2025" name="docbuild:last-update"/>
+<meta content="Apr 08, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -897,6 +897,11 @@
 <span class="sd">    equivalent to the modelId property in the list-foundation-models api. For custom and</span>
 <span class="sd">    provisioned models, an ARN value is expected."""</span>
 
+    <span class="n">base_model_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">Field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s2">"base_model"</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""An optional field to pass the base model id. If provided, this will be used over </span>
+<span class="sd">    the value of model_id to identify the base model.</span>
+<span class="sd">    """</span>
+
     <span class="n">model_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""Keyword arguments to pass to the model."""</span>
 
@@ -1016,6 +1021,7 @@
         <span class="n">_model_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="s2">"model_id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="p">,</span>
+            <span class="s2">"base_model_id"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_model_id</span><span class="p">,</span>
             <span class="s2">"provider"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_provider</span><span class="p">(),</span>
             <span class="s2">"stream"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">streaming</span><span class="p">,</span>
             <span class="s2">"trace"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">guardrails</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"trace"</span><span class="p">),</span>  <span class="c1"># type: ignore[union-attr]</span>
@@ -1047,8 +1053,8 @@
             <span class="k">else</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_get_model</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_base_model</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_model_id</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_model_id</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">,</span> <span class="n">maxsplit</span><span class="o">=</span><span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_model_is_anthropic</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
@@ -1098,7 +1104,7 @@
         <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">_model_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">}</span>
 
         <span class="c1"># Pre-process for thinking with tool use</span>
-        <span class="k">if</span> <span class="n">messages</span> <span class="ow">and</span> <span class="s2">"claude-3"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model</span><span class="p">()</span> <span class="ow">and</span> <span class="n">thinking_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">messages</span> <span class="ow">and</span> <span class="s2">"claude-3"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_base_model</span><span class="p">()</span> <span class="ow">and</span> <span class="n">thinking_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
             <span class="c1"># We need to ensure thinking blocks are first in assistant messages</span>
             <span class="c1"># Process each message in the sequence</span>
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">messages</span><span class="p">):</span>
@@ -1126,7 +1132,7 @@
                             <span class="c1"># Reorder with thinking first</span>
                             <span class="n">message</span><span class="p">[</span><span class="s2">"content"</span><span class="p">]</span> <span class="o">=</span> <span class="n">thinking_content</span> <span class="o">+</span> <span class="n">other_content</span>
 
-        <span class="k">if</span> <span class="s2">"claude-3"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model</span><span class="p">()</span> <span class="ow">and</span> <span class="n">_tools_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">"claude-3"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_base_model</span><span class="p">()</span> <span class="ow">and</span> <span class="n">_tools_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
             <span class="n">input_body</span> <span class="o">=</span> <span class="n">LLMInputOutputAdapter</span><span class="o">.</span><span class="n">prepare_input</span><span class="p">(</span>
                 <span class="n">provider</span><span class="o">=</span><span class="n">provider</span><span class="p">,</span>
                 <span class="n">model_kwargs</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
@@ -1277,7 +1283,7 @@
             <span class="n">temperature</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">coerce_content_to_string</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">if</span> <span class="s2">"claude-3"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model</span><span class="p">():</span>
+        <span class="k">if</span> <span class="s2">"claude-3"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_base_model</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">_tools_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
                 <span class="n">coerce_content_to_string</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="n">input_body</span> <span class="o">=</span> <span class="n">LLMInputOutputAdapter</span><span class="o">.</span><span class="n">prepare_input</span><span class="p">(</span>
@@ -1357,7 +1363,7 @@
             <span class="n">_model_kwargs</span><span class="p">[</span><span class="s2">"stream"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="o">**</span><span class="n">_model_kwargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">}</span>
-        <span class="k">if</span> <span class="s2">"claude-3"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model</span><span class="p">()</span> <span class="ow">and</span> <span class="n">_tools_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s2">"claude-3"</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_base_model</span><span class="p">()</span> <span class="ow">and</span> <span class="n">_tools_in_params</span><span class="p">(</span><span class="n">params</span><span class="p">):</span>
             <span class="n">input_body</span> <span class="o">=</span> <span class="n">LLMInputOutputAdapter</span><span class="o">.</span><span class="n">prepare_input</span><span class="p">(</span>
                 <span class="n">provider</span><span class="o">=</span><span class="n">provider</span><span class="p">,</span>
                 <span class="n">model_kwargs</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
@@ -1432,7 +1438,7 @@
 
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"after"</span><span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate_environment_llm</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
-        <span class="n">model_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span>
+        <span class="n">model_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_model_id</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_model_id</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_id</span>
         <span class="k">if</span> <span class="n">model_id</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"anthropic.claude-3"</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">"Claude v3 models are not supported by this LLM."</span>
