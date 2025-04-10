@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 09, 2025" name="docbuild:last-update"/>
+<meta content="Apr 10, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -295,7 +295,11 @@
 
 <div class="viewcode-block" id="l_sa_check">
 <a class="viewcode-back" href="../../../core/utils/langchain_core.utils.mustache.l_sa_check.html#langchain_core.utils.mustache.l_sa_check">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">l_sa_check</span><span class="p">(</span><span class="n">template</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">literal</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_standalone</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">l_sa_check</span><span class="p">(</span>
+    <span class="n">template</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>  <span class="c1"># noqa: ARG001</span>
+    <span class="n">literal</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">is_standalone</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Do a preliminary check to see if a tag could be a standalone.</span>
 
 <span class="sd">    Args:</span>
@@ -697,12 +701,11 @@
         <span class="c1"># Then we don't need to tokenize it</span>
         <span class="c1"># But it does need to be a generator</span>
         <span class="n">tokens</span><span class="p">:</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">(</span><span class="n">token</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">template</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">template</span> <span class="ow">in</span> <span class="n">g_token_cache</span><span class="p">:</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="p">(</span><span class="n">token</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">g_token_cache</span><span class="p">[</span><span class="n">template</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">template</span> <span class="ow">in</span> <span class="n">g_token_cache</span><span class="p">:</span>
-            <span class="n">tokens</span> <span class="o">=</span> <span class="p">(</span><span class="n">token</span> <span class="k">for</span> <span class="n">token</span> <span class="ow">in</span> <span class="n">g_token_cache</span><span class="p">[</span><span class="n">template</span><span class="p">])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Otherwise make a generator</span>
-            <span class="n">tokens</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">def_ldel</span><span class="p">,</span> <span class="n">def_rdel</span><span class="p">)</span>
+        <span class="c1"># Otherwise make a generator</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">tokenize</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">def_ldel</span><span class="p">,</span> <span class="n">def_rdel</span><span class="p">)</span>
 
     <span class="n">output</span> <span class="o">=</span> <span class="s2">""</span>
 

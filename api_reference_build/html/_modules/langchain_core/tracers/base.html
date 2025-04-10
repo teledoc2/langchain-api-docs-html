@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 09, 2025" name="docbuild:last-update"/>
+<meta content="Apr 10, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -365,6 +365,7 @@
 
 <div class="viewcode-block" id="BaseTracer.on_llm_new_token">
 <a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_llm_new_token">[docs]</a>
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_llm_new_token</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">token</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -393,7 +394,6 @@
             <span class="n">run_id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
             <span class="n">chunk</span><span class="o">=</span><span class="n">chunk</span><span class="p">,</span>
             <span class="n">parent_run_id</span><span class="o">=</span><span class="n">parent_run_id</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_on_llm_new_token</span><span class="p">(</span><span class="n">llm_run</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">chunk</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">llm_run</span></div>
@@ -401,6 +401,7 @@
 
 <div class="viewcode-block" id="BaseTracer.on_retry">
 <a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_retry">[docs]</a>
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_retry</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">retry_state</span><span class="p">:</span> <span class="n">RetryCallState</span><span class="p">,</span>
@@ -426,6 +427,7 @@
 
 <div class="viewcode-block" id="BaseTracer.on_llm_end">
 <a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_llm_end">[docs]</a>
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_llm_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">:</span> <span class="n">LLMResult</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">run_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Run</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""End a trace for an LLM run.</span>
 
@@ -479,6 +481,7 @@
 
 <div class="viewcode-block" id="BaseTracer.on_chain_start">
 <a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_chain_start">[docs]</a>
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_chain_start</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">serialized</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -526,6 +529,7 @@
 
 <div class="viewcode-block" id="BaseTracer.on_chain_end">
 <a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_chain_end">[docs]</a>
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_chain_end</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">outputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
@@ -549,7 +553,6 @@
             <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
             <span class="n">run_id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
             <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_trace</span><span class="p">(</span><span class="n">chain_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_on_chain_end</span><span class="p">(</span><span class="n">chain_run</span><span class="p">)</span>
@@ -558,6 +561,7 @@
 
 <div class="viewcode-block" id="BaseTracer.on_chain_error">
 <a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_chain_error">[docs]</a>
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_chain_error</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">error</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span>
@@ -581,7 +585,6 @@
             <span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">,</span>
             <span class="n">run_id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
             <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_trace</span><span class="p">(</span><span class="n">chain_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_on_chain_error</span><span class="p">(</span><span class="n">chain_run</span><span class="p">)</span>
@@ -637,6 +640,7 @@
 
 <div class="viewcode-block" id="BaseTracer.on_tool_end">
 <a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_tool_end">[docs]</a>
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_tool_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">run_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Run</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""End a trace for a tool run.</span>
 
@@ -651,7 +655,6 @@
         <span class="n">tool_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complete_tool_run</span><span class="p">(</span>
             <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
             <span class="n">run_id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_trace</span><span class="p">(</span><span class="n">tool_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_on_tool_end</span><span class="p">(</span><span class="n">tool_run</span><span class="p">)</span>
@@ -660,6 +663,7 @@
 
 <div class="viewcode-block" id="BaseTracer.on_tool_error">
 <a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_tool_error">[docs]</a>
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_tool_error</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">error</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span>
@@ -732,6 +736,7 @@
 
 <div class="viewcode-block" id="BaseTracer.on_retriever_error">
 <a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_retriever_error">[docs]</a>
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_retriever_error</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">error</span><span class="p">:</span> <span class="ne">BaseException</span><span class="p">,</span>
@@ -752,7 +757,6 @@
         <span class="n">retrieval_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errored_retrieval_run</span><span class="p">(</span>
             <span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">,</span>
             <span class="n">run_id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_trace</span><span class="p">(</span><span class="n">retrieval_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_on_retriever_error</span><span class="p">(</span><span class="n">retrieval_run</span><span class="p">)</span>
@@ -761,6 +765,7 @@
 
 <div class="viewcode-block" id="BaseTracer.on_retriever_end">
 <a class="viewcode-back" href="../../../core/tracers/langchain_core.tracers.base.BaseTracer.html#langchain.callbacks.tracers.logging.BaseTracer.on_retriever_end">[docs]</a>
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_retriever_end</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">documents</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Document</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">run_id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Run</span><span class="p">:</span>
@@ -777,7 +782,6 @@
         <span class="n">retrieval_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complete_retrieval_run</span><span class="p">(</span>
             <span class="n">documents</span><span class="o">=</span><span class="n">documents</span><span class="p">,</span>
             <span class="n">run_id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_end_trace</span><span class="p">(</span><span class="n">retrieval_run</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_on_retriever_end</span><span class="p">(</span><span class="n">retrieval_run</span><span class="p">)</span>
@@ -903,7 +907,6 @@
             <span class="n">run_id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
             <span class="n">chunk</span><span class="o">=</span><span class="n">chunk</span><span class="p">,</span>
             <span class="n">parent_run_id</span><span class="o">=</span><span class="n">parent_run_id</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_llm_new_token</span><span class="p">(</span><span class="n">llm_run</span><span class="p">,</span> <span class="n">token</span><span class="p">,</span> <span class="n">chunk</span><span class="p">)</span></div>
 
@@ -1010,7 +1013,6 @@
             <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span>
             <span class="n">run_id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
             <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_trace</span><span class="p">(</span><span class="n">chain_run</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_chain_end</span><span class="p">(</span><span class="n">chain_run</span><span class="p">)]</span>
         <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">)</span></div>
@@ -1031,7 +1033,6 @@
             <span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">,</span>
             <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span>
             <span class="n">run_id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_trace</span><span class="p">(</span><span class="n">chain_run</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_chain_error</span><span class="p">(</span><span class="n">chain_run</span><span class="p">)]</span>
         <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">)</span></div>
@@ -1080,7 +1081,6 @@
         <span class="n">tool_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complete_tool_run</span><span class="p">(</span>
             <span class="n">output</span><span class="o">=</span><span class="n">output</span><span class="p">,</span>
             <span class="n">run_id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_trace</span><span class="p">(</span><span class="n">tool_run</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_tool_end</span><span class="p">(</span><span class="n">tool_run</span><span class="p">)]</span>
         <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">)</span></div>
@@ -1152,7 +1152,6 @@
         <span class="n">retrieval_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_errored_retrieval_run</span><span class="p">(</span>
             <span class="n">error</span><span class="o">=</span><span class="n">error</span><span class="p">,</span>
             <span class="n">run_id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_end_trace</span><span class="p">(</span><span class="n">retrieval_run</span><span class="p">),</span>
@@ -1176,7 +1175,6 @@
         <span class="n">retrieval_run</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_complete_retrieval_run</span><span class="p">(</span>
             <span class="n">documents</span><span class="o">=</span><span class="n">documents</span><span class="p">,</span>
             <span class="n">run_id</span><span class="o">=</span><span class="n">run_id</span><span class="p">,</span>
-            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">tasks</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_end_trace</span><span class="p">(</span><span class="n">retrieval_run</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_retriever_end</span><span class="p">(</span><span class="n">retrieval_run</span><span class="p">)]</span>
         <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="o">*</span><span class="n">tasks</span><span class="p">)</span></div>

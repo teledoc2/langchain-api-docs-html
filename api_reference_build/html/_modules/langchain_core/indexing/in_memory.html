@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 09, 2025" name="docbuild:last-update"/>
+<meta content="Apr 10, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -228,6 +228,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">cast</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">Field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">override</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core._api</span><span class="w"> </span><span class="kn">import</span> <span class="n">beta</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.callbacks</span><span class="w"> </span><span class="kn">import</span> <span class="n">CallbackManagerForRetrieverRun</span>
@@ -255,6 +256,7 @@
 
 <div class="viewcode-block" id="InMemoryDocumentIndex.upsert">
 <a class="viewcode-back" href="../../../core/indexing/langchain_core.indexing.in_memory.InMemoryDocumentIndex.html#langchain_core.indexing.in_memory.InMemoryDocumentIndex.upsert">[docs]</a>
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">upsert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">items</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Document</span><span class="p">],</span> <span class="o">/</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">UpsertResponse</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Upsert items into the index."""</span>
         <span class="n">ok_ids</span> <span class="o">=</span> <span class="p">[]</span>
@@ -276,6 +278,7 @@
 
 <div class="viewcode-block" id="InMemoryDocumentIndex.delete">
 <a class="viewcode-back" href="../../../core/indexing/langchain_core.indexing.in_memory.InMemoryDocumentIndex.html#langchain_core.indexing.in_memory.InMemoryDocumentIndex.delete">[docs]</a>
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DeleteResponse</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Delete by ID."""</span>
         <span class="k">if</span> <span class="n">ids</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -296,11 +299,13 @@
 
 <div class="viewcode-block" id="InMemoryDocumentIndex.get">
 <a class="viewcode-back" href="../../../core/indexing/langchain_core.indexing.in_memory.InMemoryDocumentIndex.html#langchain_core.indexing.in_memory.InMemoryDocumentIndex.get">[docs]</a>
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="o">/</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Get by ids."""</span>
         <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">[</span><span class="n">id_</span><span class="p">]</span> <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">ids</span> <span class="k">if</span> <span class="n">id_</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">]</span></div>
 
 
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_relevant_documents</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">run_manager</span><span class="p">:</span> <span class="n">CallbackManagerForRetrieverRun</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>

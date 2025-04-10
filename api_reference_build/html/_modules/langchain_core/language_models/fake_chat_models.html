@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 09, 2025" name="docbuild:last-update"/>
+<meta content="Apr 10, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -410,6 +410,7 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">FakeChatModel</span><span class="p">(</span><span class="n">SimpleChatModel</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Fake Chat Model wrapper for testing purposes."""</span>
 
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_call</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
@@ -419,6 +420,7 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">"fake response"</span>
 
+    <span class="nd">@override</span>
     <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_agenerate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
@@ -466,6 +468,7 @@
 <span class="sd">    into message chunks.</span>
 <span class="sd">    """</span>
 
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_generate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>
@@ -591,6 +594,7 @@
 <span class="sd">    * Chat model should be usable in both sync and async tests</span>
 <span class="sd">    """</span>
 
+    <span class="nd">@override</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_generate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">messages</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">BaseMessage</span><span class="p">],</span>

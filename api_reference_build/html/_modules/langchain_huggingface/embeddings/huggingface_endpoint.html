@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 09, 2025" name="docbuild:last-update"/>
+<meta content="Apr 10, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -220,8 +220,7 @@
 <div id="searchbox"></div>
 <article class="bd-article">
 <h1>Source code for langchain_huggingface.embeddings.huggingface_endpoint</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.embeddings</span><span class="w"> </span><span class="kn">import</span> <span class="n">Embeddings</span>
@@ -258,6 +257,10 @@
     <span class="n">async_client</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1">#: :meta private:</span>
     <span class="n">model</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""Model name to use."""</span>
+    <span class="n">provider</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="w">    </span><span class="sd">"""Name of the provider to use for inference with the model specified in</span>
+<span class="sd">        ``repo_id``. e.g. "sambanova". if not specified, defaults to HF Inference API. </span>
+<span class="sd">        available providers can be found in the [huggingface_hub documentation](https://huggingface.co/docs/huggingface_hub/guides/inference#supported-providers-and-tasks)."""</span>
     <span class="n">repo_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="w">    </span><span class="sd">"""Huggingfacehub repository id, for backward compatibility."""</span>
     <span class="n">task</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"feature-extraction"</span>
@@ -298,11 +301,13 @@
             <span class="n">client</span> <span class="o">=</span> <span class="n">InferenceClient</span><span class="p">(</span>
                 <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
                 <span class="n">token</span><span class="o">=</span><span class="n">huggingfacehub_api_token</span><span class="p">,</span>
+                <span class="n">provider</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="n">async_client</span> <span class="o">=</span> <span class="n">AsyncInferenceClient</span><span class="p">(</span>
                 <span class="n">model</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
                 <span class="n">token</span><span class="o">=</span><span class="n">huggingfacehub_api_token</span><span class="p">,</span>
+                <span class="n">provider</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">provider</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">task</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">VALID_TASKS</span><span class="p">:</span>
@@ -335,10 +340,8 @@
         <span class="n">texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span>
         <span class="n">_model_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
         <span class="c1">#  api doc: https://huggingface.github.io/text-embeddings-inference/#/Text%20Embeddings%20Inference/embed</span>
-        <span class="n">responses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-            <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"inputs"</span><span class="p">:</span> <span class="n">texts</span><span class="p">,</span> <span class="o">**</span><span class="n">_model_kwargs</span><span class="p">},</span> <span class="n">task</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">task</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">responses</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span></div>
+        <span class="n">responses</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">feature_extraction</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">texts</span><span class="p">,</span> <span class="o">**</span><span class="n">_model_kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">responses</span></div>
 
 
 <div class="viewcode-block" id="HuggingFaceEndpointEmbeddings.aembed_documents">
@@ -355,10 +358,10 @@
         <span class="c1"># replace newlines, which can negatively affect performance.</span>
         <span class="n">texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="s2">" "</span><span class="p">)</span> <span class="k">for</span> <span class="n">text</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">]</span>
         <span class="n">_model_kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model_kwargs</span> <span class="ow">or</span> <span class="p">{}</span>
-        <span class="n">responses</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-            <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s2">"inputs"</span><span class="p">:</span> <span class="n">texts</span><span class="p">,</span> <span class="o">**</span><span class="n">_model_kwargs</span><span class="p">},</span> <span class="n">task</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">task</span>
+        <span class="n">responses</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_client</span><span class="o">.</span><span class="n">feature_extraction</span><span class="p">(</span>
+            <span class="n">text</span><span class="o">=</span><span class="n">texts</span><span class="p">,</span> <span class="o">**</span><span class="n">_model_kwargs</span>
         <span class="p">)</span>
-        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">responses</span><span class="o">.</span><span class="n">decode</span><span class="p">())</span></div>
+        <span class="k">return</span> <span class="n">responses</span></div>
 
 
 <div class="viewcode-block" id="HuggingFaceEndpointEmbeddings.embed_query">

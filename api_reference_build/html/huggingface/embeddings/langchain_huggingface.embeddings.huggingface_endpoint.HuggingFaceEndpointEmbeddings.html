@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 09, 2025" name="docbuild:last-update"/>
+<meta content="Apr 10, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -336,6 +336,13 @@ validated to form a valid model.</p>
 <dd><p>Keyword arguments to pass to the model.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_huggingface.embeddings.huggingface_endpoint.HuggingFaceEndpointEmbeddings.provider">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">provider</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.embeddings.huggingface_endpoint.HuggingFaceEndpointEmbeddings.provider" title="Link to this definition">#</a></dt>
+<dd><p>Name of the provider to use for inference with the model specified in
+<code class="docutils literal notranslate"><span class="pre">repo_id</span></code>. e.g. “sambanova”. if not specified, defaults to HF Inference API.
+available providers can be found in the [huggingface_hub documentation](<a class="reference external" href="https://huggingface.co/docs/huggingface_hub/guides/inference#supported-providers-and-tasks">https://huggingface.co/docs/huggingface_hub/guides/inference#supported-providers-and-tasks</a>).</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_huggingface.embeddings.huggingface_endpoint.HuggingFaceEndpointEmbeddings.repo_id">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">repo_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.embeddings.huggingface_endpoint.HuggingFaceEndpointEmbeddings.repo_id" title="Link to this definition">#</a></dt>
 <dd><p>Huggingfacehub repository id, for backward compatibility.</p>
@@ -427,6 +434,7 @@ validated to form a valid model.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.embeddings.huggingface_endpoint.HuggingFaceEndpointEmbeddings.huggingfacehub_api_token"><code class="docutils literal notranslate"><span class="pre">huggingfacehub_api_token</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.embeddings.huggingface_endpoint.HuggingFaceEndpointEmbeddings.model"><code class="docutils literal notranslate"><span class="pre">model</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.embeddings.huggingface_endpoint.HuggingFaceEndpointEmbeddings.model_kwargs"><code class="docutils literal notranslate"><span class="pre">model_kwargs</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.embeddings.huggingface_endpoint.HuggingFaceEndpointEmbeddings.provider"><code class="docutils literal notranslate"><span class="pre">provider</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.embeddings.huggingface_endpoint.HuggingFaceEndpointEmbeddings.repo_id"><code class="docutils literal notranslate"><span class="pre">repo_id</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.embeddings.huggingface_endpoint.HuggingFaceEndpointEmbeddings.task"><code class="docutils literal notranslate"><span class="pre">task</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.embeddings.huggingface_endpoint.HuggingFaceEndpointEmbeddings.aembed_documents"><code class="docutils literal notranslate"><span class="pre">aembed_documents()</span></code></a></li>

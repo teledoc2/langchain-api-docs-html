@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 09, 2025" name="docbuild:last-update"/>
+<meta content="Apr 10, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -312,7 +312,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">parsed_link</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">link</span><span class="p">)</span>
             <span class="c1"># Some may be absolute links like https://to/path</span>
-            <span class="k">if</span> <span class="n">parsed_link</span><span class="o">.</span><span class="n">scheme</span> <span class="o">==</span> <span class="s2">"http"</span> <span class="ow">or</span> <span class="n">parsed_link</span><span class="o">.</span><span class="n">scheme</span> <span class="o">==</span> <span class="s2">"https"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">parsed_link</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"http"</span><span class="p">,</span> <span class="s2">"https"</span><span class="p">}:</span>
                 <span class="n">absolute_path</span> <span class="o">=</span> <span class="n">link</span>
             <span class="c1"># Some may have omitted the protocol like //to/path</span>
             <span class="k">elif</span> <span class="n">link</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"//"</span><span class="p">):</span>

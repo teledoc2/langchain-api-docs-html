@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 09, 2025" name="docbuild:last-update"/>
+<meta content="Apr 10, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -302,20 +302,19 @@
                 <span class="n">escaped</span> <span class="o">=</span> <span class="ow">not</span> <span class="n">escaped</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">escaped</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">'"'</span><span class="p">:</span>
-                <span class="n">is_inside_string</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="n">escaped</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">"{"</span><span class="p">:</span>
-                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"}"</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">"["</span><span class="p">:</span>
-                <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"]"</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">"}"</span> <span class="ow">or</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">"]"</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">stack</span> <span class="ow">and</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span><span class="p">:</span>
-                    <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="c1"># Mismatched closing character; the input is malformed.</span>
-                    <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">'"'</span><span class="p">:</span>
+            <span class="n">is_inside_string</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">escaped</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">"{"</span><span class="p">:</span>
+            <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"}"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">char</span> <span class="o">==</span> <span class="s2">"["</span><span class="p">:</span>
+            <span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"]"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">char</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">"}"</span><span class="p">,</span> <span class="s2">"]"</span><span class="p">}:</span>
+            <span class="k">if</span> <span class="n">stack</span> <span class="ow">and</span> <span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">char</span><span class="p">:</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Mismatched closing character; the input is malformed.</span>
+                <span class="k">return</span> <span class="kc">None</span>
 
         <span class="c1"># Append the processed character to the new string.</span>
         <span class="n">new_chars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_char</span><span class="p">)</span>
