@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 16, 2025" name="docbuild:last-update"/>
+<meta content="Apr 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -464,11 +464,12 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Block of type </span><span class="si">{</span><span class="n">block</span><span class="p">[</span><span class="s1">'type'</span><span class="p">]</span><span class="si">}</span><span class="s2"> is not supported."</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">formatted_block</span> <span class="ow">and</span> <span class="p">(</span><span class="n">metadata</span> <span class="o">:=</span> <span class="n">block</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"metadata"</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="s2">"cache_control"</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
-            <span class="n">formatted_block</span><span class="p">[</span><span class="s2">"cache_control"</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">"cache_control"</span><span class="p">]</span>
-        <span class="k">if</span> <span class="s2">"citations"</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
-            <span class="n">formatted_block</span><span class="p">[</span><span class="s2">"citations"</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">"citations"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">formatted_block</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"cache_control"</span><span class="p">,</span> <span class="s2">"citations"</span><span class="p">,</span> <span class="s2">"title"</span><span class="p">,</span> <span class="s2">"context"</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">block</span><span class="p">:</span>
+                <span class="n">formatted_block</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">block</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">metadata</span> <span class="o">:=</span> <span class="n">block</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"metadata"</span><span class="p">))</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+                <span class="n">formatted_block</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">formatted_block</span>
 

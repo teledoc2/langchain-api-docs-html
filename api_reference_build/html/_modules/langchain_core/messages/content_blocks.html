@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 16, 2025" name="docbuild:last-update"/>
+<meta content="Apr 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -230,13 +230,11 @@
 
 <div class="viewcode-block" id="BaseDataContentBlock">
 <a class="viewcode-back" href="../../../core/messages/langchain_core.messages.content_blocks.BaseDataContentBlock.html#langchain_core.messages.content_blocks.BaseDataContentBlock">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">BaseDataContentBlock</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseDataContentBlock</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Base class for data content blocks."""</span>
 
     <span class="n">mime_type</span><span class="p">:</span> <span class="n">NotRequired</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
-<span class="w">    </span><span class="sd">"""MIME type of the content block (if needed)."""</span>
-    <span class="n">metadata</span><span class="p">:</span> <span class="n">NotRequired</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span>
-<span class="w">    </span><span class="sd">"""Provider-specific metadata such as citations or filenames."""</span></div>
+<span class="w">    </span><span class="sd">"""MIME type of the content block (if needed)."""</span></div>
 
 
 

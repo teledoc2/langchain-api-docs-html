@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 16, 2025" name="docbuild:last-update"/>
+<meta content="Apr 17, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -256,6 +256,7 @@
     <span class="n">SystemMessage</span><span class="p">,</span>
     <span class="n">ToolCall</span><span class="p">,</span>
     <span class="n">ToolMessage</span><span class="p">,</span>
+    <span class="n">is_data_content_block</span><span class="p">,</span>
     <span class="n">merge_message_runs</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages.ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">AIMessageChunk</span><span class="p">,</span> <span class="n">UsageMetadata</span>
@@ -1254,6 +1255,54 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Received unsupported stream event:</span><span class="se">\n\n</span><span class="si">{</span><span class="n">event</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_format_data_content_block</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Format standard data content block to format expected by Converse API."""</span>
+    <span class="k">if</span> <span class="n">block</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"image"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">block</span><span class="p">[</span><span class="s2">"sourceType"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"base64"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"mimeType"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">block</span><span class="p">:</span>
+                <span class="n">error_message</span> <span class="o">=</span> <span class="s2">"mime_type key is required for base64 data."</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+            <span class="n">formatted_block</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"image"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"format"</span><span class="p">:</span> <span class="n">block</span><span class="p">[</span><span class="s2">"mimeType"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="s2">"source"</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">"bytes"</span><span class="p">:</span> <span class="n">_b64str_to_bytes</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+                    <span class="p">},</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="s2">"Image data only supported through in-line base64 format."</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">block</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"file"</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">block</span><span class="p">[</span><span class="s2">"sourceType"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"base64"</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">"mimeType"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">block</span><span class="p">:</span>
+                <span class="n">error_message</span> <span class="o">=</span> <span class="s2">"mime_type key is required for base64 data."</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+            <span class="n">formatted_block</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">"document"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">"format"</span><span class="p">:</span> <span class="n">block</span><span class="p">[</span><span class="s2">"mimeType"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"/"</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="s2">"source"</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">"bytes"</span><span class="p">:</span> <span class="n">_b64str_to_bytes</span><span class="p">(</span><span class="n">block</span><span class="p">[</span><span class="s2">"data"</span><span class="p">])</span>
+                    <span class="p">},</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">metadata</span> <span class="o">:=</span> <span class="n">block</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"metadata"</span><span class="p">))</span> <span class="ow">and</span> <span class="s2">"name"</span> <span class="ow">in</span> <span class="n">metadata</span><span class="p">:</span>
+                <span class="n">formatted_block</span><span class="p">[</span><span class="s2">"document"</span><span class="p">][</span><span class="s2">"name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                    <span class="s2">"Bedrock Converse may require a filename for file inputs. Specify "</span>
+                    <span class="s2">"a filename in the metadata: {'type': 'file', 'source_type': "</span>
+                    <span class="s2">"'base64', 'mime_type': 'application/pdf', 'data': '...', "</span>
+                    <span class="s2">"'metadata': {'name': 'my-pdf'}}"</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">error_message</span> <span class="o">=</span> <span class="s2">"File data only supported through in-line base64 format."</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">error_message</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">formatted_block</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_lc_content_to_bedrock</span><span class="p">(</span>
     <span class="n">content</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
@@ -1266,6 +1315,11 @@
         <span class="c1"># Assume block is already in bedrock format.</span>
         <span class="k">elif</span> <span class="s2">"type"</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">block</span><span class="p">:</span>
             <span class="n">bedrock_content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">is_data_content_block</span><span class="p">(</span><span class="n">_camel_to_snake_keys</span><span class="p">(</span><span class="n">block</span><span class="p">))</span>
+        <span class="p">):</span>
+            <span class="n">bedrock_content</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_format_data_content_block</span><span class="p">(</span><span class="n">block</span><span class="p">))</span>
         <span class="k">elif</span> <span class="n">block</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"text"</span><span class="p">:</span>
             <span class="n">bedrock_content</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"text"</span><span class="p">:</span> <span class="n">block</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]})</span>
         <span class="k">elif</span> <span class="n">block</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"image"</span><span class="p">:</span>
