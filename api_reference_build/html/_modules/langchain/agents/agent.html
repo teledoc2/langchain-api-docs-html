@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 17, 2025" name="docbuild:last-update"/>
+<meta content="Apr 18, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1351,7 +1351,7 @@
 
 <div class="viewcode-block" id="ExceptionTool">
 <a class="viewcode-back" href="../../../langchain/agents/langchain.agents.agent.ExceptionTool.html#langchain.agents.agent.ExceptionTool">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">ExceptionTool</span><span class="p">(</span><span class="n">BaseTool</span><span class="p">):</span>  <span class="c1"># type: ignore[override]</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExceptionTool</span><span class="p">(</span><span class="n">BaseTool</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Tool that just returns the query."""</span>
 
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"_Exception"</span>
@@ -1473,7 +1473,7 @@
 <span class="sd">        """</span>
         <span class="n">agent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span>
         <span class="n">tools</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tools</span>
-        <span class="n">allowed_tools</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_allowed_tools</span><span class="p">()</span>  <span class="c1"># type: ignore</span>
+        <span class="n">allowed_tools</span> <span class="o">=</span> <span class="n">agent</span><span class="o">.</span><span class="n">get_allowed_tools</span><span class="p">()</span>  <span class="c1"># type: ignore[union-attr]</span>
         <span class="k">if</span> <span class="n">allowed_tools</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">set</span><span class="p">(</span><span class="n">allowed_tools</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">set</span><span class="p">([</span><span class="n">tool</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">tool</span> <span class="ow">in</span> <span class="n">tools</span><span class="p">]):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>

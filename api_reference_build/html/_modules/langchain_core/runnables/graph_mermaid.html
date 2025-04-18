@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 17, 2025" name="docbuild:last-update"/>
+<meta content="Apr 18, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -224,7 +224,9 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">asdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span>
@@ -481,6 +483,8 @@
     <span class="n">draw_method</span><span class="p">:</span> <span class="n">MermaidDrawMethod</span> <span class="o">=</span> <span class="n">MermaidDrawMethod</span><span class="o">.</span><span class="n">API</span><span class="p">,</span>
     <span class="n">background_color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"white"</span><span class="p">,</span>
     <span class="n">padding</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">retry_delay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Draws a Mermaid graph as PNG using provided syntax.</span>
 
@@ -493,6 +497,10 @@
 <span class="sd">        background_color (str, optional): Background color of the image.</span>
 <span class="sd">            Defaults to "white".</span>
 <span class="sd">        padding (int, optional): Padding around the image. Defaults to 10.</span>
+<span class="sd">        max_retries (int, optional): Maximum number of retries (MermaidDrawMethod.API).</span>
+<span class="sd">            Defaults to 1.</span>
+<span class="sd">        retry_delay (float, optional): Delay between retries (MermaidDrawMethod.API).</span>
+<span class="sd">            Defaults to 1.0.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bytes: PNG image bytes.</span>
@@ -510,7 +518,11 @@
         <span class="p">)</span>
     <span class="k">elif</span> <span class="n">draw_method</span> <span class="o">==</span> <span class="n">MermaidDrawMethod</span><span class="o">.</span><span class="n">API</span><span class="p">:</span>
         <span class="n">img_bytes</span> <span class="o">=</span> <span class="n">_render_mermaid_using_api</span><span class="p">(</span>
-            <span class="n">mermaid_syntax</span><span class="p">,</span> <span class="n">output_file_path</span><span class="p">,</span> <span class="n">background_color</span>
+            <span class="n">mermaid_syntax</span><span class="p">,</span>
+            <span class="n">output_file_path</span><span class="o">=</span><span class="n">output_file_path</span><span class="p">,</span>
+            <span class="n">background_color</span><span class="o">=</span><span class="n">background_color</span><span class="p">,</span>
+            <span class="n">max_retries</span><span class="o">=</span><span class="n">max_retries</span><span class="p">,</span>
+            <span class="n">retry_delay</span><span class="o">=</span><span class="n">retry_delay</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">supported_methods</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">value</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">MermaidDrawMethod</span><span class="p">])</span>
@@ -599,9 +611,12 @@
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_render_mermaid_using_api</span><span class="p">(</span>
     <span class="n">mermaid_syntax</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
     <span class="n">output_file_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">background_color</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"white"</span><span class="p">,</span>
     <span class="n">file_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">"jpeg"</span><span class="p">,</span> <span class="s2">"png"</span><span class="p">,</span> <span class="s2">"webp"</span><span class="p">]]</span> <span class="o">=</span> <span class="s2">"png"</span><span class="p">,</span>
+    <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">retry_delay</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Renders Mermaid graph using the Mermaid.INK API."""</span>
     <span class="k">try</span><span class="p">:</span>
@@ -628,17 +643,57 @@
         <span class="sa">f</span><span class="s2">"https://mermaid.ink/img/</span><span class="si">{</span><span class="n">mermaid_syntax_encoded</span><span class="si">}</span><span class="s2">"</span>
         <span class="sa">f</span><span class="s2">"?type=</span><span class="si">{</span><span class="n">file_type</span><span class="si">}</span><span class="s2">&amp;bgColor=</span><span class="si">{</span><span class="n">background_color</span><span class="si">}</span><span class="s2">"</span>
     <span class="p">)</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">image_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">requests</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
-        <span class="n">img_bytes</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
-        <span class="k">if</span> <span class="n">output_file_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">Path</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">)</span><span class="o">.</span><span class="n">write_bytes</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">img_bytes</span>
-    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">"Failed to render the graph using the Mermaid.INK API. "</span>
-        <span class="sa">f</span><span class="s2">"Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">."</span>
+    <span class="n">error_msg_suffix</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">"To resolve this issue:</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="s2">"1. Check your internet connection and try again</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="s2">"2. Try with higher retry settings: "</span>
+        <span class="s2">"`draw_mermaid_png(..., max_retries=5, retry_delay=2.0)`</span><span class="se">\n</span><span class="s2">"</span>
+        <span class="s2">"3. Use the Pyppeteer rendering method which will render your graph locally "</span>
+        <span class="s2">"in a browser: `draw_mermaid_png(..., draw_method=MermaidDrawMethod.PYPPETEER)`"</span>
     <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">image_url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="n">requests</span><span class="o">.</span><span class="n">codes</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+                <span class="n">img_bytes</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span>
+                <span class="k">if</span> <span class="n">output_file_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">Path</span><span class="p">(</span><span class="n">output_file_path</span><span class="p">)</span><span class="o">.</span><span class="n">write_bytes</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+
+                <span class="k">return</span> <span class="n">img_bytes</span>
+
+            <span class="c1"># If we get a server error (5xx), retry</span>
+            <span class="k">if</span> <span class="mi">500</span> <span class="o">&lt;=</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&lt;</span> <span class="mi">600</span> <span class="ow">and</span> <span class="n">attempt</span> <span class="o">&lt;</span> <span class="n">max_retries</span><span class="p">:</span>
+                <span class="c1"># Exponential backoff with jitter</span>
+                <span class="n">sleep_time</span> <span class="o">=</span> <span class="n">retry_delay</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">attempt</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>  <span class="c1"># noqa: S311 not used for crypto</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_time</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+            <span class="c1"># For other status codes, fail immediately</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">"Failed to reach https://mermaid.ink/ API while trying to render "</span>
+                <span class="sa">f</span><span class="s2">"your graph. Status code: </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">.</span><span class="se">\n\n</span><span class="s2">"</span>
+            <span class="p">)</span> <span class="o">+</span> <span class="n">error_msg_suffix</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span><span class="p">,</span> <span class="n">requests</span><span class="o">.</span><span class="n">Timeout</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">attempt</span> <span class="o">&lt;</span> <span class="n">max_retries</span><span class="p">:</span>
+                <span class="c1"># Exponential backoff with jitter</span>
+                <span class="n">sleep_time</span> <span class="o">=</span> <span class="n">retry_delay</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">attempt</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">())</span>  <span class="c1"># noqa: S311 not used for crypto</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">sleep_time</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="s2">"Failed to reach https://mermaid.ink/ API while trying to render "</span>
+                    <span class="sa">f</span><span class="s2">"your graph after </span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2"> retries. "</span>
+                <span class="p">)</span> <span class="o">+</span> <span class="n">error_msg_suffix</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
+
+    <span class="c1"># This should not be reached, but just in case</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">"Failed to reach https://mermaid.ink/ API while trying to render "</span>
+        <span class="sa">f</span><span class="s2">"your graph after </span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2"> retries. "</span>
+    <span class="p">)</span> <span class="o">+</span> <span class="n">error_msg_suffix</span>
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </pre></div>
 </article>

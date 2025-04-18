@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 17, 2025" name="docbuild:last-update"/>
+<meta content="Apr 18, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -375,9 +375,7 @@
                         <span class="s2">"specify a language model explicitly."</span>
                     <span class="p">)</span>
 
-            <span class="n">llm</span> <span class="o">=</span> <span class="n">llm</span> <span class="ow">or</span> <span class="n">ChatOpenAI</span><span class="p">(</span>  <span class="c1"># type: ignore[call-arg]</span>
-                <span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span>
-            <span class="p">)</span>
+            <span class="n">llm</span> <span class="o">=</span> <span class="n">llm</span> <span class="ow">or</span> <span class="n">ChatOpenAI</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4"</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"Evaluation with the </span><span class="si">{</span><span class="n">evaluator_cls</span><span class="si">}</span><span class="s2"> requires a "</span>

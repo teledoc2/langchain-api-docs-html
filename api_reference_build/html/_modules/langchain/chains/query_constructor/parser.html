@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 17, 2025" name="docbuild:last-update"/>
+<meta content="Apr 18, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -233,12 +233,12 @@
     <span class="kn">from</span><span class="w"> </span><span class="nn">lark</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lark</span><span class="p">,</span> <span class="n">Transformer</span><span class="p">,</span> <span class="n">v_args</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">v_args</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>  <span class="c1"># type: ignore</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">v_args</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>  <span class="c1"># type: ignore[misc]</span>
 <span class="w">        </span><span class="sd">"""Dummy decorator for when lark is not installed."""</span>
         <span class="k">return</span> <span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="kc">None</span>
 
-    <span class="n">Transformer</span> <span class="o">=</span> <span class="nb">object</span>  <span class="c1"># type: ignore</span>
-    <span class="n">Lark</span> <span class="o">=</span> <span class="nb">object</span>  <span class="c1"># type: ignore</span>
+    <span class="n">Transformer</span> <span class="o">=</span> <span class="nb">object</span>  <span class="c1"># type: ignore[assignment,misc]</span>
+    <span class="n">Lark</span> <span class="o">=</span> <span class="nb">object</span>  <span class="c1"># type: ignore[assignment,misc]</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.structured_query</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">Comparator</span><span class="p">,</span>

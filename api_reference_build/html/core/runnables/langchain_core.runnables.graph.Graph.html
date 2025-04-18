@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 17, 2025" name="docbuild:last-update"/>
+<meta content="Apr 18, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -403,7 +403,7 @@
 </a>
 </li>
 <li class="breadcrumb-item"><a class="nav-link" href="../../reference.html">LangChain Python API Reference</a></li>
-<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-core: 0.3.53</a></li>
+<li class="breadcrumb-item"><a class="nav-link" href="../index.html">langchain-core: 0.3.54</a></li>
 <li class="breadcrumb-item"><a class="nav-link" href="../runnables.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">runnables</span></code></a></li>
 <li aria-current="page" class="breadcrumb-item active"><span class="ellipsis">Graph</span></li>
 </ul>
@@ -652,6 +652,8 @@ added to the beginning of the mermaid graph. Defaults to None.</p>
 <dd><em class="sig-param"><span class="n"><span class="pre">draw_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="langchain_core.runnables.graph.MermaidDrawMethod.html#langchain_core.runnables.graph.MermaidDrawMethod" title="langchain_core.runnables.graph.MermaidDrawMethod"><span class="pre">MermaidDrawMethod</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">MermaidDrawMethod.API</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">background_color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'white'</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">max_retries</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">retry_delay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">frontmatter_config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 </dl>
 <span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="reference internal" href="../../_modules/langchain_core/runnables/graph.html#Graph.draw_mermaid_png"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_core.runnables.graph.Graph.draw_mermaid_png" title="Link to this definition">#</a></dt>
@@ -669,6 +671,10 @@ is not saved. Defaults to None.</p></li>
 Defaults to MermaidDrawMethod.API.</p></li>
 <li><p><strong>background_color</strong> (<em>str</em>) – The color of the background. Defaults to “white”.</p></li>
 <li><p><strong>padding</strong> (<em>int</em>) – The padding around the graph. Defaults to 10.</p></li>
+<li><p><strong>max_retries</strong> (<em>int</em>) – The maximum number of retries (MermaidDrawMethod.API).
+Defaults to 1.</p></li>
+<li><p><strong>retry_delay</strong> (<em>float</em>) – The delay between retries (MermaidDrawMethod.API).
+Defaults to 1.0.</p></li>
 <li><p><strong>frontmatter_config</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>optional</em>) – <p>Mermaid frontmatter config.
 Can be used to customize theme and styles. Will be converted to YAML and
 added to the beginning of the mermaid graph. Defaults to None.</p>

@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 17, 2025" name="docbuild:last-update"/>
+<meta content="Apr 18, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -394,8 +394,14 @@
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">supports_audio_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""(bool) whether the chat model supports audio inputs, defaults to</span>
+<span class="sd">        ``False``."""</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">supports_video_inputs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""(bool) whether the chat model supports video inputs, efaults to ``False``.</span>
+<span class="w">        </span><span class="sd">"""(bool) whether the chat model supports video inputs, defaults to ``False``.</span>
 <span class="sd">        No current tests are written for this feature."""</span>
         <span class="k">return</span> <span class="kc">False</span>
 
@@ -685,6 +691,33 @@
 
 <span class="sd">            @property</span>
 <span class="sd">            def supports_pdf_inputs(self) -&gt; bool:</span>
+<span class="sd">                return True</span>
+
+<span class="sd">    .. dropdown:: supports_audio_inputs</span>
+
+<span class="sd">        Boolean property indicating whether the chat model supports audio inputs.</span>
+<span class="sd">        Defaults to ``False``.</span>
+
+<span class="sd">        If set to ``True``, the chat model will be tested using content blocks of the</span>
+<span class="sd">        form</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            {</span>
+<span class="sd">                "type": "audio",</span>
+<span class="sd">                "source_type": "base64",</span>
+<span class="sd">                "data": "&lt;base64 audio data&gt;",</span>
+<span class="sd">                "mime_type": "audio/wav",  # or appropriate mime-type</span>
+<span class="sd">            }</span>
+
+<span class="sd">        See https://python.langchain.com/docs/concepts/multimodality/</span>
+
+<span class="sd">        Example:</span>
+
+<span class="sd">        .. code-block:: python</span>
+
+<span class="sd">            @property</span>
+<span class="sd">            def supports_audio_inputs(self) -&gt; bool:</span>
 <span class="sd">                return True</span>
 
 <span class="sd">    .. dropdown:: supports_video_inputs</span>

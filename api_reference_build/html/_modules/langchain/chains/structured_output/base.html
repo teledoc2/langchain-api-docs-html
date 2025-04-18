@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 17, 2025" name="docbuild:last-update"/>
+<meta content="Apr 18, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -751,7 +751,7 @@
 <span class="w">    </span><span class="sd">""""""</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">output_schema</span><span class="p">,</span> <span class="nb">type</span><span class="p">)</span> <span class="ow">and</span> <span class="n">is_basemodel_subclass</span><span class="p">(</span><span class="n">output_schema</span><span class="p">):</span>
         <span class="n">output_parser</span> <span class="o">=</span> <span class="n">output_parser</span> <span class="ow">or</span> <span class="n">PydanticOutputParser</span><span class="p">(</span>
-            <span class="n">pydantic_object</span><span class="o">=</span><span class="n">output_schema</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+            <span class="n">pydantic_object</span><span class="o">=</span><span class="n">output_schema</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">schema_as_dict</span> <span class="o">=</span> <span class="n">convert_to_openai_function</span><span class="p">(</span><span class="n">output_schema</span><span class="p">)[</span><span class="s2">"parameters"</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
@@ -790,7 +790,7 @@
         <span class="k">class</span><span class="w"> </span><span class="nc">_OutputFormatter</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <span class="w">            </span><span class="sd">"""Output formatter. Should always be used to format your response to the user."""</span>  <span class="c1"># noqa: E501</span>
 
-            <span class="n">output</span><span class="p">:</span> <span class="n">output_schema</span>  <span class="c1"># type: ignore</span>
+            <span class="n">output</span><span class="p">:</span> <span class="n">output_schema</span>  <span class="c1"># type: ignore[valid-type]</span>
 
         <span class="n">function</span> <span class="o">=</span> <span class="n">_OutputFormatter</span>
         <span class="n">output_parser</span> <span class="o">=</span> <span class="n">output_parser</span> <span class="ow">or</span> <span class="n">PydanticAttrOutputFunctionsParser</span><span class="p">(</span>
