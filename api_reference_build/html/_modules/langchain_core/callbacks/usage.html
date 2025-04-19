@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 18, 2025" name="docbuild:last-update"/>
+<meta content="Apr 19, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -230,7 +230,6 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing_extensions</span><span class="w"> </span><span class="kn">import</span> <span class="n">override</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core._api</span><span class="w"> </span><span class="kn">import</span> <span class="n">beta</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.callbacks</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseCallbackHandler</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">AIMessage</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages.ai</span><span class="w"> </span><span class="kn">import</span> <span class="n">UsageMetadata</span><span class="p">,</span> <span class="n">add_usage</span>
@@ -239,7 +238,6 @@
 
 <div class="viewcode-block" id="UsageMetadataCallbackHandler">
 <a class="viewcode-back" href="../../../core/callbacks/langchain_core.callbacks.usage.UsageMetadataCallbackHandler.html#langchain_core.callbacks.usage.UsageMetadataCallbackHandler">[docs]</a>
-<span class="nd">@beta</span><span class="p">()</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">UsageMetadataCallbackHandler</span><span class="p">(</span><span class="n">BaseCallbackHandler</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Callback Handler that tracks AIMessage.usage_metadata.</span>
 
@@ -323,7 +321,6 @@
 <div class="viewcode-block" id="get_usage_metadata_callback">
 <a class="viewcode-back" href="../../../core/callbacks/langchain_core.callbacks.usage.get_usage_metadata_callback.html#langchain_core.callbacks.usage.get_usage_metadata_callback">[docs]</a>
 <span class="nd">@contextmanager</span>
-<span class="nd">@beta</span><span class="p">()</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_usage_metadata_callback</span><span class="p">(</span>
     <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"usage_metadata_callback"</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Generator</span><span class="p">[</span><span class="n">UsageMetadataCallbackHandler</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]:</span>

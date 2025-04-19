@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 18, 2025" name="docbuild:last-update"/>
+<meta content="Apr 19, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -958,17 +958,24 @@
                     <span class="s2">"full_text_rank_filter cannot be None for FULL_TEXT_RANK queries."</span>
                 <span class="p">)</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">full_text_rank_filter</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">full_text_rank_filter</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"search_text"</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"'"</span><span class="p">,</span> <span class="s2">"</span><span class="se">\\</span><span class="s2">'"</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="p">)</span>
+
                 <span class="n">query</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">""" ORDER BY RANK FullTextScore(c.</span><span class="si">{</span><span class="n">full_text_rank_filter</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"search_field"</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span>
-<span class="s2">                [</span><span class="si">{</span><span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="s2">'"</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">term</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">full_text_rank_filter</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">"search_text"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="si">}</span><span class="s2">])"""</span>  <span class="c1"># noqa:E501</span>
+<span class="s2">                [</span><span class="si">{</span><span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="s2">'"</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">term</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">text</span><span class="p">)</span><span class="si">}</span><span class="s2">])"""</span>  <span class="c1"># noqa:E501</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">rank_components</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="sa">f</span><span class="s2">"FullTextScore(c.</span><span class="si">{</span><span class="n">search_item</span><span class="p">[</span><span class="s1">'search_field'</span><span class="p">]</span><span class="si">}</span><span class="s2">, ["</span>
-                    <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="s2">'"</span> <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">search_item</span><span class="p">[</span><span class="s2">"search_text"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">rank_components</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="k">for</span> <span class="n">search_item</span> <span class="ow">in</span> <span class="n">full_text_rank_filter</span><span class="p">:</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">search_item</span><span class="p">[</span><span class="s2">"search_text"</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"'"</span><span class="p">,</span> <span class="s2">"</span><span class="se">\\</span><span class="s2">'"</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+
+                    <span class="n">rank_components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"FullTextScore(c.</span><span class="si">{</span><span class="n">search_item</span><span class="p">[</span><span class="s1">'search_field'</span><span class="p">]</span><span class="si">}</span><span class="s2">, ["</span>
+                        <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="s2">'"</span> <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">text</span><span class="p">)</span>
+                        <span class="o">+</span> <span class="s2">"])"</span>
                     <span class="p">)</span>
-                    <span class="o">+</span> <span class="s2">"])"</span>
-                    <span class="k">for</span> <span class="n">search_item</span> <span class="ow">in</span> <span class="n">full_text_rank_filter</span>
-                <span class="p">]</span>
+
                 <span class="n">query</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">" ORDER BY RANK RRF(</span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rank_components</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span>
         <span class="k">elif</span> <span class="n">search_type</span> <span class="o">==</span> <span class="s2">"vector"</span><span class="p">:</span>
             <span class="n">query</span> <span class="o">+=</span> <span class="s2">" ORDER BY VectorDistance(c[@embeddingKey], @embeddings)"</span>
@@ -977,12 +984,15 @@
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="s2">"full_text_rank_filter cannot be None for HYBRID queries."</span>
                 <span class="p">)</span>
-            <span class="n">rank_components</span> <span class="o">=</span> <span class="p">[</span>
-                <span class="sa">f</span><span class="s2">"FullTextScore(c.</span><span class="si">{</span><span class="n">search_item</span><span class="p">[</span><span class="s1">'search_field'</span><span class="p">]</span><span class="si">}</span><span class="s2">, ["</span>
-                <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="s2">'"</span> <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">search_item</span><span class="p">[</span><span class="s2">"search_text"</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
-                <span class="o">+</span> <span class="s2">"])"</span>
-                <span class="k">for</span> <span class="n">search_item</span> <span class="ow">in</span> <span class="n">full_text_rank_filter</span>
-            <span class="p">]</span>
+            <span class="n">rank_components</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">search_item</span> <span class="ow">in</span> <span class="n">full_text_rank_filter</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">search_item</span><span class="p">[</span><span class="s2">"search_text"</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"'"</span><span class="p">,</span> <span class="s2">"</span><span class="se">\\</span><span class="s2">'"</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">rank_components</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"FullTextScore(c.</span><span class="si">{</span><span class="n">search_item</span><span class="p">[</span><span class="s1">'search_field'</span><span class="p">]</span><span class="si">}</span><span class="s2">, ["</span>
+                    <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"'</span><span class="si">{</span><span class="n">term</span><span class="si">}</span><span class="s2">'"</span> <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">text</span><span class="p">)</span>
+                    <span class="o">+</span> <span class="s2">"])"</span>
+                <span class="p">)</span>
             <span class="n">query</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">""" ORDER BY RANK RRF(</span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rank_components</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span>
 <span class="s2">            VectorDistance(c.</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_search_fields</span><span class="p">[</span><span class="s2">"embedding_field"</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">embeddings</span><span class="si">}</span><span class="s2">))"""</span>  <span class="c1"># noqa:E501</span>
         <span class="k">else</span><span class="p">:</span>

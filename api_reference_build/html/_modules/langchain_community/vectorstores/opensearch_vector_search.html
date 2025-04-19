@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 18, 2025" name="docbuild:last-update"/>
+<meta content="Apr 19, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1563,7 +1563,12 @@
         <span class="k">return</span> <span class="p">[</span>
             <span class="n">Document</span><span class="p">(</span>
                 <span class="n">page_content</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"_source"</span><span class="p">][</span><span class="n">text_field</span><span class="p">],</span>
-                <span class="n">metadata</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"_source"</span><span class="p">][</span><span class="n">metadata_field</span><span class="p">],</span>
+                <span class="n">metadata</span><span class="o">=</span><span class="p">(</span>
+                    <span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"_source"</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">metadata_field</span> <span class="o">==</span> <span class="s2">"*"</span>
+                    <span class="ow">or</span> <span class="n">metadata_field</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"_source"</span><span class="p">]</span>
+                    <span class="k">else</span> <span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"_source"</span><span class="p">][</span><span class="n">metadata_field</span><span class="p">]</span>
+                <span class="p">),</span>
                 <span class="nb">id</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s2">"_id"</span><span class="p">],</span>
             <span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mmr_selected</span>

@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 18, 2025" name="docbuild:last-update"/>
+<meta content="Apr 19, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -476,18 +476,34 @@ invoked. For example:</p>
 </div>
 <p>See <code class="docutils literal notranslate"><span class="pre">ChatAnthropic.with_structured_output()</span></code> for more.</p>
 </dd>
-<dt>Image input:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+<dt>Image input:</dt><dd><p>See <a class="reference external" href="https://python.langchain.com/docs/how_to/multimodal_inputs/">multimodal guides</a>
+for more detail.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">base64</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">httpx</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_anthropic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatAnthropic</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">HumanMessage</span>
 
 <span class="n">image_url</span> <span class="o">=</span> <span class="s2">"https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"</span>
 <span class="n">image_data</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">httpx</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">image_url</span><span class="p">)</span><span class="o">.</span><span class="n">content</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"utf-8"</span><span class="p">)</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatAnthropic</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"claude-3-5-sonnet-latest"</span><span class="p">)</span>
 <span class="n">message</span> <span class="o">=</span> <span class="n">HumanMessage</span><span class="p">(</span>
     <span class="n">content</span><span class="o">=</span><span class="p">[</span>
-        <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span> <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"describe the weather in this image"</span><span class="p">},</span>
         <span class="p">{</span>
-            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"image_url"</span><span class="p">,</span>
-            <span class="s2">"image_url"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"url"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"data:image/jpeg;base64,</span><span class="si">{</span><span class="n">image_data</span><span class="si">}</span><span class="s2">"</span><span class="p">},</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"text"</span><span class="p">,</span>
+            <span class="s2">"text"</span><span class="p">:</span> <span class="s2">"Can you highlight the differences between these two images?"</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"image"</span><span class="p">,</span>
+            <span class="s2">"source_type"</span><span class="p">:</span> <span class="s2">"base64"</span><span class="p">,</span>
+            <span class="s2">"data"</span><span class="p">:</span> <span class="n">image_data</span><span class="p">,</span>
+            <span class="s2">"mime_type"</span><span class="p">:</span> <span class="s2">"image/jpeg"</span><span class="p">,</span>
+        <span class="p">},</span>
+        <span class="p">{</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"image"</span><span class="p">,</span>
+            <span class="s2">"source_type"</span><span class="p">:</span> <span class="s2">"url"</span><span class="p">,</span>
+            <span class="s2">"url"</span><span class="p">:</span> <span class="n">image_url</span><span class="p">,</span>
         <span class="p">},</span>
     <span class="p">],</span>
 <span class="p">)</span>
@@ -495,11 +511,13 @@ invoked. For example:</p>
 <span class="n">ai_msg</span><span class="o">.</span><span class="n">content</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">"The image depicts a sunny day with a partly cloudy sky. The sky is a brilliant blue color with scattered white clouds drifting across. The lighting and cloud patterns suggest pleasant, mild weather conditions. The scene shows a grassy field or meadow with a wooden boardwalk trail leading through it, indicating an outdoor setting on a nice day well-suited for enjoying nature."</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="s2">"After examining both images carefully, I can see that they are actually identical."</span>
 </pre></div>
 </div>
 </dd>
-<dt>PDF input:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">base64</span><span class="w"> </span><span class="kn">import</span> <span class="n">b64encode</span>
+<dt>PDF input:</dt><dd><p>See <a class="reference external" href="https://python.langchain.com/docs/how_to/multimodal_inputs/">multimodal guides</a>
+for more detail.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">base64</span><span class="w"> </span><span class="kn">import</span> <span class="n">b64encode</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_anthropic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatAnthropic</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages</span><span class="w"> </span><span class="kn">import</span> <span class="n">HumanMessage</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
@@ -514,12 +532,10 @@ invoked. For example:</p>
             <span class="p">[</span>
                 <span class="s2">"Summarize this document."</span><span class="p">,</span>
                 <span class="p">{</span>
-                    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"document"</span><span class="p">,</span>
-                    <span class="s2">"source"</span><span class="p">:</span> <span class="p">{</span>
-                        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"base64"</span><span class="p">,</span>
-                        <span class="s2">"data"</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
-                        <span class="s2">"media_type"</span><span class="p">:</span> <span class="s2">"application/pdf"</span><span class="p">,</span>
-                    <span class="p">},</span>
+                    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"file"</span><span class="p">,</span>
+                    <span class="s2">"source_type"</span><span class="p">:</span> <span class="s2">"base64"</span><span class="p">,</span>
+                    <span class="s2">"mime_type"</span><span class="p">:</span> <span class="s2">"application/pdf"</span><span class="p">,</span>
+                    <span class="s2">"data"</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
                 <span class="p">},</span>
             <span class="p">]</span>
         <span class="p">)</span>

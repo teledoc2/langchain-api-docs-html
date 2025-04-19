@@ -49,12 +49,12 @@
 <script>DOCUMENTATION_OPTIONS.pagename = 'community/chat_message_histories/langchain_community.chat_message_histories.singlestoredb.SingleStoreDBChatMessageHistory';</script>
 <link href="../../_static/favicon.png" rel="icon"/>
 <link href="../../search.html" rel="search" title="Search"/>
-<link href="langchain_community.chat_message_histories.sql.BaseMessageConverter.html" rel="next" title="BaseMessageConverter"/>
-<link href="langchain_community.chat_message_histories.rocksetdb.RocksetChatMessageHistory.html" rel="prev" title="RocksetChatMessageHistory"/>
+<link href="../chat_models.html" rel="next" title="chat_models"/>
+<link href="langchain_community.chat_message_histories.postgres.PostgresChatMessageHistory.html" rel="prev" title="PostgresChatMessageHistory"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 18, 2025" name="docbuild:last-update"/>
+<meta content="Apr 19, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -222,7 +222,6 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chat_message_histories.momento.MomentoChatMessageHistory.html">MomentoChatMessageHistory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chat_message_histories.redis.RedisChatMessageHistory.html">RedisChatMessageHistory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chat_message_histories.rocksetdb.RocksetChatMessageHistory.html">RocksetChatMessageHistory</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">SingleStoreDBChatMessageHistory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chat_message_histories.sql.BaseMessageConverter.html">BaseMessageConverter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chat_message_histories.sql.DefaultMessageConverter.html">DefaultMessageConverter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chat_message_histories.sql.SQLChatMessageHistory.html">SQLChatMessageHistory</a></li>
@@ -244,6 +243,7 @@
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chat_message_histories.mongodb.MongoDBChatMessageHistory.html">MongoDBChatMessageHistory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chat_message_histories.neo4j.Neo4jChatMessageHistory.html">Neo4jChatMessageHistory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="langchain_community.chat_message_histories.postgres.PostgresChatMessageHistory.html">PostgresChatMessageHistory</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">SingleStoreDBChatMessageHistory</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../chat_models.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chat_models</span></code></a></li>
@@ -370,7 +370,10 @@
 <dd><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>,</dd>
 </dl>
 <span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_community/chat_message_histories/singlestoredb.html#SingleStoreDBChatMessageHistory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_community.chat_message_histories.singlestoredb.SingleStoreDBChatMessageHistory" title="Link to this definition">#</a></dt>
-<dd><p>Chat message history stored in a SingleStoreDB database.</p>
+<dd><div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 0.3.22: </span>This class is pending deprecation and may be removed in a future version. You can swap to using the <cite>SingleStoreChatMessageHistory</cite> implementation in <cite>langchain_singlestore</cite>. See &lt;<a class="github reference external" href="https://github.com/singlestore-labs/langchain-singlestore">singlestore-labs/langchain-singlestore</a>&gt; for details  about the new implementation. Use <code class="xref py py-class docutils literal notranslate"><span class="pre">from</span> <span class="pre">langchain_singlestore</span> <span class="pre">import</span> <span class="pre">SingleStoreChatMessageHistory</span></code> instead.</p>
+</div>
+<p>Chat message history stored in a SingleStoreDB database.</p>
 <p>Initialize with necessary components.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>

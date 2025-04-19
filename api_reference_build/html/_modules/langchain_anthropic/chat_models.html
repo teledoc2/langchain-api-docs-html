@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 18, 2025" name="docbuild:last-update"/>
+<meta content="Apr 19, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -328,31 +328,47 @@
     <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">tool_type</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span> <span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">_builtin_tool_prefixes</span><span class="p">)</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_format_image</span><span class="p">(</span><span class="n">image_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_format_image</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""</span>
-<span class="sd">    Formats an image of format data:image/jpeg;base64,{b64_string}</span>
-<span class="sd">    to a dict for anthropic api</span>
-
+<span class="sd">    Converts part["image_url"]["url"] strings (OpenAI format)</span>
+<span class="sd">    to the correct Anthropic format:</span>
 <span class="sd">    {</span>
 <span class="sd">      "type": "base64",</span>
 <span class="sd">      "media_type": "image/jpeg",</span>
 <span class="sd">      "data": "/9j/4AAQSkZJRg...",</span>
 <span class="sd">    }</span>
-
-<span class="sd">    And throws an error if it's not a b64 image</span>
+<span class="sd">    Or</span>
+<span class="sd">    {</span>
+<span class="sd">      "type": "url",</span>
+<span class="sd">      "url": "https://example.com/image.jpg",</span>
+<span class="sd">    }</span>
 <span class="sd">    """</span>
-    <span class="n">regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"^data:(?P&lt;media_type&gt;image/.+);base64,(?P&lt;data&gt;.+)$"</span>
-    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">image_url</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">match</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">"Anthropic only supports base64-encoded images currently."</span>
-            <span class="s2">" Example: data:image/png;base64,'/9j/4AAQSk'..."</span>
-        <span class="p">)</span>
-    <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"base64"</span><span class="p">,</span>
-        <span class="s2">"media_type"</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"media_type"</span><span class="p">),</span>
-        <span class="s2">"data"</span><span class="p">:</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"data"</span><span class="p">),</span>
-    <span class="p">}</span>
+    <span class="c1"># Base64 encoded image</span>
+    <span class="n">base64_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"^data:(?P&lt;media_type&gt;image/.+);base64,(?P&lt;data&gt;.+)$"</span>
+    <span class="n">base64_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">base64_regex</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">base64_match</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"base64"</span><span class="p">,</span>
+            <span class="s2">"media_type"</span><span class="p">:</span> <span class="n">base64_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"media_type"</span><span class="p">),</span>
+            <span class="s2">"data"</span><span class="p">:</span> <span class="n">base64_match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">"data"</span><span class="p">),</span>
+        <span class="p">}</span>
+
+    <span class="c1"># Url</span>
+    <span class="n">url_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">"^https?://.*$"</span>
+    <span class="n">url_match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">url_regex</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">url_match</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"url"</span><span class="p">,</span>
+            <span class="s2">"url"</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="s2">"Malformed url parameter."</span>
+        <span class="s2">" Must be either an image URL (https://example.com/image.jpg)"</span>
+        <span class="s2">" or base64 encoded string (data:image/png;base64,'/9j/4AAQSk'...)"</span>
+    <span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_merge_messages</span><span class="p">(</span>
@@ -805,20 +821,37 @@
 <span class="sd">        See ``ChatAnthropic.with_structured_output()`` for more.</span>
 
 <span class="sd">    Image input:</span>
+<span class="sd">        See `multimodal guides &lt;https://python.langchain.com/docs/how_to/multimodal_inputs/&gt;`_</span>
+<span class="sd">        for more detail.</span>
+
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            import base64</span>
+
 <span class="sd">            import httpx</span>
+<span class="sd">            from langchain_anthropic import ChatAnthropic</span>
 <span class="sd">            from langchain_core.messages import HumanMessage</span>
 
 <span class="sd">            image_url = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Gfp-wisconsin-madison-the-nature-boardwalk.jpg/2560px-Gfp-wisconsin-madison-the-nature-boardwalk.jpg"</span>
 <span class="sd">            image_data = base64.b64encode(httpx.get(image_url).content).decode("utf-8")</span>
+
+<span class="sd">            llm = ChatAnthropic(model="claude-3-5-sonnet-latest")</span>
 <span class="sd">            message = HumanMessage(</span>
 <span class="sd">                content=[</span>
-<span class="sd">                    {"type": "text", "text": "describe the weather in this image"},</span>
 <span class="sd">                    {</span>
-<span class="sd">                        "type": "image_url",</span>
-<span class="sd">                        "image_url": {"url": f"data:image/jpeg;base64,{image_data}"},</span>
+<span class="sd">                        "type": "text",</span>
+<span class="sd">                        "text": "Can you highlight the differences between these two images?",</span>
+<span class="sd">                    },</span>
+<span class="sd">                    {</span>
+<span class="sd">                        "type": "image",</span>
+<span class="sd">                        "source_type": "base64",</span>
+<span class="sd">                        "data": image_data,</span>
+<span class="sd">                        "mime_type": "image/jpeg",</span>
+<span class="sd">                    },</span>
+<span class="sd">                    {</span>
+<span class="sd">                        "type": "image",</span>
+<span class="sd">                        "source_type": "url",</span>
+<span class="sd">                        "url": image_url,</span>
 <span class="sd">                    },</span>
 <span class="sd">                ],</span>
 <span class="sd">            )</span>
@@ -827,9 +860,12 @@
 
 <span class="sd">        .. code-block:: python</span>
 
-<span class="sd">            "The image depicts a sunny day with a partly cloudy sky. The sky is a brilliant blue color with scattered white clouds drifting across. The lighting and cloud patterns suggest pleasant, mild weather conditions. The scene shows a grassy field or meadow with a wooden boardwalk trail leading through it, indicating an outdoor setting on a nice day well-suited for enjoying nature."</span>
+<span class="sd">            "After examining both images carefully, I can see that they are actually identical."</span>
 
 <span class="sd">    PDF input:</span>
+<span class="sd">        See `multimodal guides &lt;https://python.langchain.com/docs/how_to/multimodal_inputs/&gt;`_</span>
+<span class="sd">        for more detail.</span>
+
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            from base64 import b64encode</span>
@@ -847,12 +883,10 @@
 <span class="sd">                        [</span>
 <span class="sd">                            "Summarize this document.",</span>
 <span class="sd">                            {</span>
-<span class="sd">                                "type": "document",</span>
-<span class="sd">                                "source": {</span>
-<span class="sd">                                    "type": "base64",</span>
-<span class="sd">                                    "data": data,</span>
-<span class="sd">                                    "media_type": "application/pdf",</span>
-<span class="sd">                                },</span>
+<span class="sd">                                "type": "file",</span>
+<span class="sd">                                "source_type": "base64",</span>
+<span class="sd">                                "mime_type": "application/pdf",</span>
+<span class="sd">                                "data": data,</span>
 <span class="sd">                            },</span>
 <span class="sd">                        ]</span>
 <span class="sd">                    )</span>

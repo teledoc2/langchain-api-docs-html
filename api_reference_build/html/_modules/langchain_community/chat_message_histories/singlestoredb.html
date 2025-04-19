@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 18, 2025" name="docbuild:last-update"/>
+<meta content="Apr 19, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -228,6 +228,7 @@
     <span class="n">List</span><span class="p">,</span>
 <span class="p">)</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core._api</span><span class="w"> </span><span class="kn">import</span> <span class="n">deprecated</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.chat_history</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseChatMessageHistory</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.messages</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">BaseMessage</span><span class="p">,</span>
@@ -240,6 +241,18 @@
 
 <div class="viewcode-block" id="SingleStoreDBChatMessageHistory">
 <a class="viewcode-back" href="../../../community/chat_message_histories/langchain_community.chat_message_histories.singlestoredb.SingleStoreDBChatMessageHistory.html#langchain_community.chat_message_histories.singlestoredb.SingleStoreDBChatMessageHistory">[docs]</a>
+<span class="nd">@deprecated</span><span class="p">(</span>
+    <span class="n">since</span><span class="o">=</span><span class="s2">"0.3.22"</span><span class="p">,</span>
+    <span class="n">message</span><span class="o">=</span><span class="p">(</span>
+        <span class="s2">"This class is pending deprecation and may be removed in a future version. "</span>
+        <span class="s2">"You can swap to using the `SingleStoreChatMessageHistory` "</span>
+        <span class="s2">"implementation in `langchain_singlestore`. "</span>
+        <span class="s2">"See &lt;https://github.com/singlestore-labs/langchain-singlestore&gt; for details "</span>
+        <span class="s2">" about the new implementation."</span>
+    <span class="p">),</span>
+    <span class="n">alternative</span><span class="o">=</span><span class="s2">"from langchain_singlestore import SingleStoreChatMessageHistory"</span><span class="p">,</span>
+    <span class="n">pending</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">SingleStoreDBChatMessageHistory</span><span class="p">(</span><span class="n">BaseChatMessageHistory</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Chat message history stored in a SingleStoreDB database."""</span>
 
