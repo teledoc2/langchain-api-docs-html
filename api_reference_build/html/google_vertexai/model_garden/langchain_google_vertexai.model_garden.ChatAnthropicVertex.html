@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 29, 2025" name="docbuild:last-update"/>
+<meta content="May 02, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -403,6 +403,11 @@ with a <code class="docutils literal notranslate"><span class="pre">tools</span>
 <p>v1 is more performant, but v1beta1 might have some new features.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_google_vertexai.model_garden.ChatAnthropicVertex.frequency_penalty">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">frequency_penalty</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.frequency_penalty" title="Link to this definition">#</a></dt>
+<dd><p>Positive values penalize tokens that repeatedly appear in the generated text,</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_google_vertexai.model_garden.ChatAnthropicVertex.full_model_name">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">full_model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.full_model_name" title="Link to this definition">#</a></dt>
 <dd><p>The full name of the model’s endpoint.</p>
@@ -441,6 +446,11 @@ with a <code class="docutils literal notranslate"><span class="pre">tools</span>
 <dt class="sig sig-object py" id="langchain_google_vertexai.model_garden.ChatAnthropicVertex.n">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.n" title="Link to this definition">#</a></dt>
 <dd><p>How many completions to generate for each prompt.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_google_vertexai.model_garden.ChatAnthropicVertex.presence_penalty">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">presence_penalty</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.presence_penalty" title="Link to this definition">#</a></dt>
+<dd><p>Positive values penalize tokens that already appear in the generated text,</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_google_vertexai.model_garden.ChatAnthropicVertex.project">
@@ -1741,6 +1751,7 @@ giving up. Defaults to 3.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.custom_get_token_ids"><code class="docutils literal notranslate"><span class="pre">custom_get_token_ids</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.disable_streaming"><code class="docutils literal notranslate"><span class="pre">disable_streaming</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.endpoint_version"><code class="docutils literal notranslate"><span class="pre">endpoint_version</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.frequency_penalty"><code class="docutils literal notranslate"><span class="pre">frequency_penalty</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.full_model_name"><code class="docutils literal notranslate"><span class="pre">full_model_name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.location"><code class="docutils literal notranslate"><span class="pre">location</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.max_output_tokens"><code class="docutils literal notranslate"><span class="pre">max_output_tokens</span></code></a></li>
@@ -1749,6 +1760,7 @@ giving up. Defaults to 3.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.model_kwargs"><code class="docutils literal notranslate"><span class="pre">model_kwargs</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.model_name"><code class="docutils literal notranslate"><span class="pre">model_name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.n"><code class="docutils literal notranslate"><span class="pre">n</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.presence_penalty"><code class="docutils literal notranslate"><span class="pre">presence_penalty</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.project"><code class="docutils literal notranslate"><span class="pre">project</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.rate_limiter"><code class="docutils literal notranslate"><span class="pre">rate_limiter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.model_garden.ChatAnthropicVertex.request_parallelism"><code class="docutils literal notranslate"><span class="pre">request_parallelism</span></code></a></li>

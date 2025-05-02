@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 29, 2025" name="docbuild:last-update"/>
+<meta content="May 02, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -960,6 +960,8 @@
                 <span class="n">generation_info</span><span class="p">[</span><span class="s2">"model_name"</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_name</span>
             <span class="k">if</span> <span class="n">system_fingerprint</span> <span class="o">:=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"system_fingerprint"</span><span class="p">):</span>
                 <span class="n">generation_info</span><span class="p">[</span><span class="s2">"system_fingerprint"</span><span class="p">]</span> <span class="o">=</span> <span class="n">system_fingerprint</span>
+            <span class="k">if</span> <span class="n">service_tier</span> <span class="o">:=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"service_tier"</span><span class="p">):</span>
+                <span class="n">generation_info</span><span class="p">[</span><span class="s2">"service_tier"</span><span class="p">]</span> <span class="o">=</span> <span class="n">service_tier</span>
 
         <span class="n">logprobs</span> <span class="o">=</span> <span class="n">choice</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"logprobs"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">logprobs</span><span class="p">:</span>
@@ -1244,6 +1246,8 @@
         <span class="p">}</span>
         <span class="k">if</span> <span class="s2">"id"</span> <span class="ow">in</span> <span class="n">response_dict</span><span class="p">:</span>
             <span class="n">llm_output</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_dict</span><span class="p">[</span><span class="s2">"id"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s2">"service_tier"</span> <span class="ow">in</span> <span class="n">response_dict</span><span class="p">:</span>
+            <span class="n">llm_output</span><span class="p">[</span><span class="s2">"service_tier"</span><span class="p">]</span> <span class="o">=</span> <span class="n">response_dict</span><span class="p">[</span><span class="s2">"service_tier"</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">openai</span><span class="o">.</span><span class="n">BaseModel</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">getattr</span><span class="p">(</span>
             <span class="n">response</span><span class="p">,</span> <span class="s2">"choices"</span><span class="p">,</span> <span class="kc">None</span>
@@ -3492,6 +3496,7 @@
             <span class="s2">"status"</span><span class="p">,</span>
             <span class="s2">"user"</span><span class="p">,</span>
             <span class="s2">"model"</span><span class="p">,</span>
+            <span class="s2">"service_tier"</span><span class="p">,</span>
         <span class="p">)</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>

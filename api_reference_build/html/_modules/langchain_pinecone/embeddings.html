@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 29, 2025" name="docbuild:last-update"/>
+<meta content="May 02, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -257,8 +257,38 @@
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            from langchain_pinecone import PineconeEmbeddings</span>
+<span class="sd">            from langchain_pinecone import PineconeVectorStore</span>
+<span class="sd">            from langchain_core.documents import Document</span>
 
-<span class="sd">            model = PineconeEmbeddings(model="multilingual-e5-large")</span>
+<span class="sd">            # Initialize embeddings with a specific model</span>
+<span class="sd">            embeddings = PineconeEmbeddings(model="multilingual-e5-large")</span>
+
+<span class="sd">            # Embed a single query</span>
+<span class="sd">            query_embedding = embeddings.embed_query("What is machine learning?")</span>
+
+<span class="sd">            # Embed multiple documents</span>
+<span class="sd">            docs = ["Document 1 content", "Document 2 content"]</span>
+<span class="sd">            doc_embeddings = embeddings.embed_documents(docs)</span>
+
+<span class="sd">            # Use with PineconeVectorStore</span>
+<span class="sd">            from pinecone import Pinecone</span>
+
+<span class="sd">            pc = Pinecone(api_key="your-api-key")</span>
+<span class="sd">            index = pc.Index("your-index-name")</span>
+
+<span class="sd">            vectorstore = PineconeVectorStore(</span>
+<span class="sd">                index=index,</span>
+<span class="sd">                embedding=embeddings</span>
+<span class="sd">            )</span>
+
+<span class="sd">            # Add documents to vector store</span>
+<span class="sd">            vectorstore.add_documents([</span>
+<span class="sd">                Document(page_content="Hello, world!"),</span>
+<span class="sd">                Document(page_content="This is a test.")</span>
+<span class="sd">            ])</span>
+
+<span class="sd">            # Search for similar documents</span>
+<span class="sd">            results = vectorstore.similarity_search("hello", k=2)</span>
 <span class="sd">    """</span>
 
     <span class="c1"># Clients</span>
@@ -434,8 +464,68 @@
 <span class="sd">        .. code-block:: python</span>
 
 <span class="sd">            from langchain_pinecone import PineconeSparseEmbeddings</span>
+<span class="sd">            from langchain_pinecone import PineconeVectorStore</span>
+<span class="sd">            from langchain_core.documents import Document</span>
 
-<span class="sd">            model = PineconeSparseEmbeddings(model="pinecone-sparse-english-v0")</span>
+<span class="sd">            # Initialize sparse embeddings</span>
+<span class="sd">            sparse_embeddings = PineconeSparseEmbeddings(model="pinecone-sparse-english-v0")</span>
+
+<span class="sd">            # Embed a single query (returns SparseValues)</span>
+<span class="sd">            query_embedding = sparse_embeddings.embed_query("What is machine learning?")</span>
+<span class="sd">            # query_embedding contains SparseValues with indices and values</span>
+
+<span class="sd">            # Embed multiple documents</span>
+<span class="sd">            docs = ["Document 1 content", "Document 2 content"]</span>
+<span class="sd">            doc_embeddings = sparse_embeddings.embed_documents(docs)</span>
+
+<span class="sd">            # Use with an index configured for sparse vectors</span>
+<span class="sd">            from pinecone import Pinecone</span>
+
+<span class="sd">            pc = Pinecone(api_key="your-api-key")</span>
+
+<span class="sd">            # Create index with sparse embeddings support</span>
+<span class="sd">            if not pc.has_index("sparse-index"):</span>
+<span class="sd">                pc.create_index_for_model(</span>
+<span class="sd">                    name="sparse-index",</span>
+<span class="sd">                    cloud="aws",</span>
+<span class="sd">                    region="us-east-1",</span>
+<span class="sd">                    embed={</span>
+<span class="sd">                        "model": "pinecone-sparse-english-v0",</span>
+<span class="sd">                        "field_map": {"text": "chunk_text"},</span>
+<span class="sd">                        "metric": "dotproduct",</span>
+<span class="sd">                        "read_parameters": {},</span>
+<span class="sd">                        "write_parameters": {}</span>
+<span class="sd">                    }</span>
+<span class="sd">                )</span>
+
+<span class="sd">            index = pc.Index("sparse-index")</span>
+
+<span class="sd">            # IMPORTANT: Use PineconeSparseVectorStore for sparse vectors</span>
+<span class="sd">            # The regular PineconeVectorStore won't work with sparse embeddings</span>
+<span class="sd">            from langchain_pinecone.vectorstores_sparse import PineconeSparseVectorStore</span>
+
+<span class="sd">            # Initialize sparse vector store with sparse embeddings</span>
+<span class="sd">            vector_store = PineconeSparseVectorStore(</span>
+<span class="sd">                index=index,</span>
+<span class="sd">                embedding=sparse_embeddings</span>
+<span class="sd">            )</span>
+
+<span class="sd">            # Add documents</span>
+<span class="sd">            from uuid import uuid4</span>
+
+<span class="sd">            documents = [</span>
+<span class="sd">                Document(page_content="Machine learning is awesome", metadata={"source": "article"}),</span>
+<span class="sd">                Document(page_content="Neural networks power modern AI", metadata={"source": "book"})</span>
+<span class="sd">            ]</span>
+
+<span class="sd">            # Generate unique IDs for each document</span>
+<span class="sd">            uuids = [str(uuid4()) for _ in range(len(documents))]</span>
+
+<span class="sd">            # Add documents to the vector store</span>
+<span class="sd">            vector_store.add_documents(documents=documents, ids=uuids)</span>
+
+<span class="sd">            # Search for similar documents</span>
+<span class="sd">            results = vector_store.similarity_search("machine learning", k=2)</span>
 <span class="sd">    """</span>
 
     <span class="nd">@model_validator</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">"before"</span><span class="p">)</span>

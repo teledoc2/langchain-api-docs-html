@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 29, 2025" name="docbuild:last-update"/>
+<meta content="May 02, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -724,7 +724,7 @@ the ids in the kwargs will receive precedence.</p></li>
 <li><p><strong>uris</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – File path to the image.</p></li>
 <li><p><strong>metadatas</strong> (<em>list</em><em>[</em><em>dict</em><em>] </em><em>| </em><em>None</em>) – Optional list of metadatas.
 When querying, you can filter on this metadata.</p></li>
-<li><p><strong>ids</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – Optional list of IDs.</p></li>
+<li><p><strong>ids</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – Optional list of IDs. (Items without IDs will be assigned UUIDs)</p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass.</p></li>
 </ul>
 </dd>
@@ -756,7 +756,7 @@ When querying, you can filter on this metadata.</p></li>
 <li><p><strong>texts</strong> (<em>Iterable</em><em>[</em><em>str</em><em>]</em>) – Texts to add to the vectorstore.</p></li>
 <li><p><strong>metadatas</strong> (<em>list</em><em>[</em><em>dict</em><em>] </em><em>| </em><em>None</em>) – Optional list of metadatas.
 When querying, you can filter on this metadata.</p></li>
-<li><p><strong>ids</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – Optional list of IDs.</p></li>
+<li><p><strong>ids</strong> (<em>list</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>) – Optional list of IDs. (Items without IDs will be assigned UUIDs)</p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments.</p></li>
 </ul>
 </dd>
@@ -1323,7 +1323,7 @@ E.g. <cite>{“$and”: [{“color”: “red”}, {“price”: 4.20}]}</cite> 
 <li><p><strong>offset</strong> (<em>Optional</em><em>[</em><em>int</em><em>]</em>) – The offset to start returning results from.
 Useful for paging results with limit. Optional.</p></li>
 <li><p><strong>where_document</strong> (<em>Optional</em><em>[</em><em>WhereDocument</em><em>]</em>) – A WhereDocument type dict used to filter by the documents.
-E.g. <cite>{$contains: “hello”}</cite>. Optional.</p></li>
+E.g. <cite>{“$contains”: “hello”}</cite>. Optional.</p></li>
 <li><p><strong>include</strong> (<em>Optional</em><em>[</em><em>list</em><em>[</em><em>str</em><em>]</em><em>]</em>) – A list of what to include in the results.
 Can contain <cite>“embeddings”</cite>, <cite>“metadatas”</cite>, <cite>“documents”</cite>.
 Ids are always included.
@@ -1398,8 +1398,8 @@ of diversity among the results with 0 corresponding
 to maximum diversity and 1 to minimum diversity.
 Defaults to 0.5.</p></li>
 <li><p><strong>filter</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Filter by metadata. Defaults to None.</p></li>
-<li><p><strong>where_document</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – dict used to filter by the documents.
-E.g. {$contains: {“text”: “hello”}}.</p></li>
+<li><p><strong>where_document</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – dict used to filter by the document contents.
+E.g. {“$contains”: “hello”}.</p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to Chroma collection query.</p></li>
 </ul>
 </dd>
@@ -1442,8 +1442,8 @@ of diversity among the results with 0 corresponding
 to maximum diversity and 1 to minimum diversity.
 Defaults to 0.5.</p></li>
 <li><p><strong>filter</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Filter by metadata. Defaults to None.</p></li>
-<li><p><strong>where_document</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – dict used to filter by the documents.
-E.g. {$contains: {“text”: “hello”}}.</p></li>
+<li><p><strong>where_document</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – dict used to filter by the document contents.
+E.g. {“$contains”: “hello”}.</p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to Chroma collection query.</p></li>
 </ul>
 </dd>
@@ -1612,8 +1612,8 @@ The page content is b64 encoded img, metadata is default or defined by user.</p>
 <li><p><strong>embedding</strong> (<em>list</em><em>[</em><em>float</em><em>]</em>) – Embedding to look up documents similar to.</p></li>
 <li><p><strong>k</strong> (<em>int</em>) – Number of Documents to return. Defaults to 4.</p></li>
 <li><p><strong>filter</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Filter by metadata. Defaults to None.</p></li>
-<li><p><strong>where_document</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – dict used to filter by the documents.
-E.g. {$contains: {“text”: “hello”}}.</p></li>
+<li><p><strong>where_document</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – dict used to filter by the document contents.
+E.g. {“$contains”: “hello”}.</p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to Chroma collection query.</p></li>
 </ul>
 </dd>
@@ -1644,7 +1644,7 @@ E.g. {$contains: {“text”: “hello”}}.</p></li>
 <li><p><strong>k</strong> (<em>int</em>) – Number of Documents to return. Defaults to 4.</p></li>
 <li><p><strong>filter</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Filter by metadata. Defaults to None.</p></li>
 <li><p><strong>where_document</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – dict used to filter by the documents.
-E.g. {$contains: {“text”: “hello”}}.</p></li>
+E.g. {“$contains”: “hello”}}.</p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to Chroma collection query.</p></li>
 </ul>
 </dd>
@@ -1707,8 +1707,8 @@ score_threshold: Optional, a floating point value between 0 to 1 to</p>
 <li><p><strong>query</strong> (<em>str</em>) – Query text to search for.</p></li>
 <li><p><strong>k</strong> (<em>int</em>) – Number of results to return. Defaults to 4.</p></li>
 <li><p><strong>filter</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Filter by metadata. Defaults to None.</p></li>
-<li><p><strong>where_document</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – dict used to filter by the documents.
-E.g. {$contains: {“text”: “hello”}}.</p></li>
+<li><p><strong>where_document</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – dict used to filter by document contents.
+E.g. {“$contains”: “hello”}.</p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to Chroma collection query.</p></li>
 </ul>
 </dd>
@@ -1739,8 +1739,8 @@ distance in float for each. Lower score represents more similarity.</p>
 <li><p><strong>query</strong> (<em>str</em>) – Query text to search for.</p></li>
 <li><p><strong>k</strong> (<em>int</em>) – Number of results to return. Defaults to 4.</p></li>
 <li><p><strong>filter</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – Filter by metadata. Defaults to None.</p></li>
-<li><p><strong>where_document</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – dict used to filter by the documents.
-E.g. {$contains: {“text”: “hello”}}.</p></li>
+<li><p><strong>where_document</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>] </em><em>| </em><em>None</em>) – dict used to filter by the document contents.
+E.g. {“$contains”: “hello”}.</p></li>
 <li><p><strong>kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to Chroma collection query.</p></li>
 </ul>
 </dd>

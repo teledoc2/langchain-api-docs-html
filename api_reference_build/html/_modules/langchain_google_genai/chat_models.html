@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 29, 2025" name="docbuild:last-update"/>
+<meta content="May 02, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -848,14 +848,24 @@
         <span class="n">input_tokens</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">usage_metadata</span><span class="o">.</span><span class="n">prompt_token_count</span>
         <span class="n">output_tokens</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">usage_metadata</span><span class="o">.</span><span class="n">candidates_token_count</span>
         <span class="n">total_tokens</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">usage_metadata</span><span class="o">.</span><span class="n">total_token_count</span>
+        <span class="n">thought_tokens</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">usage_metadata</span><span class="o">.</span><span class="n">thoughts_token_count</span>
         <span class="n">cache_read_tokens</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">usage_metadata</span><span class="o">.</span><span class="n">cached_content_token_count</span>
         <span class="k">if</span> <span class="n">input_tokens</span> <span class="o">+</span> <span class="n">output_tokens</span> <span class="o">+</span> <span class="n">cache_read_tokens</span> <span class="o">+</span> <span class="n">total_tokens</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">lc_usage</span> <span class="o">=</span> <span class="n">UsageMetadata</span><span class="p">(</span>
-                <span class="n">input_tokens</span><span class="o">=</span><span class="n">input_tokens</span> <span class="o">-</span> <span class="n">prev_input_tokens</span><span class="p">,</span>
-                <span class="n">output_tokens</span><span class="o">=</span><span class="n">output_tokens</span> <span class="o">-</span> <span class="n">prev_output_tokens</span><span class="p">,</span>
-                <span class="n">total_tokens</span><span class="o">=</span><span class="n">total_tokens</span> <span class="o">-</span> <span class="n">prev_total_tokens</span><span class="p">,</span>
-                <span class="n">input_token_details</span><span class="o">=</span><span class="p">{</span><span class="s2">"cache_read"</span><span class="p">:</span> <span class="n">cache_read_tokens</span><span class="p">},</span>
-            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">thought_tokens</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">lc_usage</span> <span class="o">=</span> <span class="n">UsageMetadata</span><span class="p">(</span>
+                    <span class="n">input_tokens</span><span class="o">=</span><span class="n">input_tokens</span> <span class="o">-</span> <span class="n">prev_input_tokens</span><span class="p">,</span>
+                    <span class="n">output_tokens</span><span class="o">=</span><span class="n">output_tokens</span> <span class="o">-</span> <span class="n">prev_output_tokens</span><span class="p">,</span>
+                    <span class="n">total_tokens</span><span class="o">=</span><span class="n">total_tokens</span> <span class="o">-</span> <span class="n">prev_total_tokens</span><span class="p">,</span>
+                    <span class="n">input_token_details</span><span class="o">=</span><span class="p">{</span><span class="s2">"cache_read"</span><span class="p">:</span> <span class="n">cache_read_tokens</span><span class="p">},</span>
+                    <span class="n">output_token_details</span><span class="o">=</span><span class="p">{</span><span class="s2">"reasoning"</span><span class="p">:</span> <span class="n">thought_tokens</span><span class="p">},</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">lc_usage</span> <span class="o">=</span> <span class="n">UsageMetadata</span><span class="p">(</span>
+                    <span class="n">input_tokens</span><span class="o">=</span><span class="n">input_tokens</span> <span class="o">-</span> <span class="n">prev_input_tokens</span><span class="p">,</span>
+                    <span class="n">output_tokens</span><span class="o">=</span><span class="n">output_tokens</span> <span class="o">-</span> <span class="n">prev_output_tokens</span><span class="p">,</span>
+                    <span class="n">total_tokens</span><span class="o">=</span><span class="n">total_tokens</span> <span class="o">-</span> <span class="n">prev_total_tokens</span><span class="p">,</span>
+                    <span class="n">input_token_details</span><span class="o">=</span><span class="p">{</span><span class="s2">"cache_read"</span><span class="p">:</span> <span class="n">cache_read_tokens</span><span class="p">},</span>
+                <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">lc_usage</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
@@ -1376,6 +1386,7 @@
             <span class="s2">"n"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span>
             <span class="s2">"safety_settings"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">safety_settings</span><span class="p">,</span>
             <span class="s2">"response_modalities"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_modalities</span><span class="p">,</span>
+            <span class="s2">"thinking_budget"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">thinking_budget</span><span class="p">,</span>
         <span class="p">}</span>
 
 <div class="viewcode-block" id="ChatGoogleGenerativeAI.invoke">
@@ -1422,9 +1433,15 @@
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LangSmithParams</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Get standard params for tracing."""</span>
         <span class="n">params</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_invocation_params</span><span class="p">(</span><span class="n">stop</span><span class="o">=</span><span class="n">stop</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">models_prefix</span> <span class="o">=</span> <span class="s2">"models/"</span>
+        <span class="n">ls_model_name</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">models_prefix</span><span class="p">)</span> <span class="p">:]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">models_prefix</span><span class="p">)</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+        <span class="p">)</span>
         <span class="n">ls_params</span> <span class="o">=</span> <span class="n">LangSmithParams</span><span class="p">(</span>
             <span class="n">ls_provider</span><span class="o">=</span><span class="s2">"google_genai"</span><span class="p">,</span>
-            <span class="n">ls_model_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+            <span class="n">ls_model_name</span><span class="o">=</span><span class="n">ls_model_name</span><span class="p">,</span>
             <span class="n">ls_model_type</span><span class="o">=</span><span class="s2">"chat"</span><span class="p">,</span>
             <span class="n">ls_temperature</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"temperature"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">temperature</span><span class="p">),</span>
         <span class="p">)</span>
@@ -1449,6 +1466,9 @@
                 <span class="s2">"top_k"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_k</span><span class="p">,</span>
                 <span class="s2">"top_p"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">top_p</span><span class="p">,</span>
                 <span class="s2">"response_modalities"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">response_modalities</span><span class="p">,</span>
+                <span class="s2">"thinking_config"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"thinking_budget"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">thinking_budget</span><span class="p">}</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thinking_budget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
             <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="p">}</span>

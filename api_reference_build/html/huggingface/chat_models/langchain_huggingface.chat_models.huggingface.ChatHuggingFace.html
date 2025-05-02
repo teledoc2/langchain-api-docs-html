@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 29, 2025" name="docbuild:last-update"/>
+<meta content="May 02, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -329,11 +329,11 @@ is saved.</p>
 </dl>
 </dd>
 <dt>Key init args — client params:</dt><dd><dl class="simple">
-<dt>custom_get_token_ids: Optional[Callable[[str], List[int]]]</dt><dd><p>Optional encoder to use for counting tokens.</p>
+<dt>custom_get_token_ids: Optional[Callable[[str], list[int]]]</dt><dd><p>Optional encoder to use for counting tokens.</p>
 </dd>
-<dt>metadata: Optional[Dict[str, Any]]</dt><dd><p>Metadata to add to the run trace.</p>
+<dt>metadata: Optional[dict[str, Any]]</dt><dd><p>Metadata to add to the run trace.</p>
 </dd>
-<dt>tags: Optional[List[str]]</dt><dd><p>Tags to add to the run trace.</p>
+<dt>tags: Optional[list[str]]</dt><dd><p>Tags to add to the run trace.</p>
 </dd>
 </dl>
 <p>tokenizer: Any
@@ -518,10 +518,30 @@ with a <code class="docutils literal notranslate"><span class="pre">tools</span>
 </ul>
 </dd></dl>
 <dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.frequency_penalty">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">frequency_penalty</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.frequency_penalty" title="Link to this definition">#</a></dt>
+<dd><p>Penalizes repeated tokens according to frequency.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.llm">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">llm</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><em class="property"> <span class="pre">[Required]</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.llm" title="Link to this definition">#</a></dt>
 <dd><p>LLM, must be of type HuggingFaceTextGenInference, HuggingFaceEndpoint,
 HuggingFaceHub, or HuggingFacePipeline.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.logit_bias">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">logit_bias</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.logit_bias" title="Link to this definition">#</a></dt>
+<dd><p>Modify the likelihood of specified tokens appearing in the completion.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.logprobs">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">logprobs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.logprobs" title="Link to this definition">#</a></dt>
+<dd><p>Whether to return logprobs.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.max_tokens">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_tokens</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.max_tokens" title="Link to this definition">#</a></dt>
+<dd><p>Maximum number of tokens to generate.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.metadata">
@@ -531,25 +551,70 @@ HuggingFaceHub, or HuggingFacePipeline.</p>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.model_id">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.model_id" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Model ID for the model. Only used for HuggingFaceEndpoint.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.model_kwargs">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_kwargs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></em><em class="property"> <span class="pre">[Optional]</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.model_kwargs" title="Link to this definition">#</a></dt>
+<dd><p>Holds any model parameters valid for <cite>create</cite> call not explicitly specified.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.n">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.n" title="Link to this definition">#</a></dt>
+<dd><p>Number of chat completions to generate for each prompt.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.presence_penalty">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">presence_penalty</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.presence_penalty" title="Link to this definition">#</a></dt>
+<dd><p>Penalizes repeated tokens.</p>
+</dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.rate_limiter">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rate_limiter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../core/rate_limiters/langchain_core.rate_limiters.BaseRateLimiter.html#langchain_core.rate_limiters.BaseRateLimiter" title="langchain_core.rate_limiters.BaseRateLimiter"><span class="pre">BaseRateLimiter</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.rate_limiter" title="Link to this definition">#</a></dt>
 <dd><p>An optional rate limiter to use for limiting the number of requests.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
-<dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.system_message">
-<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">system_message</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="../../core/messages/langchain_core.messages.system.SystemMessage.html#langchain_core.messages.system.SystemMessage" title="langchain_core.messages.system.SystemMessage"><span class="pre">SystemMessage</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">SystemMessage(content='You</span> <span class="pre">are</span> <span class="pre">a</span> <span class="pre">helpful,</span> <span class="pre">respectful,</span> <span class="pre">and</span> <span class="pre">honest</span> <span class="pre">assistant.',</span> <span class="pre">additional_kwargs={},</span> <span class="pre">response_metadata={})</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.system_message" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.seed">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">seed</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.seed" title="Link to this definition">#</a></dt>
+<dd><p>Seed for generation</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.stop">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">stop</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"> <span class="pre">(alias</span> <span class="pre">'stop_sequences')</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.stop" title="Link to this definition">#</a></dt>
+<dd><p>Default stop sequences.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.streaming">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">streaming</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">False</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.streaming" title="Link to this definition">#</a></dt>
+<dd><p>Whether to stream the results or not.</p>
+</dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.tags">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tags</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.tags" title="Link to this definition">#</a></dt>
 <dd><p>Tags to add to the run trace.</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.temperature">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">temperature</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.temperature" title="Link to this definition">#</a></dt>
+<dd><p>What sampling temperature to use.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.tokenizer">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tokenizer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Any</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.tokenizer" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Tokenizer for the model. Only used for HuggingFacePipeline.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.top_logprobs">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">top_logprobs</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.top_logprobs" title="Link to this definition">#</a></dt>
+<dd><p>Number of most likely tokens to return at each token position, each with
+an associated log probability. <cite>logprobs</cite> must be set to true
+if this parameter is used.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.top_p">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">top_p</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.top_p" title="Link to this definition">#</a></dt>
+<dd><p>Total probability mass of tokens to consider at each step.</p>
+</dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.verbose">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">verbose</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"> <span class="pre">[Optional]</span></em><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.verbose" title="Link to this definition">#</a></dt>
@@ -1679,31 +1744,33 @@ giving up. Defaults to 3.</p></li>
 <dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.with_structured_output">
 <span class="sig-name descname"><span class="pre">with_structured_output</span></span><span class="sig-paren">(</span>
 <dl>
-<dd><em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">type</span></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">type</span><span class="p"><span class="pre">[</span></span><span class="pre">BaseModel</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>,</dd>
+<dd><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'function_calling'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'json_mode'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'json_schema'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'function_calling'</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="n"><span class="pre">include_raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>,</dd>
 <dd><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>,</dd>
 </dl>
-<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><span class="pre">Runnable</span></a><span class="p"><span class="pre">[</span></span><span class="pre">LanguageModelInput</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="../../experimental/video_captioning/langchain_experimental.video_captioning.models.BaseModel.html#langchain_experimental.video_captioning.models.BaseModel" title="langchain_experimental.video_captioning.models.BaseModel"><span class="pre">BaseModel</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.with_structured_output" title="Link to this definition">#</a></dt>
+<span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">→</span> <span class="sig-return-typehint"><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><span class="pre">Runnable</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/prompt_values/langchain_core.prompt_values.PromptValue.html#langchain_core.prompt_values.PromptValue" title="langchain_core.prompt_values.PromptValue"><span class="pre">PromptValue</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/messages/langchain_core.messages.base.BaseMessage.html#langchain_core.messages.base.BaseMessage" title="langchain_core.messages.base.BaseMessage"><span class="pre">BaseMessage</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseModel</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/langchain_huggingface/chat_models/huggingface.html#ChatHuggingFace.with_structured_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.with_structured_output" title="Link to this definition">#</a></dt>
 <dd><p>Model wrapper that returns outputs formatted to match the given schema.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>schema</strong> (<em>Union</em><em>[</em><em>Dict</em><em>, </em><em>type</em><em>]</em>) – <dl class="simple">
+<li><p><strong>schema</strong> (<em>dict</em><em> | </em><em>type</em><em>[</em><em>BaseModel</em><em>] </em><em>| </em><em>None</em>) – <dl class="simple">
 <dt>The output schema. Can be passed in as:</dt><dd><ul>
 <li><p>an OpenAI function/tool schema,</p></li>
 <li><p>a JSON Schema,</p></li>
-<li><p>a TypedDict class,</p></li>
-<li><p>or a Pydantic class.</p></li>
+<li><p>a typedDict class (support added in 0.1.7),</p></li>
 </ul>
 </dd>
 </dl>
-<p>If <code class="docutils literal notranslate"><span class="pre">schema</span></code> is a Pydantic class then the model output will be a
-Pydantic instance of that class, and the model-generated fields will be
-validated by the Pydantic class. Otherwise the model output will be a
-dict and will not be validated. See <a class="reference internal" href="../../core/utils/langchain_core.utils.function_calling.convert_to_openai_tool.html#langchain_core.utils.function_calling.convert_to_openai_tool" title="langchain_core.utils.function_calling.convert_to_openai_tool"><code class="xref py py-meth docutils literal notranslate"><span class="pre">langchain_core.utils.function_calling.convert_to_openai_tool()</span></code></a>
-for more on how to properly specify types and descriptions of
-schema fields when specifying a Pydantic or TypedDict class.</p>
+<p>Pydantic class is currently supported.</p>
+</p></li>
+<li><p><strong>method</strong> (<em>Literal</em><em>[</em><em>'function_calling'</em><em>, </em><em>'json_mode'</em><em>, </em><em>'json_schema'</em><em>]</em>) – <p>The method for steering model generation, one of:</p>
+<ul>
+<li><p>”function_calling”: uses tool-calling features.</p></li>
+<li><p>”json_schema”: uses dedicated structured output features.</p></li>
+<li><p>”json_mode”: uses JSON mode.</p></li>
+</ul>
 </p></li>
 <li><p><strong>include_raw</strong> (<em>bool</em>) – If False then only the parsed structured output is returned. If
 an error occurs during model output parsing it will be raised. If True
@@ -1730,72 +1797,9 @@ an instance of <code class="docutils literal notranslate"><span class="pre">sche
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable">Runnable</a>[LanguageModelInput, Union[<em>Dict</em>, <a class="reference internal" href="../../experimental/video_captioning/langchain_experimental.video_captioning.models.BaseModel.html#langchain_experimental.video_captioning.models.BaseModel" title="langchain_experimental.video_captioning.models.BaseModel">BaseModel</a>]]</p>
+<dd class="field-odd"><p><a class="reference internal" href="../../core/runnables/langchain_core.runnables.base.Runnable.html#langchain_core.runnables.base.Runnable" title="langchain_core.runnables.base.Runnable"><em>Runnable</em></a>[<a class="reference internal" href="../../core/prompt_values/langchain_core.prompt_values.PromptValue.html#langchain_core.prompt_values.PromptValue" title="langchain_core.prompt_values.PromptValue"><em>PromptValue</em></a> | str | <em>Sequence</em>[<a class="reference internal" href="../../core/messages/langchain_core.messages.base.BaseMessage.html#langchain_core.messages.base.BaseMessage" title="langchain_core.messages.base.BaseMessage"><em>BaseMessage</em></a> | list[str] | tuple[str, str] | str | dict[str, <em>Any</em>]], dict | <em>BaseModel</em>]</p>
 </dd>
 </dl>
-<dl>
-<dt>Example: Pydantic schema (include_raw=False):</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">AnswerWithJustification</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">'''An answer to the user question along with justification for the answer.'''</span>
-    <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">justification</span><span class="p">:</span> <span class="nb">str</span>
-
-<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"model-name"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">AnswerWithJustification</span><span class="p">)</span>
-
-<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">"What weighs more a pound of bricks or a pound of feathers"</span><span class="p">)</span>
-
-<span class="c1"># -&gt; AnswerWithJustification(</span>
-<span class="c1">#     answer='They weigh the same',</span>
-<span class="c1">#     justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'</span>
-<span class="c1"># )</span>
-</pre></div>
-</div>
-</dd>
-<dt>Example: Pydantic schema (include_raw=True):</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">AnswerWithJustification</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">'''An answer to the user question along with justification for the answer.'''</span>
-    <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">justification</span><span class="p">:</span> <span class="nb">str</span>
-
-<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"model-name"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">AnswerWithJustification</span><span class="p">,</span> <span class="n">include_raw</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">"What weighs more a pound of bricks or a pound of feathers"</span><span class="p">)</span>
-<span class="c1"># -&gt; {</span>
-<span class="c1">#     'raw': AIMessage(content='', additional_kwargs={'tool_calls': [{'id': 'call_Ao02pnFYXD6GN1yzc0uXPsvF', 'function': {'arguments': '{"answer":"They weigh the same.","justification":"Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ."}', 'name': 'AnswerWithJustification'}, 'type': 'function'}]}),</span>
-<span class="c1">#     'parsed': AnswerWithJustification(answer='They weigh the same.', justification='Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume or density of the objects may differ.'),</span>
-<span class="c1">#     'parsing_error': None</span>
-<span class="c1"># }</span>
-</pre></div>
-</div>
-</dd>
-<dt>Example: Dict schema (include_raw=False):</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.utils.function_calling</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_to_openai_tool</span>
-
-<span class="k">class</span><span class="w"> </span><span class="nc">AnswerWithJustification</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">'''An answer to the user question along with justification for the answer.'''</span>
-    <span class="n">answer</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="n">justification</span><span class="p">:</span> <span class="nb">str</span>
-
-<span class="n">dict_schema</span> <span class="o">=</span> <span class="n">convert_to_openai_tool</span><span class="p">(</span><span class="n">AnswerWithJustification</span><span class="p">)</span>
-<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatModel</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"model-name"</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">structured_llm</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">with_structured_output</span><span class="p">(</span><span class="n">dict_schema</span><span class="p">)</span>
-
-<span class="n">structured_llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="s2">"What weighs more a pound of bricks or a pound of feathers"</span><span class="p">)</span>
-<span class="c1"># -&gt; {</span>
-<span class="c1">#     'answer': 'They weigh the same',</span>
-<span class="c1">#     'justification': 'Both a pound of bricks and a pound of feathers weigh one pound. The weight is the same, but the volume and density of the two substances differ.'</span>
-<span class="c1"># }</span>
-</pre></div>
-</div>
-</dd>
-</dl>
-<div class="versionchanged">
-<p><span class="versionmodified changed">Changed in version 0.2.26: </span>Added support for TypedDict class.</p>
-</div>
 </dd></dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="langchain_huggingface.chat_models.huggingface.ChatHuggingFace.with_types">
@@ -1842,13 +1846,25 @@ an instance of <code class="docutils literal notranslate"><span class="pre">sche
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.callbacks"><code class="docutils literal notranslate"><span class="pre">callbacks</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.custom_get_token_ids"><code class="docutils literal notranslate"><span class="pre">custom_get_token_ids</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.disable_streaming"><code class="docutils literal notranslate"><span class="pre">disable_streaming</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.frequency_penalty"><code class="docutils literal notranslate"><span class="pre">frequency_penalty</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.llm"><code class="docutils literal notranslate"><span class="pre">llm</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.logit_bias"><code class="docutils literal notranslate"><span class="pre">logit_bias</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.logprobs"><code class="docutils literal notranslate"><span class="pre">logprobs</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.max_tokens"><code class="docutils literal notranslate"><span class="pre">max_tokens</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.metadata"><code class="docutils literal notranslate"><span class="pre">metadata</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.model_id"><code class="docutils literal notranslate"><span class="pre">model_id</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.model_kwargs"><code class="docutils literal notranslate"><span class="pre">model_kwargs</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.n"><code class="docutils literal notranslate"><span class="pre">n</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.presence_penalty"><code class="docutils literal notranslate"><span class="pre">presence_penalty</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.rate_limiter"><code class="docutils literal notranslate"><span class="pre">rate_limiter</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.system_message"><code class="docutils literal notranslate"><span class="pre">system_message</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.seed"><code class="docutils literal notranslate"><span class="pre">seed</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.stop"><code class="docutils literal notranslate"><span class="pre">stop</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.streaming"><code class="docutils literal notranslate"><span class="pre">streaming</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.tags"><code class="docutils literal notranslate"><span class="pre">tags</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.temperature"><code class="docutils literal notranslate"><span class="pre">temperature</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.tokenizer"><code class="docutils literal notranslate"><span class="pre">tokenizer</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.top_logprobs"><code class="docutils literal notranslate"><span class="pre">top_logprobs</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.top_p"><code class="docutils literal notranslate"><span class="pre">top_p</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.verbose"><code class="docutils literal notranslate"><span class="pre">verbose</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.__call__"><code class="docutils literal notranslate"><span class="pre">__call__()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_huggingface.chat_models.huggingface.ChatHuggingFace.abatch"><code class="docutils literal notranslate"><span class="pre">abatch()</span></code></a></li>

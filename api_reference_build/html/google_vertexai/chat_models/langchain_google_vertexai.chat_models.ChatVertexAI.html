@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 29, 2025" name="docbuild:last-update"/>
+<meta content="May 02, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -831,6 +831,11 @@ with a <code class="docutils literal notranslate"><span class="pre">tools</span>
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">examples</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../../core/messages/langchain_core.messages.base.BaseMessage.html#langchain_core.messages.base.BaseMessage" title="langchain_core.messages.base.BaseMessage"><span class="pre">BaseMessage</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_google_vertexai.chat_models.ChatVertexAI.examples" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 <dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_google_vertexai.chat_models.ChatVertexAI.frequency_penalty">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">frequency_penalty</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_google_vertexai.chat_models.ChatVertexAI.frequency_penalty" title="Link to this definition">#</a></dt>
+<dd><p>Positive values penalize tokens that repeatedly appear in the generated text,</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_google_vertexai.chat_models.ChatVertexAI.full_model_name">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">full_model_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_google_vertexai.chat_models.ChatVertexAI.full_model_name" title="Link to this definition">#</a></dt>
 <dd><p>The full name of the model’s endpoint.</p>
@@ -887,6 +892,11 @@ If int, return logprobs for top <code class="docutils literal notranslate"><span
 <dt class="sig sig-object py" id="langchain_google_vertexai.chat_models.ChatVertexAI.perform_literal_eval_on_string_raw_content">
 <em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">perform_literal_eval_on_string_raw_content</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#langchain_google_vertexai.chat_models.ChatVertexAI.perform_literal_eval_on_string_raw_content" title="Link to this definition">#</a></dt>
 <dd><p>Whether to perform literal eval on string raw content.</p>
+</dd></dl>
+<dl class="py attribute pydantic_field">
+<dt class="sig sig-object py" id="langchain_google_vertexai.chat_models.ChatVertexAI.presence_penalty">
+<em class="property"><span class="pre">param</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">presence_penalty</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#langchain_google_vertexai.chat_models.ChatVertexAI.presence_penalty" title="Link to this definition">#</a></dt>
+<dd><p>Positive values penalize tokens that already appear in the generated text,</p>
 </dd></dl>
 <dl class="py attribute pydantic_field">
 <dt class="sig sig-object py" id="langchain_google_vertexai.chat_models.ChatVertexAI.project">
@@ -2302,6 +2312,7 @@ If schema is a dict then _DictOrPydantic is a dict.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.chat_models.ChatVertexAI.disable_streaming"><code class="docutils literal notranslate"><span class="pre">disable_streaming</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.chat_models.ChatVertexAI.endpoint_version"><code class="docutils literal notranslate"><span class="pre">endpoint_version</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.chat_models.ChatVertexAI.examples"><code class="docutils literal notranslate"><span class="pre">examples</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.chat_models.ChatVertexAI.frequency_penalty"><code class="docutils literal notranslate"><span class="pre">frequency_penalty</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.chat_models.ChatVertexAI.full_model_name"><code class="docutils literal notranslate"><span class="pre">full_model_name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.chat_models.ChatVertexAI.labels"><code class="docutils literal notranslate"><span class="pre">labels</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.chat_models.ChatVertexAI.location"><code class="docutils literal notranslate"><span class="pre">location</span></code></a></li>
@@ -2313,6 +2324,7 @@ If schema is a dict then _DictOrPydantic is a dict.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.chat_models.ChatVertexAI.model_name"><code class="docutils literal notranslate"><span class="pre">model_name</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.chat_models.ChatVertexAI.n"><code class="docutils literal notranslate"><span class="pre">n</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.chat_models.ChatVertexAI.perform_literal_eval_on_string_raw_content"><code class="docutils literal notranslate"><span class="pre">perform_literal_eval_on_string_raw_content</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.chat_models.ChatVertexAI.presence_penalty"><code class="docutils literal notranslate"><span class="pre">presence_penalty</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.chat_models.ChatVertexAI.project"><code class="docutils literal notranslate"><span class="pre">project</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.chat_models.ChatVertexAI.rate_limiter"><code class="docutils literal notranslate"><span class="pre">rate_limiter</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#langchain_google_vertexai.chat_models.ChatVertexAI.request_parallelism"><code class="docutils literal notranslate"><span class="pre">request_parallelism</span></code></a></li>

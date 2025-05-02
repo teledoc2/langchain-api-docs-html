@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 29, 2025" name="docbuild:last-update"/>
+<meta content="May 02, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -306,8 +306,38 @@
 <p>PineconeEmbeddings embedding model.</p>
 <p class="rubric">Example</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_pinecone</span><span class="w"> </span><span class="kn">import</span> <span class="n">PineconeEmbeddings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_pinecone</span><span class="w"> </span><span class="kn">import</span> <span class="n">PineconeVectorStore</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.documents</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
 
-<span class="n">model</span> <span class="o">=</span> <span class="n">PineconeEmbeddings</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"multilingual-e5-large"</span><span class="p">)</span>
+<span class="c1"># Initialize embeddings with a specific model</span>
+<span class="n">embeddings</span> <span class="o">=</span> <span class="n">PineconeEmbeddings</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"multilingual-e5-large"</span><span class="p">)</span>
+
+<span class="c1"># Embed a single query</span>
+<span class="n">query_embedding</span> <span class="o">=</span> <span class="n">embeddings</span><span class="o">.</span><span class="n">embed_query</span><span class="p">(</span><span class="s2">"What is machine learning?"</span><span class="p">)</span>
+
+<span class="c1"># Embed multiple documents</span>
+<span class="n">docs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Document 1 content"</span><span class="p">,</span> <span class="s2">"Document 2 content"</span><span class="p">]</span>
+<span class="n">doc_embeddings</span> <span class="o">=</span> <span class="n">embeddings</span><span class="o">.</span><span class="n">embed_documents</span><span class="p">(</span><span class="n">docs</span><span class="p">)</span>
+
+<span class="c1"># Use with PineconeVectorStore</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pinecone</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pinecone</span>
+
+<span class="n">pc</span> <span class="o">=</span> <span class="n">Pinecone</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="s2">"your-api-key"</span><span class="p">)</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">pc</span><span class="o">.</span><span class="n">Index</span><span class="p">(</span><span class="s2">"your-index-name"</span><span class="p">)</span>
+
+<span class="n">vectorstore</span> <span class="o">=</span> <span class="n">PineconeVectorStore</span><span class="p">(</span>
+    <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span>
+    <span class="n">embedding</span><span class="o">=</span><span class="n">embeddings</span>
+<span class="p">)</span>
+
+<span class="c1"># Add documents to vector store</span>
+<span class="n">vectorstore</span><span class="o">.</span><span class="n">add_documents</span><span class="p">([</span>
+    <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="s2">"Hello, world!"</span><span class="p">),</span>
+    <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="s2">"This is a test."</span><span class="p">)</span>
+<span class="p">])</span>
+
+<span class="c1"># Search for similar documents</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">vectorstore</span><span class="o">.</span><span class="n">similarity_search</span><span class="p">(</span><span class="s2">"hello"</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Create a new model by parsing and validating input data from keyword arguments.</p>

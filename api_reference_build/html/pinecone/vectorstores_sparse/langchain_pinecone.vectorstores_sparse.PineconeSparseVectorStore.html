@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 29, 2025" name="docbuild:last-update"/>
+<meta content="May 02, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -312,7 +312,130 @@
 <dd><em class="sig-param"><span class="n"><span class="pre">index_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>,</dd>
 </dl>
 <span class="sig-paren">)</span><a class="reference internal" href="../../_modules/langchain_pinecone/vectorstores_sparse.html#PineconeSparseVectorStore"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#langchain_pinecone.vectorstores_sparse.PineconeSparseVectorStore" title="Link to this definition">#</a></dt>
-<dd><p class="rubric">Attributes</p>
+<dd><p>Pinecone sparse vector store integration.</p>
+<p>This class extends PineconeVectorStore to support sparse vector representations.
+It requires a Pinecone sparse index and PineconeSparseEmbeddings.</p>
+<dl class="simple">
+<dt>Setup:</dt><dd><p><code class="docutils literal notranslate"><span class="pre">`python</span>
+<span class="pre">#</span> <span class="pre">Install</span> <span class="pre">required</span> <span class="pre">packages</span>
+<span class="pre">pip</span> <span class="pre">install</span> <span class="pre">langchain-pinecone</span> <span class="pre">pinecone-client</span>
+<span class="pre">`</span></code></p>
+</dd>
+<dt>Key init args - indexing params:</dt><dd><p>text_key (str): The metadata key where the document text will be stored.
+namespace (str): Pinecone namespace to use.
+distance_strategy (DistanceStrategy): Strategy for computing distances.</p>
+</dd>
+<dt>Key init args - client params:</dt><dd><p>index (pinecone.Index): A Pinecone sparse index.
+embedding (PineconeSparseEmbeddings): A sparse embeddings model.
+pinecone_api_key (str): The Pinecone API key.
+index_name (str): The name of the Pinecone index.</p>
+</dd>
+</dl>
+<p>See full list of supported init args and their descriptions in the params section.</p>
+<dl>
+<dt>Instantiate:</dt><dd><p><a href="#id1"><span class="problematic" id="id2">``</span></a><a href="#id3"><span class="problematic" id="id4">`</span></a>python
+from pinecone import Pinecone
+from langchain_pinecone import PineconeSparseVectorStore
+from langchain_pinecone.embeddings import PineconeSparseEmbeddings</p>
+<p># Initialize Pinecone client
+pc = Pinecone(api_key=”your-api-key”)</p>
+<p># Get your sparse index
+index = pc.Index(“your-sparse-index-name”)</p>
+<p># Initialize embedding function
+embeddings = PineconeSparseEmbeddings()</p>
+<p># Create vector store
+vectorstore = PineconeSparseVectorStore(</p>
+<blockquote>
+<div><p>index=index,
+embedding=embeddings,
+text_key=”content”,
+namespace=”my-namespace”</p>
+</div></blockquote>
+</dd>
+<dt>Add Documents:</dt><dd><p><a href="#id5"><span class="problematic" id="id6">``</span></a><a href="#id7"><span class="problematic" id="id8">`</span></a>python
+from langchain_core.documents import Document</p>
+<dl class="simple">
+<dt>docs = [</dt><dd><p>Document(page_content=”This is a sparse vector example”),
+Document(page_content=”Another document for testing”)</p>
+</dd>
+</dl>
+<p>]</p>
+<p># Option 1: Add from Document objects
+vectorstore.add_documents(docs)</p>
+<p># Option 2: Add from texts
+texts = [“Text 1”, “Text 2”]
+metadatas = [{“source”: “source1”}, {“source”: “source2”}]
+vectorstore.add_texts(texts, metadatas=metadatas)
+<a href="#id9"><span class="problematic" id="id10">``</span></a><a href="#id11"><span class="problematic" id="id12">`</span></a></p>
+</dd>
+<dt>Update Documents:</dt><dd><p>Update documents by re-adding them with the same IDs.
+<a href="#id13"><span class="problematic" id="id14">``</span></a><a href="#id15"><span class="problematic" id="id16">`</span></a>python
+ids = [“id1”, “id2”]
+texts = [“Updated text 1”, “Updated text 2”]
+metadatas = [{“source”: “updated_source1”}, {“source”: “updated_source2”}]</p>
+<p>vectorstore.add_texts(texts, metadatas=metadatas, ids=ids)
+<a href="#id17"><span class="problematic" id="id18">``</span></a><a href="#id19"><span class="problematic" id="id20">`</span></a></p>
+</dd>
+<dt>Delete Documents:</dt><dd><p><a href="#id21"><span class="problematic" id="id22">``</span></a><a href="#id23"><span class="problematic" id="id24">`</span></a>python
+# Delete by IDs
+vectorstore.delete(ids=[“id1”, “id2”])</p>
+<p># Delete by filter
+vectorstore.delete(filter={“source”: “source1”})</p>
+<p># Delete all documents in a namespace
+vectorstore.delete(delete_all=True, namespace=”my-namespace”)
+<a href="#id25"><span class="problematic" id="id26">``</span></a><a href="#id27"><span class="problematic" id="id28">`</span></a></p>
+</dd>
+<dt>Search:</dt><dd><p><a href="#id29"><span class="problematic" id="id30">``</span></a><a href="#id31"><span class="problematic" id="id32">`</span></a>python
+# Search for similar documents
+docs = vectorstore.similarity_search(“query text”, k=5)</p>
+<p># Search with filters
+docs = vectorstore.similarity_search(</p>
+<blockquote>
+<div><p>“query text”,
+k=5,
+filter={“source”: “source1”}</p>
+</div></blockquote>
+<p>)</p>
+<p># Maximal marginal relevance search for diversity
+docs = vectorstore.max_marginal_relevance_search(</p>
+<blockquote>
+<div><p>“query text”,
+k=5,
+fetch_k=20,
+lambda_mult=0.5</p>
+</div></blockquote>
+</dd>
+<dt>Search with score:</dt><dd><p><a href="#id33"><span class="problematic" id="id34">``</span></a><a href="#id35"><span class="problematic" id="id36">`</span></a>python
+# Search with relevance scores
+docs_and_scores = vectorstore.similarity_search_with_score(</p>
+<blockquote>
+<div><p>“query text”,
+k=5</p>
+</div></blockquote>
+<p>)</p>
+<dl class="simple">
+<dt>for doc, score in docs_and_scores:</dt><dd><p>print(f”Score: {score}, Document: {doc.page_content}”)</p>
+</dd>
+</dl>
+<p><a href="#id37"><span class="problematic" id="id38">``</span></a><a href="#id39"><span class="problematic" id="id40">`</span></a></p>
+</dd>
+<dt>Use as Retriever:</dt><dd><p><a href="#id41"><span class="problematic" id="id42">``</span></a><a href="#id43"><span class="problematic" id="id44">`</span></a>python
+# Create a retriever
+retriever = vectorstore.as_retriever()</p>
+<p># Customize retriever
+retriever = vectorstore.as_retriever(</p>
+<blockquote>
+<div><p>search_type=”mmr”,
+search_kwargs={“k”: 5, “fetch_k”: 20, “lambda_mult”: 0.5},
+filter={“source”: “source1”}</p>
+</div></blockquote>
+<p>)</p>
+<p># Use the retriever
+docs = retriever.get_relevant_documents(“query text”)
+<a href="#id45"><span class="problematic" id="id46">``</span></a><a href="#id47"><span class="problematic" id="id48">`</span></a></p>
+</dd>
+</dl>
+<p class="rubric">Attributes</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">async_index</span></code></p></td>

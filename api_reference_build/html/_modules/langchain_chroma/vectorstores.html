@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 29, 2025" name="docbuild:last-update"/>
+<meta content="May 02, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -611,10 +611,10 @@
 <span class="sd">            query_texts: List of query texts.</span>
 <span class="sd">            query_embeddings: List of query embeddings.</span>
 <span class="sd">            n_results: Number of results to return. Defaults to 4.</span>
-<span class="sd">            where: dict used to filter results by</span>
-<span class="sd">                    e.g. {"color" : "red", "price": 4.20}.</span>
-<span class="sd">            where_document: dict used to filter by the documents.</span>
-<span class="sd">                    E.g. {$contains: {"text": "hello"}}.</span>
+<span class="sd">            where: dict used to filter results by metadata.</span>
+<span class="sd">                    E.g. {"color" : "red"}.</span>
+<span class="sd">            where_document: dict used to filter by the document contents.</span>
+<span class="sd">                    E.g. {"$contains": "hello"}.</span>
 <span class="sd">            kwargs: Additional keyword arguments to pass to Chroma collection query.</span>
 
 <span class="sd">        Returns:</span>
@@ -655,7 +655,7 @@
 <span class="sd">            uris: File path to the image.</span>
 <span class="sd">            metadatas: Optional list of metadatas.</span>
 <span class="sd">                    When querying, you can filter on this metadata.</span>
-<span class="sd">            ids: Optional list of IDs.</span>
+<span class="sd">            ids: Optional list of IDs. (Items without IDs will be assigned UUIDs)</span>
 <span class="sd">            kwargs: Additional keyword arguments to pass.</span>
 
 <span class="sd">        Returns:</span>
@@ -748,7 +748,7 @@
 <span class="sd">            texts: Texts to add to the vectorstore.</span>
 <span class="sd">            metadatas: Optional list of metadatas.</span>
 <span class="sd">                    When querying, you can filter on this metadata.</span>
-<span class="sd">            ids: Optional list of IDs.</span>
+<span class="sd">            ids: Optional list of IDs. (Items without IDs will be assigned UUIDs)</span>
 <span class="sd">            kwargs: Additional keyword arguments.</span>
 
 <span class="sd">        Returns:</span>
@@ -866,8 +866,8 @@
 <span class="sd">            embedding: Embedding to look up documents similar to.</span>
 <span class="sd">            k: Number of Documents to return. Defaults to 4.</span>
 <span class="sd">            filter: Filter by metadata. Defaults to None.</span>
-<span class="sd">            where_document: dict used to filter by the documents.</span>
-<span class="sd">                    E.g. {$contains: {"text": "hello"}}.</span>
+<span class="sd">            where_document: dict used to filter by the document contents.</span>
+<span class="sd">                    E.g. {"$contains": "hello"}.</span>
 <span class="sd">            kwargs: Additional keyword arguments to pass to Chroma collection query.</span>
 
 <span class="sd">        Returns:</span>
@@ -900,7 +900,7 @@
 <span class="sd">            k: Number of Documents to return. Defaults to 4.</span>
 <span class="sd">            filter: Filter by metadata. Defaults to None.</span>
 <span class="sd">            where_document: dict used to filter by the documents.</span>
-<span class="sd">                    E.g. {$contains: {"text": "hello"}}.</span>
+<span class="sd">                    E.g. {"$contains": "hello"}}.</span>
 <span class="sd">            kwargs: Additional keyword arguments to pass to Chroma collection query.</span>
 
 <span class="sd">        Returns:</span>
@@ -933,8 +933,8 @@
 <span class="sd">            query: Query text to search for.</span>
 <span class="sd">            k: Number of results to return. Defaults to 4.</span>
 <span class="sd">            filter: Filter by metadata. Defaults to None.</span>
-<span class="sd">            where_document: dict used to filter by the documents.</span>
-<span class="sd">                    E.g. {$contains: {"text": "hello"}}.</span>
+<span class="sd">            where_document: dict used to filter by document contents.</span>
+<span class="sd">                    E.g. {"$contains": "hello"}.</span>
 <span class="sd">            kwargs: Additional keyword arguments to pass to Chroma collection query.</span>
 
 <span class="sd">        Returns:</span>
@@ -978,8 +978,8 @@
 <span class="sd">            query: Query text to search for.</span>
 <span class="sd">            k: Number of results to return. Defaults to 4.</span>
 <span class="sd">            filter: Filter by metadata. Defaults to None.</span>
-<span class="sd">            where_document: dict used to filter by the documents.</span>
-<span class="sd">                    E.g. {$contains: {"text": "hello"}}.</span>
+<span class="sd">            where_document: dict used to filter by the document contents.</span>
+<span class="sd">                    E.g. {"$contains": "hello"}.</span>
 <span class="sd">            kwargs: Additional keyword arguments to pass to Chroma collection query.</span>
 
 <span class="sd">        Returns:</span>
@@ -1169,8 +1169,8 @@
 <span class="sd">                to maximum diversity and 1 to minimum diversity.</span>
 <span class="sd">                Defaults to 0.5.</span>
 <span class="sd">            filter: Filter by metadata. Defaults to None.</span>
-<span class="sd">            where_document: dict used to filter by the documents.</span>
-<span class="sd">                    E.g. {$contains: {"text": "hello"}}.</span>
+<span class="sd">            where_document: dict used to filter by the document contents.</span>
+<span class="sd">                    E.g. {"$contains": "hello"}.</span>
 <span class="sd">            kwargs: Additional keyword arguments to pass to Chroma collection query.</span>
 
 <span class="sd">        Returns:</span>
@@ -1223,8 +1223,8 @@
 <span class="sd">                        to maximum diversity and 1 to minimum diversity.</span>
 <span class="sd">                        Defaults to 0.5.</span>
 <span class="sd">            filter: Filter by metadata. Defaults to None.</span>
-<span class="sd">            where_document: dict used to filter by the documents.</span>
-<span class="sd">                    E.g. {$contains: {"text": "hello"}}.</span>
+<span class="sd">            where_document: dict used to filter by the document contents.</span>
+<span class="sd">                    E.g. {"$contains": "hello"}.</span>
 <span class="sd">            kwargs: Additional keyword arguments to pass to Chroma collection query.</span>
 
 <span class="sd">        Returns:</span>
@@ -1289,7 +1289,7 @@
 <span class="sd">            offset: The offset to start returning results from.</span>
 <span class="sd">                    Useful for paging results with limit. Optional.</span>
 <span class="sd">            where_document: A WhereDocument type dict used to filter by the documents.</span>
-<span class="sd">                            E.g. `{$contains: "hello"}`. Optional.</span>
+<span class="sd">                            E.g. `{"$contains": "hello"}`. Optional.</span>
 <span class="sd">            include: A list of what to include in the results.</span>
 <span class="sd">                     Can contain `"embeddings"`, `"metadatas"`, `"documents"`.</span>
 <span class="sd">                     Ids are always included.</span>

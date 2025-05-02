@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="Apr 29, 2025" name="docbuild:last-update"/>
+<meta content="May 02, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -258,6 +258,144 @@
 <div class="viewcode-block" id="PineconeSparseVectorStore">
 <a class="viewcode-back" href="../../pinecone/vectorstores_sparse/langchain_pinecone.vectorstores_sparse.PineconeSparseVectorStore.html#langchain_pinecone.vectorstores_sparse.PineconeSparseVectorStore">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PineconeSparseVectorStore</span><span class="p">(</span><span class="n">PineconeVectorStore</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Pinecone sparse vector store integration.</span>
+
+<span class="sd">    This class extends PineconeVectorStore to support sparse vector representations.</span>
+<span class="sd">    It requires a Pinecone sparse index and PineconeSparseEmbeddings.</span>
+
+<span class="sd">    Setup:</span>
+<span class="sd">        ```python</span>
+<span class="sd">        # Install required packages</span>
+<span class="sd">        pip install langchain-pinecone pinecone-client</span>
+<span class="sd">        ```</span>
+
+<span class="sd">    Key init args - indexing params:</span>
+<span class="sd">        text_key (str): The metadata key where the document text will be stored.</span>
+<span class="sd">        namespace (str): Pinecone namespace to use.</span>
+<span class="sd">        distance_strategy (DistanceStrategy): Strategy for computing distances.</span>
+
+<span class="sd">    Key init args - client params:</span>
+<span class="sd">        index (pinecone.Index): A Pinecone sparse index.</span>
+<span class="sd">        embedding (PineconeSparseEmbeddings): A sparse embeddings model.</span>
+<span class="sd">        pinecone_api_key (str): The Pinecone API key.</span>
+<span class="sd">        index_name (str): The name of the Pinecone index.</span>
+
+<span class="sd">    See full list of supported init args and their descriptions in the params section.</span>
+
+<span class="sd">    Instantiate:</span>
+<span class="sd">        ```python</span>
+<span class="sd">        from pinecone import Pinecone</span>
+<span class="sd">        from langchain_pinecone import PineconeSparseVectorStore</span>
+<span class="sd">        from langchain_pinecone.embeddings import PineconeSparseEmbeddings</span>
+
+<span class="sd">        # Initialize Pinecone client</span>
+<span class="sd">        pc = Pinecone(api_key="your-api-key")</span>
+
+<span class="sd">        # Get your sparse index</span>
+<span class="sd">        index = pc.Index("your-sparse-index-name")</span>
+
+<span class="sd">        # Initialize embedding function</span>
+<span class="sd">        embeddings = PineconeSparseEmbeddings()</span>
+
+<span class="sd">        # Create vector store</span>
+<span class="sd">        vectorstore = PineconeSparseVectorStore(</span>
+<span class="sd">            index=index,</span>
+<span class="sd">            embedding=embeddings,</span>
+<span class="sd">            text_key="content",</span>
+<span class="sd">            namespace="my-namespace"</span>
+<span class="sd">        )</span>
+<span class="sd">        ```</span>
+
+<span class="sd">    Add Documents:</span>
+<span class="sd">        ```python</span>
+<span class="sd">        from langchain_core.documents import Document</span>
+
+<span class="sd">        docs = [</span>
+<span class="sd">            Document(page_content="This is a sparse vector example"),</span>
+<span class="sd">            Document(page_content="Another document for testing")</span>
+<span class="sd">        ]</span>
+
+<span class="sd">        # Option 1: Add from Document objects</span>
+<span class="sd">        vectorstore.add_documents(docs)</span>
+
+<span class="sd">        # Option 2: Add from texts</span>
+<span class="sd">        texts = ["Text 1", "Text 2"]</span>
+<span class="sd">        metadatas = [{"source": "source1"}, {"source": "source2"}]</span>
+<span class="sd">        vectorstore.add_texts(texts, metadatas=metadatas)</span>
+<span class="sd">        ```</span>
+
+<span class="sd">    Update Documents:</span>
+<span class="sd">        Update documents by re-adding them with the same IDs.</span>
+<span class="sd">        ```python</span>
+<span class="sd">        ids = ["id1", "id2"]</span>
+<span class="sd">        texts = ["Updated text 1", "Updated text 2"]</span>
+<span class="sd">        metadatas = [{"source": "updated_source1"}, {"source": "updated_source2"}]</span>
+
+<span class="sd">        vectorstore.add_texts(texts, metadatas=metadatas, ids=ids)</span>
+<span class="sd">        ```</span>
+
+<span class="sd">    Delete Documents:</span>
+<span class="sd">        ```python</span>
+<span class="sd">        # Delete by IDs</span>
+<span class="sd">        vectorstore.delete(ids=["id1", "id2"])</span>
+
+<span class="sd">        # Delete by filter</span>
+<span class="sd">        vectorstore.delete(filter={"source": "source1"})</span>
+
+<span class="sd">        # Delete all documents in a namespace</span>
+<span class="sd">        vectorstore.delete(delete_all=True, namespace="my-namespace")</span>
+<span class="sd">        ```</span>
+
+<span class="sd">    Search:</span>
+<span class="sd">        ```python</span>
+<span class="sd">        # Search for similar documents</span>
+<span class="sd">        docs = vectorstore.similarity_search("query text", k=5)</span>
+
+<span class="sd">        # Search with filters</span>
+<span class="sd">        docs = vectorstore.similarity_search(</span>
+<span class="sd">            "query text",</span>
+<span class="sd">            k=5,</span>
+<span class="sd">            filter={"source": "source1"}</span>
+<span class="sd">        )</span>
+
+<span class="sd">        # Maximal marginal relevance search for diversity</span>
+<span class="sd">        docs = vectorstore.max_marginal_relevance_search(</span>
+<span class="sd">            "query text",</span>
+<span class="sd">            k=5,</span>
+<span class="sd">            fetch_k=20,</span>
+<span class="sd">            lambda_mult=0.5</span>
+<span class="sd">        )</span>
+<span class="sd">        ```</span>
+
+<span class="sd">    Search with score:</span>
+<span class="sd">        ```python</span>
+<span class="sd">        # Search with relevance scores</span>
+<span class="sd">        docs_and_scores = vectorstore.similarity_search_with_score(</span>
+<span class="sd">            "query text",</span>
+<span class="sd">            k=5</span>
+<span class="sd">        )</span>
+
+<span class="sd">        for doc, score in docs_and_scores:</span>
+<span class="sd">            print(f"Score: {score}, Document: {doc.page_content}")</span>
+<span class="sd">        ```</span>
+
+<span class="sd">    Use as Retriever:</span>
+<span class="sd">        ```python</span>
+<span class="sd">        # Create a retriever</span>
+<span class="sd">        retriever = vectorstore.as_retriever()</span>
+
+<span class="sd">        # Customize retriever</span>
+<span class="sd">        retriever = vectorstore.as_retriever(</span>
+<span class="sd">            search_type="mmr",</span>
+<span class="sd">            search_kwargs={"k": 5, "fetch_k": 20, "lambda_mult": 0.5},</span>
+<span class="sd">            filter={"source": "source1"}</span>
+<span class="sd">        )</span>
+
+<span class="sd">        # Use the retriever</span>
+<span class="sd">        docs = retriever.get_relevant_documents("query text")</span>
+<span class="sd">        ```</span>
+<span class="sd">    """</span>
+
 <div class="viewcode-block" id="PineconeSparseVectorStore.__init__">
 <a class="viewcode-back" href="../../pinecone/vectorstores_sparse/langchain_pinecone.vectorstores_sparse.PineconeSparseVectorStore.html#langchain_pinecone.vectorstores_sparse.PineconeSparseVectorStore.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
