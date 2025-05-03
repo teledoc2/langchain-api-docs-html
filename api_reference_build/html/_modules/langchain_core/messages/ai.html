@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="May 02, 2025" name="docbuild:last-update"/>
+<meta content="May 03, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -256,6 +256,9 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.utils.usage</span><span class="w"> </span><span class="kn">import</span> <span class="n">_dict_int_op</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="n">_LC_ID_PREFIX</span> <span class="o">=</span> <span class="s2">"run-"</span>
 
 
 <div class="viewcode-block" id="InputTokenDetails">
@@ -660,10 +663,19 @@
         <span class="n">usage_metadata</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="nb">id</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="p">[</span><span class="n">left</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">others</span><span class="p">]:</span>
-        <span class="k">if</span> <span class="n">id_</span><span class="p">:</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="p">[</span><span class="n">left</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">o</span><span class="o">.</span><span class="n">id</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">others</span><span class="p">]</span>
+    <span class="c1"># first pass: pick the first non‐run-* id</span>
+    <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">id_</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">id_</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">_LC_ID_PREFIX</span><span class="p">):</span>
             <span class="nb">id</span> <span class="o">=</span> <span class="n">id_</span>
             <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># second pass: no provider-assigned id found, just take the first non‐null</span>
+        <span class="k">for</span> <span class="n">id_</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">id_</span><span class="p">:</span>
+                <span class="nb">id</span> <span class="o">=</span> <span class="n">id_</span>
+                <span class="k">break</span>
+
     <span class="k">return</span> <span class="n">left</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span>
         <span class="n">example</span><span class="o">=</span><span class="n">left</span><span class="o">.</span><span class="n">example</span><span class="p">,</span>
         <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span>
