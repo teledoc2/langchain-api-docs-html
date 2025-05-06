@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="May 05, 2025" name="docbuild:last-update"/>
+<meta content="May 06, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -220,21 +220,27 @@
 <div id="searchbox"></div>
 <article class="bd-article">
 <h1>Source code for langchain_community.document_loaders.gitbook</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urljoin</span><span class="p">,</span> <span class="n">urlparse</span>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">AsyncIterator</span><span class="p">,</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">urllib.parse</span><span class="w"> </span><span class="kn">import</span> <span class="n">urlparse</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">bs4</span><span class="w"> </span><span class="kn">import</span> <span class="n">BeautifulSoup</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.documents</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.document_loaders.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseLoader</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_community.document_loaders.web_base</span><span class="w"> </span><span class="kn">import</span> <span class="n">WebBaseLoader</span>
 
 
 <div class="viewcode-block" id="GitbookLoader">
 <a class="viewcode-back" href="../../../community/document_loaders/langchain_community.document_loaders.gitbook.GitbookLoader.html#langchain_community.document_loaders.gitbook.GitbookLoader">[docs]</a>
-<span class="k">class</span><span class="w"> </span><span class="nc">GitbookLoader</span><span class="p">(</span><span class="n">WebBaseLoader</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">GitbookLoader</span><span class="p">(</span><span class="n">BaseLoader</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Load `GitBook` data.</span>
 
 <span class="sd">    1. load from either a single page, or</span>
-<span class="sd">    2. load all (relative) paths in the navbar.</span>
+<span class="sd">    2. load all (relative) paths in the sitemap, handling nested sitemap indexes.</span>
+
+<span class="sd">    When `load_all_paths=True`, the loader parses XML sitemaps and requires the</span>
+<span class="sd">    `lxml` package to be installed (`pip install lxml`).</span>
 <span class="sd">    """</span>
 
 <div class="viewcode-block" id="GitbookLoader.__init__">
@@ -249,6 +255,7 @@
         <span class="n">show_progress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">sitemap_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">allowed_domains</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Initialize with web page and whether to load all paths.</span>
 
@@ -256,7 +263,7 @@
 <span class="sd">            web_page: The web page to load or the starting point from where</span>
 <span class="sd">                relative paths are discovered.</span>
 <span class="sd">            load_all_paths: If set to True, all relative paths in the navbar</span>
-<span class="sd">                are loaded instead of only `web_page`.</span>
+<span class="sd">                are loaded instead of only `web_page`. Requires `lxml` package.</span>
 <span class="sd">            base_url: If `load_all_paths` is True, the relative paths are</span>
 <span class="sd">                appended to this base url. Defaults to `web_page`.</span>
 <span class="sd">            content_selector: The CSS selector for the content to load.</span>
@@ -268,46 +275,324 @@
 <span class="sd">            show_progress: whether to show a progress bar while loading. Default: True</span>
 <span class="sd">            sitemap_url: Custom sitemap URL to use when load_all_paths is True.</span>
 <span class="sd">                Defaults to "{base_url}/sitemap.xml".</span>
+<span class="sd">            allowed_domains: Optional set of allowed domains to fetch from.</span>
+<span class="sd">                If None (default), the loader will restrict crawling to the domain</span>
+<span class="sd">                of the `web_page` URL to prevent potential SSRF vulnerabilities.</span>
+<span class="sd">                Provide an explicit set (e.g., {"example.com", "docs.example.com"})</span>
+<span class="sd">                to allow crawling across multiple domains. Use with caution in</span>
+<span class="sd">                server environments where users might control the input URLs.</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="n">base_url</span> <span class="ow">or</span> <span class="n">web_page</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"/"</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">load_all_paths</span><span class="p">:</span>
-            <span class="c1"># set web_path to the sitemap if we want to crawl all paths</span>
-            <span class="k">if</span> <span class="n">sitemap_url</span><span class="p">:</span>
-                <span class="n">web_page</span> <span class="o">=</span> <span class="n">sitemap_url</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">web_page</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/sitemap.xml"</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">web_paths</span><span class="o">=</span><span class="p">(</span><span class="n">web_page</span><span class="p">,),</span>
-            <span class="n">continue_on_failure</span><span class="o">=</span><span class="n">continue_on_failure</span><span class="p">,</span>
-            <span class="n">show_progress</span><span class="o">=</span><span class="n">show_progress</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">web_page</span> <span class="o">=</span> <span class="n">web_page</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_all_paths</span> <span class="o">=</span> <span class="n">load_all_paths</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">content_selector</span> <span class="o">=</span> <span class="n">content_selector</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">content_selector</span> <span class="o">=</span> <span class="n">content_selector</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">continue_on_failure</span> <span class="o">=</span> <span class="n">continue_on_failure</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_progress</span> <span class="o">=</span> <span class="n">show_progress</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allowed_domains</span> <span class="o">=</span> <span class="n">allowed_domains</span>
 
+        <span class="c1"># If allowed_domains is not specified, extract domain from web_page as default</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_domains</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">initial_domain</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">web_page</span><span class="p">)</span><span class="o">.</span><span class="n">netloc</span>
+            <span class="k">if</span> <span class="n">initial_domain</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">allowed_domains</span> <span class="o">=</span> <span class="p">{</span><span class="n">initial_domain</span><span class="p">}</span>
+
+        <span class="c1"># Determine the starting URL (either a sitemap or a direct page)</span>
+        <span class="k">if</span> <span class="n">load_all_paths</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_url</span> <span class="o">=</span> <span class="n">sitemap_url</span> <span class="ow">or</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="si">}</span><span class="s2">/sitemap.xml"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">start_url</span> <span class="o">=</span> <span class="n">web_page</span>
+
+        <span class="c1"># Validate the start_url is allowed</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_url_allowed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_url</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Domain in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">start_url</span><span class="si">}</span><span class="s2"> is not in the allowed domains list: "</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">allowed_domains</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_is_url_allowed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Check if a URL has an allowed scheme and domain."""</span>
+        <span class="c1"># It's assumed self.allowed_domains is always set by __init__</span>
+        <span class="c1"># either explicitly or derived from web_page. If it's somehow still</span>
+        <span class="c1"># None here, it indicates an initialization issue, so denying is safer.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_domains</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># Should not happen if init worked</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+
+            <span class="c1"># 1. Validate scheme (Minimal Enhancement)</span>
+            <span class="k">if</span> <span class="n">parsed</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"http"</span><span class="p">,</span> <span class="s2">"https"</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="c1"># 2. Validate domain (Existing logic - handles suffix correctly)</span>
+            <span class="c1"># Ensure netloc is not empty before checking membership</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">allowed_domains</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># Catch potential urlparse errors</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_safe_add_url</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">url_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">url_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"URL"</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Safely add a URL to a list if it's from an allowed domain.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            url_list: The list to add the URL to</span>
+<span class="sd">            url: The URL to add</span>
+<span class="sd">            url_type: Type of URL for warning message (e.g., "sitemap", "content")</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if URL was added, False if skipped</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_url_allowed</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+            <span class="n">url_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Skipping disallowed </span><span class="si">{</span><span class="n">url_type</span><span class="si">}</span><span class="s2"> URL: </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_create_web_loader</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">url_or_urls</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">WebBaseLoader</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Create a new WebBaseLoader instance for the given URL(s).</span>
+
+<span class="sd">        This ensures each operation gets its own isolated WebBaseLoader.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">WebBaseLoader</span><span class="p">(</span>
+            <span class="n">web_path</span><span class="o">=</span><span class="n">url_or_urls</span><span class="p">,</span>
+            <span class="n">continue_on_failure</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">continue_on_failure</span><span class="p">,</span>
+            <span class="n">show_progress</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">show_progress</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_is_sitemap_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">soup</span><span class="p">:</span> <span class="n">BeautifulSoup</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Check if the soup contains a sitemap index."""</span>
+        <span class="k">return</span> <span class="n">soup</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"sitemapindex"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_extract_sitemap_urls</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">soup</span><span class="p">:</span> <span class="n">BeautifulSoup</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Extract sitemap URLs from a sitemap index."""</span>
+        <span class="n">sitemap_tags</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">"sitemap"</span><span class="p">)</span>
+        <span class="n">urls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">sitemap</span> <span class="ow">in</span> <span class="n">sitemap_tags</span><span class="p">:</span>
+            <span class="n">loc</span> <span class="o">=</span> <span class="n">sitemap</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"loc"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">loc</span> <span class="ow">and</span> <span class="n">loc</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_safe_add_url</span><span class="p">(</span><span class="n">urls</span><span class="p">,</span> <span class="n">loc</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s2">"sitemap"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">urls</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_process_sitemap</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">soup</span><span class="p">:</span> <span class="n">BeautifulSoup</span><span class="p">,</span>
+        <span class="n">processed_urls</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">web_loader</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">WebBaseLoader</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Process a sitemap, handling both direct content URLs and sitemap indexes.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            soup: The BeautifulSoup object of the sitemap</span>
+<span class="sd">            processed_urls: Set of already processed URLs to avoid cycles</span>
+<span class="sd">            web_loader: WebBaseLoader instance to reuse for all requests,</span>
+<span class="sd">                created if None</span>
+<span class="sd">        """</span>
+        <span class="c1"># Create a loader if not provided</span>
+        <span class="k">if</span> <span class="n">web_loader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">web_loader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_web_loader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_url</span><span class="p">)</span>
+
+        <span class="c1"># If it's a sitemap index, recursively process each sitemap URL</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_sitemap_index</span><span class="p">(</span><span class="n">soup</span><span class="p">):</span>
+            <span class="n">sitemap_urls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_sitemap_urls</span><span class="p">(</span><span class="n">soup</span><span class="p">)</span>
+            <span class="n">all_content_urls</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="k">for</span> <span class="n">sitemap_url</span> <span class="ow">in</span> <span class="n">sitemap_urls</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">sitemap_url</span> <span class="ow">in</span> <span class="n">processed_urls</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"Skipping already processed sitemap URL: </span><span class="si">{</span><span class="n">sitemap_url</span><span class="si">}</span><span class="s2">"</span>
+                    <span class="p">)</span>
+                    <span class="k">continue</span>
+
+                <span class="n">processed_urls</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sitemap_url</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># Temporarily override the web_path of the loader</span>
+                    <span class="n">original_web_paths</span> <span class="o">=</span> <span class="n">web_loader</span><span class="o">.</span><span class="n">web_paths</span>
+                    <span class="n">web_loader</span><span class="o">.</span><span class="n">web_paths</span> <span class="o">=</span> <span class="p">[</span><span class="n">sitemap_url</span><span class="p">]</span>
+
+                    <span class="c1"># Reuse the same loader for the next sitemap,</span>
+                    <span class="c1"># explicitly use lxml-xml</span>
+                    <span class="n">sitemap_soup</span> <span class="o">=</span> <span class="n">web_loader</span><span class="o">.</span><span class="n">scrape</span><span class="p">(</span><span class="n">parser</span><span class="o">=</span><span class="s2">"lxml-xml"</span><span class="p">)</span>
+
+                    <span class="c1"># Restore original web_paths</span>
+                    <span class="n">web_loader</span><span class="o">.</span><span class="n">web_paths</span> <span class="o">=</span> <span class="n">original_web_paths</span>
+
+                    <span class="c1"># Recursive call with the same loader</span>
+                    <span class="n">content_urls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_sitemap</span><span class="p">(</span>
+                        <span class="n">sitemap_soup</span><span class="p">,</span> <span class="n">processed_urls</span><span class="p">,</span> <span class="n">web_loader</span>
+                    <span class="p">)</span>
+                    <span class="n">all_content_urls</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">content_urls</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">continue_on_failure</span><span class="p">:</span>
+                        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error processing sitemap </span><span class="si">{</span><span class="n">sitemap_url</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span>
+
+            <span class="k">return</span> <span class="n">all_content_urls</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># It's a content sitemap, so extract content URLs</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_paths</span><span class="p">(</span><span class="n">soup</span><span class="p">)</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_aprocess_sitemap</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">soup</span><span class="p">:</span> <span class="n">BeautifulSoup</span><span class="p">,</span>
+        <span class="n">base_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">processed_urls</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">web_loader</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">WebBaseLoader</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Async version of _process_sitemap.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            soup: The BeautifulSoup object of the sitemap</span>
+<span class="sd">            base_url: The base URL for relative paths</span>
+<span class="sd">            processed_urls: Set of already processed URLs to avoid cycles</span>
+<span class="sd">            web_loader: WebBaseLoader instance to reuse for all requests,</span>
+<span class="sd">                created if None</span>
+<span class="sd">        """</span>
+        <span class="c1"># Create a loader if not provided</span>
+        <span class="k">if</span> <span class="n">web_loader</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">web_loader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_web_loader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_url</span><span class="p">)</span>
+
+        <span class="c1"># If it's a sitemap index, recursively process each sitemap URL</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_sitemap_index</span><span class="p">(</span><span class="n">soup</span><span class="p">):</span>
+            <span class="n">sitemap_urls</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_sitemap_urls</span><span class="p">(</span><span class="n">soup</span><span class="p">)</span>
+            <span class="n">all_content_urls</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1"># Filter out already processed URLs</span>
+            <span class="n">new_urls</span> <span class="o">=</span> <span class="p">[</span><span class="n">url</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">sitemap_urls</span> <span class="k">if</span> <span class="n">url</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">processed_urls</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">new_urls</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[]</span>
+
+            <span class="c1"># Update the web_paths of the loader to fetch all sitemaps at once</span>
+            <span class="n">original_web_paths</span> <span class="o">=</span> <span class="n">web_loader</span><span class="o">.</span><span class="n">web_paths</span>
+            <span class="n">web_loader</span><span class="o">.</span><span class="n">web_paths</span> <span class="o">=</span> <span class="n">new_urls</span>
+
+            <span class="c1"># Use the same WebBaseLoader's ascrape_all for efficient parallel</span>
+            <span class="c1"># fetching, explicitly use lxml-xml</span>
+            <span class="n">soups</span> <span class="o">=</span> <span class="k">await</span> <span class="n">web_loader</span><span class="o">.</span><span class="n">ascrape_all</span><span class="p">(</span><span class="n">new_urls</span><span class="p">,</span> <span class="n">parser</span><span class="o">=</span><span class="s2">"lxml-xml"</span><span class="p">)</span>
+
+            <span class="c1"># Restore original web_paths</span>
+            <span class="n">web_loader</span><span class="o">.</span><span class="n">web_paths</span> <span class="o">=</span> <span class="n">original_web_paths</span>
+
+            <span class="k">for</span> <span class="n">sitemap_url</span><span class="p">,</span> <span class="n">sitemap_soup</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">new_urls</span><span class="p">,</span> <span class="n">soups</span><span class="p">):</span>
+                <span class="n">processed_urls</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sitemap_url</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># Recursive call with the same loader</span>
+                    <span class="n">content_urls</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aprocess_sitemap</span><span class="p">(</span>
+                        <span class="n">sitemap_soup</span><span class="p">,</span> <span class="n">base_url</span><span class="p">,</span> <span class="n">processed_urls</span><span class="p">,</span> <span class="n">web_loader</span>
+                    <span class="p">)</span>
+                    <span class="n">all_content_urls</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">content_urls</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">continue_on_failure</span><span class="p">:</span>
+                        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Error processing sitemap </span><span class="si">{</span><span class="n">sitemap_url</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span>
+
+            <span class="k">return</span> <span class="n">all_content_urls</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># It's a content sitemap, so extract content URLs</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_paths</span><span class="p">(</span><span class="n">soup</span><span class="p">)</span>
 
 <div class="viewcode-block" id="GitbookLoader.lazy_load">
 <a class="viewcode-back" href="../../../community/document_loaders/langchain_community.document_loaders.gitbook.GitbookLoader.html#langchain_community.document_loaders.gitbook.GitbookLoader.lazy_load">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">lazy_load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Fetch text from one single GitBook page."""</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_all_paths</span><span class="p">:</span>
-            <span class="n">soup_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape</span><span class="p">()</span>
-            <span class="n">relative_paths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_paths</span><span class="p">(</span><span class="n">soup_info</span><span class="p">)</span>
-            <span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="n">urljoin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span> <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">relative_paths</span><span class="p">]</span>
-            <span class="n">soup_infos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape_all</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Fetch text from one single GitBook page or recursively from sitemap."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_all_paths</span><span class="p">:</span>
+            <span class="c1"># Simple case: load a single page</span>
+            <span class="n">temp_loader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_web_loader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">web_page</span><span class="p">)</span>
+            <span class="n">soup</span> <span class="o">=</span> <span class="n">temp_loader</span><span class="o">.</span><span class="n">scrape</span><span class="p">()</span>
+            <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_document</span><span class="p">(</span><span class="n">soup</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">web_page</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">doc</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">doc</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Get initial sitemap using the recursive method</span>
+            <span class="n">temp_loader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_web_loader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_url</span><span class="p">)</span>
+            <span class="c1"># Explicitly use lxml-xml for parsing the initial sitemap</span>
+            <span class="n">soup_info</span> <span class="o">=</span> <span class="n">temp_loader</span><span class="o">.</span><span class="n">scrape</span><span class="p">(</span><span class="n">parser</span><span class="o">=</span><span class="s2">"lxml-xml"</span><span class="p">)</span>
+
+            <span class="c1"># Process sitemap(s) recursively to get all content URLs</span>
+            <span class="n">processed_urls</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="n">relative_paths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_sitemap</span><span class="p">(</span><span class="n">soup_info</span><span class="p">,</span> <span class="n">processed_urls</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">relative_paths</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_progress</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No content URLs found in sitemap at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">start_url</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+            <span class="c1"># Build full URLs from relative paths</span>
+            <span class="n">urls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">relative_paths</span><span class="p">:</span>
+                <span class="c1"># URLs are now already absolute from _get_paths</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_safe_add_url</span><span class="p">(</span><span class="n">urls</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">urls</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="c1"># Create a loader for content pages</span>
+            <span class="n">content_loader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_web_loader</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span>
+
+            <span class="c1"># Use WebBaseLoader to fetch all pages</span>
+            <span class="n">soup_infos</span> <span class="o">=</span> <span class="n">content_loader</span><span class="o">.</span><span class="n">scrape_all</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span>
+
             <span class="k">for</span> <span class="n">soup_info</span><span class="p">,</span> <span class="n">url</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">soup_infos</span><span class="p">,</span> <span class="n">urls</span><span class="p">):</span>
                 <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_document</span><span class="p">(</span><span class="n">soup_info</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">doc</span><span class="p">:</span>
-                    <span class="k">yield</span> <span class="n">doc</span>
+                    <span class="k">yield</span> <span class="n">doc</span></div>
 
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">soup_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scrape</span><span class="p">()</span>
-            <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_document</span><span class="p">(</span><span class="n">soup_info</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">web_path</span><span class="p">)</span>
+
+<div class="viewcode-block" id="GitbookLoader.alazy_load">
+<a class="viewcode-back" href="../../../community/document_loaders/langchain_community.document_loaders.gitbook.GitbookLoader.html#langchain_community.document_loaders.gitbook.GitbookLoader.alazy_load">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">alazy_load</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncIterator</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Asynchronously fetch text from GitBook page(s)."""</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_all_paths</span><span class="p">:</span>
+            <span class="c1"># Simple case: load a single page asynchronously</span>
+            <span class="n">temp_loader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_web_loader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">web_page</span><span class="p">)</span>
+            <span class="n">soups</span> <span class="o">=</span> <span class="k">await</span> <span class="n">temp_loader</span><span class="o">.</span><span class="n">ascrape_all</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">web_page</span><span class="p">])</span>
+            <span class="n">soup_info</span> <span class="o">=</span> <span class="n">soups</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_document</span><span class="p">(</span><span class="n">soup_info</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">web_page</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">doc</span><span class="p">:</span>
-                <span class="k">yield</span> <span class="n">doc</span></div>
+                <span class="k">yield</span> <span class="n">doc</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Get initial sitemap - web_loader will be created in _aprocess_sitemap</span>
+            <span class="n">temp_loader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_web_loader</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">start_url</span><span class="p">)</span>
+            <span class="c1"># Explicitly use lxml-xml for parsing the initial sitemap</span>
+            <span class="n">soups</span> <span class="o">=</span> <span class="k">await</span> <span class="n">temp_loader</span><span class="o">.</span><span class="n">ascrape_all</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">start_url</span><span class="p">],</span> <span class="n">parser</span><span class="o">=</span><span class="s2">"lxml-xml"</span><span class="p">)</span>
+            <span class="n">soup_info</span> <span class="o">=</span> <span class="n">soups</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="c1"># Process sitemap(s) recursively to get all content URLs</span>
+            <span class="n">processed_urls</span><span class="p">:</span> <span class="n">Set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+            <span class="n">relative_paths</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_aprocess_sitemap</span><span class="p">(</span>
+                <span class="n">soup_info</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_url</span><span class="p">,</span> <span class="n">processed_urls</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">relative_paths</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">show_progress</span><span class="p">:</span>
+                <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No content URLs found in sitemap at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">start_url</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+            <span class="c1"># Build full URLs from relative paths</span>
+            <span class="n">urls</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">relative_paths</span><span class="p">:</span>
+                <span class="c1"># URLs are now already absolute from _get_paths</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_safe_add_url</span><span class="p">(</span><span class="n">urls</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="s2">"content"</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">urls</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="c1"># Create a loader for content pages</span>
+            <span class="n">content_loader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_web_loader</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span>
+
+            <span class="c1"># Use WebBaseLoader's ascrape_all for efficient parallel fetching</span>
+            <span class="n">soup_infos</span> <span class="o">=</span> <span class="k">await</span> <span class="n">content_loader</span><span class="o">.</span><span class="n">ascrape_all</span><span class="p">(</span><span class="n">urls</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">soup_info</span><span class="p">,</span> <span class="n">url</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">soup_infos</span><span class="p">,</span> <span class="n">urls</span><span class="p">):</span>
+                <span class="n">maybe_doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_document</span><span class="p">(</span><span class="n">soup_info</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">maybe_doc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">yield</span> <span class="n">maybe_doc</span></div>
 
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_document</span><span class="p">(</span>
@@ -320,12 +605,18 @@
         <span class="n">content</span> <span class="o">=</span> <span class="n">page_content_raw</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">separator</span><span class="o">=</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="n">title_if_exists</span> <span class="o">=</span> <span class="n">page_content_raw</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">"h1"</span><span class="p">)</span>
         <span class="n">title</span> <span class="o">=</span> <span class="n">title_if_exists</span><span class="o">.</span><span class="n">text</span> <span class="k">if</span> <span class="n">title_if_exists</span> <span class="k">else</span> <span class="s2">""</span>
-        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"source"</span><span class="p">:</span> <span class="n">custom_url</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">web_path</span><span class="p">,</span> <span class="s2">"title"</span><span class="p">:</span> <span class="n">title</span><span class="p">}</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"source"</span><span class="p">:</span> <span class="n">custom_url</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">web_page</span><span class="p">,</span> <span class="s2">"title"</span><span class="p">:</span> <span class="n">title</span><span class="p">}</span>
         <span class="k">return</span> <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_get_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">soup</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">"""Fetch all relative paths in the navbar."""</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">urlparse</span><span class="p">(</span><span class="n">loc</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">path</span> <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">"loc"</span><span class="p">)]</span></div>
+<span class="w">        </span><span class="sd">"""Fetch all URLs in the sitemap."""</span>
+        <span class="n">urls</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">loc</span> <span class="ow">in</span> <span class="n">soup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">"loc"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">loc</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+                <span class="c1"># Instead of extracting just the path, keep the full URL</span>
+                <span class="c1"># to preserve domain information</span>
+                <span class="n">urls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">loc</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">urls</span></div>
 
 </pre></div>
 </article>
