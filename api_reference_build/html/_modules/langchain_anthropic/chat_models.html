@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="May 08, 2025" name="docbuild:last-update"/>
+<meta content="May 09, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -1093,29 +1093,46 @@
 <span class="sd">        See LangChain `docs &lt;https://python.langchain.com/docs/integrations/chat/anthropic/&gt;`_</span>
 <span class="sd">        for more detail.</span>
 
-<span class="sd">        .. code-block:: python</span>
+<span class="sd">        Web search:</span>
 
-<span class="sd">            from langchain_anthropic import ChatAnthropic</span>
+<span class="sd">            .. code-block:: python</span>
 
-<span class="sd">            llm = ChatAnthropic(model="claude-3-7-sonnet-20250219")</span>
+<span class="sd">                from langchain_anthropic import ChatAnthropic</span>
 
-<span class="sd">            tool = {"type": "text_editor_20250124", "name": "str_replace_editor"}</span>
-<span class="sd">            llm_with_tools = llm.bind_tools([tool])</span>
+<span class="sd">                llm = ChatAnthropic(model="claude-3-5-sonnet-latest")</span>
 
-<span class="sd">            response = llm_with_tools.invoke(</span>
-<span class="sd">                "There's a syntax error in my primes.py file. Can you help me fix it?"</span>
-<span class="sd">            )</span>
-<span class="sd">            print(response.text())</span>
-<span class="sd">            response.tool_calls</span>
+<span class="sd">                tool = {"type": "web_search_20250305", "name": "web_search", "max_uses": 3}</span>
+<span class="sd">                llm_with_tools = llm.bind_tools([tool])</span>
 
-<span class="sd">        .. code-block:: none</span>
+<span class="sd">                response = llm_with_tools.invoke(</span>
+<span class="sd">                    "How do I update a web app to TypeScript 5.5?"</span>
+<span class="sd">                )</span>
 
-<span class="sd">            I'd be happy to help you fix the syntax error in your primes.py file. First, let's look at the current content of the file to identify the error.</span>
+<span class="sd">        Text editor:</span>
 
-<span class="sd">            [{'name': 'str_replace_editor',</span>
-<span class="sd">            'args': {'command': 'view', 'path': '/repo/primes.py'},</span>
-<span class="sd">            'id': 'toolu_01VdNgt1YV7kGfj9LFLm6HyQ',</span>
-<span class="sd">            'type': 'tool_call'}]</span>
+<span class="sd">            .. code-block:: python</span>
+
+<span class="sd">                from langchain_anthropic import ChatAnthropic</span>
+
+<span class="sd">                llm = ChatAnthropic(model="claude-3-7-sonnet-20250219")</span>
+
+<span class="sd">                tool = {"type": "text_editor_20250124", "name": "str_replace_editor"}</span>
+<span class="sd">                llm_with_tools = llm.bind_tools([tool])</span>
+
+<span class="sd">                response = llm_with_tools.invoke(</span>
+<span class="sd">                    "There's a syntax error in my primes.py file. Can you help me fix it?"</span>
+<span class="sd">                )</span>
+<span class="sd">                print(response.text())</span>
+<span class="sd">                response.tool_calls</span>
+
+<span class="sd">            .. code-block:: none</span>
+
+<span class="sd">                I'd be happy to help you fix the syntax error in your primes.py file. First, let's look at the current content of the file to identify the error.</span>
+
+<span class="sd">                [{'name': 'str_replace_editor',</span>
+<span class="sd">                'args': {'command': 'view', 'path': '/repo/primes.py'},</span>
+<span class="sd">                'id': 'toolu_01VdNgt1YV7kGfj9LFLm6HyQ',</span>
+<span class="sd">                'type': 'tool_call'}]</span>
 
 <span class="sd">    Response metadata</span>
 <span class="sd">        .. code-block:: python</span>

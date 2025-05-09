@@ -54,7 +54,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="May 08, 2025" name="docbuild:last-update"/>
+<meta content="May 09, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -721,7 +721,24 @@ Total tokens: 408
 </dd>
 <dt>Built-in tools:</dt><dd><p>See LangChain <a class="reference external" href="https://python.langchain.com/docs/integrations/chat/anthropic/">docs</a>
 for more detail.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_anthropic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatAnthropic</span>
+<p>Web search:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_anthropic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatAnthropic</span>
+
+<span class="n">llm</span> <span class="o">=</span> <span class="n">ChatAnthropic</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"claude-3-5-sonnet-latest"</span><span class="p">)</span>
+
+<span class="n">tool</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"type"</span><span class="p">:</span> <span class="s2">"web_search_20250305"</span><span class="p">,</span> <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"web_search"</span><span class="p">,</span> <span class="s2">"max_uses"</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="n">llm_with_tools</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">bind_tools</span><span class="p">([</span><span class="n">tool</span><span class="p">])</span>
+
+<span class="n">response</span> <span class="o">=</span> <span class="n">llm_with_tools</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span>
+    <span class="s2">"How do I update a web app to TypeScript 5.5?"</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>Text editor:</p>
+<blockquote>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">langchain_anthropic</span><span class="w"> </span><span class="kn">import</span> <span class="n">ChatAnthropic</span>
 
 <span class="n">llm</span> <span class="o">=</span> <span class="n">ChatAnthropic</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"claude-3-7-sonnet-20250219"</span><span class="p">)</span>
 
@@ -743,6 +760,7 @@ for more detail.</p>
 'type': 'tool_call'}]
 </pre></div>
 </div>
+</div></blockquote>
 </dd>
 <dt>Response metadata</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ai_msg</span> <span class="o">=</span> <span class="n">llm</span><span class="o">.</span><span class="n">invoke</span><span class="p">(</span><span class="n">messages</span><span class="p">)</span>
 <span class="n">ai_msg</span><span class="o">.</span><span class="n">response_metadata</span>
