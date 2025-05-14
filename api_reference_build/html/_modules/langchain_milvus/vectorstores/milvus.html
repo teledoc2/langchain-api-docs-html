@@ -52,7 +52,7 @@
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
 <meta content="en" name="docsearch:language"/>
 <meta content="" name="docsearch:version"/>
-<meta content="May 13, 2025" name="docbuild:last-update"/>
+<meta content="May 14, 2025" name="docbuild:last-update"/>
 </head>
 <body data-bs-root-margin="0px 0px -60%" data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-default-mode="" data-offset="180">
 <div class="skip-link d-print-none" id="pst-skip-link"><a href="#main-content">Skip to main content</a></div>
@@ -243,6 +243,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">langchain_core.vectorstores</span><span class="w"> </span><span class="kn">import</span> <span class="n">VectorStore</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pymilvus</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">AnnSearchRequest</span><span class="p">,</span>
+    <span class="n">AsyncMilvusClient</span><span class="p">,</span>
     <span class="n">Collection</span><span class="p">,</span>
     <span class="n">CollectionSchema</span><span class="p">,</span>
     <span class="n">DataType</span><span class="p">,</span>
@@ -604,6 +605,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_milvus_client</span> <span class="o">=</span> <span class="n">MilvusClient</span><span class="p">(</span>
             <span class="o">**</span><span class="n">connection_args</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_async_milvus_client</span> <span class="o">=</span> <span class="n">AsyncMilvusClient</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">connection_args</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">alias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">_using</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Collection</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -784,6 +788,11 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MilvusClient</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Get client."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_milvus_client</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">aclient</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">AsyncMilvusClient</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Get async client."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_async_milvus_client</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">vector_fields</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -2087,9 +2096,9 @@
 
 <div class="viewcode-block" id="Milvus.delete">
 <a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.delete">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span>  <span class="c1"># type: ignore[no-untyped-def]</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">expr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">str</span>
-    <span class="p">):</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Delete by vector ID or boolean expression.</span>
 <span class="sd">        Refer to [Milvus documentation](https://milvus.io/docs/delete_data.md)</span>
 <span class="sd">        for notes and examples of expressions.</span>
@@ -2098,6 +2107,10 @@
 <span class="sd">            ids: List of ids to delete.</span>
 <span class="sd">            expr: Boolean expression that specifies the entities to delete.</span>
 <span class="sd">            kwargs: Other parameters in Milvus delete api.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Optional[bool]: True if deletion is successful,</span>
+<span class="sd">            False otherwise.</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">expr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -2109,7 +2122,14 @@
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
                 <span class="n">expr</span><span class="p">,</span> <span class="nb">str</span>
             <span class="p">),</span> <span class="s2">"Either ids list or expr string must be provided."</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">expr</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># type: ignore[union-attr]</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="n">MilvusException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">"Failed to delete entities: </span><span class="si">%s</span><span class="s2"> error: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span> <span class="n">e</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="Milvus.from_texts">
@@ -2379,6 +2399,983 @@
 
         <span class="k">try</span><span class="p">:</span>
             <span class="n">results</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
+                <span class="nb">filter</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span>
+                <span class="n">output_fields</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span>
+                <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span>
+                <span class="n">Document</span><span class="p">(</span><span class="n">page_content</span><span class="o">=</span><span class="n">result</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_text_field</span><span class="p">],</span> <span class="n">metadata</span><span class="o">=</span><span class="n">result</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span>
+            <span class="p">]</span>
+        <span class="k">except</span> <span class="n">MilvusException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Metadata search failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span></div>
+
+
+<div class="viewcode-block" id="Milvus.aadd_texts">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.aadd_texts">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">aadd_texts</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">texts</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">metadatas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Insert text data into Milvus asynchronously.</span>
+
+<span class="sd">        Inserting data when the collection has not be made yet will result</span>
+<span class="sd">        in creating a new Collection. The data of the first entity decides</span>
+<span class="sd">        the schema of the new collection, the dim is extracted from the first</span>
+<span class="sd">        embedding and the columns are decided by the first metadata dict.</span>
+<span class="sd">        Metadata keys will need to be present for all inserted values. At</span>
+<span class="sd">        the moment there is no None equivalent in Milvus.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            texts (Iterable[str]): The texts to embed, it is assumed</span>
+<span class="sd">                that they all fit in memory.</span>
+<span class="sd">            metadatas (Optional[List[dict]]): Metadata dicts attached to each of</span>
+<span class="sd">                the texts. Defaults to None.</span>
+<span class="sd">            should be less than 65535 bytes. Required and work when auto_id is False.</span>
+<span class="sd">            timeout (Optional[float]): Timeout for each batch insert. Defaults</span>
+<span class="sd">                to None.</span>
+<span class="sd">            batch_size (int, optional): Batch size to use for insertion.</span>
+<span class="sd">                Defaults to 1000.</span>
+<span class="sd">            ids (Optional[List[str]]): List of text ids. The length of each item</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            MilvusException: Failure to add texts</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[str]: The resulting keys for each inserted element.</span>
+<span class="sd">        """</span>
+        <span class="n">texts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_id</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="nb">list</span><span class="p">),</span> <span class="p">(</span>
+                <span class="s2">"A list of valid ids are required when auto_id is False. "</span>
+                <span class="s2">"You can set `auto_id` to True in this Milvus instance to generate "</span>
+                <span class="s2">"ids automatically, or specify string-type ids for each text."</span>
+            <span class="p">)</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">ids</span><span class="p">))</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">texts</span>
+            <span class="p">),</span> <span class="s2">"Different lengths of texts and unique ids are provided."</span>
+            <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">),</span> <span class="s2">"All ids should be strings."</span>
+            <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span> <span class="o">&lt;=</span> <span class="mi">65_535</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ids</span>
+            <span class="p">),</span> <span class="s2">"Each id should be a string less than 65535 bytes."</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">"The ids parameter is ignored when auto_id is True. "</span>
+                    <span class="s2">"The ids will be generated automatically."</span>
+                <span class="p">)</span>
+
+        <span class="n">embeddings_functions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">)</span>
+        <span class="n">embeddings</span><span class="p">:</span> <span class="n">List</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">embedding_func</span> <span class="ow">in</span> <span class="n">embeddings_functions</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">embeddings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="k">await</span> <span class="n">embedding_func</span><span class="o">.</span><span class="n">aembed_documents</span><span class="p">(</span><span class="n">texts</span><span class="p">))</span>
+            <span class="k">except</span> <span class="ne">NotImplementedError</span><span class="p">:</span>
+                <span class="n">embeddings</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="k">await</span> <span class="n">embedding_func</span><span class="o">.</span><span class="n">aembed_query</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">texts</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Nothing to insert, skipping."</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="c1"># Transpose it into row-wise</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_multi_embedding</span><span class="p">:</span>
+            <span class="n">transposed_embeddings</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">[</span><span class="n">embeddings</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">))]</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">transposed_embeddings</span> <span class="o">=</span> <span class="n">embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="p">[]</span>
+
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">aadd_embeddings</span><span class="p">(</span>
+            <span class="n">texts</span><span class="o">=</span><span class="n">texts</span><span class="p">,</span>
+            <span class="n">embeddings</span><span class="o">=</span><span class="n">transposed_embeddings</span><span class="p">,</span>
+            <span class="n">metadatas</span><span class="o">=</span><span class="n">metadatas</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">ids</span><span class="o">=</span><span class="n">ids</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Milvus.aadd_embeddings">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.aadd_embeddings">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">aadd_embeddings</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">texts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">embeddings</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">|</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]],</span>
+        <span class="n">metadatas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Insert text data with embeddings vectors into Milvus asynchronously.</span>
+
+<span class="sd">        This method inserts a batch of text embeddings into a Milvus collection.</span>
+<span class="sd">        If the collection is not initialized, it will automatically initialize</span>
+<span class="sd">        the collection based on the embeddings,metadatas, and other parameters.</span>
+<span class="sd">        The embeddings are expected to be pre-generated using compatible embedding</span>
+<span class="sd">        functions, and the metadata associated with each text is optional but</span>
+<span class="sd">        must match the number of texts.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            texts (List[str]): the texts to insert</span>
+<span class="sd">            embeddings (List[List[float]] | List[List[List[float]]]):</span>
+<span class="sd">                A vector embeddings for each text (in case of a single vector)</span>
+<span class="sd">                or list of vectors for each text (in case of multi-vector)</span>
+<span class="sd">            metadatas (Optional[List[dict]]): Metadata dicts attached to each of</span>
+<span class="sd">                the texts. Defaults to None.</span>
+<span class="sd">            should be less than 65535 bytes. Required and work when auto_id is False.</span>
+<span class="sd">            timeout (Optional[float]): Timeout for each batch insert. Defaults</span>
+<span class="sd">                to None.</span>
+<span class="sd">            batch_size (int, optional): Batch size to use for insertion.</span>
+<span class="sd">                Defaults to 1000.</span>
+<span class="sd">            ids (Optional[List[str]]): List of text ids. The length of each item</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            MilvusException: Failure to add texts and embeddings</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[str]: The resulting keys for each inserted element.</span>
+<span class="sd">        """</span>
+
+        <span class="k">if</span> <span class="n">embeddings</span><span class="p">:</span>
+            <span class="c1"># row-wise -&gt; field-wise</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_multi_embedding</span><span class="p">:</span>
+                <span class="n">embeddings</span> <span class="o">=</span> <span class="p">[[</span><span class="n">embedding</span><span class="p">]</span> <span class="k">for</span> <span class="n">embedding</span> <span class="ow">in</span> <span class="n">embeddings</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
+            <span class="c1"># Transpose embeddings to make it a list of embeddings of each type.</span>
+            <span class="n">embeddings</span> <span class="o">=</span> <span class="p">[</span>  <span class="c1"># type: ignore</span>
+                <span class="p">[</span><span class="n">embeddings</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">))]</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">embeddings</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="p">]</span>
+
+        <span class="c1"># If the collection hasn't been initialized yet, perform all steps to do so</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="p">,</span> <span class="n">Collection</span><span class="p">):</span>
+            <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"embeddings"</span><span class="p">:</span> <span class="n">embeddings</span><span class="p">,</span> <span class="s2">"metadatas"</span><span class="p">:</span> <span class="n">metadatas</span><span class="p">}</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_names</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">"partition_names"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_names</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">replica_number</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">"replica_number"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">replica_number</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">"timeout"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="n">insert_list</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">vector_field_embeddings</span> <span class="ow">in</span> <span class="n">embeddings</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">vector_field_embeddings</span>
+            <span class="p">),</span> <span class="s2">"Mismatched lengths of texts and embeddings."</span>
+
+        <span class="k">if</span> <span class="n">metadatas</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="n">metadatas</span>
+            <span class="p">),</span> <span class="s2">"Mismatched lengths of texts and metadatas."</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)),</span> <span class="n">texts</span><span class="p">):</span>
+            <span class="n">entity_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="n">metadatas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">metadatas</span> <span class="k">else</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">auto_id</span><span class="p">:</span>
+                <span class="n">entity_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_primary_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">ids</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># type: ignore[index]</span>
+
+            <span class="n">entity_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_text_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">text</span>
+
+            <span class="k">for</span> <span class="n">vector_field</span><span class="p">,</span> <span class="n">vector_field_embeddings</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_vector_fields_from_embedding</span><span class="p">,</span> <span class="n">embeddings</span>
+            <span class="p">):</span>
+                <span class="n">entity_dict</span><span class="p">[</span><span class="n">vector_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">vector_field_embeddings</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metadata_field</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_dynamic_field</span><span class="p">:</span>
+                <span class="n">entity_dict</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_metadata_field</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="c1"># if not enable_dynamic_field, skip fields not in the collection.</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_dynamic_field</span> <span class="ow">and</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="c1"># If enable_dynamic_field, all fields are allowed.</span>
+                    <span class="n">entity_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+            <span class="n">insert_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entity_dict</span><span class="p">)</span>
+
+        <span class="c1"># Total insert count</span>
+        <span class="n">total_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">insert_list</span><span class="p">)</span>
+
+        <span class="n">pks</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">col</span><span class="p">,</span> <span class="n">Collection</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">total_count</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+            <span class="c1"># Grab end index</span>
+            <span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">total_count</span><span class="p">)</span>
+            <span class="n">batch_insert_list</span> <span class="o">=</span> <span class="n">insert_list</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+            <span class="c1"># Insert into the collection.</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="ow">or</span> <span class="n">timeout</span>
+                <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">aclient</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
+                    <span class="n">batch_insert_list</span><span class="p">,</span>
+                    <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="n">pks</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">res</span><span class="p">[</span><span class="s2">"ids"</span><span class="p">])</span>
+            <span class="k">except</span> <span class="n">MilvusException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">first_entity</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">if</span> <span class="n">batch_insert_list</span><span class="p">:</span>
+                    <span class="n">first_entity</span> <span class="o">=</span> <span class="n">batch_insert_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">log_entity</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">first_entity</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+                        <span class="n">log_entity</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">v</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span><span class="si">}</span><span class="s2">... (truncated, total len: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span><span class="si">}</span><span class="s2">)"</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">log_entity</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                    <span class="s2">"Failed to insert batch starting at entity: </span><span class="si">%s</span><span class="s2">/</span><span class="si">%s</span><span class="s2">. "</span>
+                    <span class="s2">"First entity data: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="n">total_count</span><span class="p">,</span>
+                    <span class="n">log_entity</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">raise</span> <span class="n">e</span>
+        <span class="k">return</span> <span class="n">pks</span></div>
+
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_acollection_search</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">embedding_or_text</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">expr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">"""Perform an async search on an embedding or a query text and return milvus</span>
+<span class="sd">        search results.</span>
+
+<span class="sd">        For more information about the search parameters, take a look at the pymilvus</span>
+<span class="sd">        documentation found here:</span>
+<span class="sd">        https://milvus.io/api-reference/pymilvus/v2.5.x/ORM/Collection/search.md</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            embedding_or_text (List[float] | Dict[int, float] | str): The embedding</span>
+<span class="sd">                vector or query text being searched.</span>
+<span class="sd">            k (int, optional): The amount of results to return. Defaults to 4.</span>
+<span class="sd">            param (dict): The search params for the specified index.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            expr (str, optional): Filtering expression. Defaults to None.</span>
+<span class="sd">            timeout (float, optional): How long to wait before timeout error.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            kwargs: Collection.search() keyword arguments.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[List[dict]]: Milvus search result.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"No existing collection to search."</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">assert</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_multi_vector</span><span class="p">,</span> <span class="p">(</span>
+            <span class="s2">"_acollection_search does not support multi-vector search. "</span>
+            <span class="s2">"You can use _acollection_hybrid_search instead."</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">param</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_params</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+                <span class="s2">"The number of search params is larger than 1, "</span>
+                <span class="s2">"please check the search_params in this Milvus instance."</span>
+            <span class="p">)</span>
+            <span class="n">param</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_params</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_dynamic_field</span><span class="p">:</span>
+            <span class="n">output_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"*"</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">output_fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_remove_forbidden_fields</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[:])</span>
+        <span class="n">col_search_res</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">aclient</span><span class="o">.</span><span class="n">search</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">embedding_or_text</span><span class="p">],</span>
+            <span class="n">anns_field</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span>
+            <span class="n">search_params</span><span class="o">=</span><span class="n">param</span><span class="p">,</span>
+            <span class="n">limit</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+            <span class="nb">filter</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span>
+            <span class="n">output_fields</span><span class="o">=</span><span class="n">output_fields</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="ow">or</span> <span class="n">timeout</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">col_search_res</span>
+
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">_acollection_hybrid_search</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">expr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">fetch_k</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">ranker_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">"rrf"</span><span class="p">,</span> <span class="s2">"weighted"</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ranker_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]]:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Perform an async hybrid search on a query string and return milvus search</span>
+<span class="sd">        results.</span>
+
+<span class="sd">        For more information about the search parameters, take a look at the pymilvus</span>
+<span class="sd">        documentation found here:</span>
+<span class="sd">        https://milvus.io/api-reference/pymilvus/v2.5.x/ORM/Collection/hybrid_search.md</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query (str): The text being searched.</span>
+<span class="sd">            k (int, optional): The amount of results to return. Defaults to 4.</span>
+<span class="sd">            param (dict | list[dict], optional): The search params for the specified</span>
+<span class="sd">                index. Defaults to None.</span>
+<span class="sd">            expr (str, optional): Filtering expression. Defaults to None.</span>
+<span class="sd">            fetch_k (int, optional): The amount of pre-fetching results for each query.</span>
+<span class="sd">                Defaults to 4.</span>
+<span class="sd">            ranker_type (str, optional): The type of ranker to use. Defaults to None.</span>
+<span class="sd">            ranker_params (dict, optional): The parameters for the ranker.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            timeout (float, optional): How long to wait before timeout error.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            kwargs: Collection.hybrid_search() keyword arguments.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[List[dict]]: Milvus search result.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"No existing collection to search."</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">search_requests</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">reranker</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_ranker</span><span class="p">(</span>
+            <span class="n">ranker_type</span><span class="o">=</span><span class="n">ranker_type</span><span class="p">,</span>
+            <span class="n">ranker_params</span><span class="o">=</span><span class="n">ranker_params</span> <span class="ow">or</span> <span class="p">{},</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">param</span><span class="p">:</span>
+            <span class="n">param_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_params</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="n">param</span><span class="p">))</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_params</span><span class="p">)</span>
+            <span class="p">),</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"The number of search params (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="n">param</span><span class="p">))</span><span class="si">}</span><span class="s2">)"</span>
+                <span class="sa">f</span><span class="s2">" does not match the number of vector fields "</span>
+                <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">))</span><span class="si">}</span><span class="s2">)."</span>
+                <span class="sa">f</span><span class="s2">" All vector fields are: </span><span class="si">{</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">))</span><span class="si">}</span><span class="s2">,"</span>
+                <span class="s2">" please provide a list of search params for each vector field."</span>
+            <span class="p">)</span>
+            <span class="n">param_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">field</span><span class="p">,</span> <span class="n">param_dict</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">,</span> <span class="n">param_list</span><span class="p">):</span>
+            <span class="n">search_data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span>
+            <span class="k">if</span> <span class="n">field</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vector_fields_from_embedding</span><span class="p">:</span>
+                <span class="n">embedding_func</span><span class="p">:</span> <span class="n">EmbeddingType</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">)[</span>  <span class="c1"># type: ignore</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_vector_fields_from_embedding</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>
+                <span class="p">]</span>
+                <span class="n">search_data</span> <span class="o">=</span> <span class="k">await</span> <span class="n">embedding_func</span><span class="o">.</span><span class="n">aembed_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">search_data</span> <span class="o">=</span> <span class="n">query</span>
+            <span class="n">request</span> <span class="o">=</span> <span class="n">AnnSearchRequest</span><span class="p">(</span>
+                <span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="n">search_data</span><span class="p">],</span>
+                <span class="n">anns_field</span><span class="o">=</span><span class="n">field</span><span class="p">,</span>
+                <span class="n">param</span><span class="o">=</span><span class="n">param_dict</span><span class="p">,</span>
+                <span class="n">limit</span><span class="o">=</span><span class="n">fetch_k</span><span class="p">,</span>
+                <span class="n">expr</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">search_requests</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">enable_dynamic_field</span><span class="p">:</span>
+            <span class="n">output_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"*"</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">output_fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_remove_forbidden_fields</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fields</span><span class="p">[:])</span>
+        <span class="n">col_search_res</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">aclient</span><span class="o">.</span><span class="n">hybrid_search</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
+            <span class="n">reqs</span><span class="o">=</span><span class="n">search_requests</span><span class="p">,</span>
+            <span class="n">ranker</span><span class="o">=</span><span class="n">reranker</span><span class="p">,</span>
+            <span class="n">limit</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+            <span class="n">output_fields</span><span class="o">=</span><span class="n">output_fields</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="ow">or</span> <span class="n">timeout</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">col_search_res</span>
+
+<div class="viewcode-block" id="Milvus.asimilarity_search">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">asimilarity_search</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">expr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Perform an async similarity search against the query string.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query (str): The text to search.</span>
+<span class="sd">            k (int, optional): How many results to return. Defaults to 4.</span>
+<span class="sd">            param (dict | list[dict], optional): The search params for the index type.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            expr (str, optional): Filtering expression. Defaults to None.</span>
+<span class="sd">            timeout (int, optional): How long to wait before timeout error.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            kwargs: Collection.search() keyword arguments.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Document]: Document results for search.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"No existing collection to search."</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="ow">or</span> <span class="n">timeout</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">asimilarity_search_with_score</span><span class="p">(</span>
+            <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">,</span> <span class="n">expr</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">doc</span> <span class="k">for</span> <span class="n">doc</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">res</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Milvus.asimilarity_search_by_vector">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_by_vector">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">asimilarity_search_by_vector</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">embedding</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span>
+        <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">expr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Perform an async similarity search against the query vector.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            embedding (List[float]): The embedding vector to search.</span>
+<span class="sd">            k (int, optional): How many results to return. Defaults to 4.</span>
+<span class="sd">            param (dict, optional): The search params for the index type.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            expr (str, optional): Filtering expression. Defaults to None.</span>
+<span class="sd">            timeout (int, optional): How long to wait before timeout error.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            kwargs: Collection.search() keyword arguments.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Document]: Document results for search.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"No existing collection to search."</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="ow">or</span> <span class="n">timeout</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">asimilarity_search_with_score_by_vector</span><span class="p">(</span>
+            <span class="n">embedding</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">,</span> <span class="n">expr</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">doc</span> <span class="k">for</span> <span class="n">doc</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">res</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Milvus.asimilarity_search_with_score">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_with_score">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">asimilarity_search_with_score</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span> <span class="o">|</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">expr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""Perform an async search on a query string and return results with score.</span>
+
+<span class="sd">        For more information about the search parameters, take a look at the pymilvus</span>
+<span class="sd">        documentation found here:</span>
+<span class="sd">        https://milvus.io/api-reference/pymilvus/v2.5.x/ORM/Collection/search.md</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query (str): The text being searched.</span>
+<span class="sd">            k (int, optional): The amount of results to return. Defaults to 4.</span>
+<span class="sd">            param (dict | list[dict], optional): The search params for the specified</span>
+<span class="sd">            index. Defaults to None.</span>
+<span class="sd">            expr (str, optional): Filtering expression. Defaults to None.</span>
+<span class="sd">            timeout (float, optional): How long to wait before timeout error.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            kwargs: Collection.search() or hybrid_search() keyword arguments.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Tuple[Document, float]]: List of result doc and score.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"No existing collection to search."</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_multi_vector</span><span class="p">:</span>
+            <span class="n">col_search_res</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acollection_hybrid_search</span><span class="p">(</span>
+                <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">,</span> <span class="n">expr</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+            <span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="n">param</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span>
+                <span class="s2">"When there is only one vector field, you can not provide multiple "</span>
+                <span class="s2">"search param dicts."</span>
+            <span class="p">)</span>
+            <span class="n">param</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">_from_list</span><span class="p">(</span><span class="n">param</span><span class="p">))</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span>  <span class="c1"># type: ignore[arg-type]</span>
+                <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builtin_func</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span>
+            <span class="p">):</span>
+                <span class="n">embedding</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">aembed_query</span><span class="p">(</span>  <span class="c1"># type: ignore</span>
+                    <span class="n">query</span>
+                <span class="p">)</span>
+                <span class="n">col_search_res</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acollection_search</span><span class="p">(</span>
+                    <span class="n">embedding_or_text</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span>
+                    <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+                    <span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">,</span>
+                    <span class="n">expr</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span>
+                    <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="p">(</span>
+                <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span>  <span class="c1"># type: ignore[arg-type]</span>
+                <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">builtin_func</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span>
+            <span class="p">):</span>
+                <span class="n">col_search_res</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acollection_search</span><span class="p">(</span>
+                    <span class="n">embedding_or_text</span><span class="o">=</span><span class="n">query</span><span class="p">,</span>
+                    <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+                    <span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">,</span>
+                    <span class="n">expr</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span>
+                    <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+                    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">"Check either it's multi vectors or single vector with "</span>
+                    <span class="s2">"only one embedding/builtin function."</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_documents_from_search_results</span><span class="p">(</span><span class="n">col_search_res</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Milvus.asimilarity_search_with_score_by_vector">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.asimilarity_search_with_score_by_vector">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">asimilarity_search_with_score_by_vector</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">embedding</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">expr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="n">Document</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""Perform an async search on an embedding and return results with score.</span>
+
+<span class="sd">        For more information about the search parameters, take a look at the pymilvus</span>
+<span class="sd">        documentation found here:</span>
+<span class="sd">        https://milvus.io/api-reference/pymilvus/v2.5.x/ORM/Collection/search.md</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            embedding (List[float] | Dict[int, float]): The embedding vector being</span>
+<span class="sd">                searched.</span>
+<span class="sd">            k (int, optional): The amount of results to return. Defaults to 4.</span>
+<span class="sd">            param (dict): The search params for the specified index.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            expr (str, optional): Filtering expression. Defaults to None.</span>
+<span class="sd">            timeout (float, optional): How long to wait before timeout error.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            kwargs: Collection.search() keyword arguments.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Tuple[Document, float]]: Result doc and score.</span>
+<span class="sd">        """</span>
+        <span class="n">col_search_res</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acollection_search</span><span class="p">(</span>
+            <span class="n">embedding_or_text</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span>
+            <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+            <span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">,</span>
+            <span class="n">expr</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_documents_from_search_results</span><span class="p">(</span><span class="n">col_search_res</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Milvus.amax_marginal_relevance_search">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.amax_marginal_relevance_search">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">amax_marginal_relevance_search</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">fetch_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+        <span class="n">lambda_mult</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">expr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Perform an async search and return results that are reordered by MMR.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            query (str): The text being searched.</span>
+<span class="sd">            k (int, optional): How many results to give. Defaults to 4.</span>
+<span class="sd">            fetch_k (int, optional): Total results to select k from.</span>
+<span class="sd">                Defaults to 20.</span>
+<span class="sd">            lambda_mult: Number between 0 and 1 that determines the degree</span>
+<span class="sd">                        of diversity among the results with 0 corresponding</span>
+<span class="sd">                        to maximum diversity and 1 to minimum diversity.</span>
+<span class="sd">                        Defaults to 0.5</span>
+<span class="sd">            param (dict, optional): The search params for the specified index.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            expr (str, optional): Filtering expression. Defaults to None.</span>
+<span class="sd">            timeout (float, optional): How long to wait before timeout error.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            kwargs: Collection.search() keyword arguments.</span>
+
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Document]: Document results for search.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"No existing collection to search."</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="k">assert</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span>  <span class="c1"># type: ignore[arg-type]</span>
+        <span class="p">),</span> <span class="s2">"You must set only one embedding function for MMR search."</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_fields_from_function</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"MMR search will only use the embedding function, "</span>
+                <span class="s2">"without the built-in functions."</span>
+            <span class="p">)</span>
+
+        <span class="n">embedding</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_as_list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">embedding_func</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">aembed_query</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">timeout</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">timeout</span> <span class="ow">or</span> <span class="n">timeout</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">amax_marginal_relevance_search_by_vector</span><span class="p">(</span>
+            <span class="n">embedding</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span>
+            <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span>
+            <span class="n">fetch_k</span><span class="o">=</span><span class="n">fetch_k</span><span class="p">,</span>
+            <span class="n">lambda_mult</span><span class="o">=</span><span class="n">lambda_mult</span><span class="p">,</span>
+            <span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">,</span>
+            <span class="n">expr</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Milvus.amax_marginal_relevance_search_by_vector">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.amax_marginal_relevance_search_by_vector">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">amax_marginal_relevance_search_by_vector</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">embedding</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+        <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="n">fetch_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
+        <span class="n">lambda_mult</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">param</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">expr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Perform an async search and return results that are reordered by MMR.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            embedding (list[float] | dict[int, float]): The embedding vector being</span>
+<span class="sd">                searched.</span>
+<span class="sd">            k (int, optional): How many results to give. Defaults to 4.</span>
+<span class="sd">            fetch_k (int, optional): Total results to select k from.</span>
+<span class="sd">                Defaults to 20.</span>
+<span class="sd">            lambda_mult: Number between 0 and 1 that determines the degree</span>
+<span class="sd">                        of diversity among the results with 0 corresponding</span>
+<span class="sd">                        to maximum diversity and 1 to minimum diversity.</span>
+<span class="sd">                        Defaults to 0.5</span>
+<span class="sd">            param (dict, optional): The search params for the specified index.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            expr (str, optional): Filtering expression. Defaults to None.</span>
+<span class="sd">            timeout (float, optional): How long to wait before timeout error.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            kwargs: Collection.search() keyword arguments.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Document]: Document results for search.</span>
+<span class="sd">        """</span>
+        <span class="n">col_search_res</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_acollection_search</span><span class="p">(</span>
+            <span class="n">embedding_or_text</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span>
+            <span class="n">k</span><span class="o">=</span><span class="n">fetch_k</span><span class="p">,</span>
+            <span class="n">param</span><span class="o">=</span><span class="n">param</span><span class="p">,</span>
+            <span class="n">expr</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">col_search_res</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[]</span>
+        <span class="n">ids</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">documents</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">col_search_res</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="n">doc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parse_document</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">"entity"</span><span class="p">])</span>
+            <span class="n">documents</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span>
+            <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s2">"distance"</span><span class="p">])</span>
+            <span class="n">ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_primary_field</span><span class="p">,</span> <span class="s2">"id"</span><span class="p">))</span>
+
+        <span class="n">vectors</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">aclient</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
+            <span class="nb">filter</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_primary_field</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">ids</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+            <span class="n">output_fields</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_primary_field</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">],</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="c1"># Reorganize the results from query to match search order.</span>
+        <span class="n">vectors</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_primary_field</span><span class="p">]:</span> <span class="n">x</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_vector_field</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">vectors</span><span class="p">}</span>
+
+        <span class="n">ordered_result_embeddings</span> <span class="o">=</span> <span class="p">[</span><span class="n">vectors</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ids</span><span class="p">]</span>
+
+        <span class="c1"># Get the new order of results.</span>
+        <span class="n">new_ordering</span> <span class="o">=</span> <span class="n">maximal_marginal_relevance</span><span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">embedding</span><span class="p">),</span> <span class="n">ordered_result_embeddings</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">lambda_mult</span><span class="o">=</span><span class="n">lambda_mult</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Reorder the values and return.</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">new_ordering</span><span class="p">:</span>
+            <span class="c1"># Function can return -1 index</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">documents</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+
+<div class="viewcode-block" id="Milvus.adelete">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.adelete">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">adelete</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">expr</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Async delete by vector ID or boolean expression.</span>
+<span class="sd">        Refer to [Milvus documentation](https://milvus.io/docs/delete_data.md)</span>
+<span class="sd">        for notes and examples of expressions.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ids: List of ids to delete.</span>
+<span class="sd">            expr: Boolean expression that specifies the entities to delete.</span>
+<span class="sd">            kwargs: Other parameters in Milvus delete api.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Optional[bool]: True if deletion is successful,</span>
+<span class="sd">            False otherwise.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">expr</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">"Both ids and expr are provided. "</span> <span class="s2">"Ignore expr and delete by ids."</span>
+                <span class="p">)</span>
+            <span class="n">expr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_primary_field</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">ids</span><span class="si">}</span><span class="s2">"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">expr</span><span class="p">,</span> <span class="nb">str</span>
+            <span class="p">),</span> <span class="s2">"Either ids list or expr string must be provided."</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">aclient</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span> <span class="nb">filter</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">except</span> <span class="n">MilvusException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">"Failed to delete entities: </span><span class="si">%s</span><span class="s2"> error: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span> <span class="n">e</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="Milvus.afrom_texts">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.afrom_texts">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">afrom_texts</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">texts</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+        <span class="n">embedding</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">EmbeddingType</span><span class="p">]]],</span>
+        <span class="n">metadatas</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">collection_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"LangChainCollection"</span><span class="p">,</span>
+        <span class="n">connection_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">consistency_level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Session"</span><span class="p">,</span>
+        <span class="n">index_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">search_params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">drop_old</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">auto_id</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">builtin_function</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span>
+            <span class="n">Union</span><span class="p">[</span><span class="n">BaseMilvusBuiltInFunction</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">BaseMilvusBuiltInFunction</span><span class="p">]]</span>
+        <span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Milvus</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Create a Milvus collection, indexes it with HNSW, and insert data</span>
+<span class="sd">        asynchronously.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            texts (List[str]): Text data.</span>
+<span class="sd">            embedding (Optional[Union[Embeddings, BaseSparseEmbedding]]): Embedding</span>
+<span class="sd">                function.</span>
+<span class="sd">            metadatas (Optional[List[dict]]): Metadata for each text if it exists.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            collection_name (str, optional): Collection name to use. Defaults to</span>
+<span class="sd">                "LangChainCollection".</span>
+<span class="sd">            connection_args (dict[str, Any], optional): Connection args to use. Defaults</span>
+<span class="sd">                to DEFAULT_MILVUS_CONNECTION.</span>
+<span class="sd">            consistency_level (str, optional): Which consistency level to use. Defaults</span>
+<span class="sd">                to "Session".</span>
+<span class="sd">            index_params (Optional[dict], optional): Which index_params to use. Defaults</span>
+<span class="sd">                to None.</span>
+<span class="sd">            search_params (Optional[dict], optional): Which search params to use.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            drop_old (Optional[bool], optional): Whether to drop the collection with</span>
+<span class="sd">                that name if it exists. Defaults to False.</span>
+<span class="sd">            ids (Optional[List[str]]): List of text ids. Defaults to None.</span>
+<span class="sd">            auto_id (bool): Whether to enable auto id for primary key. Defaults to</span>
+<span class="sd">                False. If False, you need to provide text ids (string less than 65535</span>
+<span class="sd">                bytes). If True, Milvus will generate unique integers as primary keys.</span>
+<span class="sd">            builtin_function (Optional[Union[BaseMilvusBuiltInFunction,</span>
+<span class="sd">                List[BaseMilvusBuiltInFunction]]]):</span>
+<span class="sd">                Built-in function to use. Defaults to None.</span>
+<span class="sd">            **kwargs: Other parameters in Milvus Collection.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Milvus: Milvus Vector Store</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">auto_id</span><span class="p">:</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="s2">"Both ids and auto_id are provided. "</span> <span class="s2">"Ignore auto_id and use ids."</span>
+                <span class="p">)</span>
+            <span class="n">auto_id</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">auto_id</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="n">vector_db</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">embedding_function</span><span class="o">=</span><span class="n">embedding</span><span class="p">,</span>
+            <span class="n">collection_name</span><span class="o">=</span><span class="n">collection_name</span><span class="p">,</span>
+            <span class="n">connection_args</span><span class="o">=</span><span class="n">connection_args</span><span class="p">,</span>
+            <span class="n">consistency_level</span><span class="o">=</span><span class="n">consistency_level</span><span class="p">,</span>
+            <span class="n">index_params</span><span class="o">=</span><span class="n">index_params</span><span class="p">,</span>
+            <span class="n">search_params</span><span class="o">=</span><span class="n">search_params</span><span class="p">,</span>
+            <span class="n">drop_old</span><span class="o">=</span><span class="n">drop_old</span><span class="p">,</span>
+            <span class="n">auto_id</span><span class="o">=</span><span class="n">auto_id</span><span class="p">,</span>
+            <span class="n">builtin_function</span><span class="o">=</span><span class="n">builtin_function</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">await</span> <span class="n">vector_db</span><span class="o">.</span><span class="n">aadd_texts</span><span class="p">(</span><span class="n">texts</span><span class="o">=</span><span class="n">texts</span><span class="p">,</span> <span class="n">metadatas</span><span class="o">=</span><span class="n">metadatas</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">ids</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">vector_db</span></div>
+
+
+<div class="viewcode-block" id="Milvus.aadd_documents">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.aadd_documents">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">aadd_documents</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">documents</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Run more documents through the embeddings and add to the vectorstore</span>
+<span class="sd">        asynchronously.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            documents: Documents to add to the vectorstore.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List of IDs of the added texts.</span>
+<span class="sd">        """</span>
+        <span class="c1"># TODO: Handle the case where the user doesn't provide ids on the Collection</span>
+        <span class="n">texts</span> <span class="o">=</span> <span class="p">[</span><span class="n">doc</span><span class="o">.</span><span class="n">page_content</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">]</span>
+        <span class="n">metadatas</span> <span class="o">=</span> <span class="p">[</span><span class="n">doc</span><span class="o">.</span><span class="n">metadata</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">documents</span><span class="p">]</span>
+        <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">aadd_texts</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">metadatas</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Milvus.aget_pks">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.aget_pks">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">aget_pks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Async get primary keys with expression</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            expr: Expression - E.g: "id in [1, 2]", or "title LIKE 'Abc%'"</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[int]: List of IDs (Primary Keys)</span>
+<span class="sd">        """</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"No existing collection to get pk."</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">query_result</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">aclient</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
+                <span class="nb">filter</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span>
+                <span class="n">output_fields</span><span class="o">=</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_primary_field</span><span class="p">],</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="n">MilvusException</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"Failed to get ids: </span><span class="si">%s</span><span class="s2"> error: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span> <span class="n">exc</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">exc</span>
+        <span class="n">pks</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_primary_field</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">query_result</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">pks</span></div>
+
+
+<div class="viewcode-block" id="Milvus.aupsert">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.aupsert">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">aupsert</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ids</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">documents</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Async update/Insert documents to the vectorstore.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            ids: IDs to update - Let's call get_pks to get ids with expression \n</span>
+<span class="sd">            documents (List[Document]): Documents to add to the vectorstore.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[str]: IDs of the added texts.</span>
+<span class="sd">        """</span>
+
+        <span class="k">if</span> <span class="n">documents</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">documents</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"No documents to upsert."</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">ids</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">ids</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">adelete</span><span class="p">(</span><span class="n">ids</span><span class="o">=</span><span class="n">ids</span><span class="p">)</span>
+            <span class="k">except</span> <span class="n">MilvusException</span><span class="p">:</span>
+                <span class="k">pass</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">aadd_documents</span><span class="p">(</span><span class="n">documents</span><span class="o">=</span><span class="n">documents</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">MilvusException</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="s2">"Failed to upsert entities: </span><span class="si">%s</span><span class="s2"> error: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span> <span class="n">exc</span>
+            <span class="p">)</span>
+            <span class="k">raise</span> <span class="n">exc</span></div>
+
+
+<div class="viewcode-block" id="Milvus.asearch_by_metadata">
+<a class="viewcode-back" href="../../../milvus/vectorstores/langchain_milvus.vectorstores.milvus.Milvus.html#langchain_milvus.vectorstores.milvus.Milvus.asearch_by_metadata">[docs]</a>
+    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">asearch_by_metadata</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">expr</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">fields</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Document</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""</span>
+<span class="sd">        Async searches the Milvus vector store based on metadata conditions.</span>
+
+<span class="sd">        This function performs a metadata-based query using an expression</span>
+<span class="sd">        that filters stored documents without vector similarity.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            expr (str): A filtering expression (e.g., `"city == 'Seoul'"`).</span>
+<span class="sd">            fields (Optional[List[str]]): List of fields to retrieve.</span>
+<span class="sd">                                          If None, retrieves all available fields.</span>
+<span class="sd">            limit (int): Maximum number of results to return.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Document]: List of documents matching the metadata filter.</span>
+<span class="sd">        """</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">pymilvus</span><span class="w"> </span><span class="kn">import</span> <span class="n">MilvusException</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">col</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"No existing collection to search."</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[]</span>
+
+        <span class="c1"># Default to retrieving all fields if none are provided</span>
+        <span class="k">if</span> <span class="n">fields</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">fields</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fields</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">results</span> <span class="o">=</span> <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">aclient</span><span class="o">.</span><span class="n">query</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">collection_name</span><span class="p">,</span>
                 <span class="nb">filter</span><span class="o">=</span><span class="n">expr</span><span class="p">,</span>
                 <span class="n">output_fields</span><span class="o">=</span><span class="n">fields</span><span class="p">,</span>
